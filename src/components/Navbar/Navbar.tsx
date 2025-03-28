@@ -14,6 +14,7 @@ const Navbar = () => {
                     <ul className='flex gap-8'>
                         <NavbarMenu menuText="Начало" slug="" />
                         <NavbarMenu menuText="За нас" slug="about" />
+                        <NavbarMenu menuText="FAQ" slug="faq" />
                         <NavbarMenu menuText="Новини" slug="news" />
                         <NavbarMenu menuText="Абонаменти" slug="subscriptions" />
                         <NavbarMenu menuText="Контакти" slug="contacts" />

@@ -57,7 +57,7 @@ export default function Home() {
                         {/* <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-lg text-lg transition-colors duration-200">
                             Регистрирай се безплатно
                         </button> */}
-                        <Button className="text-xl py-5 px-10 ">
+                        <Button className="text-xl py-5 px-10">
                             Регистрирай се безплатно
                         </Button>
                     </div>
@@ -76,10 +76,10 @@ export default function Home() {
                 {/* How it works section */}
                 <div className="mt-32">
                     <h2 className="text-3xl md:text-4xl font-bold text-center mb-16">
-                        Как работи платформата
+                        Как работи платформата?
                     </h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                        <div className="flex flex-col items-center text-center p-6 bg-[#6F58C9]/5 rounded-lg">
+                        <div className="flex flex-col items-center text-center p-6 bg-[#6F58C9]/5 rounded-lg shadow-sm">
                             <div className="w-16 h-16 bg-[#6F58C9]/10 rounded-full flex items-center justify-center mb-4">
                                 <UserPlus className="w-8 h-8 text-[#6F58C9]" />
                             </div>
@@ -87,7 +87,7 @@ export default function Home() {
                             <p className="text-gray-600">Създаваш своя акаунт за няколко секунди</p>
                         </div>
 
-                        <div className="flex flex-col items-center text-center p-6 bg-[#6F58C9]/5 rounded-lg">
+                        <div className="flex flex-col items-center text-center p-6 bg-[#6F58C9]/5 rounded-lg shadow-sm">
                             <div className="w-16 h-16 bg-[#6F58C9]/10 rounded-full flex items-center justify-center mb-4">
                                 <ListTodo className="w-8 h-8 text-[#6F58C9]" />
                             </div>
@@ -95,7 +95,7 @@ export default function Home() {
                             <p className="text-gray-600">Избираш тема, която искаш да разгледаш</p>
                         </div>
 
-                        <div className="flex flex-col items-center text-center p-6 bg-[#6F58C9]/5 rounded-lg">
+                        <div className="flex flex-col items-center text-center p-6 bg-[#6F58C9]/5 rounded-lg shadow-sm">
                             <div className="w-16 h-16 bg-[#6F58C9]/10 rounded-full flex items-center justify-center mb-4">
                                 <Brain className="w-8 h-8 text-[#6F58C9]" />
                             </div>
@@ -103,7 +103,7 @@ export default function Home() {
                             <p className="text-gray-600">Практикуваш с разнообразни задачи</p>
                         </div>
 
-                        <div className="flex flex-col items-center text-center p-6 bg-[#6F58C9]/5 rounded-lg">
+                        <div className="flex flex-col items-center text-center p-6 bg-[#6F58C9]/5 rounded-lg shadow-sm">
                             <div className="w-16 h-16 bg-[#6F58C9]/10 rounded-full flex items-center justify-center mb-4">
                                 <LineChart className="w-8 h-8 text-[#6F58C9]" />
                             </div>
@@ -116,10 +116,10 @@ export default function Home() {
                 {/* Benefits section */}
                 <div className="mt-32">
                     <h2 className="text-3xl md:text-4xl font-bold text-center mb-16">
-                        Защо да избера тази платформа
+                        Защо да избера тази платформа?
                     </h2>
                     <div className="max-w-3xl mx-auto space-y-6">
-                        <div className="flex items-start gap-4 p-6 bg-[#6F58C9]/5 rounded-lg">
+                        <div className="flex items-start gap-4 p-6 bg-[#6F58C9]/5 rounded-lg shadow-sm">
                             <CheckCircle2 className="w-6 h-6 text-[#6F58C9] mt-1 flex-shrink-0" />
                             <div>
                                 <h3 className="text-xl font-semibold mb-2">Автоматична проверка на отговорите</h3>
@@ -127,7 +127,7 @@ export default function Home() {
                             </div>
                         </div>
 
-                        <div className="flex items-start gap-4 p-6 bg-[#6F58C9]/5 rounded-lg">
+                        <div className="flex items-start gap-4 p-6 bg-[#6F58C9]/5 rounded-lg shadow-sm">
                             <CheckCircle2 className="w-6 h-6 text-[#6F58C9] mt-1 flex-shrink-0" />
                             <div>
                                 <h3 className="text-xl font-semibold mb-2">Ясен прогрес</h3>
@@ -135,7 +135,7 @@ export default function Home() {
                             </div>
                         </div>
 
-                        <div className="flex items-start gap-4 p-6 bg-[#6F58C9]/5 rounded-lg">
+                        <div className="flex items-start gap-4 p-6 bg-[#6F58C9]/5 rounded-lg shadow-sm">
                             <CheckCircle2 className="w-6 h-6 text-[#6F58C9] mt-1 flex-shrink-0" />
                             <div>
                                 <h3 className="text-xl font-semibold mb-2">Стотици задачи, подредени по теми</h3>
@@ -143,12 +143,50 @@ export default function Home() {
                             </div>
                         </div>
 
-                        <div className="flex items-start gap-4 p-6 bg-[#6F58C9]/5 rounded-lg">
+                        <div className="flex items-start gap-4 p-6 bg-[#6F58C9]/5 rounded-lg shadow-sm">
                             <CheckCircle2 className="w-6 h-6 text-[#6F58C9] mt-1 flex-shrink-0" />
                             <div>
                                 <h3 className="text-xl font-semibold mb-2">Напълно на български език</h3>
                                 <p className="text-gray-600">Всичко е на твоя език, без преводи или объркване</p>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Testimonials section */}
+                <div className="mt-32">
+                    <h2 className="text-3xl md:text-4xl font-bold text-center mb-16">
+                        Какво казват учениците?
+                    </h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                            <div className="flex items-center justify-between mb-4">
+                                <h3 className="text-lg font-semibold text-gray-900">Мария Иванова</h3>
+                                <span className="text-sm text-gray-500">15.03.2024</span>
+                            </div>
+                            <p className="text-gray-600 leading-relaxed">
+                                "Платформата ми помогна да разбера по-добре математиката. Задачите са добре подредени и решенията са ясни."
+                            </p>
+                        </div>
+
+                        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                            <div className="flex items-center justify-between mb-4">
+                                <h3 className="text-lg font-semibold text-gray-900">Петър Димитров</h3>
+                                <span className="text-sm text-gray-500">10.03.2024</span>
+                            </div>
+                            <p className="text-gray-600 leading-relaxed">
+                                "Най-доброто е, че мога да практикувам в свое време и да получавам незабавна обратна връзка."
+                            </p>
+                        </div>
+
+                        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                            <div className="flex items-center justify-between mb-4">
+                                <h3 className="text-lg font-semibold text-gray-900">Анна Петрова</h3>
+                                <span className="text-sm text-gray-500">05.03.2024</span>
+                            </div>
+                            <p className="text-gray-600 leading-relaxed">
+                                "Благодаря на тази платформа, че ми даде увереността да се справя с НВО по математика."
+                            </p>
                         </div>
                     </div>
                 </div>
