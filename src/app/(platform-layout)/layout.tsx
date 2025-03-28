@@ -15,9 +15,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <div className="flex">
-          <Sidebar />
-          <main className="flex-1">
+        <div className="flex h-screen">
+          <div className="h-screen sticky top-0">
+            <Sidebar />
+          </div>
+          <main className="flex-1 overflow-y-auto">
             {children}
           </main>
         </div>

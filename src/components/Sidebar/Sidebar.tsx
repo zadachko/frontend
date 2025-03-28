@@ -17,10 +17,10 @@ const Sidebar = () => {
     const pathname = usePathname()
 
     const navigation = [
-        { name: 'Начало', href: '/dashboard', icon: Home },
-        { name: 'Задачи', href: '/tasks', icon: BookOpen },
-        { name: 'Статистика', href: '/stats', icon: BarChart2 },
-        { name: 'Настройки', href: '/settings', icon: Settings },
+        { name: 'Начало', href: '/platform', icon: Home },
+        { name: 'Категории Задачи', href: '/platform/categories', icon: BookOpen },
+        { name: 'Статистика', href: '/platform/stats', icon: BarChart2 },
+        { name: 'Настройки', href: '/platform/settings', icon: Settings },
     ]
 
     return (
