@@ -57,7 +57,7 @@ export default function Home() {
                         {/* <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-lg text-lg transition-colors duration-200">
                             Регистрирай се безплатно
                         </button> */}
-                        <Button className="text-xl py-5 px-10">
+                        <Button className="text-xl py-5.5 px-10">
                             Регистрирай се безплатно
                         </Button>
                     </div>

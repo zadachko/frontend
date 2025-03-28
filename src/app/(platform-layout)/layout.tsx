@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import "./globals.css";
-import Navbar from "@/components/Navbar/Navbar";
+import "../globals.css";
+import Sidebar from "@/components/Sidebar/Sidebar";
 
 export const metadata: Metadata = {
   title: "Zadachko.com",
@@ -15,8 +15,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Navbar />
-        {children}
+        <div className="flex">
+          <Sidebar />
+          <main className="flex-1">
+            {children}
+          </main>
+        </div>
       </body>
     </html>
   );
