@@ -12,10 +12,16 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 
-const Page = ({ params }: { params: { problemId: string } }) => {
+type Props = {
+    params: Promise<{ problemId: string }>
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}
+
+const Page = async ({ params }: Props) => {
+    const { problemId } = await params
     // This would come from your API/database
     const problem = {
-        id: params.problemId,
+        id: problemId,
         title: 'Квадратни уравнения',
         description: 'Решете квадратното уравнение: x² + 5x + 6 = 0',
         category: 'Алгебра',

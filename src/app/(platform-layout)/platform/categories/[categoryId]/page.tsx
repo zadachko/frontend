@@ -9,10 +9,16 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 
-const Page = ({ params }: { params: { categoryId: string } }) => {
+type Props = {
+    params: Promise<{ categoryId: string }>
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}
+
+const Page = async ({ params }: Props) => {
+    const { categoryId } = await params
     // This would come from your API/database
     const category = {
-        id: params.categoryId,
+        id: categoryId,
         name: 'Алгебра',
         icon: Calculator,
         description: 'Решаване на алгебрични задачи и уравнения',

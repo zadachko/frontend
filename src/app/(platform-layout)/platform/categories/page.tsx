@@ -23,18 +23,18 @@ const Page = () => {
     const [sortBy, setSortBy] = useState<'name' | 'count' | 'popular'>('name')
 
     const categories = [
-        { name: 'Алгебра', icon: Calculator, count: 156, description: 'Основни алгебрични операции и уравнения' },
-        { name: 'Геометрия', icon: Brain, count: 98, description: 'Геометрични фигури и пространствени тела' },
-        { name: 'Тригонометрия', icon: Star, count: 75, description: 'Тригонометрични функции и тъждества' },
-        { name: 'Функции', icon: Target, count: 64, description: 'Функции и техните графики' },
-        { name: 'Уравнения', icon: BookOpen, count: 89, description: 'Различни видове уравнения' },
-        { name: 'Неравенства', icon: Clock, count: 45, description: 'Решаване на неравенства' },
-        { name: 'Вероятности', icon: Award, count: 32, description: 'Теория на вероятностите' },
-        { name: 'Статистика', icon: TrendingUp, count: 28, description: 'Статистически анализ' },
-        { name: 'Комбинаторика', icon: Bookmark, count: 41, description: 'Комбинаторични задачи' },
-        { name: 'Логика', icon: Brain, count: 55, description: 'Логически задачи' },
-        { name: 'Множества', icon: Target, count: 38, description: 'Теория на множествата' },
-        { name: 'Последователности', icon: Calculator, count: 47, description: 'Числови последователности' }
+        { name: 'Алгебра', icon: Calculator, count: 156, description: 'Основни алгебрични операции и уравнения', difficulty: 'Средно' },
+        { name: 'Геометрия', icon: Brain, count: 98, description: 'Геометрични фигури и пространствени тела', difficulty: 'Средно' },
+        { name: 'Тригонометрия', icon: Star, count: 75, description: 'Тригонометрични функции и тъждества', difficulty: 'Трудно' },
+        { name: 'Функции', icon: Target, count: 64, description: 'Функции и техните графики', difficulty: 'Средно' },
+        { name: 'Уравнения', icon: BookOpen, count: 89, description: 'Различни видове уравнения', difficulty: 'Средно' },
+        { name: 'Неравенства', icon: Clock, count: 45, description: 'Решаване на неравенства', difficulty: 'Лесно' },
+        { name: 'Вероятности', icon: Award, count: 32, description: 'Теория на вероятностите', difficulty: 'Трудно' },
+        { name: 'Статистика', icon: TrendingUp, count: 28, description: 'Статистически анализ', difficulty: 'Трудно' },
+        { name: 'Комбинаторика', icon: Bookmark, count: 41, description: 'Комбинаторични задачи', difficulty: 'Средно' },
+        { name: 'Логика', icon: Brain, count: 55, description: 'Логически задачи', difficulty: 'Лесно' },
+        { name: 'Множества', icon: Target, count: 38, description: 'Теория на множествата', difficulty: 'Лесно' },
+        { name: 'Последователности', icon: Calculator, count: 47, description: 'Числови последователности', difficulty: 'Средно' }
     ]
 
     const toggleFavorite = (categoryName: string) => {
