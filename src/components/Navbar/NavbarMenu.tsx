@@ -11,9 +11,9 @@ const NavbarMenu = ({ menuText, slug }: { menuText: string, slug: string }) => {
     return (
         <li>
             <Link href={`/${slug}`}>
-                <div className={`text-white text-lg hover:text-gray-200 transition-colors duration-200 relative group ${isActive ? 'font-semibold' : ''}`}>
+                <div className={`text-white text-lg hover:text-gray-200 transition-colors duration-200 relative group ${isActive ? 'font-semibold' : ''} md:block`}>
                     {menuText}
-                    <span className={`absolute bottom-0 left-0 h-0.5 bg-white transition-all duration-300 ${isActive ? 'w-full' : 'w-0 group-hover:w-full'} rounded-2xl`}></span>
+                    <span className={`absolute bottom-0 left-0 h-0.5 bg-white transition-all duration-300 ${isActive ? 'w-full' : 'w-0 group-hover:w-full'} rounded-2xl hidden md:block`}></span>
                 </div>
             </Link>
         </li>
