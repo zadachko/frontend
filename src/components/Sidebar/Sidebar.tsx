@@ -18,7 +18,7 @@ const Sidebar = () => {
 
     const navigation = [
         { name: 'Начало', href: '/platform', icon: Home },
-        { name: 'Категории Задачи', href: '/platform/categories', icon: BookOpen },
+        { name: 'Задачи', href: '/platform/categories', icon: BookOpen },
         { name: 'Статистика', href: '/platform/stats', icon: BarChart2 },
         { name: 'Настройки', href: '/platform/settings', icon: Settings },
     ]
