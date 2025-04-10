@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { UserPlus, ListTodo, Brain, LineChart, CheckCircle2 } from "lucide-react";
+import { UserPlus, ListTodo, Brain, LineChart, CheckCircle2, Calculator, BookOpen, Ruler, HelpCircle, ArrowRight } from "lucide-react";
 
 export default function Home() {
     const leftPupilRef = useRef<SVGCircleElement | null>(null);
@@ -184,6 +184,167 @@ export default function Home() {
                             <p className="text-gray-600 leading-relaxed">
                                 &ldquo;Благодаря на тази платформа, че ми даде увереността да се справя с НВО по математика.&rdquo;
                             </p>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Featured Topics section */}
+                <div className="mt-20 sm:mt-24 md:mt-32">
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-10 sm:mb-16">
+                        Теми, които покриваме
+                    </h2>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+                        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                            <div className="w-14 h-14 bg-[#6F58C9]/10 rounded-full flex items-center justify-center mb-4">
+                                <Calculator className="w-7 h-7 text-[#6F58C9]" />
+                            </div>
+                            <h3 className="text-xl font-semibold mb-3">Алгебра</h3>
+                            <ul className="space-y-2 text-gray-600">
+                                <li className="flex items-start">
+                                    <span className="text-[#6F58C9] mr-2">•</span>
+                                    Линейни уравнения и неравенства
+                                </li>
+                                <li className="flex items-start">
+                                    <span className="text-[#6F58C9] mr-2">•</span>
+                                    Квадратни уравнения
+                                </li>
+                                <li className="flex items-start">
+                                    <span className="text-[#6F58C9] mr-2">•</span>
+                                    Функции и графики
+                                </li>
+                                <li className="flex items-start">
+                                    <span className="text-[#6F58C9] mr-2">•</span>
+                                    Системи уравнения
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                            <div className="w-14 h-14 bg-[#6F58C9]/10 rounded-full flex items-center justify-center mb-4">
+                                <Ruler className="w-7 h-7 text-[#6F58C9]" />
+                            </div>
+                            <h3 className="text-xl font-semibold mb-3">Геометрия</h3>
+                            <ul className="space-y-2 text-gray-600">
+                                <li className="flex items-start">
+                                    <span className="text-[#6F58C9] mr-2">•</span>
+                                    Триъгълници и четириъгълници
+                                </li>
+                                <li className="flex items-start">
+                                    <span className="text-[#6F58C9] mr-2">•</span>
+                                    Кръгове и окръжности
+                                </li>
+                                <li className="flex items-start">
+                                    <span className="text-[#6F58C9] mr-2">•</span>
+                                    Теорема на Питагор
+                                </li>
+                                <li className="flex items-start">
+                                    <span className="text-[#6F58C9] mr-2">•</span>
+                                    Подобни фигури
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                            <div className="w-14 h-14 bg-[#6F58C9]/10 rounded-full flex items-center justify-center mb-4">
+                                <BookOpen className="w-7 h-7 text-[#6F58C9]" />
+                            </div>
+                            <h3 className="text-xl font-semibold mb-3">Тригонометрия</h3>
+                            <ul className="space-y-2 text-gray-600">
+                                <li className="flex items-start">
+                                    <span className="text-[#6F58C9] mr-2">•</span>
+                                    Тригонометрични функции
+                                </li>
+                                <li className="flex items-start">
+                                    <span className="text-[#6F58C9] mr-2">•</span>
+                                    Тригонометрични уравнения
+                                </li>
+                                <li className="flex items-start">
+                                    <span className="text-[#6F58C9] mr-2">•</span>
+                                    Тригонометрични тъждества
+                                </li>
+                                <li className="flex items-start">
+                                    <span className="text-[#6F58C9] mr-2">•</span>
+                                    Приложения в геометрията
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Statistics section */}
+                <div className="mt-20 sm:mt-24 md:mt-32 bg-[#6F58C9]/5 py-12 px-4 rounded-xl">
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-10 sm:mb-16">
+                        Нашите резултати
+                    </h2>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                        <div className="text-center">
+                            <div className="text-4xl sm:text-5xl font-bold text-[#6F58C9] mb-2">500+</div>
+                            <p className="text-gray-600">Задачи в платформата</p>
+                        </div>
+                        <div className="text-center">
+                            <div className="text-4xl sm:text-5xl font-bold text-[#6F58C9] mb-2">1000+</div>
+                            <p className="text-gray-600">Активни ученици</p>
+                        </div>
+                        <div className="text-center">
+                            <div className="text-4xl sm:text-5xl font-bold text-[#6F58C9] mb-2">85%</div>
+                            <p className="text-gray-600">Подобрение в резултатите</p>
+                        </div>
+                        <div className="text-center">
+                            <div className="text-4xl sm:text-5xl font-bold text-[#6F58C9] mb-2">15+</div>
+                            <p className="text-gray-600">Теми по математика</p>
+                        </div>
+                    </div>
+                </div>
+
+                {/* FAQ Preview section */}
+                <div className="mt-20 sm:mt-24 md:mt-32">
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-10 sm:mb-16">
+                        Често срещани въпроси
+                    </h2>
+                    <div className="max-w-3xl mx-auto space-y-4">
+                        <div className="bg-white p-4 sm:p-6 rounded-lg shadow-sm border border-gray-100">
+                            <div className="flex items-start gap-3">
+                                <HelpCircle className="w-5 h-5 sm:w-6 sm:h-6 text-[#6F58C9] mt-1 flex-shrink-0" />
+                                <div>
+                                    <h3 className="text-lg sm:text-xl font-semibold mb-2">Какви са предимствата на платформата?</h3>
+                                    <p className="text-gray-600">Платформата предлага персонализирани задачи, стъпка по стъпка решения и автоматична проверка на отговорите, което ви позволява да следите своя прогрес в реално време.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="bg-white p-4 sm:p-6 rounded-lg shadow-sm border border-gray-100">
+                            <div className="flex items-start gap-3">
+                                <HelpCircle className="w-5 h-5 sm:w-6 sm:h-6 text-[#6F58C9] mt-1 flex-shrink-0" />
+                                <div>
+                                    <h3 className="text-lg sm:text-xl font-semibold mb-2">Колко струва използването на платформата?</h3>
+                                    <p className="text-gray-600">Имаме безплатен план с основни функции и премиум абонамент с достъп до всички задачи и функции. За повече информация, проверете нашата страница с абонаменти.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="text-center mt-6">
+                            <Button variant="outline" className="text-[#6F58C9] border-[#6F58C9] hover:bg-[#6F58C9]/10">
+                                Виж всички въпроси
+                                <ArrowRight className="ml-2 h-4 w-4" />
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Call to Action section */}
+                <div className="mt-20 sm:mt-24 md:mt-32 bg-[#6F58C9] text-white py-12 px-4 rounded-xl">
+                    <div className="max-w-3xl mx-auto text-center">
+                        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6">
+                            Готови ли сте да подобрите резултатите си?
+                        </h2>
+                        <p className="text-lg sm:text-xl mb-8 text-white/90">
+                            Присъединете се към хилядите ученици, които вече се подготвят за НВО по математика с нашата платформа.
+                        </p>
+                        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                            <Button className="bg-white text-[#6F58C9] hover:bg-white/90">
+                                Регистрирай се безплатно
+                            </Button>
+                            <Button variant="outline" className="border-white text-white hover:bg-white/10">
+                                Научи повече
+                            </Button>
                         </div>
                     </div>
                 </div>
