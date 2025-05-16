@@ -205,8 +205,7 @@ export function HeroSection() {
     const statsRef = useRef<HTMLDivElement>(null)
     const isInView = useInView(containerRef, { once: false, margin: "-100px" })
     const isStatsInView = useInView(statsRef, { once: true, amount: 0.5 })
-    const controls = useAnimation()
-    const isMobile = false;
+    const controls = useAnimation();
 
     useEffect(() => {
         if (isInView) {
