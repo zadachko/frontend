@@ -200,7 +200,7 @@ const AnimatedButton = ({
     )
 }
 
-export function HeroSection() {
+const HeroSection = () => {
     const containerRef = useRef<HTMLDivElement>(null)
     const statsRef = useRef<HTMLDivElement>(null)
     const isInView = useInView(containerRef, { once: false, margin: "-100px" })
@@ -392,3 +392,5 @@ export function HeroSection() {
         </section>
     )
 }
+
+export default HeroSection

@@ -56,7 +56,7 @@ const features = [
     },
 ]
 
-export function FeaturesSection() {
+const FeaturesSection = () => {
     const ref = useRef(null)
     const isInView = useInView(ref, { once: false, amount: 0.2 })
     const isMobile = false;
@@ -208,3 +208,5 @@ function FeatureCard({ feature }: { feature: { icon: React.ReactNode, title: str
         </motion.div>
     )
 }
+
+export default FeaturesSection

@@ -32,7 +32,7 @@ const testimonials = [
     },
 ]
 
-export function TestimonialsSection() {
+const TestimonialsSection = () => {
     const ref = useRef(null)
     const isInView = useInView(ref, { once: false, amount: 0.2 })
 
@@ -225,3 +225,5 @@ export function TestimonialsSection() {
         </section>
     )
 }
+
+export default TestimonialsSection
