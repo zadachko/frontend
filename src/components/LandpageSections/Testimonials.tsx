@@ -108,14 +108,8 @@ export function TestimonialsSection() {
                             key={index}
                             className="bg-white rounded-2xl p-6 shadow-lg relative group"
                             initial={{ opacity: 0, y: 50, rotateY: -10 }}
-                            animate={isInView ? { opacity: 1, y: 0, rotateY: 0 } : {}}
                             transition={{ duration: 0.7, delay: index * 0.2 + 0.5 }}
-                            whileHover={{
-                                y: -10,
-                                boxShadow:
-                                    "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
-                                transition: { delay: 0, duration: 0.2 },
-                            }}
+                            animate={isInView ? { opacity: 1, y: 0, rotateY: 0 } : {}}
                         >
                             {/* Floating quote icon */}
                             <motion.div

@@ -11,6 +11,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { AnimatePresence, motion } from "framer-motion"
 
 const navItems = [
+    { name: "Начало", href: "/" },
     { name: "За нас", href: "/about" },
     { name: "Функции", href: "/features" },
     { name: "Цени", href: "/pricing" },
@@ -40,7 +41,7 @@ const Navbar = () => {
                                 key={item.name}
                                 href={item.href}
                                 className={cn(
-                                    "text-sm font-medium transition-colors hover:text-primary",
+                                    "text-md font-medium transition-colors hover:text-primary",
                                     pathname === item.href ? "text-primary" : "text-gray-700",
                                 )}
                             >
@@ -70,7 +71,7 @@ const Navbar = () => {
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center gap-2">
                                         <Grid3X3 className="h-5 w-5 text-primary" />
-                                        <span className="text-lg font-semibold text-primary">Zadachko</span>
+                                        <span className="text-lg font-semibold text-primary">Задачко</span>
                                     </div>
                                     <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)}>
                                         <X className="h-5 w-5" />
