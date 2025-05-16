@@ -3,7 +3,7 @@ import { Calculator, Facebook, Instagram, Twitter } from "lucide-react"
 
 const Footer = () => {
     return (
-        <footer className="bg-primary-900 text-white py-12">
+        <footer className="bg-primary-700 text-white py-12">
             <div className="container">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                     <div>
@@ -101,7 +101,7 @@ const Footer = () => {
                     </div>
                 </div>
 
-                <div className="border-t border-primary-800 mt-8 pt-8 text-center text-primary-200 text-sm">
+                <div className="border-t border-[#ffffff40] mt-8 pt-8 text-center text-primary-200 text-sm">
                     <p>© {new Date().getFullYear()} Zadachko. Всички права запазени.</p>
                 </div>
             </div>
