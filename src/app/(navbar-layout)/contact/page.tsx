@@ -3,21 +3,8 @@
 import type React from "react"
 
 import { useState } from "react"
-import { motion } from "framer-motion"
-import Link from "next/link"
-import {
-    CheckCircle,
-    AlertCircle,
-    Mail,
-    Clock,
-    MessageSquare,
-    ChevronDown,
-    HelpCircle,
-    Facebook,
-    Instagram,
-    Twitter,
-    Phone,
-} from "lucide-react"
+import { AnimatePresence, motion } from "framer-motion"
+import { CheckCircle, AlertCircle, Mail, Clock, MessageSquare, ChevronDown, HelpCircle, Facebook, Instagram, Twitter, Phone } from "lucide-react"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 
 // Animation variants
@@ -181,27 +168,37 @@ export default function ContactPage() {
                     >
                         <h2 className="text-2xl font-bold mb-6 text-[#3a2f7d]">Изпрати съобщение</h2>
 
-                        {formState === "success" && (
-                            <motion.div
-                                className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center text-green-700"
-                                initial={{ opacity: 0, height: 0 }}
-                                animate={{ opacity: 1, height: "auto" }}
-                            >
-                                <CheckCircle className="h-5 w-5 mr-2 flex-shrink-0" />
-                                <p>Благодарим за съобщението! Ще се свържем с теб възможно най-скоро.</p>
-                            </motion.div>
-                        )}
+                        <AnimatePresence mode="wait">
+                            {formState === "success" && (
+                                <motion.div
+                                    key="success"
+                                    initial={{ opacity: 0, y: -10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -10 }}
+                                    transition={{ duration: 0.4, ease: "easeInOut" }}
+                                    layout
+                                    className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center text-green-700"
+                                >
+                                    <CheckCircle className="h-5 w-5 mr-2 flex-shrink-0" />
+                                    <p>Благодарим за съобщението! Ще се свържем с теб възможно най-скоро.</p>
+                                </motion.div>
+                            )}
 
-                        {formState === "error" && (
-                            <motion.div
-                                className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center text-red-700"
-                                initial={{ opacity: 0, height: 0 }}
-                                animate={{ opacity: 1, height: "auto" }}
-                            >
-                                <AlertCircle className="h-5 w-5 mr-2 flex-shrink-0" />
-                                <p>Възникна грешка при изпращането на съобщението. Моля, опитай отново по-късно.</p>
-                            </motion.div>
-                        )}
+                            {formState === "error" && (
+                                <motion.div
+                                    key="error"
+                                    initial={{ opacity: 0, y: -10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -10 }}
+                                    transition={{ duration: 0.4, ease: "easeInOut" }}
+                                    layout
+                                    className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center text-red-700"
+                                >
+                                    <AlertCircle className="h-5 w-5 mr-2 flex-shrink-0" />
+                                    <p>Възникна грешка при изпращането на съобщението. Моля, опитай отново по-късно.</p>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
 
                         <form onSubmit={handleSubmit}>
                             <motion.div className="space-y-4" variants={staggerContainer} initial="hidden" animate="visible">
