@@ -34,7 +34,7 @@ const testimonials = [
 
 const TestimonialsSection = () => {
     const ref = useRef(null)
-    const isInView = useInView(ref, { once: false, amount: 0.2 })
+    const isInView = useInView(ref, { once: true, amount: 0.2 })
 
     return (
         <section ref={ref} className="py-20 bg-primary-50 overflow-hidden relative">
@@ -198,7 +198,7 @@ const TestimonialsSection = () => {
                         whileHover={{ scale: 1.05, transition: { delay: 0, duration: 0.2 } }}
                         whileTap={{ scale: 0.95, transition: { delay: 0, duration: 0.1 } }}
                     >
-                        <span className="relative z-10 flex items-center">
+                        <span className="relative z-10 flex items-center cursor-pointer">
                             Виж всички отзиви
                             <motion.svg
                                 xmlns="http://www.w3.org/2000/svg"
