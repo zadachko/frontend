@@ -1,13 +1,13 @@
 "use client"
 
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import NavbarMobileMenuLink from "./NavbarMobileMenuLink"
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { useState } from "react"
-import { useIsMobile } from "@/hooks/isMobile"
-
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import NavbarMobileMenuLink from "./NavbarMobileMenuLink";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { useIsMobile } from "@/hooks/isMobile";
+import { Menu } from "lucide-react";
 const navItems = [
     { name: "Начало", href: "/" },
     { name: "За нас", href: "/about" },
@@ -59,7 +59,9 @@ const Navbar = () => {
                     </div>
 
 
-                    {isMobile && <div onClick={handleHamburgerClick} className="w-[10px] h-[10px] bg-red-500"></div>}
+                    {isMobile && <div onClick={handleHamburgerClick} className="">
+                        <Menu />
+                    </div>}
 
 
                 </div>
