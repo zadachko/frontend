@@ -1,21 +1,28 @@
+import { useState, useEffect } from 'react';
+
 export function useIsMobile(): boolean {
-	if (typeof window === 'undefined') {
-		return false; // Server-side rendering
-	}
+	const [isMobile, setIsMobile] = useState(false);
 
-	const userAgent = navigator.userAgent.toLowerCase();
+	useEffect(() => {
+		const userAgent = navigator.userAgent.toLowerCase();
 
-	// Check for mobile devices
-	const mobileKeywords = [
-		'android',
-		'iphone',
-		'ipad',
-		'ipod',
-		'blackberry',
-		'windows phone',
-		'mobile',
-		'tablet',
-	];
+		// Check for mobile devices
+		const mobileKeywords = [
+			'android',
+			'iphone',
+			'ipad',
+			'ipod',
+			'blackberry',
+			'windows phone',
+			'mobile',
+			'tablet',
+		];
 
-	return mobileKeywords.some(keyword => userAgent.includes(keyword));
+		const isMobileDevice = mobileKeywords.some(keyword =>
+			userAgent.includes(keyword)
+		);
+		setIsMobile(isMobileDevice);
+	}, []);
+
+	return isMobile;
 }

@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useIsMobile } from "@/hooks/isMobile";
 import { Menu } from "lucide-react";
+
 const navItems = [
     { name: "Начало", href: "/" },
     { name: "За нас", href: "/about" },
@@ -24,6 +25,7 @@ const Navbar = () => {
     const handleHamburgerClick = () => {
         setIsNavbarOpen((prev) => !prev);
     }
+
     return (
         <header className="sticky top-0 z-50 w-full border-b bg-white">
             <div className="flex justify-center">
@@ -58,23 +60,31 @@ const Navbar = () => {
                         <Button className="bg-primary hover:bg-primary/80">Регистрация</Button>
                     </div>
 
-
-                    {isMobile && <div onClick={handleHamburgerClick} className="">
+                    {/* Mobile Menu Button - Always rendered but only visible on mobile */}
+                    <div
+                        onClick={handleHamburgerClick}
+                        className={cn(
+                            "md:hidden cursor-pointer",
+                            !isMobile && "opacity-0 pointer-events-none"
+                        )}
+                    >
                         <Menu />
-                    </div>}
-
-
+                    </div>
                 </div>
             </div>
-            {isMobile && <div className={`${isNavbarOpen ? 'max-h-[800px]' : 'max-h-0'} fixed w-screen bg-white overflow-hidden duration-300 px-5`}>
+
+            {/* Mobile Menu - Always rendered but only visible on mobile */}
+            <div className={cn(
+                "md:hidden fixed w-screen bg-white overflow-hidden duration-300 px-5",
+                isMobile && isNavbarOpen ? 'max-h-[800px]' : 'max-h-0',
+                !isMobile && 'hidden'
+            )}>
                 <div className="flex flex-col">
                     {navItems.map((e, index) => (
                         <NavbarMobileMenuLink key={index} href={e.href} name={e.name} />
                     ))}
-
                 </div>
             </div>
-            }
         </header>
     )
 }
