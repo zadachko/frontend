@@ -1,63 +1,54 @@
 "use client"
 
-import { useRef, useState } from "react"
-import { motion, useInView } from "framer-motion"
-import { Mail, MapPin, Phone, Send, Clock, MessageSquare } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Label } from "@/components/ui/label"
+import type React from "react"
 
-// Contact information data
-const contactInfo = [
-    {
-        icon: <Mail className="h-6 w-6 text-primary-500" />,
-        title: "Имейл",
-        description: "Напишете ни на",
-        value: "info@zadachko.bg",
-        href: "mailto:info@zadachko.bg",
-    },
-    {
-        icon: <Phone className="h-6 w-6 text-primary-500" />,
-        title: "Телефон",
-        description: "Обадете ни се на",
-        value: "+359 888 123 456",
-        href: "tel:+359888123456",
-    },
-    {
-        icon: <MapPin className="h-6 w-6 text-primary-500" />,
-        title: "Адрес",
-        description: "Намерете ни на",
-        value: "София, България",
-        href: "#",
-    },
-    {
-        icon: <Clock className="h-6 w-6 text-primary-500" />,
-        title: "Работно време",
-        description: "Понеделник - Петък",
-        value: "9:00 - 18:00",
-        href: "#",
-    },
-]
+import { useState } from "react"
+import { AnimatePresence, motion } from "framer-motion"
+import { CheckCircle, AlertCircle, Mail, Clock, MessageSquare, ChevronDown, HelpCircle, Facebook, Instagram, Twitter, Phone } from "lucide-react"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 
-// FAQ data for contact-related questions
+// Animation variants
+const fadeIn = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.6 },
+    },
+}
+
+const staggerContainer = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: {
+            staggerChildren: 0.1,
+        },
+    },
+}
+
 const faqItems = [
     {
-        question: "Как мога да получа помощ с технически проблеми?",
-        answer: "За технически проблеми можете да се свържете с нас чрез имейл на support@zadachko.bg или да използвате контактната форма на тази страница. Обикновено отговаряме в рамките на 24 часа.",
+        question: "Как мога да отменя абонамента си?",
+        answer:
+            "Можеш да отмениш абонамента си по всяко време от настройките на профила си или като се свържеш с нашия екип за поддръжка.",
     },
     {
-        question: "Има ли възможност за групови абонаменти за училища?",
-        answer: "Да, предлагаме специални условия за училища и образователни институции. Моля, свържете се с нас за персонализирана оферта и повече информация.",
+        question: "Предлагате ли отстъпки за училища?",
+        answer:
+            "Да, имаме специални планове и отстъпки за училища и учители. Свържи се с нас за повече информация за групови планове.",
     },
     {
-        question: "Как мога да предложа идеи за подобрения?",
-        answer: "Вашите идеи са важни за нас! Можете да изпратите вашите предложения чрез контактната форма или да ни пишете на feedback@zadachko.bg.",
+        question: "Как да възстановя паролата си?",
+        answer: "Отиди на страницата за вход и натисни линка „Забравена парола?“. Ще получиш имейл с инструкции за нулиране.",
     },
     {
-        question: "Има ли възможност за сътрудничество?",
-        answer: "Да, винаги търсим нови партньори и сътрудници. Ако сте заинтересовани от сътрудничество, моля, свържете се с нас за обсъждане на възможностите.",
+        question: "Мога ли да тествам платформата без регистрация?",
+        answer: "За момента не предлагаме демо режим без регистрация, но имаме напълно безплатен план, с който можеш да пробваш всичко основно.",
+    },
+    {
+        question: "Как да се свържа с екипа ако не получа отговор?",
+        answer: "Ако не получиш отговор до 24 часа, можеш да ни пишеш директно на support@zadachko.bg или да използваш формата отново.",
     },
 ]
 
@@ -68,304 +59,367 @@ export default function ContactPage() {
         subject: "",
         message: "",
     })
-    const [isSubmitting, setIsSubmitting] = useState(false)
-    const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle")
 
-    const heroRef = useRef(null)
-    const contactRef = useRef(null)
-    const faqRef = useRef(null)
+    const [formState, setFormState] = useState<"idle" | "submitting" | "success" | "error">("idle")
+    const [errors, setErrors] = useState<Record<string, string>>({})
 
-    const isHeroInView = useInView(heroRef, { once: true, amount: 0.3 })
-    const isContactInView = useInView(contactRef, { once: true, amount: 0.3 })
-    const isFaqInView = useInView(faqRef, { once: true, amount: 0.3 })
+    const validateForm = () => {
+        const newErrors: Record<string, string> = {}
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        if (!formData.name.trim()) {
+            newErrors.name = "Името е задължително"
+        }
+
+        if (!formData.email.trim()) {
+            newErrors.email = "Имейлът е задължителен"
+        } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
+            newErrors.email = "Невалиден имейл адрес"
+        }
+
+        if (!formData.subject) {
+            newErrors.subject = "Моля, изберете тема"
+        }
+
+        if (!formData.message.trim()) {
+            newErrors.message = "Съобщението е задължително"
+        }
+
+        setErrors(newErrors)
+        return Object.keys(newErrors).length === 0
+    }
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target
-        setFormData(prev => ({ ...prev, [name]: value }))
+        setFormData((prev) => ({ ...prev, [name]: value }))
+
+        // Clear error when field is edited
+        if (errors[name]) {
+            setErrors((prev) => {
+                const newErrors = { ...prev }
+                delete newErrors[name]
+                return newErrors
+            })
+        }
     }
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        setIsSubmitting(true)
-        setSubmitStatus("idle")
 
-        // Simulate form submission
-        await new Promise(resolve => setTimeout(resolve, 2000))
+        if (!validateForm()) return
 
-        // For demo purposes, always show success
-        setSubmitStatus("success")
-        setIsSubmitting(false)
+        setFormState("submitting")
 
-        // Reset form after success
-        setTimeout(() => {
-            setFormData({ name: "", email: "", subject: "", message: "" })
-            setSubmitStatus("idle")
-        }, 3000)
+        try {
+            // Simulate API call
+            await new Promise((resolve) => setTimeout(resolve, 1500))
+
+            // Reset form on success
+            setFormData({
+                name: "",
+                email: "",
+                subject: "",
+                message: "",
+            })
+
+            setFormState("success")
+
+            // Reset success message after 5 seconds
+            setTimeout(() => {
+                setFormState("idle")
+            }, 5000)
+        } catch (error) {
+            setFormState("error")
+        }
     }
 
     return (
-        <div className="flex min-h-screen flex-col">
-            <main className="flex-1">
-                {/* Hero Section */}
-                <section ref={heroRef} className="relative bg-gradient-to-b from-primary-50 to-white py-16 md:py-24 overflow-hidden">
-                    <div className="absolute inset-0 overflow-hidden opacity-10 pointer-events-none">
-                        <div className="absolute top-0 left-0 w-full h-full">
-                            {Array.from({ length: 20 }).map((_, i) => (
+        <div className="min-h-screen bg-[#f0eeff]">
+            {/* Header section */}
+            <motion.div
+                className="container mx-auto px-4 py-12 md:py-16"
+                initial="hidden"
+                animate="visible"
+                variants={fadeIn}
+            >
+                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center text-[#3a2f7d]">Контакти</h1>
+                <p className="mt-4 text-center text-lg max-w-3xl mx-auto text-[#6b6b6b]">
+                    Свържи се с екипа на Задачко – ще се радваме да чуем мнението ти, да ти помогнем или просто да си поговорим за
+                    математика!
+                </p>
+            </motion.div>
+
+            {/* Main content */}
+            <div className="container mx-auto px-4 pb-16">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    {/* Contact form */}
+                    <motion.div
+                        className="lg:col-span-2 bg-white rounded-2xl shadow-sm p-6 md:p-8"
+                        variants={fadeIn}
+                        initial="hidden"
+                        animate="visible"
+                    >
+                        <h2 className="text-2xl font-bold mb-6 text-[#3a2f7d]">Изпрати съобщение</h2>
+
+                        <AnimatePresence mode="wait">
+                            {formState === "success" && (
                                 <motion.div
-                                    key={i}
-                                    className="absolute bg-primary-500 rounded-full"
-                                    style={{
-                                        top: `${Math.random() * 100}%`,
-                                        left: `${Math.random() * 100}%`,
-                                        width: `${Math.random() * 10 + 5}px`,
-                                        height: `${Math.random() * 10 + 5}px`,
-                                    }}
-                                    animate={{
-                                        y: [0, Math.random() * 100 - 50],
-                                        opacity: [0.3, 0.8, 0.3],
-                                    }}
-                                    transition={{
-                                        duration: Math.random() * 10 + 10,
-                                        repeat: Number.POSITIVE_INFINITY,
-                                        repeatType: "reverse",
-                                        ease: "easeInOut",
-                                        delay: Math.random() * 5,
-                                    }}
-                                />
-                            ))}
-                        </div>
-                    </div>
+                                    key="success"
+                                    initial={{ opacity: 0, y: -10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -10 }}
+                                    transition={{ duration: 0.4, ease: "easeInOut" }}
+                                    layout
+                                    className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center text-green-700"
+                                >
+                                    <CheckCircle className="h-5 w-5 mr-2 flex-shrink-0" />
+                                    <p>Благодарим за съобщението! Ще се свържем с теб възможно най-скоро.</p>
+                                </motion.div>
+                            )}
 
-                    <div className="container relative z-10">
-                        <div className="max-w-3xl mx-auto text-center">
-                            <motion.h1
-                                className="text-3xl sm:text-4xl md:text-5xl font-bold text-primary-700 mb-6"
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={isHeroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                                transition={{ duration: 0.5 }}
-                            >
-                                Свържете се с <span className="text-primary-500">нас</span>
-                            </motion.h1>
-                            <motion.p
-                                className="text-lg text-gray-700 mb-8"
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={isHeroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                                transition={{ duration: 0.5, delay: 0.1 }}
-                            >
-                                Имате въпроси или нужда от помощ? Нашият екип е тук, за да ви помогне.
-                                Свържете се с нас и ще отговорим възможно най-скоро.
-                            </motion.p>
-                        </div>
-                    </div>
-                </section>
+                            {formState === "error" && (
+                                <motion.div
+                                    key="error"
+                                    initial={{ opacity: 0, y: -10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -10 }}
+                                    transition={{ duration: 0.4, ease: "easeInOut" }}
+                                    layout
+                                    className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center text-red-700"
+                                >
+                                    <AlertCircle className="h-5 w-5 mr-2 flex-shrink-0" />
+                                    <p>Възникна грешка при изпращането на съобщението. Моля, опитай отново по-късно.</p>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
 
-                {/* Contact Information Section */}
-                <section ref={contactRef} className="py-16 bg-white">
-                    <div className="container">
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                            {/* Contact Form */}
-                            <motion.div
-                                initial={{ opacity: 0, x: -50 }}
-                                animate={isContactInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
-                                transition={{ duration: 0.5 }}
-                            >
-                                <h2 className="text-2xl md:text-3xl font-bold text-primary-700 mb-6">
-                                    Изпратете ни съобщение
-                                </h2>
-                                <form onSubmit={handleSubmit} className="space-y-6">
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                        <div className="space-y-2">
-                                            <Label htmlFor="name">Име *</Label>
-                                            <Input
-                                                id="name"
-                                                name="name"
-                                                type="text"
-                                                required
-                                                value={formData.name}
-                                                onChange={handleInputChange}
-                                                placeholder="Вашето име"
-                                            />
-                                        </div>
-                                        <div className="space-y-2">
-                                            <Label htmlFor="email">Имейл *</Label>
-                                            <Input
-                                                id="email"
-                                                name="email"
-                                                type="email"
-                                                required
-                                                value={formData.email}
-                                                onChange={handleInputChange}
-                                                placeholder="Вашият имейл"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="space-y-2">
-                                        <Label htmlFor="subject">Тема *</Label>
-                                        <Input
+                        <form onSubmit={handleSubmit}>
+                            <motion.div className="space-y-4" variants={staggerContainer} initial="hidden" animate="visible">
+                                <motion.div variants={fadeIn}>
+                                    <label htmlFor="name" className="block text-sm font-medium mb-1">
+                                        Име
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="name"
+                                        name="name"
+                                        value={formData.name}
+                                        onChange={handleChange}
+                                        className={`w-full px-4 py-2 rounded-lg border ${errors.name ? "border-red-300 bg-red-50" : "border-gray-300"
+                                            } focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary`}
+                                        placeholder="Вашето име"
+                                    />
+                                    {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
+                                </motion.div>
+
+                                <motion.div variants={fadeIn}>
+                                    <label htmlFor="email" className="block text-sm font-medium mb-1">
+                                        Имейл адрес
+                                    </label>
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        name="email"
+                                        value={formData.email}
+                                        onChange={handleChange}
+                                        className={`w-full px-4 py-2 rounded-lg border ${errors.email ? "border-red-300 bg-red-50" : "border-gray-300"
+                                            } focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary`}
+                                        placeholder="example@email.com"
+                                    />
+                                    {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
+                                </motion.div>
+
+                                <motion.div variants={fadeIn}>
+                                    <label htmlFor="subject" className="block text-sm font-medium mb-1">
+                                        Тема
+                                    </label>
+                                    <div className="relative">
+                                        <select
                                             id="subject"
                                             name="subject"
-                                            type="text"
-                                            required
                                             value={formData.subject}
-                                            onChange={handleInputChange}
-                                            placeholder="Тема на съобщението"
-                                        />
+                                            onChange={handleChange}
+                                            className={`w-full px-4 py-2 rounded-lg border appearance-none ${errors.subject ? "border-red-300 bg-red-50" : "border-gray-300"
+                                                } focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary`}
+                                        >
+                                            <option value="" disabled>
+                                                Изберете тема
+                                            </option>
+                                            <option value="Въпрос">Въпрос</option>
+                                            <option value="Проблем">Проблем</option>
+                                            <option value="Идея">Идея</option>
+                                            <option value="Друго">Друго</option>
+                                        </select>
+                                        <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none h-5 w-5" />
                                     </div>
-                                    <div className="space-y-2">
-                                        <Label htmlFor="message">Съобщение *</Label>
-                                        <Textarea
-                                            id="message"
-                                            name="message"
-                                            required
-                                            value={formData.message}
-                                            onChange={handleInputChange}
-                                            placeholder="Вашето съобщение..."
-                                            rows={6}
-                                        />
-                                    </div>
-                                    <Button
+                                    {errors.subject && <p className="mt-1 text-sm text-red-600">{errors.subject}</p>}
+                                </motion.div>
+
+                                <motion.div variants={fadeIn}>
+                                    <label htmlFor="message" className="block text-sm font-medium mb-1">
+                                        Съобщение
+                                    </label>
+                                    <textarea
+                                        id="message"
+                                        name="message"
+                                        value={formData.message}
+                                        onChange={handleChange}
+                                        rows={5}
+                                        className={`w-full px-4 py-2 rounded-lg border ${errors.message ? "border-red-300 bg-red-50" : "border-gray-300"
+                                            } focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary`}
+                                        placeholder="Вашето съобщение..."
+                                    />
+                                    {errors.message && <p className="mt-1 text-sm text-red-600">{errors.message}</p>}
+                                </motion.div>
+
+                                <motion.div variants={fadeIn}>
+                                    <button
                                         type="submit"
-                                        disabled={isSubmitting}
-                                        className="w-full md:w-auto bg-primary-500 hover:bg-primary-600"
+                                        disabled={formState === "submitting"}
+                                        className="w-full md:w-auto px-6 py-3 bg-primary text-white font-medium rounded-lg transition-all hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/50 disabled:opacity-70 disabled:cursor-not-allowed"
                                     >
-                                        {isSubmitting ? (
-                                            <div className="flex items-center gap-2">
-                                                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                                        {formState === "submitting" ? (
+                                            <span className="flex items-center justify-center">
+                                                <svg
+                                                    className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                >
+                                                    <circle
+                                                        className="opacity-25"
+                                                        cx="12"
+                                                        cy="12"
+                                                        r="10"
+                                                        stroke="currentColor"
+                                                        strokeWidth="4"
+                                                    ></circle>
+                                                    <path
+                                                        className="opacity-75"
+                                                        fill="currentColor"
+                                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                                    ></path>
+                                                </svg>
                                                 Изпращане...
-                                            </div>
+                                            </span>
                                         ) : (
-                                            <div className="flex items-center gap-2">
-                                                <Send className="h-4 w-4" />
-                                                Изпрати съобщение
-                                            </div>
+                                            "Изпрати"
                                         )}
-                                    </Button>
-
-                                    {submitStatus === "success" && (
-                                        <motion.div
-                                            initial={{ opacity: 0, y: 10 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            className="p-4 bg-green-50 border border-green-200 rounded-md text-green-700"
-                                        >
-                                            Благодарим ви! Вашето съобщение е изпратено успешно. Ще се свържем с вас скоро.
-                                        </motion.div>
-                                    )}
-
-                                    {submitStatus === "error" && (
-                                        <motion.div
-                                            initial={{ opacity: 0, y: 10 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            className="p-4 bg-red-50 border border-red-200 rounded-md text-red-700"
-                                        >
-                                            Възникна грешка при изпращането. Моля, опитайте отново.
-                                        </motion.div>
-                                    )}
-                                </form>
+                                    </button>
+                                </motion.div>
                             </motion.div>
+                        </form>
+                    </motion.div>
 
-                            {/* Contact Information */}
-                            <motion.div
-                                initial={{ opacity: 0, x: 50 }}
-                                animate={isContactInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
-                                transition={{ duration: 0.5, delay: 0.2 }}
-                                className="space-y-6"
-                            >
-                                <h2 className="text-2xl md:text-3xl font-bold text-primary-700 mb-6">
-                                    Информация за контакт
-                                </h2>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    {contactInfo.map((item, index) => (
-                                        <motion.div
-                                            key={index}
-                                            initial={{ opacity: 0, y: 20 }}
-                                            animate={isContactInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                                            transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
-                                        >
-                                            <Card className="h-full hover:shadow-md transition-shadow">
-                                                <CardContent className="p-6">
-                                                    <div className="flex items-start gap-4">
-                                                        <div className="flex-shrink-0">
-                                                            {item.icon}
-                                                        </div>
-                                                        <div>
-                                                            <h3 className="font-semibold text-gray-900 mb-1">
-                                                                {item.title}
-                                                            </h3>
-                                                            <p className="text-sm text-gray-600 mb-2">
-                                                                {item.description}
-                                                            </p>
-                                                            {item.href !== "#" ? (
-                                                                <a
-                                                                    href={item.href}
-                                                                    className="text-primary-600 hover:text-primary-700 font-medium"
-                                                                >
-                                                                    {item.value}
-                                                                </a>
-                                                            ) : (
-                                                                <p className="text-primary-600 font-medium">
-                                                                    {item.value}
-                                                                </p>
-                                                            )}
-                                                        </div>
-                                                    </div>
-                                                </CardContent>
-                                            </Card>
-                                        </motion.div>
-                                    ))}
+                    {/* Contact info */}
+                    <motion.div className="space-y-6" variants={staggerContainer} initial="hidden" animate="visible">
+                        <motion.div className="bg-white rounded-2xl shadow-sm p-6" variants={fadeIn}>
+                            <h3 className="text-xl font-bold mb-4 text-[#3a2f7d]">Директен контакт</h3>
+                            <div className="space-y-4">
+                                <div className="flex items-start">
+                                    <Mail className="h-5 w-5 text-primary mt-0.5 mr-3" />
+                                    <div>
+                                        <p className="font-medium">Имейл</p>
+                                        <a href="mailto:support@zadachko.com" className="text-primary hover:underline">
+                                            support@zadachko.com
+                                        </a>
+                                    </div>
                                 </div>
-                            </motion.div>
-                        </div>
-                    </div>
-                </section>
-
-                {/* FAQ Section */}
-                <section ref={faqRef} className="py-16 bg-gray-50">
-                    <div className="container">
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={isFaqInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                            transition={{ duration: 0.5 }}
-                            className="text-center mb-12"
-                        >
-                            <h2 className="text-2xl md:text-3xl font-bold text-primary-700 mb-4">
-                                Често задавани въпроси
-                            </h2>
-                            <p className="text-gray-600 max-w-2xl mx-auto">
-                                Намерете отговори на най-често задаваните въпроси относно нашите услуги и как да се свържете с нас.
-                            </p>
+                                <div className="flex items-start">
+                                    <Phone className="h-5 w-5 text-primary mt-0.5 mr-3" />
+                                    <div>
+                                        <p className="font-medium">Телефон</p>
+                                        <a href="tel:+359888123456" className="text-primary hover:underline">
+                                            +359 888 123 456
+                                        </a>
+                                    </div>
+                                </div>
+                                <div className="flex items-start">
+                                    <Clock className="h-5 w-5 text-primary mt-0.5 mr-3" />
+                                    <div>
+                                        <p className="font-medium">Време за отговор</p>
+                                        <p className="text-gray-600">Обикновено отговаряме до 24 часа</p>
+                                    </div>
+                                </div>
+                            </div>
                         </motion.div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                            {faqItems.map((item, index) => (
-                                <motion.div
-                                    key={index}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={isFaqInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                                    transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
+                        <motion.div className="bg-white rounded-2xl shadow-sm p-6" variants={fadeIn}>
+                            <h3 className="text-xl font-bold mb-4 text-[#3a2f7d]">Социални мрежи</h3>
+                            <p className="text-gray-600 mb-4">Следи ни за новини и съвети за математика</p>
+                            <div className="flex space-x-3">
+                                <a
+                                    href="#"
+                                    className="flex items-center justify-center w-10 h-10 bg-[#f0eeff] rounded-lg text-primary hover:bg-primary hover:text-white transition-colors"
                                 >
-                                    <Card className="h-full hover:shadow-md transition-shadow">
-                                        <CardContent className="p-6">
-                                            <div className="flex items-start gap-4">
-                                                <div className="flex-shrink-0 mt-1">
-                                                    <MessageSquare className="h-5 w-5 text-primary-500" />
-                                                </div>
-                                                <div>
-                                                    <h3 className="font-semibold text-gray-900 mb-2">
-                                                        {item.question}
-                                                    </h3>
-                                                    <p className="text-gray-600 text-sm">
-                                                        {item.answer}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </CardContent>
-                                    </Card>
-                                </motion.div>
-                            ))}
-                        </div>
+                                    <Facebook className="h-5 w-5" />
+                                </a>
+                                <a
+                                    href="#"
+                                    className="flex items-center justify-center w-10 h-10 bg-[#f0eeff] rounded-lg text-primary hover:bg-primary hover:text-white transition-colors"
+                                >
+                                    <Instagram className="h-5 w-5" />
+                                </a>
+                                <a
+                                    href="#"
+                                    className="flex items-center justify-center w-10 h-10 bg-[#f0eeff] rounded-lg text-primary hover:bg-primary hover:text-white transition-colors"
+                                >
+                                    <Twitter className="h-5 w-5" />
+                                </a>
+                            </div>
+                        </motion.div>
+
+                        <motion.div className="bg-white rounded-2xl shadow-sm p-6" variants={fadeIn}>
+                            <h3 className="text-xl font-bold mb-4 text-[#3a2f7d]">Нужна ти е помощ?</h3>
+                            <div className="space-y-3">
+                                <div className="flex items-start">
+                                    <Mail className="h-5 w-5 text-primary mt-0.5 mr-3" />
+                                    <div>
+                                        <p className="font-medium">Чат поддръжка</p>
+                                        <p className="text-sm text-gray-600">
+                                            Онлайн всеки ден 9:00 - 18:00
+                                            {/* <br />
+                                            <span className="text-gray-500">Ще получите отговор на имейла си.</span> */}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                </div>
+
+                {/* FAQ Section */}
+                <motion.div className="mt-16" variants={fadeIn} initial="hidden" animate="visible">
+                    <div className="text-center mb-8">
+                        <h2 className="text-2xl md:text-3xl font-bold text-[#3a2f7d] mb-4">Често задавани въпроси</h2>
+                        <p className="text-gray-600 max-w-2xl mx-auto">
+                            Намери отговори на най-често задаваните въпроси за Задачко
+                        </p>
                     </div>
-                </section>
-            </main>
+
+                    <motion.div
+                        className="max-w-3xl mx-auto bg-white rounded-xl shadow-sm overflow-hidden"
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.2 }}
+                    >
+                        <Accordion type="single" collapsible className="w-full">
+                            {faqItems.map((item, index) => (
+                                <AccordionItem key={index} value={`item-${index}`}>
+                                    <AccordionTrigger className="px-6 py-4 hover:bg-gray-50 text-left">
+                                        <div className="flex items-center">
+                                            <HelpCircle className="h-5 w-5 text-primary mr-3 flex-shrink-0" />
+                                            <span className="font-medium text-gray-800">{item.question}</span>
+                                        </div>
+                                    </AccordionTrigger>
+                                    <AccordionContent className="px-6 pb-4 pt-0">
+                                        <div className="pl-8 text-gray-600">{item.answer}</div>
+                                    </AccordionContent>
+                                </AccordionItem>
+                            ))}
+                        </Accordion>
+                    </motion.div>
+                </motion.div>
+            </div>
         </div>
     )
-} 
+}
