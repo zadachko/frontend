@@ -193,7 +193,7 @@ const AnimatedButton = ({
                         className={`absolute inset-0 ${variant === "default" ? "bg-primary-600" : "bg-primary-100"
                             } transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300`}
                     />
-                    <span className="absolute top-0 right-0 h-full w-1/4 bg-white/20 skew-x-[25deg] transform -translate-x-32 group-hover:translate-x-full transition-transform duration-700" />
+                    <span className="absolute top-0 right-0 h-full w-1/4 bg-white/20 skew-x-[25deg] transform -translate-x-48 group-hover:translate-x-full transition-transform duration-700" />
                 </Button>
             </Link>
         </motion.div>
@@ -203,7 +203,7 @@ const AnimatedButton = ({
 const HeroSection = () => {
     const containerRef = useRef<HTMLDivElement>(null)
     const statsRef = useRef<HTMLDivElement>(null)
-    const isInView = useInView(containerRef, { once: false, margin: "-100px" })
+    const isInView = useInView(containerRef, { once: true, margin: "-100px" })
     const isStatsInView = useInView(statsRef, { once: true, amount: 0.5 })
     const controls = useAnimation();
 
@@ -265,9 +265,9 @@ const HeroSection = () => {
                         <AnimatedButton href="/register" delay={0.6}>
                             Започни сега
                         </AnimatedButton>
-                        <AnimatedButton href="/about" variant="outline" delay={0.8} className="mt-2 sm:mt-0">
+                        {/* <AnimatedButton href="/about" variant="outline" delay={0.8} className="mt-2 sm:mt-0">
                             Научи повече
-                        </AnimatedButton>
+                        </AnimatedButton> */}
                     </div>
 
                     {/* Animated stats section with improved mobile layout */}

@@ -58,7 +58,7 @@ const features = [
 
 const FeaturesSection = () => {
     const ref = useRef(null)
-    const isInView = useInView(ref, { once: false, amount: 0.2 })
+    const isInView = useInView(ref, { once: true, amount: 0.2 })
     const isMobile = false;
 
     return (
@@ -151,9 +151,9 @@ const FeaturesSection = () => {
                         whileHover={{ scale: isMobile ? 1.02 : 1.05 }}
                         whileTap={{ scale: 0.95 }}
                     >
-                        <span className="relative z-10">Разгледай всички функции</span>
+                        <span className="relative z-10 cursor-pointer">Разгледай всички функции</span>
                         <motion.span className="absolute inset-0 bg-primary-600 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300" />
-                        <motion.span className="absolute top-0 right-0 h-full w-1/4 bg-white/20 skew-x-[25deg] transform -translate-x-32 group-hover:translate-x-full transition-transform duration-500" />
+                        <motion.span className="absolute top-0 right-0 h-full w-1/4 bg-white/20 skew-x-[25deg] transform -translate-x-80 group-hover:translate-x-full transition-transform duration-500" />
                     </motion.button>
                 </motion.div>
             </div>
