@@ -1,7 +1,10 @@
+'use client';
+
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { TestTube, BookOpen } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import React from 'react'
 type Activity = {
     id: number
@@ -12,18 +15,18 @@ type Activity = {
     date: string
     action: string
 }
-const RecentResource = ({ activity }: { activity: Activity }) => {
-
+const RecentResourceCard = ({ activity }: { activity: Activity }) => {
+    const router = useRouter();
     const getStatusColor = (type: string) => {
         switch (type) {
             case "success":
-                return "bg-green-100 text-green-800 hover:bg-green-200"
+                return "bg-green-100 text-green-800 hover:bg-green-200";
             case "warning":
-                return "bg-yellow-100 text-yellow-800 hover:bg-yellow-200"
+                return "bg-yellow-100 text-yellow-800 hover:bg-yellow-200";
             case "partial":
-                return "bg-blue-100 text-blue-800 hover:bg-blue-200"
+                return "bg-blue-100 text-blue-800 hover:bg-blue-200";
             default:
-                return "bg-gray-100 text-gray-800 hover:bg-gray-200"
+                return "bg-gray-100 text-gray-800 hover:bg-gray-200";
         }
     }
 
@@ -51,7 +54,7 @@ const RecentResource = ({ activity }: { activity: Activity }) => {
                             <Badge
                                 className={`text-xs px-2 py-0.5 ${activity.type === "test" ? "bg-orange-50 text-orange-700 border-orange-200" : "bg-blue-50 text-blue-700 border-blue-200"}`}
                             >
-                                {activity.type === "test" ? "Test" : "Task"}
+                                {activity.type === "test" ? "Тест" : "Задача"}
                             </Badge>
                         </div>
                         <Badge className={`text-xs ${getStatusColor(activity.statusType)} border-0`}>
@@ -61,7 +64,13 @@ const RecentResource = ({ activity }: { activity: Activity }) => {
                 </div>
                 <div className="flex items-center justify-between">
                     <span className="text-xs text-gray-500">{activity.date}</span>
-                    <Button size="sm" className="bg-[#6F58C9] hover:bg-[#5A4BA3] text-white text-xs px-3 py-1 h-7">
+                    <Button size="sm" className="bg-[#6F58C9] hover:bg-[#5A4BA3] text-white text-xs px-3 py-1 h-7" onClick={() => {
+                        if (activity.type === "test") {
+                            router.push(`/platform/test/${activity.id}`);
+                        } else {
+                            router.push(`/platform/task/${activity.id}`);
+                        }
+                    }}>
                         {activity.action}
                     </Button>
                 </div>
@@ -70,4 +79,4 @@ const RecentResource = ({ activity }: { activity: Activity }) => {
     )
 }
 
-export default RecentResource
+export default RecentResourceCard;
