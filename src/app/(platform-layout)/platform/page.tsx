@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
-import { BookOpen, TestTube, GraduationCap, Clock, TrendingUp, ChevronRight, Play, Target } from "lucide-react";
+import { BookOpen, TestTube, GraduationCap, Clock, ChevronRight, Play, Target, Calculator, Ruler, Hash, BarChart3, FileText, Sigma } from "lucide-react";
 import RecentResourceCard from "./components/RecentResourceCard";
 import WeakTopicCard from "./components/WeakTopicCard";
+import ProblemsCategory from "./components/ProblemsCategory";
 const page = () => {
     const recentActivities = [
         {
@@ -52,10 +52,59 @@ const page = () => {
             lastAttempt: "Преди 3 дни",
         },
     ]
-
+    const problemCategories = [
+        {
+            name: "Algebra",
+            icon: Calculator,
+            problems: 324,
+            completed: 89,
+            bgColor: "bg-purple-100",
+            iconColor: "text-purple-600",
+        },
+        {
+            name: "Geometry",
+            icon: Ruler,
+            problems: 267,
+            completed: 156,
+            bgColor: "bg-blue-100",
+            iconColor: "text-blue-600",
+        },
+        {
+            name: "Fractions",
+            icon: Hash,
+            problems: 198,
+            completed: 87,
+            bgColor: "bg-green-100",
+            iconColor: "text-green-600",
+        },
+        {
+            name: "Statistics",
+            icon: BarChart3,
+            problems: 145,
+            completed: 34,
+            bgColor: "bg-orange-100",
+            iconColor: "text-orange-600",
+        },
+        {
+            name: "Word Problems",
+            icon: FileText,
+            problems: 289,
+            completed: 112,
+            bgColor: "bg-pink-100",
+            iconColor: "text-pink-600",
+        },
+        {
+            name: "Pre-Algebra",
+            icon: Sigma,
+            problems: 176,
+            completed: 98,
+            bgColor: "bg-teal-100",
+            iconColor: "text-teal-600",
+        },
+    ];
     return (
         <div className="min-h-screen bg-gray-50 p-4 md:p-6 lg:p-8">
-            <div className="max-w-6xl mx-auto space-y-8">
+            <div className="max-w-7xl mx-auto space-y-8">
 
                 {/* Recent Activity Section */}
                 <section className="space-y-4">
@@ -140,25 +189,13 @@ const page = () => {
                 <section className="space-y-4">
                     <h2 className="text-2xl font-semibold text-gray-900 flex items-center gap-2">
                         <BookOpen className="w-6 h-6 text-[#6F58C9]" />
-                        Всички задачи
+                        Problem Categories
                     </h2>
-                    <Card className="bg-white border-0 shadow-md hover:shadow-lg transition-shadow">
-                        <CardContent className="p-8 text-center">
-                            <div className="mb-6">
-                                <div className="inline-flex p-4 rounded-full bg-[#6F58C9]/10 mb-4">
-                                    <TrendingUp className="w-8 h-8 text-[#6F58C9]" />
-                                </div>
-                                <h3 className="text-xl font-semibold text-gray-900 mb-2">Библиотека с всички задачи</h3>
-                                <p className="text-gray-600 mb-4">Решени: 432 от 1987 задачи</p>
-                                <Progress value={21.7} className="w-full max-w-md mx-auto h-3 mb-4" />
-                                <p className="text-sm text-gray-500">21.7% завършени</p>
-                            </div>
-                            <Button size="lg" className="bg-[#6F58C9] hover:bg-[#5A4BA3] text-white font-semibold px-8 py-3 h-12">
-                                Прегледай всички задачи
-                                <ChevronRight className="w-4 h-4 ml-2" />
-                            </Button>
-                        </CardContent>
-                    </Card>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {problemCategories.map((category, index) => (
+                            <ProblemsCategory key={index} category={category} index={index} />
+                        ))}
+                    </div>
                 </section>
             </div>
         </div>
