@@ -25,18 +25,18 @@ const ProblemsCategory = ({ category, index }: { category: Category, index: numb
                     </div>
                     <div className="flex-1">
                         <h3 className="text-lg font-semibold text-gray-900 mb-1">{category.name}</h3>
-                        <p className="text-sm text-gray-600 mb-3">{category.problems} problems available</p>
+                        <p className="text-sm text-gray-600 mb-3">{category.problems} задачи</p>
                     </div>
                 </div>
                 <div className="mb-4">
                     <div className="flex justify-between text-xs text-gray-500 mb-2">
-                        <span>Completed: {category.completed}</span>
+                        <span>Завършен: {category.completed}</span>
                         <span>{Math.round((category.completed / category.problems) * 100)}%</span>
                     </div>
                     <Progress value={(category.completed / category.problems) * 100} className="h-2 mb-4" />
                 </div>
                 <Button className="w-full bg-[#6F58C9] hover:bg-[#5A4BA3] text-white font-medium">
-                    Start Practicing
+                    Разгледай задачите
                     <ChevronRight className="w-4 h-4 ml-2" />
                 </Button>
             </CardContent>

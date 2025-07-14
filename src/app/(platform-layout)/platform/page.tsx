@@ -4,6 +4,8 @@ import { BookOpen, TestTube, GraduationCap, Clock, ChevronRight, Play, Target, C
 import RecentResourceCard from "./components/RecentResourceCard";
 import WeakTopicCard from "./components/WeakTopicCard";
 import ProblemsCategory from "./components/ProblemsCategory";
+import WeakTopicMissingCard from "./components/WeakTopicMissingCard";
+
 const page = () => {
     const recentActivities = [
         {
@@ -54,7 +56,7 @@ const page = () => {
     ]
     const problemCategories = [
         {
-            name: "Algebra",
+            name: "Алгебра",
             icon: Calculator,
             problems: 324,
             completed: 89,
@@ -62,7 +64,7 @@ const page = () => {
             iconColor: "text-purple-600",
         },
         {
-            name: "Geometry",
+            name: "Геометрия",
             icon: Ruler,
             problems: 267,
             completed: 156,
@@ -70,7 +72,7 @@ const page = () => {
             iconColor: "text-blue-600",
         },
         {
-            name: "Fractions",
+            name: "Дроби",
             icon: Hash,
             problems: 198,
             completed: 87,
@@ -78,7 +80,7 @@ const page = () => {
             iconColor: "text-green-600",
         },
         {
-            name: "Statistics",
+            name: "Статистика",
             icon: BarChart3,
             problems: 145,
             completed: 34,
@@ -86,7 +88,7 @@ const page = () => {
             iconColor: "text-orange-600",
         },
         {
-            name: "Word Problems",
+            name: "Текстови задачи",
             icon: FileText,
             problems: 289,
             completed: 112,
@@ -94,7 +96,7 @@ const page = () => {
             iconColor: "text-pink-600",
         },
         {
-            name: "Pre-Algebra",
+            name: "Пре-алгебра",
             icon: Sigma,
             problems: 176,
             completed: 98,
@@ -112,11 +114,42 @@ const page = () => {
                         <Clock className="w-6 h-6 text-[#6F58C9]" />
                         Последни задачи и тестове
                     </h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {recentActivities.map((activity) => (
-                            <RecentResourceCard key={activity.id} activity={activity} />
-                        ))}
-                    </div>
+                    {recentActivities.length > 0 ? (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {recentActivities.map((activity) => (
+                                <RecentResourceCard key={activity.id} activity={activity} />
+                            ))}
+                        </div>
+                    ) : (
+                        <Card className="bg-white border-0 shadow-md">
+                            <CardContent className="p-12 text-center">
+                                <div className="mb-6">
+                                    <div className="inline-flex p-4 rounded-full bg-gray-100 mb-4">
+                                        <Clock className="w-12 h-12 text-gray-400" />
+                                    </div>
+                                    <h3 className="text-xl font-semibold text-gray-900 mb-2">Нямате скорошни задачи и тестове</h3>
+                                    <p className="text-gray-600 mb-6 max-w-md mx-auto">
+                                        Нямате скорошни задачи или тестове. Започнете своето обучение, като създадете първия си тест
+                                        или разгледайте категориите съз задачите по-долу!
+                                    </p>
+                                </div>
+                                <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                                    <Button className="bg-[#6F58C9] hover:bg-[#5A4BA3] text-white">
+                                        <TestTube className="w-4 h-4 mr-2" />
+                                        Започни първия си тест
+                                    </Button>
+                                    <Button
+                                        variant="outline"
+                                        className="border-[#6F58C9] text-[#6F58C9] hover:bg-[#6F58C9] hover:text-white bg-transparent"
+                                    >
+                                        <BookOpen className="w-4 h-4 mr-2" />
+                                        Разгледай категориите със задачи
+                                    </Button>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    )}
+
                 </section>
 
                 {/* Create New Test & Exam Simulation Sections */}
@@ -177,9 +210,14 @@ const page = () => {
                     <Card className="bg-white border-0 shadow-md">
                         <CardContent className="p-6">
                             <div className="space-y-4">
-                                {weakTopics.map((topic, index) => (
-                                    <WeakTopicCard key={index} topic={topic} index={index} />
-                                ))}
+                                {weakTopics.length > 0 ?
+                                    (
+                                        weakTopics.map((topic, index) => (
+                                            <WeakTopicCard key={index} topic={topic} index={index} />
+                                        ))
+                                    ) : (
+                                        <WeakTopicMissingCard />
+                                    )}
                             </div>
                         </CardContent>
                     </Card>
@@ -189,7 +227,7 @@ const page = () => {
                 <section className="space-y-4">
                     <h2 className="text-2xl font-semibold text-gray-900 flex items-center gap-2">
                         <BookOpen className="w-6 h-6 text-[#6F58C9]" />
-                        Problem Categories
+                        Категории задачи
                     </h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         {problemCategories.map((category, index) => (
@@ -202,4 +240,4 @@ const page = () => {
     )
 }
 
-export default page
+export default page;
