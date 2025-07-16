@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Clock, FileText, AlertCircle, CheckCircle, Play, Trophy, Calendar, Target } from "lucide-react";
+import { Clock, FileText, AlertCircle, CheckCircle, Play, Trophy, Calendar, Target, Sparkles, TrendingUp } from "lucide-react";
 
 const page = () => {
     const examRules = [
@@ -71,8 +71,8 @@ const page = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     {/* Main Exam Card */}
                     <div className="lg:col-span-2">
-                        <Card className="group hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-emerald-500 to-teal-600 border-0 shadow-lg">
-                            <CardContent className="p-12 text-center text-white">
+                        <Card className="group hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-emerald-500 to-teal-600 border-0 shadow-lg h-full">
+                            <CardContent className="p-12 text-center text-white h-full flex flex-col justify-center">
                                 <div className="mb-8">
                                     <div className="inline-flex p-4 rounded-full bg-white/20 mb-6 group-hover:scale-110 transition-transform duration-300">
                                         <Play className="w-12 h-12" />
@@ -113,15 +113,15 @@ const page = () => {
 
                     {/* Previous Results Sidebar */}
                     <div className="lg:col-span-1">
-                        <Card className="h-fit shadow-lg border-0 bg-gradient-to-br from-emerald-500 to-teal-600">
-                            <CardContent className="p-6 text-white">
+                        <Card className="h-full shadow-lg border-0 bg-gradient-to-br from-emerald-500 to-teal-600">
+                            <CardContent className="p-6 text-white h-full flex flex-col">
                                 <div className="flex items-center gap-2 mb-6">
                                     <Trophy className="w-6 h-6 text-amber-300" />
                                     <h2 className="text-xl font-semibold text-white">Предни Резултати</h2>
                                 </div>
 
                                 {previousExams.length > 0 ? (
-                                    <div className="space-y-4">
+                                    <div className="space-y-4 flex-1">
                                         {previousExams.map((exam) => (
                                             <div key={exam.id} className="p-4 bg-white/10 rounded-lg hover:bg-white/15 transition-colors backdrop-blur-sm">
                                                 <div className="flex items-center justify-between mb-3">
@@ -165,7 +165,6 @@ const page = () => {
                                                                 strokeLinecap="round"
                                                                 className="transition-all duration-500 origin-center"
                                                             />
-
                                                         </svg>
                                                         <div className="absolute inset-0 flex items-center justify-center">
                                                             <span className="text-lg font-bold text-white">
@@ -178,10 +177,38 @@ const page = () => {
                                         ))}
                                     </div>
                                 ) : (
-                                    <div className="text-center py-8 text-white/70">
-                                        <FileText className="w-12 h-12 mx-auto mb-4 text-white/30" />
-                                        <p className="text-sm">Все още нямате резултати</p>
-                                        <p className="text-xs text-white/50 mt-1">Направете първия си изпит</p>
+                                    <div className="flex-1 flex flex-col items-center justify-center text-center py-8">
+                                        <div className="mb-6">
+                                            <div className="inline-flex p-4 rounded-full bg-white/20 mb-4">
+                                                <Sparkles className="w-12 h-12 text-amber-300" />
+                                            </div>
+                                            <h3 className="text-xl font-semibold text-white mb-2">Първият ти изпит</h3>
+                                            <p className="text-white/80 text-sm mb-6">
+                                                Направи първия си пробен изпит и започни да следваш прогреса си
+                                            </p>
+                                        </div>
+
+                                        <div className="space-y-4 w-full">
+                                            <div className="bg-white/10 rounded-lg p-4 backdrop-blur-sm">
+                                                <div className="flex items-center gap-3 mb-2">
+                                                    <TrendingUp className="w-5 h-5 text-amber-300" />
+                                                    <span className="text-sm font-medium text-white">Следвай прогреса</span>
+                                                </div>
+                                                <p className="text-xs text-white/70">
+                                                    Виждай как се подобряваш с всеки изпит
+                                                </p>
+                                            </div>
+
+                                            <div className="bg-white/10 rounded-lg p-4 backdrop-blur-sm">
+                                                <div className="flex items-center gap-3 mb-2">
+                                                    <Trophy className="w-5 h-5 text-amber-300" />
+                                                    <span className="text-sm font-medium text-white">Постигай цели</span>
+                                                </div>
+                                                <p className="text-xs text-white/70">
+                                                    Стигай до 100% и стани майстор на математиката
+                                                </p>
+                                            </div>
+                                        </div>
                                     </div>
                                 )}
                             </CardContent>
