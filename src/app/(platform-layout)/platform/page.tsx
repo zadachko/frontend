@@ -5,7 +5,7 @@ import RecentResourceCard from "./components/RecentResourceCard";
 import WeakTopicCard from "./components/WeakTopicCard";
 import ProblemsCategory from "./components/ProblemsCategory";
 import WeakTopicMissingCard from "./components/WeakTopicMissingCard";
-
+import Link from "next/link";
 const page = () => {
     const recentActivities = [
         {
@@ -192,10 +192,12 @@ const page = () => {
                                     <h3 className="text-xl font-semibold mb-2">Симулация на матура</h3>
                                     <p className="text-white/90 mb-6">Реши тест като на истинския изпит</p>
                                 </div>
-                                <Button size="lg" className="bg-white text-emerald-600 hover:bg-gray-100 font-semibold px-8 py-3 h-12">
-                                    <Play className="w-4 h-4 mr-2" />
-                                    Стартирай симулация
-                                </Button>
+                                <Link href="/platform/exam">
+                                    <Button size="lg" className="bg-white text-emerald-600 hover:bg-gray-100 font-semibold px-8 py-3 h-12">
+                                        <Play className="w-4 h-4 mr-2" />
+                                        Стартирай симулация
+                                    </Button>
+                                </Link>
                             </CardContent>
                         </Card>
                     </section>
