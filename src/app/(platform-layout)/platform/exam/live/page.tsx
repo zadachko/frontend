@@ -4,9 +4,7 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
-import { Clock, ChevronLeft, CheckCircle, Flag } from "lucide-react"
-import Link from "next/link"
+import { Clock, CheckCircle, Flag } from "lucide-react"
 
 type Question = {
     id: number
@@ -24,136 +22,136 @@ const LiveExamPage = () => {
     const questions: Question[] = [
         {
             id: 1,
-            statement: "Solve for x: 3x + 7 = 22",
+            statement: "Решете за x: 3x + 7 = 22",
             type: "text",
         },
         {
             id: 2,
-            statement: "What is the area of a rectangle with length 8 cm and width 5 cm?",
+            statement: "Каква е площта на правоъгълник с дължина 8 cm и ширина 5 cm?",
             type: "text",
         },
         {
             id: 3,
-            statement: "Which of the following is equivalent to 3/4?",
+            statement: "Кое от следните е еквивалентно на 3/4?",
             type: "multiple",
             options: ["0.75", "0.34", "4/3", "7.5"],
         },
         {
             id: 4,
-            statement: "Calculate: 15 + 28 - 12 × 2",
+            statement: "Изчислете: 15 + 28 - 12 × 2",
             type: "text",
         },
         {
             id: 5,
-            statement: "What is the perimeter of a square with side length 6 cm?",
+            statement: "Какъв е периметърът на квадрат с дължина на страната 6 cm?",
             type: "multiple",
             options: ["12 cm", "24 cm", "36 cm", "18 cm"],
         },
         {
             id: 6,
-            statement: "Simplify: 2(x + 3) - 4",
+            statement: "Опростете: 2(x + 3) - 4",
             type: "text",
         },
         {
             id: 7,
-            statement: "Convert 0.6 to a fraction in lowest terms.",
+            statement: "Преобразувайте 0.6 в дроб в най-ниската форма.",
             type: "text",
         },
         {
             id: 8,
-            statement: "Which angle is greater than 90° but less than 180°?",
+            statement: "Кой ъгъл е по-голям от 90°, но по-малък от 180°?",
             type: "multiple",
             options: ["Acute angle", "Right angle", "Obtuse angle", "Straight angle"],
         },
         {
             id: 9,
-            statement: "Find the value of y: 2y - 5 = 11",
+            statement: "Намерете стойността на y: 2y - 5 = 11",
             type: "text",
         },
         {
             id: 10,
-            statement: "What is 25% of 80?",
+            statement: "Колко е 25% от 80?",
             type: "text",
         },
         // Additional questions to reach 25
         {
             id: 11,
-            statement: "What is the value of π (pi) rounded to two decimal places?",
+            statement: "Колко е стойността на π (пи) с точност до две десетични места?",
             type: "text",
         },
         {
             id: 12,
-            statement: "Which of the following is a prime number?",
+            statement: "Кое от следните е просто число?",
             type: "multiple",
             options: ["15", "21", "23", "27"],
         },
         {
             id: 13,
-            statement: "Calculate the area of a circle with radius 4 cm.",
+            statement: "Изчислете площта на кръг с радиус 4 cm.",
             type: "text",
         },
         {
             id: 14,
-            statement: "What is the slope of the line y = 2x + 3?",
+            statement: "Колко е наклона на линията y = 2x + 3?",
             type: "text",
         },
         {
             id: 15,
-            statement: "Which of the following fractions is equivalent to 2/3?",
+            statement: "Кое от следните е еквивалентно на 2/3?",
             type: "multiple",
             options: ["4/6", "6/9", "8/12", "All of the above"],
         },
         {
             id: 16,
-            statement: "Solve the equation: 2x + 5 = 13",
+            statement: "Решете уравнението: 2x + 5 = 13",
             type: "text",
         },
         {
             id: 17,
-            statement: "What is the perimeter of a rectangle with length 10 cm and width 6 cm?",
+            statement: "Какъв е периметърът на правоъгълник с дължина 10 cm и ширина 6 cm?",
             type: "text",
         },
         {
             id: 18,
-            statement: "Which of the following is a factor of 24?",
+            statement: "Кое от следните е делител на 24?",
             type: "multiple",
             options: ["5", "7", "8", "9"],
         },
         {
             id: 19,
-            statement: "Convert 3/5 to a decimal.",
+            statement: "Преобразувайте 3/5 в десетична дроб.",
             type: "text",
         },
         {
             id: 20,
-            statement: "What is the value of x in the equation: 3x - 7 = 8",
+            statement: "Колко е стойността на x в уравнението: 3x - 7 = 8",
             type: "text",
         },
         {
             id: 21,
-            statement: "Which of the following angles measures 90 degrees?",
+            statement: "Кой от следните ъгли измерва 90 градуса?",
             type: "multiple",
             options: ["Acute angle", "Right angle", "Obtuse angle", "Straight angle"],
         },
         {
             id: 22,
-            statement: "Calculate: 15 × 4 ÷ 2 + 7",
+            statement: "Изчислете: 15 × 4 ÷ 2 + 7",
             type: "text",
         },
         {
             id: 23,
-            statement: "What is 20% of 150?",
+            statement: "Колко е 20% от 150?",
             type: "text",
         },
         {
             id: 24,
-            statement: "Which of the following is a multiple of 6?",
+            statement: "Кое от следните е кратно на 6?",
             type: "multiple",
             options: ["14", "18", "22", "26"],
         },
         {
             id: 25,
-            statement: "Simplify the expression: 2(x + 4) - 3x",
+            statement: "Опростете израза: 2(x + 4) - 3x",
             type: "text",
         },
     ]
@@ -205,19 +203,6 @@ const LiveExamPage = () => {
                 <div className="flex-1 overflow-y-auto">
                     <div className="p-6 max-w-4xl mx-auto">
                         {/* Header */}
-                        <div className="flex items-center justify-between mb-8 sticky top-0 bg-gray-50 py-4 z-10">
-                            <div className="flex items-center gap-4">
-                                <Link href="/mock-exam">
-                                    <Button variant="outline" size="sm" className="border-gray-300 bg-white">
-                                        <ChevronLeft className="w-4 h-4 mr-2" />
-                                        Exit Exam
-                                    </Button>
-                                </Link>
-                                <Badge className="bg-emerald-100 text-emerald-800 border-emerald-200 px-4 py-2">
-                                    Mock Exam - 7th Grade Math
-                                </Badge>
-                            </div>
-                        </div>
                         {/* Questions List */}
                         <div className="space-y-8">
                             {questions.map((question) => (
@@ -248,7 +233,7 @@ const LiveExamPage = () => {
                                                 {/* Answer Input */}
                                                 {question.type === "text" ? (
                                                     <div className="max-w-md">
-                                                        <label className="block text-sm font-medium text-gray-700 mb-2">Your Answer:</label>
+                                                        <label className="block text-sm font-medium text-gray-700 mb-2">Твоят отговор:</label>
                                                         <Input
                                                             value={answers[question.id] || ""}
                                                             onChange={(e) => handleAnswerChange(question.id, e.target.value)}
@@ -258,7 +243,7 @@ const LiveExamPage = () => {
                                                     </div>
                                                 ) : (
                                                     <div className="space-y-3">
-                                                        <label className="block text-sm font-medium text-gray-700 mb-3">Select your answer:</label>
+                                                        <label className="block text-sm font-medium text-gray-700 mb-3">Изберете своя отговор:</label>
                                                         {question.options?.map((option: string, index: number) => {
                                                             const optionLetter = String.fromCharCode(97 + index) // a, b, c, d
                                                             const isSelected = answers[question.id] === optionLetter
@@ -306,7 +291,7 @@ const LiveExamPage = () => {
                                     <Clock className="w-5 h-5" />
                                     <span className="font-mono text-2xl font-bold">{formatTime(timeLeft)}</span>
                                 </div>
-                                <p className="text-emerald-100 text-sm mt-1">Time Remaining</p>
+                                <p className="text-emerald-100 text-sm mt-1">Оставащо време</p>
                             </CardContent>
                         </Card>
                     </div>
@@ -316,10 +301,10 @@ const LiveExamPage = () => {
                         <div className="mb-6">
                             <h3 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
                                 <Flag className="w-4 h-4 text-emerald-600" />
-                                Questions
+                                Въпроси
                             </h3>
                             <p className="text-sm text-gray-600">
-                                {Object.keys(answers).length} of {totalQuestions} answered
+                                {Object.keys(answers).length} от {totalQuestions} отговорени
                             </p>
                         </div>
 
@@ -349,15 +334,15 @@ const LiveExamPage = () => {
                         <div className="space-y-3 text-sm mb-6">
                             <div className="flex items-center gap-3">
                                 <div className="w-4 h-4 rounded bg-emerald-500"></div>
-                                <span className="text-gray-600">Current Question</span>
+                                <span className="text-gray-600">Текущ въпрос</span>
                             </div>
                             <div className="flex items-center gap-3">
                                 <div className="w-4 h-4 rounded bg-green-100 border-2 border-green-200"></div>
-                                <span className="text-gray-600">Answered</span>
+                                <span className="text-gray-600">Отговорен</span>
                             </div>
                             <div className="flex items-center gap-3">
                                 <div className="w-4 h-4 rounded bg-gray-50 border-2 border-gray-200"></div>
-                                <span className="text-gray-600">Unanswered</span>
+                                <span className="text-gray-600">Неотговорен</span>
                             </div>
                         </div>
                     </div>
@@ -367,7 +352,7 @@ const LiveExamPage = () => {
                         <Card className="bg-gradient-to-br from-emerald-500 to-teal-600 border-0 shadow-md cursor-pointer hover:shadow-lg transition-all duration-300">
                             <CardContent className="p-4">
                                 <Button className="w-full bg-white text-emerald-600 hover:bg-gray-100 font-semibold text-lg py-3 h-12">
-                                    Submit Exam
+                                    Изпрати
                                 </Button>
                             </CardContent>
                         </Card>
@@ -382,7 +367,7 @@ const LiveExamPage = () => {
                         <CardContent className="p-4">
                             <div className="flex items-center gap-2 text-red-800">
                                 <Clock className="w-4 h-4" />
-                                <span className="text-sm font-medium">Less than 10 minutes remaining!</span>
+                                <span className="text-sm font-medium">По-малко от 10 минути останала!</span>
                             </div>
                         </CardContent>
                     </Card>
