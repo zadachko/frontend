@@ -3,6 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Clock, FileText, AlertCircle, CheckCircle, Play, Trophy, Target, Sparkles, TrendingUp } from "lucide-react";
 import ExamRule from "./components/examRule";
 import PreviousExamResult from "./components/previousExamResult";
+import Link from "next/link";
 
 const page = () => {
     const examRules = [
@@ -82,13 +83,18 @@ const page = () => {
                                 </div>
 
                                 {/* Start Button */}
-                                <Button
-                                    size="lg"
-                                    className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-semibold px-8 py-3 h-12 text-lg transition-all duration-300 shadow-sm "
-                                >
-                                    <Play className="w-4 h-4 mr-2" />
-                                    Започни Пробен Изпит
-                                </Button>
+                                <Link href="/platform/exam/live">
+                                    <Button
+                                        asChild
+                                        size="lg"
+                                        className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-semibold px-8 py-3 h-12 text-lg transition-all duration-300 shadow-sm"
+                                    >
+                                        <span>
+                                            <Play className="w-4 h-4 mr-2" />
+                                            Започни Пробен Изпит
+                                        </span>
+                                    </Button>
+                                </Link>
                             </CardContent>
                         </Card>
                     </div>
