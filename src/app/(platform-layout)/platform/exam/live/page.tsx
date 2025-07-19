@@ -226,7 +226,7 @@ const LiveExamPage = () => {
                                                 </div>
                                             </div>
                                             <div className="flex-1">
-                                                <h3 className="text-xl font-semibold text-gray-900 leading-relaxed mb-6">
+                                                <h3 className="text-base font-semibold text-gray-900 leading-relaxed mb-6">
                                                     {question.statement}
                                                 </h3>
 
