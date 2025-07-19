@@ -1,231 +1,245 @@
-import React from 'react';
-import {
-    BookOpen,
-    CheckCircle2,
-    Clock,
-    Target,
-    TrendingUp,
-    ArrowRight,
-    Brain,
-    Timer,
-    Calendar,
-    Award,
-    Star,
-    AlertCircle
-} from 'lucide-react'
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { BookOpen, TestTube, GraduationCap, Clock, ChevronRight, Play, Target, Calculator, Ruler, Hash, BarChart3, FileText, Sigma } from "lucide-react";
+import RecentResourceCard from "./components/RecentResourceCard";
+import WeakTopicCard from "./components/WeakTopicCard";
+import ProblemsCategory from "./components/ProblemsCategory";
+import WeakTopicMissingCard from "./components/WeakTopicMissingCard";
+import Link from "next/link";
+const page = () => {
+    const recentActivities = [
+        {
+            id: 1,
+            type: "test",
+            title: "Тест: Геометрия — Триъгълници",
+            status: "Недовършен",
+            statusType: "warning",
+            date: "Преди 2 дни",
+            action: "Продължи",
+        },
+        {
+            id: 2,
+            type: "task",
+            title: "Алгебра — Практика №12",
+            status: "Завършен: 85%",
+            statusType: "success",
+            date: "Преди 1 седмица",
+            action: "Виж резултата",
+        },
+        {
+            id: 3,
+            type: "test",
+            title: "Тест: Дроби и десетични числа",
+            status: "Завършен: 60%",
+            statusType: "partial",
+            date: "Преди 3 дни",
+            action: "Виж резултата",
+        },
+    ]
 
-const Page = () => {
+    const weakTopics = [
+        {
+            name: "Квадратни уравнения",
+            score: 40,
+            lastAttempt: "Преди 5 дни",
+        },
+        {
+            name: "Теория на вероятностите",
+            score: 55,
+            lastAttempt: "Преди 1 седмица",
+        },
+        {
+            name: "Геометрични доказателства",
+            score: 35,
+            lastAttempt: "Преди 3 дни",
+        },
+    ]
+    const problemCategories = [
+        {
+            name: "Алгебра",
+            icon: Calculator,
+            problems: 324,
+            completed: 89,
+            bgColor: "bg-purple-100",
+            iconColor: "text-purple-600",
+        },
+        {
+            name: "Геометрия",
+            icon: Ruler,
+            problems: 267,
+            completed: 156,
+            bgColor: "bg-blue-100",
+            iconColor: "text-blue-600",
+        },
+        {
+            name: "Дроби",
+            icon: Hash,
+            problems: 198,
+            completed: 87,
+            bgColor: "bg-green-100",
+            iconColor: "text-green-600",
+        },
+        {
+            name: "Статистика",
+            icon: BarChart3,
+            problems: 145,
+            completed: 34,
+            bgColor: "bg-orange-100",
+            iconColor: "text-orange-600",
+        },
+        {
+            name: "Текстови задачи",
+            icon: FileText,
+            problems: 289,
+            completed: 112,
+            bgColor: "bg-pink-100",
+            iconColor: "text-pink-600",
+        },
+        {
+            name: "Пре-алгебра",
+            icon: Sigma,
+            problems: 176,
+            completed: 98,
+            bgColor: "bg-teal-100",
+            iconColor: "text-teal-600",
+        },
+    ];
     return (
-        <div className="p-8">
-            {/* Welcome Section */}
-            <div className="mb-8">
-                <h1 className="text-3xl font-bold text-gray-900">Добре дошли, Иван!</h1>
-                <p className="text-gray-600 mt-2">Ето какво се случва с твоята подготовка днес</p>
-            </div>
+        <div className="min-h-screen bg-gray-50 p-4 md:p-6 lg:p-8">
+            <div className="max-w-7xl mx-auto space-y-8">
 
-            {/* Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-                    <div className="flex items-center justify-between mb-4">
-                        <div className="p-2 bg-[#6F58C9]/10 rounded-lg">
-                            <BookOpen className="w-6 h-6 text-[#6F58C9]" />
-                        </div>
-                        <span className="text-sm text-gray-500">Днес</span>
-                    </div>
-                    <h3 className="text-2xl font-bold mb-1">12</h3>
-                    <p className="text-gray-600">Решени задачи</p>
-                </div>
-
-                <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-                    <div className="flex items-center justify-between mb-4">
-                        <div className="p-2 bg-[#6F58C9]/10 rounded-lg">
-                            <CheckCircle2 className="w-6 h-6 text-[#6F58C9]" />
-                        </div>
-                        <span className="text-sm text-gray-500">Този месец</span>
-                    </div>
-                    <h3 className="text-2xl font-bold mb-1">85%</h3>
-                    <p className="text-gray-600">Точност</p>
-                </div>
-
-                <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-                    <div className="flex items-center justify-between mb-4">
-                        <div className="p-2 bg-[#6F58C9]/10 rounded-lg">
-                            <Clock className="w-6 h-6 text-[#6F58C9]" />
-                        </div>
-                        <span className="text-sm text-gray-500">Общо</span>
-                    </div>
-                    <h3 className="text-2xl font-bold mb-1">2.5ч</h3>
-                    <p className="text-gray-600">Време за обучение</p>
-                </div>
-
-                <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-                    <div className="flex items-center justify-between mb-4">
-                        <div className="p-2 bg-[#6F58C9]/10 rounded-lg">
-                            <Target className="w-6 h-6 text-[#6F58C9]" />
-                        </div>
-                        <span className="text-sm text-gray-500">Цел</span>
-                    </div>
-                    <h3 className="text-2xl font-bold mb-1">75%</h3>
-                    <p className="text-gray-600">Достигната цел</p>
-                </div>
-            </div>
-
-            {/* Main Content Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                {/* Recent Activity */}
-                <div className="lg:col-span-2 space-y-8">
-                    <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-                        <h2 className="text-xl font-semibold mb-4">Последна активност</h2>
-                        <div className="space-y-4">
-                            {[1, 2, 3].map((item) => (
-                                <div key={item} className="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                                    <div className="p-2 bg-[#6F58C9]/10 rounded-lg">
-                                        <Brain className="w-5 h-5 text-[#6F58C9]" />
-                                    </div>
-                                    <div className="flex-1">
-                                        <p className="font-medium">Решена задача: Алгебра</p>
-                                        <p className="text-sm text-gray-500">Преди 2 часа</p>
-                                    </div>
-                                    <ArrowRight className="w-5 h-5 text-gray-400" />
-                                </div>
+                {/* Recent Activity Section */}
+                <section className="space-y-4">
+                    <h2 className="text-2xl font-semibold text-gray-900 flex items-center gap-2">
+                        <Clock className="w-6 h-6 text-[#6F58C9]" />
+                        Последни задачи и тестове
+                    </h2>
+                    {recentActivities.length > 0 ? (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {recentActivities.map((activity) => (
+                                <RecentResourceCard key={activity.id} activity={activity} />
                             ))}
                         </div>
-                    </div>
+                    ) : (
+                        <Card className="bg-white border-0 shadow-md">
+                            <CardContent className="p-12 text-center">
+                                <div className="mb-6">
+                                    <div className="inline-flex p-4 rounded-full bg-gray-100 mb-4">
+                                        <Clock className="w-12 h-12 text-gray-400" />
+                                    </div>
+                                    <h3 className="text-xl font-semibold text-gray-900 mb-2">Нямате скорошни задачи и тестове</h3>
+                                    <p className="text-gray-600 mb-6 max-w-md mx-auto">
+                                        Нямате скорошни задачи или тестове. Започнете своето обучение, като създадете първия си тест
+                                        или разгледайте категориите съз задачите по-долу!
+                                    </p>
+                                </div>
+                                <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                                    <Button className="bg-[#6F58C9] hover:bg-[#5A4BA3] text-white">
+                                        <TestTube className="w-4 h-4 mr-2" />
+                                        Започни първия си тест
+                                    </Button>
+                                    <Button
+                                        variant="outline"
+                                        className="border-[#6F58C9] text-[#6F58C9] hover:bg-[#6F58C9] hover:text-white bg-transparent"
+                                    >
+                                        <BookOpen className="w-4 h-4 mr-2" />
+                                        Разгледай категориите със задачи
+                                    </Button>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    )}
 
-                    {/* Study Recommendations */}
-                    <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-                        <h2 className="text-xl font-semibold mb-4">Препоръки за обучение</h2>
-                        <div className="space-y-4">
-                            <div className="p-4 bg-[#6F58C9]/5 rounded-lg">
-                                <div className="flex items-start gap-3">
-                                    <div className="p-2 bg-[#6F58C9]/10 rounded-lg">
-                                        <Star className="w-5 h-5 text-[#6F58C9]" />
+                </section>
+
+                {/* Create New Test & Exam Simulation Sections */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    {/* Create New Test Section */}
+                    <section className="space-y-4">
+                        <h2 className="text-2xl font-semibold text-gray-900 flex items-center gap-2">
+                            <TestTube className="w-6 h-6 text-[#6F58C9]" />
+                            Създай нов тест
+                        </h2>
+                        <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 bg-gradient-to-br from-[#6F58C9] to-[#5A4BA3] border-0 cursor-pointer">
+                            <CardContent className="p-8 text-center text-white">
+                                <div className="mb-4">
+                                    <div className="inline-flex p-4 rounded-full bg-white/20 mb-4">
+                                        <TestTube className="w-8 h-8" />
                                     </div>
-                                    <div>
-                                        <h3 className="font-medium text-gray-900">Квадратни уравнения</h3>
-                                        <p className="text-sm text-gray-600 mt-1">Трябва да подобриш решаването на квадратни уравнения. Опитай тези задачи:</p>
-                                        <div className="mt-3 flex gap-2">
-                                            <button className="text-sm px-3 py-1 bg-[#6F58C9] text-white rounded-lg hover:bg-[#6F58C9]/90 transition-colors">
-                                                Започни
-                                            </button>
-                                            <button className="text-sm px-3 py-1 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-                                                Виж повече
-                                            </button>
-                                        </div>
-                                    </div>
+                                    <h3 className="text-xl font-semibold mb-2">Създай свой тест</h3>
+                                    <p className="text-white/90 mb-6">Избери тема и ниво на трудност</p>
                                 </div>
-                            </div>
-                            <div className="p-4 bg-[#6F58C9]/5 rounded-lg">
-                                <div className="flex items-start gap-3">
-                                    <div className="p-2 bg-[#6F58C9]/10 rounded-lg">
-                                        <AlertCircle className="w-5 h-5 text-[#6F58C9]" />
+                                <Button size="lg" className="bg-white text-[#6F58C9] hover:bg-gray-100 font-semibold px-8 py-3 h-12">
+                                    Започни
+                                    <ChevronRight className="w-4 h-4 ml-2" />
+                                </Button>
+                            </CardContent>
+                        </Card>
+                    </section>
+
+                    {/* Exam Simulation Section */}
+                    <section className="space-y-4">
+                        <h2 className="text-2xl font-semibold text-gray-900 flex items-center gap-2">
+                            <GraduationCap className="w-6 h-6 text-[#6F58C9]" />
+                            Пробна матура
+                        </h2>
+                        <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 bg-gradient-to-br from-emerald-500 to-teal-600 border-0 cursor-pointer">
+                            <CardContent className="p-8 text-center text-white">
+                                <div className="mb-4">
+                                    <div className="inline-flex p-4 rounded-full bg-white/20 mb-4">
+                                        <GraduationCap className="w-8 h-8" />
                                     </div>
-                                    <div>
-                                        <h3 className="font-medium text-gray-900">Геометрични фигури</h3>
-                                        <p className="text-sm text-gray-600 mt-1">Практикувай повече задачи с геометрични фигури за по-добри резултати.</p>
-                                        <div className="mt-3 flex gap-2">
-                                            <button className="text-sm px-3 py-1 bg-[#6F58C9] text-white rounded-lg hover:bg-[#6F58C9]/90 transition-colors">
-                                                Започни
-                                            </button>
-                                            <button className="text-sm px-3 py-1 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-                                                Виж повече
-                                            </button>
-                                        </div>
-                                    </div>
+                                    <h3 className="text-xl font-semibold mb-2">Симулация на матура</h3>
+                                    <p className="text-white/90 mb-6">Реши тест като на истинския изпит</p>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
+                                <Link href="/platform/exam">
+                                    <Button size="lg" className="bg-white text-emerald-600 hover:bg-gray-100 font-semibold px-8 py-3 h-12">
+                                        <Play className="w-4 h-4 mr-2" />
+                                        Стартирай симулация
+                                    </Button>
+                                </Link>
+                            </CardContent>
+                        </Card>
+                    </section>
                 </div>
 
-                {/* Sidebar */}
-                <div className="space-y-8">
-                    {/* Quick Actions */}
-                    <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-                        <h2 className="text-xl font-semibold mb-4">Бързи действия</h2>
-                        <div className="space-y-3">
-                            <button className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors text-left">
-                                <div className="p-2 bg-[#6F58C9]/10 rounded-lg">
-                                    <Timer className="w-5 h-5 text-[#6F58C9]" />
-                                </div>
-                                <span>Начало на тест</span>
-                            </button>
-                            <button className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors text-left">
-                                <div className="p-2 bg-[#6F58C9]/10 rounded-lg">
-                                    <TrendingUp className="w-5 h-5 text-[#6F58C9]" />
-                                </div>
-                                <span>Преглед на статистика</span>
-                            </button>
-                            <button className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors text-left">
-                                <div className="p-2 bg-[#6F58C9]/10 rounded-lg">
-                                    <BookOpen className="w-5 h-5 text-[#6F58C9]" />
-                                </div>
-                                <span>Продължи обучението</span>
-                            </button>
-                        </div>
-                    </div>
+                {/* Weak Topics Practice Section */}
+                <section className="space-y-4">
+                    <h2 className="text-2xl font-semibold text-gray-900 flex items-center gap-2">
+                        <Target className="w-6 h-6 text-[#6F58C9]" />
+                        Практика по слаби теми
+                    </h2>
+                    <Card className="bg-white border-0 shadow-md">
+                        <CardContent className="p-6">
+                            <div className="space-y-4">
+                                {weakTopics.length > 0 ?
+                                    (
+                                        weakTopics.map((topic, index) => (
+                                            <WeakTopicCard key={index} topic={topic} index={index} />
+                                        ))
+                                    ) : (
+                                        <WeakTopicMissingCard />
+                                    )}
+                            </div>
+                        </CardContent>
+                    </Card>
+                </section>
 
-                    {/* Upcoming Tests */}
-                    <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-                        <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-                            <Calendar className="w-5 h-5 text-[#6F58C9]" />
-                            <span>Предстоящи тестове</span>
-                        </h2>
-                        <div className="space-y-4">
-                            <div className="p-3 border border-gray-100 rounded-lg">
-                                <div className="flex items-center justify-between mb-2">
-                                    <h3 className="font-medium">Алгебра</h3>
-                                    <span className="text-sm text-gray-500">20.03.2024</span>
-                                </div>
-                                <div className="flex items-center gap-2 text-sm text-gray-600">
-                                    <Clock className="w-4 h-4" />
-                                    <span>45 мин</span>
-                                </div>
-                            </div>
-                            <div className="p-3 border border-gray-100 rounded-lg">
-                                <div className="flex items-center justify-between mb-2">
-                                    <h3 className="font-medium">Геометрия</h3>
-                                    <span className="text-sm text-gray-500">22.03.2024</span>
-                                </div>
-                                <div className="flex items-center gap-2 text-sm text-gray-600">
-                                    <Clock className="w-4 h-4" />
-                                    <span>60 мин</span>
-                                </div>
-                            </div>
-                        </div>
+                {/* All Tasks Overview Section */}
+                <section className="space-y-4">
+                    <h2 className="text-2xl font-semibold text-gray-900 flex items-center gap-2">
+                        <BookOpen className="w-6 h-6 text-[#6F58C9]" />
+                        Категории задачи
+                    </h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {problemCategories.map((category, index) => (
+                            <ProblemsCategory key={index} category={category} index={index} />
+                        ))}
                     </div>
-
-                    {/* Achievements */}
-                    <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-                        <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-                            <Award className="w-5 h-5 text-[#6F58C9]" />
-                            <span>Постижения</span>
-                        </h2>
-                        <div className="space-y-4">
-                            <div className="flex items-center gap-3">
-                                <div className="p-2 bg-yellow-100 rounded-lg">
-                                    <Star className="w-5 h-5 text-yellow-500" />
-                                </div>
-                                <div>
-                                    <h3 className="font-medium">100 решени задачи</h3>
-                                    <p className="text-sm text-gray-500">Достигнато на 15.03.2024</p>
-                                </div>
-                            </div>
-                            <div className="flex items-center gap-3">
-                                <div className="p-2 bg-green-100 rounded-lg">
-                                    <CheckCircle2 className="w-5 h-5 text-green-500" />
-                                </div>
-                                <div>
-                                    <h3 className="font-medium">90% точност</h3>
-                                    <p className="text-sm text-gray-500">Достигнато на 10.03.2024</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                </section>
             </div>
         </div>
     )
 }
 
-export default Page;
+export default page;
