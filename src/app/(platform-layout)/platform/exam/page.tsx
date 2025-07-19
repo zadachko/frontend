@@ -1,11 +1,16 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Clock, FileText, AlertCircle, CheckCircle, Play, Trophy, Target, Sparkles, TrendingUp } from "lucide-react";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Clock, FileText, AlertCircle, CheckCircle, Play, Trophy, Target, Sparkles, TrendingUp, AlertTriangle } from "lucide-react";
 import ExamRule from "./components/examRule";
 import PreviousExamResult from "./components/previousExamResult";
-import Link from "next/link";
+import { useState } from "react";
 
-const page = () => {
+const Page = () => {
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+
     const examRules = [
         {
             icon: Clock,
@@ -53,6 +58,16 @@ const page = () => {
         }
     ];
 
+    const handleStartExam = () => {
+        setIsDialogOpen(true);
+    };
+
+    const handleConfirmExam = () => {
+        setIsDialogOpen(false);
+        // Navigate to the exam page
+        window.location.href = "/platform/exam/live";
+    };
+
     return (
         <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
             <div className="w-full max-w-7xl">
@@ -82,19 +97,55 @@ const page = () => {
                                     </div>
                                 </div>
 
-                                {/* Start Button */}
-                                <Link href="/platform/exam/live">
-                                    <Button
-                                        asChild
-                                        size="lg"
-                                        className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-semibold px-8 py-3 h-12 text-lg transition-all duration-300 shadow-sm"
-                                    >
-                                        <span>
+                                {/* Start Button with Dialog */}
+                                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                                    <DialogTrigger asChild>
+                                        <Button
+                                            size="lg"
+                                            className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-semibold px-8 py-3 h-12 text-lg transition-all duration-300 shadow-sm"
+                                            onClick={handleStartExam}
+                                        >
                                             <Play className="w-4 h-4 mr-2" />
                                             Започни Пробен Изпит
-                                        </span>
-                                    </Button>
-                                </Link>
+                                        </Button>
+                                    </DialogTrigger>
+                                    <DialogContent className="sm:max-w-md">
+                                        <DialogHeader>
+                                            <div className="flex items-center gap-3 mb-2">
+                                                <div className="inline-flex p-2 rounded-full bg-amber-50">
+                                                    <AlertTriangle className="w-5 h-5 text-amber-600" />
+                                                </div>
+                                                <DialogTitle className="text-xl font-semibold text-gray-900">
+                                                    Потвърди започване на изпита
+                                                </DialogTitle>
+                                            </div>
+                                            <DialogDescription className="text-gray-600 text-base leading-relaxed">
+                                                Сигурни ли сте, че искате да започнете пробния изпит? След започване:
+                                                <ul className="list-disc list-inside mt-3 space-y-1 text-sm">
+                                                    <li>Ще имате 90 минути за 25 въпроса</li>
+                                                    <li>Няма да можете да се връщате към предишни въпроси</li>
+                                                    <li>Изпитът ще се подаде автоматично при изтичане на времето</li>
+                                                </ul>
+                                            </DialogDescription>
+                                        </DialogHeader>
+                                        <DialogFooter className="flex gap-3 sm:justify-end">
+                                            <Button
+                                                variant="outline"
+                                                onClick={() => setIsDialogOpen(false)}
+                                                className="border-gray-300 text-gray-700 hover:bg-gray-50"
+                                            >
+                                                Отказ
+                                            </Button>
+                                            <Button
+                                                onClick={handleConfirmExam}
+                                                className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white"
+                                            >
+                                                <Play className="w-4 h-4 mr-2" />
+                                                Започни Изпита
+                                            </Button>
+                                        </DialogFooter>
+                                    </DialogContent>
+                                </Dialog>
                             </CardContent>
                         </Card>
                     </div>
@@ -158,4 +209,4 @@ const page = () => {
     )
 }
 
-export default page;
+export default Page;
