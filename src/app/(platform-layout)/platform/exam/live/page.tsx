@@ -238,7 +238,7 @@ const LiveExamPage = () => {
                                                             value={answers[question.id] || ""}
                                                             onChange={(e) => handleAnswerChange(question.id, e.target.value)}
                                                             placeholder="Enter your answer..."
-                                                            className="text-lg p-4 h-12 focus:ring-emerald-500 focus:border-emerald-500"
+                                                            className="text-sm p-4 h-8 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
                                                         />
                                                     </div>
                                                 ) : (
@@ -286,7 +286,7 @@ const LiveExamPage = () => {
                     {/* Timer */}
                     <div className="p-6 border-b border-gray-200">
                         <Card className="bg-gradient-to-r from-emerald-500 to-teal-600 border-0 shadow-md">
-                            <CardContent className="p-4 text-center">
+                            <CardContent className="p-0 text-center">
                                 <div className="flex items-center justify-center gap-2 text-white">
                                     <Clock className="w-5 h-5" />
                                     <span className="font-mono text-2xl font-bold">{formatTime(timeLeft)}</span>
@@ -349,13 +349,13 @@ const LiveExamPage = () => {
 
                     {/* Submit Button */}
                     <div className="p-6 border-t border-gray-200">
-                        <Card className="bg-gradient-to-br from-emerald-500 to-teal-600 border-0 shadow-md cursor-pointer hover:shadow-lg transition-all duration-300">
-                            <CardContent className="p-4">
-                                <Button className="w-full bg-white text-emerald-600 hover:bg-gray-100 font-semibold text-lg py-3 h-12">
-                                    Изпрати
-                                </Button>
-                            </CardContent>
-                        </Card>
+                        {/* <Card className="bg-gradient-to-br from-emerald-500 to-teal-600 border-0 shadow-md cursor-pointer hover:shadow-lg transition-all duration-300"> */}
+                        {/* <CardContent className="p-4"> */}
+                        <Button className="w-full bg-gradient-to-br from-emerald-500 to-teal-600 text-white hover:bg-gray-100 font-semibold text-lg py-3 h-12">
+                            Изпрати
+                        </Button>
+                        {/* </CardContent> */}
+                        {/* </Card> */}
                     </div>
                 </div>
             </div>
