@@ -1,8 +1,16 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Clock, FileText, AlertCircle, CheckCircle, Play, Trophy, Calendar, Target, Sparkles, TrendingUp } from "lucide-react";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Clock, FileText, AlertCircle, CheckCircle, Play, Trophy, Target, Sparkles, TrendingUp, AlertTriangle } from "lucide-react";
+import ExamRule from "./components/examRule";
+import PreviousExamResult from "./components/previousExamResult";
+import { useState } from "react";
 
-const page = () => {
+const Page = () => {
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+
     const examRules = [
         {
             icon: Clock,
@@ -50,161 +58,142 @@ const page = () => {
         }
     ];
 
-    const getProgressColor = (score: number) => {
-        if (score >= 80) return "#fbbf24"; // amber
-        if (score >= 60) return "#f59e0b"; // yellow
-        return "#ef4444"; // red
+    const handleStartExam = () => {
+        setIsDialogOpen(true);
+    };
+
+    const handleConfirmExam = () => {
+        setIsDialogOpen(false);
+        // Navigate to the exam page
+        window.location.href = "/platform/exam/live";
     };
 
     return (
         <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
             <div className="w-full max-w-7xl">
-                {/* <div className="mb-6">
-                    <Link href="/">
-                        <Button variant="outline" size="sm" className="border-gray-300 bg-transparent hover:bg-gray-100 transition-colors">
-                            <ArrowLeft className="w-4 h-4 mr-2" />
-                            Назад към Таблото
-                        </Button>
-                    </Link>
-                </div> */}
-
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     {/* Main Exam Card */}
                     <div className="lg:col-span-2">
-                        <Card className="group hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-emerald-500 to-teal-600 border-0 shadow-lg h-full">
-                            <CardContent className="p-12 text-center text-white h-full flex flex-col justify-center">
-                                <div className="mb-8">
-                                    <div className="inline-flex p-4 rounded-full bg-white/20 mb-6 group-hover:scale-110 transition-transform duration-300">
-                                        <Play className="w-12 h-12" />
+                        <Card className="group hover:shadow-lg transition-all duration-300 bg-white border border-gray-200 shadow-sm h-full">
+                            <CardContent className="p-8 text-center h-full flex flex-col justify-center">
+                                <div className="mb-6">
+                                    <div className="inline-flex p-3 rounded-full bg-emerald-50 mb-4 group-hover:scale-105 transition-transform duration-300">
+                                        <Play className="w-8 h-8 text-emerald-600" />
                                     </div>
-                                    <h1 className="text-3xl font-bold mb-4">Пробен Изпит</h1>
-                                    <p className="text-white/90 text-lg mb-8">Тествай знанията си по математика за 7-ми клас</p>
+                                    <h1 className="text-3xl font-semibold text-gray-900 mb-3">Пробен Изпит</h1>
+                                    <p className="text-gray-600 text-lg mb-6">Тествай знанията си по математика за 7-ми клас</p>
                                 </div>
 
                                 {/* Rules */}
-                                <div className="bg-white/10 rounded-lg p-6 mb-8 backdrop-blur-sm">
-                                    <h2 className="text-xl font-semibold mb-4 text-white flex items-center justify-center gap-2">
-                                        <Target className="w-5 h-5" />
+                                <div className="bg-gray-50 rounded-lg p-5 mb-6 border border-gray-100">
+                                    <h2 className="text-xl font-medium text-gray-900 mb-4 flex items-center justify-center gap-2">
+                                        <Target className="w-5 h-5 text-emerald-600" />
                                         Правила на Изпита
                                     </h2>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-left">
                                         {examRules.map((rule, index) => (
-                                            <div key={index} className="flex items-start gap-3 group/rule hover:bg-white/5 p-2 rounded transition-colors">
-                                                <div className="p-2 rounded-lg bg-white/20 flex-shrink-0 mt-0.5 group-hover/rule:bg-white/30 transition-colors">
-                                                    <rule.icon className="w-5 h-5 text-white" />
-                                                </div>
-                                                <span className="text-white/90 text-sm leading-relaxed">{rule.text}</span>
-                                            </div>
+                                            <ExamRule key={index} rule={rule} index={index} />
                                         ))}
                                     </div>
                                 </div>
 
-                                {/* Start Button */}
-                                <Button
-                                    size="lg"
-                                    className="bg-white text-emerald-600 hover:bg-gray-100 font-semibold px-12 py-4 h-14 text-lg transition-all duration-300 hover:scale-105 shadow-lg"
-                                >
-                                    <Play className="w-5 h-5 mr-3" />
-                                    Започни Пробен Изпит
-                                </Button>
+                                {/* Start Button with Dialog */}
+                                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                                    <DialogTrigger asChild>
+                                        <Button
+                                            size="lg"
+                                            className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-semibold px-8 py-3 h-12 text-lg transition-all duration-300 shadow-sm"
+                                            onClick={handleStartExam}
+                                        >
+                                            <Play className="w-4 h-4 mr-2" />
+                                            Започни Пробен Изпит
+                                        </Button>
+                                    </DialogTrigger>
+                                    <DialogContent className="sm:max-w-md">
+                                        <DialogHeader>
+                                            <div className="flex items-center gap-3 mb-2">
+                                                <div className="inline-flex p-2 rounded-full bg-amber-50">
+                                                    <AlertTriangle className="w-5 h-5 text-amber-600" />
+                                                </div>
+                                                <DialogTitle className="text-xl font-semibold text-gray-900">
+                                                    Потвърди започване на изпита
+                                                </DialogTitle>
+                                            </div>
+                                            <DialogDescription className="text-gray-600 text-base leading-relaxed">
+                                                Сигурни ли сте, че искате да започнете пробния изпит? След започване:
+                                                <ul className="list-disc list-inside mt-3 space-y-1 text-sm">
+                                                    <li>Ще имате 90 минути за 25 въпроса</li>
+                                                    <li>Няма да можете да се връщате към предишни въпроси</li>
+                                                    <li>Изпитът ще се подаде автоматично при изтичане на времето</li>
+                                                </ul>
+                                            </DialogDescription>
+                                        </DialogHeader>
+                                        <DialogFooter className="flex gap-3 sm:justify-end">
+                                            <Button
+                                                variant="outline"
+                                                onClick={() => setIsDialogOpen(false)}
+                                                className="border-gray-300 text-gray-700 hover:bg-gray-50"
+                                            >
+                                                Отказ
+                                            </Button>
+                                            <Button
+                                                onClick={handleConfirmExam}
+                                                className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white"
+                                            >
+                                                <Play className="w-4 h-4 mr-2" />
+                                                Започни Изпита
+                                            </Button>
+                                        </DialogFooter>
+                                    </DialogContent>
+                                </Dialog>
                             </CardContent>
                         </Card>
                     </div>
 
                     {/* Previous Results Sidebar */}
                     <div className="lg:col-span-1">
-                        <Card className="h-full shadow-lg border-0 bg-gradient-to-br from-emerald-500 to-teal-600">
-                            <CardContent className="p-6 text-white h-full flex flex-col">
-                                <div className="flex items-center gap-2 mb-6">
-                                    <Trophy className="w-6 h-6 text-amber-300" />
-                                    <h2 className="text-xl font-semibold text-white">Предни Резултати</h2>
+                        <Card className="h-full shadow-sm border border-gray-200 bg-white">
+                            <CardContent className="p-6 h-full flex flex-col">
+                                <div className="flex items-center gap-2 mb-5">
+                                    <Trophy className="w-5 h-5 text-amber-500" />
+                                    <h2 className="text-xl font-medium text-gray-900">Предни Резултати</h2>
                                 </div>
 
                                 {previousExams.length > 0 ? (
-                                    <div className="space-y-4 flex-1">
+                                    <div className="space-y-3 flex-1">
                                         {previousExams.map((exam) => (
-                                            <div key={exam.id} className="p-4 bg-white/10 rounded-lg hover:bg-white/15 transition-colors backdrop-blur-sm">
-                                                <div className="flex items-center justify-between mb-3">
-                                                    <div className="flex items-center gap-2">
-                                                        <Calendar className="w-4 h-4 text-white/70" />
-                                                        <span className="text-md text-white/80">{exam.date}</span>
-                                                    </div>
-                                                </div>
-
-                                                <div className="flex items-center justify-between">
-                                                    <div className="flex-1">
-                                                        <div className="text-md text-white/80 mb-1">
-                                                            {exam.correctAnswers}/{exam.totalQuestions} правилни
-                                                        </div>
-                                                        <div className="text-sm text-white/60">
-                                                            {exam.timeSpent}
-                                                        </div>
-                                                    </div>
-
-                                                    {/* Circular Progress */}
-                                                    <div className="relative w-16 h-16 flex items-center justify-center">
-                                                        <svg className="w-16 h-16" viewBox="0 0 36 36">
-                                                            {/* Background circle */}
-                                                            <path
-                                                                d="M18 2.0845
-                                                                    a 15.9155 15.9155 0 0 1 0 31.831
-                                                                    a 15.9155 15.9155 0 0 1 0 -31.831"
-                                                                fill="none"
-                                                                stroke="rgba(255,255,255,0.2)"
-                                                                strokeWidth="2"
-                                                            />
-                                                            {/* Progress circle */}
-                                                            <path
-                                                                d="M18 2.0845
-                                                                    a 15.9155 15.9155 0 0 1 0 31.831
-                                                                    a 15.9155 15.9155 0 0 1 0 -31.831"
-                                                                fill="none"
-                                                                stroke={getProgressColor(exam.score)}
-                                                                strokeWidth="2"
-                                                                strokeDasharray={`${exam.score}, 100`}
-                                                                strokeLinecap="round"
-                                                                className="transition-all duration-500 origin-center"
-                                                            />
-                                                        </svg>
-                                                        <div className="absolute inset-0 flex items-center justify-center">
-                                                            <span className="text-lg font-bold text-white">
-                                                                {exam.score}%
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <PreviousExamResult key={exam.id} exam={exam} />
                                         ))}
                                     </div>
                                 ) : (
-                                    <div className="flex-1 flex flex-col items-center justify-center text-center py-8">
-                                        <div className="mb-6">
-                                            <div className="inline-flex p-4 rounded-full bg-white/20 mb-4">
-                                                <Sparkles className="w-12 h-12 text-amber-300" />
+                                    <div className="flex-1 flex flex-col items-center justify-center text-center py-6">
+                                        <div className="mb-4">
+                                            <div className="inline-flex p-3 rounded-full bg-amber-50 mb-3">
+                                                <Sparkles className="w-8 h-8 text-amber-500" />
                                             </div>
-                                            <h3 className="text-xl font-semibold text-white mb-2">Първият ти изпит</h3>
-                                            <p className="text-white/80 text-sm mb-6">
+                                            <h3 className="text-xl font-medium text-gray-900 mb-2">Първият ти изпит</h3>
+                                            <p className="text-gray-600 text-base mb-4">
                                                 Направи първия си пробен изпит и започни да следваш прогреса си
                                             </p>
                                         </div>
 
-                                        <div className="space-y-4 w-full">
-                                            <div className="bg-white/10 rounded-lg p-4 backdrop-blur-sm">
-                                                <div className="flex items-center gap-3 mb-2">
-                                                    <TrendingUp className="w-5 h-5 text-amber-300" />
-                                                    <span className="text-sm font-medium text-white">Следвай прогреса</span>
+                                        <div className="space-y-3 w-full">
+                                            <div className="bg-gray-50 rounded-lg p-3 border border-gray-100">
+                                                <div className="flex items-center gap-2 mb-1">
+                                                    <TrendingUp className="w-4 h-4 text-amber-500" />
+                                                    <span className="text-base font-medium text-gray-700">Следвай прогреса</span>
                                                 </div>
-                                                <p className="text-xs text-white/70">
+                                                <p className="text-sm text-gray-500">
                                                     Виждай как се подобряваш с всеки изпит
                                                 </p>
                                             </div>
 
-                                            <div className="bg-white/10 rounded-lg p-4 backdrop-blur-sm">
-                                                <div className="flex items-center gap-3 mb-2">
-                                                    <Trophy className="w-5 h-5 text-amber-300" />
-                                                    <span className="text-sm font-medium text-white">Постигай цели</span>
+                                            <div className="bg-gray-50 rounded-lg p-3 border border-gray-100">
+                                                <div className="flex items-center gap-2 mb-1">
+                                                    <Trophy className="w-4 h-4 text-amber-500" />
+                                                    <span className="text-base font-medium text-gray-700">Постигай цели</span>
                                                 </div>
-                                                <p className="text-xs text-white/70">
+                                                <p className="text-sm text-gray-500">
                                                     Стигай до 100% и стани майстор на математиката
                                                 </p>
                                             </div>
@@ -220,4 +209,4 @@ const page = () => {
     )
 }
 
-export default page;
+export default Page;
