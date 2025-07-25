@@ -3,8 +3,8 @@
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Clock, CheckCircle, Flag } from "lucide-react"
+import { Clock, Flag } from "lucide-react"
+import Question from "@/app/(platform-layout)/common/components/Question"
 
 type Question = {
     id: number
@@ -206,75 +206,7 @@ const LiveExamPage = () => {
                         {/* Questions List */}
                         <div className="space-y-8">
                             {questions.map((question) => (
-                                <Card
-                                    key={question.id}
-                                    className={`bg-white border-0 shadow-md transition-all duration-300 ${currentQuestion === question.id ? "ring-2 ring-emerald-500 shadow-lg" : ""
-                                        }`}
-                                >
-                                    <CardContent className="p-8">
-                                        <div className="flex items-start gap-4 mb-6">
-                                            <div className="flex-shrink-0">
-                                                <div
-                                                    className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm ${answers[question.id]
-                                                        ? "bg-emerald-600 text-white"
-                                                        : currentQuestion === question.id
-                                                            ? "bg-emerald-100 text-emerald-800 ring-2 ring-emerald-500"
-                                                            : "bg-gray-100 text-gray-600"
-                                                        }`}
-                                                >
-                                                    {question.id}
-                                                </div>
-                                            </div>
-                                            <div className="flex-1">
-                                                <h3 className="text-base font-semibold text-gray-900 leading-relaxed mb-6">
-                                                    {question.statement}
-                                                </h3>
-
-                                                {/* Answer Input */}
-                                                {question.type === "text" ? (
-                                                    <div className="max-w-md">
-                                                        <label className="block text-sm font-medium text-gray-700 mb-2">Твоят отговор:</label>
-                                                        <Input
-                                                            value={answers[question.id] || ""}
-                                                            onChange={(e) => handleAnswerChange(question.id, e.target.value)}
-                                                            placeholder="Enter your answer..."
-                                                            className="text-sm p-4 h-8 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
-                                                        />
-                                                    </div>
-                                                ) : (
-                                                    <div className="space-y-3">
-                                                        <label className="block text-sm font-medium text-gray-700 mb-3">Изберете своя отговор:</label>
-                                                        {question.options?.map((option: string, index: number) => {
-                                                            const optionLetter = String.fromCharCode(97 + index) // a, b, c, d
-                                                            const isSelected = answers[question.id] === optionLetter
-                                                            return (
-                                                                <button
-                                                                    key={index}
-                                                                    onClick={() => handleAnswerChange(question.id, optionLetter)}
-                                                                    className={`w-full text-left p-4 rounded-lg border-2 transition-all duration-200 ${isSelected
-                                                                        ? "border-emerald-500 bg-emerald-50 text-emerald-900"
-                                                                        : "border-gray-200 bg-white hover:border-emerald-300 hover:bg-emerald-50"
-                                                                        }`}
-                                                                >
-                                                                    <div className="flex items-center gap-3">
-                                                                        <div
-                                                                            className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${isSelected ? "border-emerald-500 bg-emerald-500" : "border-gray-300"
-                                                                                }`}
-                                                                        >
-                                                                            {isSelected && <CheckCircle className="w-4 h-4 text-white" />}
-                                                                        </div>
-                                                                        <span className="font-medium text-gray-700">{optionLetter})</span>
-                                                                        <span className="text-gray-900">{option}</span>
-                                                                    </div>
-                                                                </button>
-                                                            )
-                                                        })}
-                                                    </div>
-                                                )}
-                                            </div>
-                                        </div>
-                                    </CardContent>
-                                </Card>
+                                <Question key={question.id} question={question} answers={answers} handleAnswerChange={handleAnswerChange} />
                             ))}
                         </div>
                         <div className="h-20"></div> {/* Bottom spacing */}
