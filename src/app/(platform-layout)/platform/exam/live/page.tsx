@@ -22,8 +22,14 @@ const LiveExamPage = () => {
     const questions: Question[] = [
         {
             id: 1,
-            statement: "Решете за x: 3x + 7 = 22",
-            type: "text",
+            statement: "Решете: $\\displaystyle \\frac{2}{3} + \\frac{1}{6}$",
+            type: "multiple",
+            options: [
+                "$\\displaystyle \\frac{1}{2}$",
+                "$\\displaystyle \\frac{5}{6}$",
+                "$\\displaystyle 1$",
+                "$\\displaystyle \\frac{2}{3}$"
+            ]
         },
         {
             id: 2,

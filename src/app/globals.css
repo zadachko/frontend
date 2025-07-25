@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
+@import 'katex/dist/katex.min.css'; /* Katex styles */
 @config "../../tailwind.config.ts";
 @custom-variant dark (&:is(.dark *));
 
