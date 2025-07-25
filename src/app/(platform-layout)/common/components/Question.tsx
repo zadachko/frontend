@@ -5,6 +5,8 @@ import React from 'react'
 import { InlineMath } from 'react-katex'
 import 'katex/dist/katex.min.css'
 
+
+const optionLetters = ['а', 'б', 'в', 'г', 'д', 'е'];
 const renderWithMath = (input: string, mathClass = 'text-lg') => {
     const parts = input.split(/(\$[^$]*\$)/g)
     return parts.map((part, index) => {
@@ -64,7 +66,7 @@ const Question = ({ question, answers, handleAnswerChange }: QuestionProps) => {
                         <div className="space-y-3">
                             <label className="block text-sm font-medium text-gray-700 mb-3">Изберете своя отговор:</label>
                             {question.options?.map((option: string, index: number) => {
-                                const optionLetter = String.fromCharCode(97 + index) // a, b, c...
+                                const optionLetter = optionLetters[index];
                                 const isSelected = answers[question.id] === optionLetter
                                 return (
                                     <button
