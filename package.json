@@ -19,6 +19,7 @@
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
 		"framer-motion": "^12.10.0",
+		"geometry-diagram-renderer": "file:libs/geometry-diagram-renderer",
 		"katex": "^0.16.22",
 		"lucide-react": "^0.484.0",
 		"next": "15.2.4",

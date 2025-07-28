@@ -4,9 +4,35 @@ import { Check } from 'lucide-react'
 import React from 'react'
 import { InlineMath } from 'react-katex'
 import 'katex/dist/katex.min.css'
-
+import { Renderer } from 'geometry-diagram-renderer'
+import type { DiagramData } from 'geometry-diagram-renderer'
 
 const optionLetters = ['а', 'б', 'в', 'г', 'д', 'е'];
+
+// Sample triangle data for demonstration
+const sampleTriangleData: DiagramData = {
+    points: {
+        A: { x: 20, y: 80 },
+        B: { x: 30, y: 70 },
+        C: { x: 10, y: 70 }
+    },
+    edges: [
+        { from: 'A', to: 'B' },
+        { from: 'B', to: 'C' },
+        { from: 'C', to: 'A' }
+    ],
+    sides: [
+        { from: 'A', to: 'B' },
+        { from: 'B', to: 'C' },
+        { from: 'C', to: 'A' }
+    ],
+    angles: [
+        { name: 'ABC', showValue: true },
+        { name: 'BCA', showValue: true },
+        { name: 'CAB', showValue: true }
+    ],
+};
+
 const renderWithMath = (input: string, mathClass = 'text-lg') => {
     const parts = input.split(/(\$[^$]*\$)/g)
     return parts.map((part, index) => {
@@ -28,6 +54,7 @@ type QuestionProps = {
         statement: string;
         type: 'text' | 'multiple';
         options?: string[];
+        diagramData?: DiagramData;
     }
     answers: {
         [key: number]: string;
@@ -40,15 +67,23 @@ const Question = ({ question, answers, handleAnswerChange }: QuestionProps) => {
         <Card key={question.id} className="bg-white border-0 shadow-md transition-all duration-300">
             <CardContent className="p-8">
                 {/* First row: number + statement */}
-                <div className="flex items-center gap-4 mb-4">
+                <div className="flex items-start gap-4 mb-4">
                     <div className="flex-shrink-0">
                         <div className="w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm bg-gray-100 text-gray-600">
                             {question.id}
                         </div>
                     </div>
-                    <h3 className="text-base font-semibold text-gray-900 leading-relaxed">
-                        {renderWithMath(question.statement, 'text-md')}
-                    </h3>
+                    <div className="flex-1">
+                        <h3 className="text-base font-semibold text-gray-900 leading-relaxed mb-3">
+                            {renderWithMath(question.statement, 'text-md')}
+                        </h3>
+                        {/* Render triangle diagram */}
+                        {!question.diagramData && (
+                            <div className="rounded-lg">
+                                <Renderer diagramData={sampleTriangleData} width={700} height={450} />
+                            </div>
+                        )}
+                    </div>
                 </div>
 
                 {/* Second row: answer inputs aligned with statement */}
