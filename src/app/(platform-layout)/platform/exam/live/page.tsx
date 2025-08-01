@@ -4,14 +4,41 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Clock, Flag } from "lucide-react"
-import Question from "@/app/(platform-layout)/common/components/Question"
+import Question from "@/components/Question/Question"
+import type { DiagramData } from "geometry-diagram-renderer"
 
 type Question = {
     id: number
     statement: string
     type: "text" | "multiple"
     options?: string[]
+    diagramData?: DiagramData
 }
+
+
+const sampleTriangleData: DiagramData = {
+    points: {
+        A: { x: 20, y: 80 },
+        B: { x: 30, y: 70 },
+        C: { x: 10, y: 70 }
+    },
+    edges: [
+        { from: 'A', to: 'B' },
+        { from: 'B', to: 'C' },
+        { from: 'C', to: 'A' }
+    ],
+    sides: [
+        { from: 'A', to: 'B' },
+        { from: 'B', to: 'C' },
+        { from: 'C', to: 'A' }
+    ],
+    angles: [
+        { name: 'ABC', showValue: true },
+        { name: 'BCA', showValue: true },
+        { name: 'CAB', showValue: true }
+    ],
+};
+
 
 const LiveExamPage = () => {
     const [timeLeft, setTimeLeft] = useState(90 * 60) // 90 minutes in seconds
@@ -35,6 +62,7 @@ const LiveExamPage = () => {
             id: 2,
             statement: "Каква е площта на правоъгълник с дължина 8 cm и ширина 5 cm?",
             type: "text",
+            diagramData: sampleTriangleData
         },
         {
             id: 3,
@@ -215,7 +243,7 @@ const LiveExamPage = () => {
                                 <Question key={question.id} question={question} answers={answers} handleAnswerChange={handleAnswerChange} />
                             ))}
                         </div>
-                        <div className="h-20"></div> {/* Bottom spacing */}
+                        <div className="h-20"></div>
                     </div>
                 </div>
 
