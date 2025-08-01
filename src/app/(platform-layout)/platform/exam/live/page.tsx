@@ -6,6 +6,15 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Clock, Flag } from "lucide-react";
 import Question from "@/app/(platform-layout)/platform/components/Question/Question";
 import type { DiagramData } from "geometry-diagram-renderer";
+import { useRouter } from "next/navigation";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog";
 
 type Question = {
     id: number
@@ -13,6 +22,7 @@ type Question = {
     type: "text" | "multiple"
     options?: string[]
     diagramData?: DiagramData
+    points?: number
 }
 
 
@@ -44,6 +54,8 @@ const LiveExamPage = () => {
     const [timeLeft, setTimeLeft] = useState(90 * 60) // 90 minutes in seconds
     const [answers, setAnswers] = useState<{ [key: number]: string }>({})
     const [currentQuestion, setCurrentQuestion] = useState(1)
+    const [showSubmitDialog, setShowSubmitDialog] = useState(false)
+    const router = useRouter()
 
     // Sample questions data
     const questions: Question[] = [
@@ -56,137 +68,162 @@ const LiveExamPage = () => {
                 "$\\displaystyle \\frac{5}{6}$",
                 "$\\displaystyle 1$",
                 "$\\displaystyle \\frac{2}{3}$"
-            ]
+            ],
+            points: 1
         },
         {
             id: 2,
             statement: "Каква е площта на правоъгълник с дължина 8 cm и ширина 5 cm?",
             type: "text",
-            diagramData: sampleTriangleData
+            diagramData: sampleTriangleData,
+            points: 1
         },
         {
             id: 3,
             statement: "Кое от следните е еквивалентно на 3/4?",
             type: "multiple",
             options: ["0.75", "0.34", "4/3", "7.5"],
+            points: 1
         },
         {
             id: 4,
             statement: "Изчислете: 15 + 28 - 12 × 2",
             type: "text",
+            points: 1
         },
         {
             id: 5,
             statement: "Какъв е периметърът на квадрат с дължина на страната 6 cm?",
             type: "multiple",
             options: ["12 cm", "24 cm", "36 cm", "18 cm"],
+            points: 1
         },
         {
             id: 6,
             statement: "Опростете: 2(x + 3) - 4",
             type: "text",
+            points: 1
         },
         {
             id: 7,
             statement: "Преобразувайте 0.6 в дроб в най-ниската форма.",
             type: "text",
+            points: 1
         },
         {
             id: 8,
             statement: "Кой ъгъл е по-голям от 90°, но по-малък от 180°?",
             type: "multiple",
             options: ["Acute angle", "Right angle", "Obtuse angle", "Straight angle"],
+            points: 1
         },
         {
             id: 9,
             statement: "Намерете стойността на y: 2y - 5 = 11",
             type: "text",
+            points: 1
         },
         {
             id: 10,
             statement: "Колко е 25% от 80?",
             type: "text",
+            points: 1
         },
         // Additional questions to reach 25
         {
             id: 11,
             statement: "Колко е стойността на π (пи) с точност до две десетични места?",
             type: "text",
+            points: 1
         },
         {
             id: 12,
             statement: "Кое от следните е просто число?",
             type: "multiple",
             options: ["15", "21", "23", "27"],
+            points: 1
         },
         {
             id: 13,
             statement: "Изчислете площта на кръг с радиус 4 cm.",
             type: "text",
+            points: 1
         },
         {
             id: 14,
             statement: "Колко е наклона на линията y = 2x + 3?",
             type: "text",
+            points: 1
         },
         {
             id: 15,
             statement: "Кое от следните е еквивалентно на 2/3?",
             type: "multiple",
             options: ["4/6", "6/9", "8/12", "All of the above"],
+            points: 1
         },
         {
             id: 16,
             statement: "Решете уравнението: 2x + 5 = 13",
             type: "text",
+            points: 1
         },
         {
             id: 17,
             statement: "Какъв е периметърът на правоъгълник с дължина 10 cm и ширина 6 cm?",
             type: "text",
+            points: 1
         },
         {
             id: 18,
             statement: "Кое от следните е делител на 24?",
             type: "multiple",
             options: ["5", "7", "8", "9"],
+            points: 1
         },
         {
             id: 19,
             statement: "Преобразувайте 3/5 в десетична дроб.",
             type: "text",
+            points: 1
         },
         {
             id: 20,
             statement: "Колко е стойността на x в уравнението: 3x - 7 = 8",
             type: "text",
+            points: 1
         },
         {
             id: 21,
             statement: "Кой от следните ъгли измерва 90 градуса?",
             type: "multiple",
             options: ["Acute angle", "Right angle", "Obtuse angle", "Straight angle"],
+            points: 1
         },
         {
             id: 22,
             statement: "Изчислете: 15 × 4 ÷ 2 + 7",
             type: "text",
+            points: 1
         },
         {
             id: 23,
             statement: "Колко е 20% от 150?",
             type: "text",
+            points: 1
         },
         {
             id: 24,
             statement: "Кое от следните е кратно на 6?",
             type: "multiple",
             options: ["14", "18", "22", "26"],
+            points: 1
         },
         {
             id: 25,
             statement: "Опростете израза: 2(x + 4) - 3x",
             type: "text",
+            points: 1
         },
     ]
 
@@ -229,6 +266,21 @@ const LiveExamPage = () => {
         if (answers[questionId]) return "answered"
         return "unanswered"
     }
+
+    const handleSubmitExam = () => {
+        setShowSubmitDialog(true)
+    }
+
+    const confirmSubmit = () => {
+        setShowSubmitDialog(false)
+        router.push('/platform/exam/overview')
+    }
+
+    const cancelSubmit = () => {
+        setShowSubmitDialog(false)
+    }
+
+    const questionsAnswered = Object.keys(answers).length
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -315,16 +367,40 @@ const LiveExamPage = () => {
 
                     {/* Submit Button */}
                     <div className="p-6 border-t border-gray-200">
-                        {/* <Card className="bg-gradient-to-br from-emerald-500 to-teal-600 border-0 shadow-md cursor-pointer hover:shadow-lg transition-all duration-300"> */}
-                        {/* <CardContent className="p-4"> */}
-                        <Button className="w-full bg-gradient-to-br from-emerald-500 to-teal-600 text-white hover:bg-gray-100 font-semibold text-lg py-3 h-12">
+                        <Button
+                            className="w-full bg-gradient-to-br from-emerald-500 to-teal-600 text-white hover:bg-gray-100 font-semibold text-lg py-3 h-12"
+                            onClick={handleSubmitExam}
+                        >
                             Изпрати
                         </Button>
-                        {/* </CardContent> */}
-                        {/* </Card> */}
                     </div>
                 </div>
             </div>
+
+            {/* Submit Confirmation Dialog */}
+            <Dialog open={showSubmitDialog} onOpenChange={setShowSubmitDialog}>
+                <DialogContent className="sm:max-w-md">
+                    <DialogHeader>
+                        <DialogTitle>Потвърди изпращане на изпита</DialogTitle>
+                        <DialogDescription>
+                            Сигурни ли сте, че искате да изпратите изпита? Това действие не може да бъде отменено.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div className="py-4">
+                        <p className="text-sm text-gray-600">
+                            Отговорени въпроси: <span className="font-semibold text-emerald-600">{questionsAnswered}</span> / <span className="font-semibold">{totalQuestions}</span>
+                        </p>
+                    </div>
+                    <DialogFooter className="flex gap-2">
+                        <Button variant="outline" onClick={cancelSubmit}>
+                            Отказ
+                        </Button>
+                        <Button onClick={confirmSubmit} className="bg-emerald-600 hover:bg-emerald-700">
+                            Изпрати изпита
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
 
             {/* Low Time Warning */}
             {timeLeft < 600 && (
