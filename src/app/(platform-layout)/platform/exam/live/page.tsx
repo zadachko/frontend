@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Clock, Flag } from "lucide-react"
-import Question from "@/components/Question/Question"
+import Question from "@/app/(platform-layout)/platform/components/Question/Question"
 import type { DiagramData } from "geometry-diagram-renderer"
 
 type Question = {
