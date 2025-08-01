@@ -2,11 +2,11 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Check } from 'lucide-react';
 import React from 'react';
 import 'katex/dist/katex.min.css';
-import type { DiagramData } from 'geometry-diagram-renderer';
 import QuestionBadge from './QuestionBadge';
 import QuestionStatement from './QuestionStatement';
 import { renderWithMath } from '@/app/(platform-layout)/platform/common/utilities/renderWithMath';
 import OpenAnswer from './OpenAnswer';
+import type { DiagramData } from 'geometry-diagram-renderer';
 
 const optionLetters = ['а', 'б', 'в', 'г', 'д', 'е'];
 
