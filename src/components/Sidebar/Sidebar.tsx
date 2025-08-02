@@ -1,5 +1,5 @@
 "use client"
-import { Star, Check, Trophy, Calendar, Target, BarChart3 } from "lucide-react"
+import { Star, Check, Target, BarChart3 } from "lucide-react"
 
 const Sidebar = () => {
     // Mock user data
@@ -85,7 +85,7 @@ const Sidebar = () => {
                         </div>
                         <div className="flex items-center gap-2">
                             <Star className="w-5 h-5 text-yellow-500" />
-                            <span className="text-lg font-semibold text-gray-700">{userData.currentXP.toLocaleString()} XP</span>
+                            <span className="text-lg font-semibold text-gray-700">{userData.currentXP.toLocaleString('en-US')} XP</span>
                         </div>
                     </div>
 
@@ -98,7 +98,7 @@ const Sidebar = () => {
                     </div>
 
                     <p className="text-sm text-gray-500 text-center">
-                        До ниво {userData.level + 1}: {userData.xpToNextLevel.toLocaleString()} XP
+                        До ниво {userData.level + 1}: {userData.xpToNextLevel.toLocaleString('en-US')} XP
                     </p>
                 </div>
 
