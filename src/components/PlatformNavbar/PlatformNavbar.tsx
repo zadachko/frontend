@@ -3,27 +3,7 @@
 import { useState } from "react"
 import Link from "next/link"
 import {
-    Bell,
-    User,
-    ChevronDown,
-    Calculator,
-    Ruler,
-    Hash,
-    BarChart3,
-    FileText,
-    Sigma,
-    Flame,
-    Calendar,
-    Trophy,
-    Target,
-    Settings,
-    CreditCard,
-    LogOut,
-    Star,
-    Check,
-    Home,
-    BookOpen,
-    Award,
+    User, Bell, ChevronDown, Calculator, Ruler, Hash, BarChart3, FileText, Sigma, Flame, Calendar, Trophy, Target, Settings, CreditCard, LogOut, Star, Home, BookOpen, Award,
 } from "lucide-react"
 import {
     DropdownMenu,
@@ -37,11 +17,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 
 const PlatformNavbar = () => {
     const [notificationCount] = useState(3) // Mock notification count
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-    const [mobileStreakOpen, setMobileStreakOpen] = useState(false)
-    const [mobileNotificationsOpen, setMobileNotificationsOpen] = useState(false)
-    const [mobileAccountOpen, setMobileAccountOpen] = useState(false)
-    const [mobileCategoriesOpen, setMobileCategoriesOpen] = useState(false)
+    const [openMobileMenu, setOpenMobileMenu] = useState<null | "streak" | "notifications" | "account" | "categories">(null)
 
     // Mock user data - same as sidebar
     const userData = {
@@ -206,14 +182,14 @@ const PlatformNavbar = () => {
                     {/* Mobile Categories Button */}
                     <div className="relative md:hidden">
                         <button
-                            onClick={() => setMobileCategoriesOpen(!mobileCategoriesOpen)}
+                            onClick={() => setOpenMobileMenu(openMobileMenu === "categories" ? null : "categories")}
                             className="flex items-center gap-2 px-3 py-2 text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-colors backdrop-blur-sm"
                         >
                             <span className="font-medium text-sm">Категории</span>
                             <ChevronDown className="w-4 h-4" />
                         </button>
 
-                        {mobileCategoriesOpen && (
+                        {openMobileMenu === "categories" && (
                             <div className="fixed top-[64px] bottom-0 left-0 right-0 z-40 bg-white overflow-y-auto shadow-2xl border-t border-gray-200 animate-slide-in">
                                 <div className="flex-1 overflow-y-auto p-4">
                                     <div className="space-y-2">
@@ -222,7 +198,7 @@ const PlatformNavbar = () => {
                                                 key={category.name}
                                                 href={category.href}
                                                 className="flex items-center gap-3 p-4 rounded-lg hover:bg-[#f0eeff] transition-colors border border-gray-100"
-                                                onClick={() => setMobileCategoriesOpen(false)}
+                                                onClick={() => setOpenMobileMenu(null)}
                                             >
                                                 <div className={`p-3 rounded-lg ${category.bgColor}`}>
                                                     <category.icon className={`w-6 h-6 ${category.iconColor}`} />
@@ -238,7 +214,7 @@ const PlatformNavbar = () => {
                                         <Link
                                             href="/platform/categories"
                                             className="block text-center p-4 text-[#755bc5] hover:bg-[#f0eeff] rounded-lg font-medium transition-colors border border-[#755bc5]/20"
-                                            onClick={() => setMobileCategoriesOpen(false)}
+                                            onClick={() => setOpenMobileMenu(null)}
                                         >
                                             Виж всички категории
                                         </Link>
@@ -330,14 +306,14 @@ const PlatformNavbar = () => {
                     {/* Mobile Streak Button */}
                     <div className="relative md:hidden">
                         <button
-                            onClick={() => setMobileStreakOpen(!mobileStreakOpen)}
+                            onClick={() => setOpenMobileMenu(openMobileMenu === "streak" ? null : "streak")}
                             className="flex items-center gap-1 px-2 py-1 text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-colors backdrop-blur-sm"
                         >
                             <Flame className="w-4 h-4 text-orange-300" />
                             <span className="font-medium text-sm">{streakData.current}</span>
                         </button>
 
-                        {mobileStreakOpen && (
+                        {openMobileMenu === "streak" && (
                             <div className="fixed top-[64px] bottom-0 left-0 right-0 z-40 bg-white overflow-y-auto shadow-2xl border-t border-gray-200 animate-slide-in">
                                 <div className="flex-1 overflow-y-auto p-4">
                                     <div className="flex items-center gap-4 mb-6">
@@ -470,7 +446,7 @@ const PlatformNavbar = () => {
                     {/* Mobile Notifications */}
                     <div className="relative md:hidden">
                         <button
-                            onClick={() => setMobileNotificationsOpen(!mobileNotificationsOpen)}
+                            onClick={() => setOpenMobileMenu(openMobileMenu === "notifications" ? null : "notifications")}
                             className="relative p-1.5 text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-colors backdrop-blur-sm"
                         >
                             <Bell className="w-5 h-5" />
@@ -481,7 +457,7 @@ const PlatformNavbar = () => {
                             )}
                         </button>
 
-                        {mobileNotificationsOpen && (
+                        {openMobileMenu === "notifications" && (
                             <div className="fixed top-[64px] bottom-0 left-0 right-0 z-40 bg-white overflow-y-auto shadow-2xl border-t border-gray-200 animate-slide-in">
                                 <div className="fixed top-[64px] bottom-0 left-0 right-0 z-40 bg-white overflow-y-auto shadow-2xl border-t border-gray-200 animate-slide-in">
                                     <div className="flex-1 overflow-y-auto">
@@ -521,7 +497,7 @@ const PlatformNavbar = () => {
                                         <Link
                                             href="/platform/notifications"
                                             className="block text-center text-lg text-[#755bc5] hover:text-[#6b4fb8] font-medium transition-colors p-4 rounded-lg border border-[#755bc5]/20"
-                                            onClick={() => setMobileNotificationsOpen(false)}
+                                            onClick={() => setOpenMobileMenu(null)}
                                         >
                                             Виж всички известия
                                         </Link>
@@ -625,7 +601,7 @@ const PlatformNavbar = () => {
                     {/* Mobile Account Menu */}
                     <div className="relative md:hidden">
                         <button
-                            onClick={() => setMobileAccountOpen(!mobileAccountOpen)}
+                            onClick={() => setOpenMobileMenu(openMobileMenu === "account" ? null : "account")}
                             className="flex items-center gap-1 p-1.5 text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-colors backdrop-blur-sm"
                         >
                             <div className="w-7 h-7 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/30">
@@ -633,7 +609,7 @@ const PlatformNavbar = () => {
                             </div>
                         </button>
 
-                        {mobileAccountOpen && (
+                        {openMobileMenu === "account" && (
                             <div className="fixed top-[64px] bottom-0 left-0 right-0 z-40 bg-white overflow-y-auto shadow-2xl border-t border-gray-200 animate-slide-in">
                                 <div className="flex-1 overflow-y-auto">
                                     {/* User Profile Header - Mobile Version */}
@@ -686,7 +662,7 @@ const PlatformNavbar = () => {
                                         <Link
                                             href="/platform/profile"
                                             className="flex items-center gap-4 p-4 cursor-pointer hover:bg-[#f0eeff]/50 transition-colors rounded-xl border border-gray-100"
-                                            onClick={() => setMobileAccountOpen(false)}
+                                            onClick={() => setOpenMobileMenu(null)}
                                         >
                                             <User className="w-6 h-6 text-[#755bc5]" />
                                             <span className="font-medium text-lg">Профил</span>
@@ -694,7 +670,7 @@ const PlatformNavbar = () => {
                                         <Link
                                             href="/platform/settings"
                                             className="flex items-center gap-4 p-4 cursor-pointer hover:bg-[#f0eeff]/50 transition-colors rounded-xl border border-gray-100"
-                                            onClick={() => setMobileAccountOpen(false)}
+                                            onClick={() => setOpenMobileMenu(null)}
                                         >
                                             <Settings className="w-6 h-6 text-[#755bc5]" />
                                             <span className="font-medium text-lg">Настройки</span>
@@ -702,7 +678,7 @@ const PlatformNavbar = () => {
                                         <Link
                                             href="/platform/subscription"
                                             className="flex items-center gap-4 p-4 cursor-pointer hover:bg-[#f0eeff]/50 transition-colors rounded-xl border border-gray-100"
-                                            onClick={() => setMobileAccountOpen(false)}
+                                            onClick={() => setOpenMobileMenu(null)}
                                         >
                                             <CreditCard className="w-6 h-6 text-[#755bc5]" />
                                             <span className="font-medium text-lg">Абонамент</span>
