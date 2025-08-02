@@ -180,11 +180,11 @@ const ExamOverviewPage = () => {
                 <div className="mb-8">
                     <Button
                         variant="ghost"
-                        onClick={() => router.back()}
+                        onClick={() => router.push('/platform')}
                         className="mb-4 flex items-center gap-2"
                     >
                         <ArrowLeft className="w-4 h-4" />
-                        Назад
+                        Обратно към начало
                     </Button>
                     <h1 className="text-3xl font-bold text-gray-900">Резултати от изпита</h1>
                     <p className="text-gray-600 mt-2">Преглед на вашите отговори и резултати</p>
