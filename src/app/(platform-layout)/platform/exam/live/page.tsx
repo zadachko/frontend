@@ -23,6 +23,7 @@ type Question = {
     options?: string[]
     diagramData?: DiagramData
     points?: number
+    solution?: string
 }
 
 

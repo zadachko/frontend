@@ -17,6 +17,7 @@ type Question = {
     userAnswer?: string
     isCorrect?: boolean
     points?: number
+    solution?: string
 }
 
 const sampleTriangleData: DiagramData = {
@@ -55,7 +56,7 @@ const ExamOverviewPage = () => {
         examDate: "15 декември 2024"
     };
 
-    // Mock questions with results - in a real app, this would come from the backend
+    // Mock questions with results - in a real app, this would come from the backen
     const questions: Question[] = [
         {
             id: 1,
@@ -69,8 +70,8 @@ const ExamOverviewPage = () => {
             ],
             correctAnswer: "$\\displaystyle \\frac{5}{6}$",
             userAnswer: "$\\displaystyle \\frac{5}{6}$",
-            isCorrect: true,
-            points: 1
+            points: 1,
+            solution: "<p><strong>Решение:</strong></p><p>За да съберем дробите $\\frac{2}{3}$ и $\\frac{1}{6}$, първо трябва да намерим общ знаменател.</p><p>Най-малкият общ знаменател на 3 и 6 е 6.</p><p>$\\frac{2}{3} = \\frac{2 \\times 2}{3 \\times 2} = \\frac{4}{6}$</p><p>$\\frac{1}{6}$ вече има знаменател 6.</p><p>Сега можем да съберем: $\\frac{4}{6} + \\frac{1}{6} = \\frac{5}{6}$</p><p><strong>Отговор: $\\frac{5}{6}$</strong></p>"
         },
         {
             id: 2,
@@ -79,8 +80,8 @@ const ExamOverviewPage = () => {
             diagramData: sampleTriangleData,
             correctAnswer: "40 cm²",
             userAnswer: "35 cm²",
-            isCorrect: false,
-            points: 1
+            points: 1,
+            solution: "<p><strong>Решение:</strong></p><p>Площта на правоъгълник се изчислява по формулата: <strong>Площ = дължина × ширина</strong></p><p>В нашия случай:</p><p>Дължина = 8 cm</p><p>Ширина = 5 cm</p><p>Площ = 8 cm × 5 cm = 40 cm²</p><p><strong>Отговор: 40 cm²</strong></p>"
         },
         {
             id: 3,
@@ -89,7 +90,6 @@ const ExamOverviewPage = () => {
             options: ["0.75", "0.34", "4/3", "7.5"],
             correctAnswer: "0.75",
             userAnswer: "0.75",
-            isCorrect: true,
             points: 1
         },
         {
@@ -98,7 +98,6 @@ const ExamOverviewPage = () => {
             type: "text",
             correctAnswer: "19",
             userAnswer: "12",
-            isCorrect: false,
             points: 1
         },
         {
@@ -107,8 +106,7 @@ const ExamOverviewPage = () => {
             type: "multiple",
             options: ["12 cm", "24 cm", "36 cm", "18 cm"],
             correctAnswer: "24 cm",
-            userAnswer: "24 cm",
-            isCorrect: true,
+            userAnswer: "12 cm",
             points: 1
         },
         {
@@ -117,7 +115,6 @@ const ExamOverviewPage = () => {
             type: "text",
             correctAnswer: "2x + 2",
             userAnswer: "2x + 2",
-            isCorrect: true,
             points: 1
         },
         {
@@ -126,7 +123,6 @@ const ExamOverviewPage = () => {
             type: "text",
             correctAnswer: "3/5",
             userAnswer: "6/10",
-            isCorrect: false,
             points: 1
         },
         {
@@ -136,7 +132,6 @@ const ExamOverviewPage = () => {
             options: ["Acute angle", "Right angle", "Obtuse angle", "Straight angle"],
             correctAnswer: "Obtuse angle",
             userAnswer: "Obtuse angle",
-            isCorrect: true,
             points: 1
         },
         {
@@ -145,7 +140,6 @@ const ExamOverviewPage = () => {
             type: "text",
             correctAnswer: "8",
             userAnswer: "8",
-            isCorrect: true,
             points: 1
         },
         {
@@ -154,7 +148,6 @@ const ExamOverviewPage = () => {
             type: "text",
             correctAnswer: "20",
             userAnswer: "20",
-            isCorrect: true,
             points: 1
         }
     ];
@@ -261,6 +254,7 @@ const ExamOverviewPage = () => {
                             isReviewMode={true}
                             correctAnswer={question.correctAnswer}
                             userAnswer={question.userAnswer}
+                            solution={question.solution}
                         />
                     ))}
                 </div>

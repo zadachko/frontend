@@ -10,6 +10,6 @@ export const renderWithMath = (input: string, mathClass = 'text-lg') => {
 				</span>
 			);
 		}
-		return <span key={index}>{part}</span>;
+		return <span className='leading-10' key={index} dangerouslySetInnerHTML={{ __html: part }} />;
 	});
 };
