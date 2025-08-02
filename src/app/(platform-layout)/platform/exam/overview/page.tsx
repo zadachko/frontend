@@ -261,7 +261,6 @@ const ExamOverviewPage = () => {
                             isReviewMode={true}
                             correctAnswer={question.correctAnswer}
                             userAnswer={question.userAnswer}
-                            points={question.points}
                         />
                     ))}
                 </div>
