@@ -204,46 +204,49 @@ const PlatformNavbar = () => {
                     </DropdownMenu>
 
                     {/* Mobile Categories Button */}
-                    <Dialog open={mobileCategoriesOpen} onOpenChange={setMobileCategoriesOpen}>
-                        <DialogTrigger className="md:hidden flex items-center gap-2 px-3 py-2 text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-colors backdrop-blur-sm">
+                    <div className="relative md:hidden">
+                        <button
+                            onClick={() => setMobileCategoriesOpen(!mobileCategoriesOpen)}
+                            className="flex items-center gap-2 px-3 py-2 text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-colors backdrop-blur-sm"
+                        >
                             <span className="font-medium text-sm">Категории</span>
                             <ChevronDown className="w-4 h-4" />
-                        </DialogTrigger>
-                        <DialogContent className="w-full h-full max-w-none max-h-none m-0 p-0 bg-white">
-                            <DialogHeader className="p-4 bg-gradient-to-r from-[#755bc5] to-[#8b6fd1] text-white">
-                                <DialogTitle className="text-white text-left">Категории</DialogTitle>
-                            </DialogHeader>
-                            <div className="flex-1 overflow-y-auto p-4">
-                                <div className="space-y-2">
-                                    {problemCategories.map((category) => (
+                        </button>
+
+                        {mobileCategoriesOpen && (
+                            <div className="fixed top-[64px] bottom-0 left-0 right-0 z-40 bg-white overflow-y-auto shadow-2xl border-t border-gray-200 animate-slide-in">
+                                <div className="flex-1 overflow-y-auto p-4">
+                                    <div className="space-y-2">
+                                        {problemCategories.map((category) => (
+                                            <Link
+                                                key={category.name}
+                                                href={category.href}
+                                                className="flex items-center gap-3 p-4 rounded-lg hover:bg-[#f0eeff] transition-colors border border-gray-100"
+                                                onClick={() => setMobileCategoriesOpen(false)}
+                                            >
+                                                <div className={`p-3 rounded-lg ${category.bgColor}`}>
+                                                    <category.icon className={`w-6 h-6 ${category.iconColor}`} />
+                                                </div>
+                                                <div className="flex-1">
+                                                    <div className="font-medium text-lg text-gray-900">{category.name}</div>
+                                                    <div className="text-sm text-gray-500">{category.problems} задачи</div>
+                                                </div>
+                                            </Link>
+                                        ))}
+                                    </div>
+                                    <div className="mt-6 pt-4 border-t border-gray-200">
                                         <Link
-                                            key={category.name}
-                                            href={category.href}
-                                            className="flex items-center gap-3 p-4 rounded-lg hover:bg-[#f0eeff] transition-colors border border-gray-100"
+                                            href="/platform/categories"
+                                            className="block text-center p-4 text-[#755bc5] hover:bg-[#f0eeff] rounded-lg font-medium transition-colors border border-[#755bc5]/20"
                                             onClick={() => setMobileCategoriesOpen(false)}
                                         >
-                                            <div className={`p-3 rounded-lg ${category.bgColor}`}>
-                                                <category.icon className={`w-6 h-6 ${category.iconColor}`} />
-                                            </div>
-                                            <div className="flex-1">
-                                                <div className="font-medium text-lg text-gray-900">{category.name}</div>
-                                                <div className="text-sm text-gray-500">{category.problems} задачи</div>
-                                            </div>
+                                            Виж всички категории
                                         </Link>
-                                    ))}
-                                </div>
-                                <div className="mt-6 pt-4 border-t border-gray-200">
-                                    <Link
-                                        href="/platform/categories"
-                                        className="block text-center p-4 text-[#755bc5] hover:bg-[#f0eeff] rounded-lg font-medium transition-colors border border-[#755bc5]/20"
-                                        onClick={() => setMobileCategoriesOpen(false)}
-                                    >
-                                        Виж всички категории
-                                    </Link>
+                                    </div>
                                 </div>
                             </div>
-                        </DialogContent>
-                    </Dialog>
+                        )}
+                    </div>
                 </div>
 
                 {/* Right side - Streak, Notifications and Account */}
@@ -325,83 +328,86 @@ const PlatformNavbar = () => {
                     </DropdownMenu>
 
                     {/* Mobile Streak Button */}
-                    <Dialog open={mobileStreakOpen} onOpenChange={setMobileStreakOpen}>
-                        <DialogTrigger className="md:hidden flex items-center gap-1 px-2 py-1 text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-colors backdrop-blur-sm">
+                    <div className="relative md:hidden">
+                        <button
+                            onClick={() => setMobileStreakOpen(!mobileStreakOpen)}
+                            className="flex items-center gap-1 px-2 py-1 text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-colors backdrop-blur-sm"
+                        >
                             <Flame className="w-4 h-4 text-orange-300" />
                             <span className="font-medium text-sm">{streakData.current}</span>
-                        </DialogTrigger>
-                        <DialogContent className="w-full h-full max-w-none max-h-none m-0 p-0 bg-white">
-                            <DialogHeader className="p-4 bg-gradient-to-r from-[#f0eeff] to-white border-b border-gray-100">
-                                <DialogTitle className="text-gray-900 text-left">Текуща серия</DialogTitle>
-                            </DialogHeader>
-                            <div className="flex-1 overflow-y-auto p-4">
-                                <div className="flex items-center gap-4 mb-6">
-                                    <div className="p-4 bg-orange-100 rounded-xl">
-                                        <Flame className="w-8 h-8 text-orange-500" />
-                                    </div>
-                                    <div>
-                                        <h3 className="font-bold text-2xl text-gray-900">Текуща серия</h3>
-                                        <p className="text-4xl font-bold text-orange-500">{streakData.current} дни</p>
-                                    </div>
-                                </div>
-                                <p className="text-lg text-gray-600 mb-8">Продължавай да решаваш задачи всеки ден!</p>
+                        </button>
 
-                                {/* This Week */}
-                                <div className="mb-8">
-                                    <h4 className="font-bold text-xl text-gray-900 mb-4 flex items-center gap-2">
-                                        <Calendar className="w-5 h-5 text-[#755bc5]" />
-                                        Тази седмица
-                                    </h4>
-                                    <div className="flex gap-3 justify-center">
-                                        {weekDays.map((day, index) => (
-                                            <div key={index} className="flex flex-col items-center gap-2">
-                                                <div
-                                                    className={`w-12 h-12 rounded-full flex items-center justify-center text-sm font-medium ${streakData.thisWeek[index]
-                                                        ? "bg-[#755bc5] text-white shadow-lg"
-                                                        : "bg-gray-100 text-gray-400"
-                                                        }`}
-                                                >
-                                                    {day}
+                        {mobileStreakOpen && (
+                            <div className="fixed top-[64px] bottom-0 left-0 right-0 z-40 bg-white overflow-y-auto shadow-2xl border-t border-gray-200 animate-slide-in">
+                                <div className="flex-1 overflow-y-auto p-4">
+                                    <div className="flex items-center gap-4 mb-6">
+                                        <div className="p-4 bg-orange-100 rounded-xl">
+                                            <Flame className="w-8 h-8 text-orange-500" />
+                                        </div>
+                                        <div>
+                                            <h3 className="font-bold text-2xl text-gray-900">Текуща серия</h3>
+                                            <p className="text-4xl font-bold text-orange-500">{streakData.current} дни</p>
+                                        </div>
+                                    </div>
+                                    <p className="text-lg text-gray-600 mb-8">Продължавай да решаваш задачи всеки ден!</p>
+
+                                    {/* This Week */}
+                                    <div className="mb-8">
+                                        <h4 className="font-bold text-xl text-gray-900 mb-4 flex items-center gap-2">
+                                            <Calendar className="w-5 h-5 text-[#755bc5]" />
+                                            Тази седмица
+                                        </h4>
+                                        <div className="flex gap-3 justify-center">
+                                            {weekDays.map((day, index) => (
+                                                <div key={index} className="flex flex-col items-center gap-2">
+                                                    <div
+                                                        className={`w-12 h-12 rounded-full flex items-center justify-center text-sm font-medium ${streakData.thisWeek[index]
+                                                            ? "bg-[#755bc5] text-white shadow-lg"
+                                                            : "bg-gray-100 text-gray-400"
+                                                            }`}
+                                                    >
+                                                        {day}
+                                                    </div>
                                                 </div>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    {/* Stats */}
+                                    <div className="grid grid-cols-1 gap-4">
+                                        <div className="p-6 rounded-xl bg-[#f0eeff]/50 text-center">
+                                            <div className="flex items-center justify-center gap-2 mb-2">
+                                                <Trophy className="w-6 h-6 text-yellow-500" />
                                             </div>
-                                        ))}
+                                            <p className="text-3xl font-bold text-gray-900">{streakData.longest}</p>
+                                            <p className="text-lg text-gray-500">Най-дълга серия</p>
+                                        </div>
+                                        <div className="p-6 rounded-xl bg-[#f0eeff]/50 text-center">
+                                            <div className="flex items-center justify-center gap-2 mb-2">
+                                                <Calendar className="w-6 h-6 text-[#755bc5]" />
+                                            </div>
+                                            <p className="text-3xl font-bold text-gray-900">{streakData.thisMonth}</p>
+                                            <p className="text-lg text-gray-500">Дни този месец</p>
+                                        </div>
+                                        <div className="p-6 rounded-xl bg-[#f0eeff]/50 text-center">
+                                            <div className="flex items-center justify-center gap-2 mb-2">
+                                                <Target className="w-6 h-6 text-green-500" />
+                                            </div>
+                                            <p className="text-3xl font-bold text-gray-900">{streakData.total}</p>
+                                            <p className="text-lg text-gray-500">Общо дни</p>
+                                        </div>
                                     </div>
-                                </div>
 
-                                {/* Stats */}
-                                <div className="grid grid-cols-1 gap-4">
-                                    <div className="p-6 rounded-xl bg-[#f0eeff]/50 text-center">
-                                        <div className="flex items-center justify-center gap-2 mb-2">
-                                            <Trophy className="w-6 h-6 text-yellow-500" />
-                                        </div>
-                                        <p className="text-3xl font-bold text-gray-900">{streakData.longest}</p>
-                                        <p className="text-lg text-gray-500">Най-дълга серия</p>
+                                    <div className="mt-8 p-6 bg-gradient-to-r from-[#f0eeff] to-white border border-[#755bc5]/20 rounded-xl">
+                                        <p className="text-lg text-center text-gray-600">
+                                            <span className="font-bold text-[#755bc5]">Съвет:</span> Решавай поне една задача всеки ден за да
+                                            запазиш серията си!
+                                        </p>
                                     </div>
-                                    <div className="p-6 rounded-xl bg-[#f0eeff]/50 text-center">
-                                        <div className="flex items-center justify-center gap-2 mb-2">
-                                            <Calendar className="w-6 h-6 text-[#755bc5]" />
-                                        </div>
-                                        <p className="text-3xl font-bold text-gray-900">{streakData.thisMonth}</p>
-                                        <p className="text-lg text-gray-500">Дни този месец</p>
-                                    </div>
-                                    <div className="p-6 rounded-xl bg-[#f0eeff]/50 text-center">
-                                        <div className="flex items-center justify-center gap-2 mb-2">
-                                            <Target className="w-6 h-6 text-green-500" />
-                                        </div>
-                                        <p className="text-3xl font-bold text-gray-900">{streakData.total}</p>
-                                        <p className="text-lg text-gray-500">Общо дни</p>
-                                    </div>
-                                </div>
-
-                                <div className="mt-8 p-6 bg-gradient-to-r from-[#f0eeff] to-white border border-[#755bc5]/20 rounded-xl">
-                                    <p className="text-lg text-center text-gray-600">
-                                        <span className="font-bold text-[#755bc5]">Съвет:</span> Решавай поне една задача всеки ден за да
-                                        запазиш серията си!
-                                    </p>
                                 </div>
                             </div>
-                        </DialogContent>
-                    </Dialog>
+                        )}
+                    </div>
 
                     {/* Desktop Notifications */}
                     <DropdownMenu>
@@ -462,63 +468,68 @@ const PlatformNavbar = () => {
                     </DropdownMenu>
 
                     {/* Mobile Notifications */}
-                    <Dialog open={mobileNotificationsOpen} onOpenChange={setMobileNotificationsOpen}>
-                        <DialogTrigger className="md:hidden relative p-1.5 text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-colors backdrop-blur-sm">
+                    <div className="relative md:hidden">
+                        <button
+                            onClick={() => setMobileNotificationsOpen(!mobileNotificationsOpen)}
+                            className="relative p-1.5 text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-colors backdrop-blur-sm"
+                        >
                             <Bell className="w-5 h-5" />
                             {notificationCount > 0 && (
-                                <Badge className="absolute -top-1 -right-1 w-4 h-4 p-0 flex items-center justify-center bg-red-500 hover:bg-red-600 text-white text-xs border-2 border-white">
+                                <Badge className="absolute -top-1 -right-1 w-4 h-4 p-0 flex items-center justify-center bg-red-500 text-white text-xs border-2 border-white">
                                     {notificationCount}
                                 </Badge>
                             )}
-                        </DialogTrigger>
-                        <DialogContent className="w-full h-full max-w-none max-h-none m-0 p-0 bg-white">
-                            <DialogHeader className="p-4 bg-gradient-to-r from-[#f0eeff] to-white border-b border-gray-100">
-                                <DialogTitle className="text-gray-900 text-left">Известия</DialogTitle>
-                            </DialogHeader>
-                            <div className="flex-1 overflow-y-auto">
-                                {/* Mock notifications */}
-                                <div className="p-6 hover:bg-[#f0eeff]/30 border-b border-gray-100 transition-colors">
-                                    <div className="flex items-start gap-4">
-                                        <div className="w-3 h-3 bg-[#755bc5] rounded-full mt-2 flex-shrink-0"></div>
-                                        <div>
-                                            <p className="text-lg font-medium text-gray-900">Нов тест е достъпен</p>
-                                            <p className="text-sm text-gray-500 mt-2">Алгебра - Квадратни уравнения</p>
-                                            <p className="text-sm text-gray-400 mt-1">Преди 2 часа</p>
+                        </button>
+
+                        {mobileNotificationsOpen && (
+                            <div className="fixed top-[64px] bottom-0 left-0 right-0 z-40 bg-white overflow-y-auto shadow-2xl border-t border-gray-200 animate-slide-in">
+                                <div className="fixed top-[64px] bottom-0 left-0 right-0 z-40 bg-white overflow-y-auto shadow-2xl border-t border-gray-200 animate-slide-in">
+                                    <div className="flex-1 overflow-y-auto">
+                                        {/* Mock notifications */}
+                                        <div className="p-6 hover:bg-[#f0eeff]/30 border-b border-gray-100 transition-colors">
+                                            <div className="flex items-start gap-4">
+                                                <div className="w-3 h-3 bg-[#755bc5] rounded-full mt-2 flex-shrink-0"></div>
+                                                <div>
+                                                    <p className="text-lg font-medium text-gray-900">Нов тест е достъпен</p>
+                                                    <p className="text-sm text-gray-500 mt-2">Алгебра - Квадратни уравнения</p>
+                                                    <p className="text-sm text-gray-400 mt-1">Преди 2 часа</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="p-6 hover:bg-[#f0eeff]/30 border-b border-gray-100 transition-colors">
+                                            <div className="flex items-start gap-4">
+                                                <div className="w-3 h-3 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
+                                                <div>
+                                                    <p className="text-lg font-medium text-gray-900">Постижение отключено!</p>
+                                                    <p className="text-sm text-gray-500 mt-2">Решихте 50 задачи по геометрия</p>
+                                                    <p className="text-sm text-gray-400 mt-1">Преди 1 ден</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="p-6 hover:bg-[#f0eeff]/30 border-b border-gray-100 transition-colors">
+                                            <div className="flex items-start gap-4">
+                                                <div className="w-3 h-3 bg-yellow-500 rounded-full mt-2 flex-shrink-0"></div>
+                                                <div>
+                                                    <p className="text-lg font-medium text-gray-900">Седмичен отчет</p>
+                                                    <p className="text-sm text-gray-500 mt-2">Вашият прогрес за тази седмица</p>
+                                                    <p className="text-sm text-gray-400 mt-1">Преди 3 дни</p>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div className="p-6 hover:bg-[#f0eeff]/30 border-b border-gray-100 transition-colors">
-                                    <div className="flex items-start gap-4">
-                                        <div className="w-3 h-3 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
-                                        <div>
-                                            <p className="text-lg font-medium text-gray-900">Постижение отключено!</p>
-                                            <p className="text-sm text-gray-500 mt-2">Решихте 50 задачи по геометрия</p>
-                                            <p className="text-sm text-gray-400 mt-1">Преди 1 ден</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="p-6 hover:bg-[#f0eeff]/30 border-b border-gray-100 transition-colors">
-                                    <div className="flex items-start gap-4">
-                                        <div className="w-3 h-3 bg-yellow-500 rounded-full mt-2 flex-shrink-0"></div>
-                                        <div>
-                                            <p className="text-lg font-medium text-gray-900">Седмичен отчет</p>
-                                            <p className="text-sm text-gray-500 mt-2">Вашият прогрес за тази седмица</p>
-                                            <p className="text-sm text-gray-400 mt-1">Преди 3 дни</p>
-                                        </div>
+                                    <div className="p-6 border-t border-gray-100 bg-gradient-to-r from-[#f0eeff] to-white">
+                                        <Link
+                                            href="/platform/notifications"
+                                            className="block text-center text-lg text-[#755bc5] hover:text-[#6b4fb8] font-medium transition-colors p-4 rounded-lg border border-[#755bc5]/20"
+                                            onClick={() => setMobileNotificationsOpen(false)}
+                                        >
+                                            Виж всички известия
+                                        </Link>
                                     </div>
                                 </div>
                             </div>
-                            <div className="p-6 border-t border-gray-100 bg-gradient-to-r from-[#f0eeff] to-white">
-                                <Link
-                                    href="/platform/notifications"
-                                    className="block text-center text-lg text-[#755bc5] hover:text-[#6b4fb8] font-medium transition-colors p-4 rounded-lg border border-[#755bc5]/20"
-                                    onClick={() => setMobileNotificationsOpen(false)}
-                                >
-                                    Виж всички известия
-                                </Link>
-                            </div>
-                        </DialogContent>
-                    </Dialog>
+                        )}
+                    </div>
 
                     {/* Desktop Account Menu */}
                     <DropdownMenu>
@@ -612,150 +623,99 @@ const PlatformNavbar = () => {
                     </DropdownMenu>
 
                     {/* Mobile Account Menu */}
-                    <Dialog open={mobileAccountOpen} onOpenChange={setMobileAccountOpen}>
-                        <DialogTrigger className="md:hidden flex items-center gap-1 p-1.5 text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-colors backdrop-blur-sm">
+                    <div className="relative md:hidden">
+                        <button
+                            onClick={() => setMobileAccountOpen(!mobileAccountOpen)}
+                            className="flex items-center gap-1 p-1.5 text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-colors backdrop-blur-sm"
+                        >
                             <div className="w-7 h-7 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/30">
                                 <User className="w-4 h-4 text-white" />
                             </div>
-                        </DialogTrigger>
-                        <DialogContent className="w-full h-full max-w-none max-h-none m-0 p-0 bg-white">
-                            <DialogHeader className="p-4 bg-gradient-to-r from-[#f0eeff] to-white border-b border-gray-100">
-                                <DialogTitle className="text-gray-900 text-left">Профил</DialogTitle>
-                            </DialogHeader>
-                            <div className="flex-1 overflow-y-auto">
-                                {/* User Profile Header - Mobile Version */}
-                                <div className="p-6 bg-gradient-to-r from-[#f0eeff] to-white">
-                                    <div className="flex items-center gap-4 mb-6">
-                                        <div className="relative">
-                                            <div className="w-20 h-20 rounded-full border-4 border-white overflow-hidden bg-gray-100 shadow-lg">
-                                                <img
-                                                    src={userData.avatar || "/placeholder.svg?height=80&width=80"}
-                                                    alt={userData.name}
-                                                    className="w-full h-full object-cover"
-                                                />
-                                            </div>
-                                            <div className="absolute -top-1 -right-1 w-10 h-10 bg-[#755bc5] rounded-full flex items-center justify-center border-3 border-white shadow-lg">
-                                                <span className="text-sm font-bold text-white">{userData.level}</span>
-                                            </div>
-                                        </div>
-                                        <div className="flex-1">
-                                            <h3 className="font-bold text-2xl text-gray-900">{userData.name}</h3>
-                                            <p className="text-lg text-gray-500 mt-1">{userData.email}</p>
-                                            <div className="flex items-center gap-6 mt-3">
-                                                <div className="flex items-center gap-2">
-                                                    <BarChart3 className="w-5 h-5 text-[#755bc5]" />
-                                                    <span className="text-lg font-medium text-gray-600">Ниво {userData.level}</span>
+                        </button>
+
+                        {mobileAccountOpen && (
+                            <div className="fixed top-[64px] bottom-0 left-0 right-0 z-40 bg-white overflow-y-auto shadow-2xl border-t border-gray-200 animate-slide-in">
+                                <div className="flex-1 overflow-y-auto">
+                                    {/* User Profile Header - Mobile Version */}
+                                    <div className="p-6 bg-gradient-to-r from-[#f0eeff] to-white">
+                                        <div className="flex items-center gap-4 mb-6">
+                                            <div className="relative">
+                                                <div className="w-20 h-20 rounded-full border-4 border-white overflow-hidden bg-gray-100 shadow-lg">
+                                                    <img
+                                                        src={userData.avatar || "/placeholder.svg?height=80&width=80"}
+                                                        alt={userData.name}
+                                                        className="w-full h-full object-cover"
+                                                    />
                                                 </div>
-                                                <div className="flex items-center gap-2">
-                                                    <Star className="w-5 h-5 text-yellow-500" />
-                                                    <span className="text-lg font-medium text-gray-600">
-                                                        {userData.currentXP.toLocaleString()} XP
-                                                    </span>
+                                                <div className="absolute -top-1 -right-1 w-10 h-10 bg-[#755bc5] rounded-full flex items-center justify-center border-3 border-white shadow-lg">
+                                                    <span className="text-sm font-bold text-white">{userData.level}</span>
                                                 </div>
                                             </div>
+                                            <div className="flex-1">
+                                                <h3 className="font-bold text-2xl text-gray-900">{userData.name}</h3>
+                                                <p className="text-lg text-gray-500 mt-1">{userData.email}</p>
+                                                <div className="flex items-center gap-6 mt-3">
+                                                    <div className="flex items-center gap-2">
+                                                        <BarChart3 className="w-5 h-5 text-[#755bc5]" />
+                                                        <span className="text-lg font-medium text-gray-600">Ниво {userData.level}</span>
+                                                    </div>
+                                                    <div className="flex items-center gap-2">
+                                                        <Star className="w-5 h-5 text-yellow-500" />
+                                                        <span className="text-lg font-medium text-gray-600">
+                                                            {userData.currentXP.toLocaleString()} XP
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    {/* XP Progress Bar */}
-                                    <div className="w-full bg-gray-200 rounded-full h-3 mb-3">
-                                        <div
-                                            className="bg-gradient-to-r from-[#755bc5] to-[#8b6fd1] h-3 rounded-full transition-all duration-300"
-                                            style={{ width: `${xpProgress}%` }}
-                                        ></div>
-                                    </div>
-                                    <p className="text-sm text-gray-500 text-center">
-                                        До ниво {userData.level + 1}: {userData.xpToNextLevel.toLocaleString()} XP
-                                    </p>
-                                </div>
-
-                                {/* Stats for mobile */}
-                                <div className="p-6 border-b border-gray-100">
-                                    <div className="grid grid-cols-3 gap-4 mb-6">
-                                        <div className="text-center p-4 bg-[#f0eeff]/30 rounded-xl">
-                                            <Trophy className="w-6 h-6 text-yellow-500 mx-auto mb-2" />
-                                            <p className="text-xl font-bold text-gray-800">{streakData.longest}</p>
-                                            <p className="text-sm text-gray-500">Най-дълга серия</p>
-                                        </div>
-                                        <div className="text-center p-4 bg-[#f0eeff]/30 rounded-xl">
-                                            <Calendar className="w-6 h-6 text-[#755bc5] mx-auto mb-2" />
-                                            <p className="text-xl font-bold text-gray-800">{streakData.thisMonth}</p>
-                                            <p className="text-sm text-gray-500">Дни този месец</p>
-                                        </div>
-                                        <div className="text-center p-4 bg-[#f0eeff]/30 rounded-xl">
-                                            <Target className="w-6 h-6 text-green-500 mx-auto mb-2" />
-                                            <p className="text-xl font-bold text-gray-800">{streakData.total}</p>
-                                            <p className="text-sm text-gray-500">Общо дни</p>
-                                        </div>
-                                    </div>
-
-                                    {/* Daily Missions for mobile */}
-                                    <div className="space-y-3">
-                                        <h4 className="font-bold text-lg text-gray-900 mb-4">Дневни мисии</h4>
-                                        {dailyMissions.map((mission) => (
+                                        {/* XP Progress Bar */}
+                                        <div className="w-full bg-gray-200 rounded-full h-3 mb-3">
                                             <div
-                                                key={mission.id}
-                                                className={`rounded-xl p-4 border-2 transition-all duration-200 ${mission.completed ? "bg-green-50 border-green-200" : "bg-gray-50 border-gray-200"
-                                                    }`}
-                                            >
-                                                <div className="flex items-center gap-3">
-                                                    <div
-                                                        className={`w-8 h-8 rounded-full flex items-center justify-center ${mission.completed ? "bg-green-500" : "bg-[#755bc5]"
-                                                            }`}
-                                                    >
-                                                        {mission.completed ? (
-                                                            <Check className="w-5 h-5 text-white" />
-                                                        ) : (
-                                                            <span className="text-sm font-bold text-white">{mission.progress}</span>
-                                                        )}
-                                                    </div>
-                                                    <div className="flex-1">
-                                                        <p className="text-lg font-medium text-gray-800">{mission.title}</p>
-                                                        {!mission.completed && (
-                                                            <p className="text-sm text-gray-500 mt-1">
-                                                                {mission.progress}/{mission.total}
-                                                            </p>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        ))}
+                                                className="bg-gradient-to-r from-[#755bc5] to-[#8b6fd1] h-3 rounded-full transition-all duration-300"
+                                                style={{ width: `${xpProgress}%` }}
+                                            ></div>
+                                        </div>
+                                        <p className="text-sm text-gray-500 text-center">
+                                            До ниво {userData.level + 1}: {userData.xpToNextLevel.toLocaleString()} XP
+                                        </p>
                                     </div>
-                                </div>
 
-                                {/* Menu Items */}
-                                <div className="p-6 space-y-3">
-                                    <Link
-                                        href="/platform/profile"
-                                        className="flex items-center gap-4 p-4 cursor-pointer hover:bg-[#f0eeff]/50 transition-colors rounded-xl border border-gray-100"
-                                        onClick={() => setMobileAccountOpen(false)}
-                                    >
-                                        <User className="w-6 h-6 text-[#755bc5]" />
-                                        <span className="font-medium text-lg">Профил</span>
-                                    </Link>
-                                    <Link
-                                        href="/platform/settings"
-                                        className="flex items-center gap-4 p-4 cursor-pointer hover:bg-[#f0eeff]/50 transition-colors rounded-xl border border-gray-100"
-                                        onClick={() => setMobileAccountOpen(false)}
-                                    >
-                                        <Settings className="w-6 h-6 text-[#755bc5]" />
-                                        <span className="font-medium text-lg">Настройки</span>
-                                    </Link>
-                                    <Link
-                                        href="/platform/subscription"
-                                        className="flex items-center gap-4 p-4 cursor-pointer hover:bg-[#f0eeff]/50 transition-colors rounded-xl border border-gray-100"
-                                        onClick={() => setMobileAccountOpen(false)}
-                                    >
-                                        <CreditCard className="w-6 h-6 text-[#755bc5]" />
-                                        <span className="font-medium text-lg">Абонамент</span>
-                                    </Link>
-                                    <button className="flex items-center gap-4 p-4 text-red-600 hover:text-red-700 hover:bg-red-50 cursor-pointer transition-colors rounded-xl border border-red-200 w-full text-left">
-                                        <LogOut className="w-6 h-6" />
-                                        <span className="font-medium text-lg">Изход</span>
-                                    </button>
+                                    {/* Menu Items */}
+                                    <div className="p-6 space-y-3">
+                                        <Link
+                                            href="/platform/profile"
+                                            className="flex items-center gap-4 p-4 cursor-pointer hover:bg-[#f0eeff]/50 transition-colors rounded-xl border border-gray-100"
+                                            onClick={() => setMobileAccountOpen(false)}
+                                        >
+                                            <User className="w-6 h-6 text-[#755bc5]" />
+                                            <span className="font-medium text-lg">Профил</span>
+                                        </Link>
+                                        <Link
+                                            href="/platform/settings"
+                                            className="flex items-center gap-4 p-4 cursor-pointer hover:bg-[#f0eeff]/50 transition-colors rounded-xl border border-gray-100"
+                                            onClick={() => setMobileAccountOpen(false)}
+                                        >
+                                            <Settings className="w-6 h-6 text-[#755bc5]" />
+                                            <span className="font-medium text-lg">Настройки</span>
+                                        </Link>
+                                        <Link
+                                            href="/platform/subscription"
+                                            className="flex items-center gap-4 p-4 cursor-pointer hover:bg-[#f0eeff]/50 transition-colors rounded-xl border border-gray-100"
+                                            onClick={() => setMobileAccountOpen(false)}
+                                        >
+                                            <CreditCard className="w-6 h-6 text-[#755bc5]" />
+                                            <span className="font-medium text-lg">Абонамент</span>
+                                        </Link>
+                                        <button className="flex items-center gap-4 p-4 text-red-600 hover:text-red-700 hover:bg-red-50 cursor-pointer transition-colors rounded-xl border border-red-200 w-full text-left">
+                                            <LogOut className="w-6 h-6" />
+                                            <span className="font-medium text-lg">Изход</span>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                        </DialogContent>
-                    </Dialog>
+                        )}
+                    </div>
                 </div>
             </div>
         </nav>
