@@ -153,14 +153,14 @@ const PlatformNavbar = () => {
     ]
 
     return (
-        <nav className="bg-gradient-to-r from-[#755bc5] to-[#8b6fd1] border-b border-[#6b4fb8] px-4 sm:px-6 py-3 sm:py-4 shadow-lg">
+        <nav className="bg-gradient-to-r from-[#755bc5] to-[#8b6fd1] border-b border-[#6b4fb8] px-4 sm:px-6 md:pl-0 py-3 sm:py-4 shadow-lg">
             <div className="flex items-center justify-between">
                 {/* Left side - Logo and Desktop Navigation */}
                 <div className="flex items-center gap-4 sm:gap-8">
                     {/* Logo */}
                     <Link
                         href="/platform"
-                        className="text-xl sm:text-2xl font-bold text-white hover:text-[#f0eeff] transition-colors"
+                        className="md:w-80 text-center text-xl sm:text-2xl font-bold text-white hover:text-[#f0eeff] transition-colors"
                     >
                         Задачко
                     </Link>
