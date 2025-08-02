@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Clock, FileText, AlertCircle, CheckCircle, Play, Trophy, Target, Sparkles, TrendingUp, AlertTriangle } from "lucide-react";
 import ExamRule from "./components/examRule";
 import PreviousExamResult from "./components/previousExamResult";
@@ -119,14 +119,16 @@ const Page = () => {
                                                     Потвърди започване на изпита
                                                 </DialogTitle>
                                             </div>
-                                            <DialogDescription className="text-gray-600 text-base leading-relaxed">
-                                                Сигурни ли сте, че искате да започнете пробния изпит? След започване:
-                                                <ul className="list-disc list-inside mt-3 space-y-1 text-sm">
+                                            <div className="text-gray-600 text-base leading-relaxed">
+                                                <p className="mb-3">
+                                                    Сигурни ли сте, че искате да започнете пробния изпит? След започване:
+                                                </p>
+                                                <ul className="list-disc list-inside space-y-1 text-sm">
                                                     <li>Ще имате 90 минути за 25 въпроса</li>
                                                     <li>Няма да можете да се връщате към предишни въпроси</li>
                                                     <li>Изпитът ще се подаде автоматично при изтичане на времето</li>
                                                 </ul>
-                                            </DialogDescription>
+                                            </div>
                                         </DialogHeader>
                                         <DialogFooter className="flex gap-3 sm:justify-end">
                                             <Button
