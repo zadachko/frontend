@@ -146,7 +146,7 @@ const Page = () => {
 
         return (
             <Card className="hover:shadow-md transition-all duration-200 bg-white border border-gray-200">
-                <CardContent className="px-4 sm:px-6 py-4">
+                <CardContent className="px-4 sm:px-6 py-2">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         {/* Left Side */}
                         <div className="flex items-start gap-4 flex-1 min-w-0">
@@ -167,19 +167,19 @@ const Page = () => {
                                 </div>
 
                                 <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600">
-                                    <div className="flex items-center gap-1">
-                                        <Calendar className="w-3 h-3" />
-                                        <span>{result.date}</span>
+                                    <div className="flex items-center gap-2 bg-gray-50 px-3 py-1.5 rounded-lg">
+                                        <Calendar className="w-4 h-4 text-gray-500" />
+                                        <span className="font-medium">{result.date}</span>
                                     </div>
                                     {result.duration && (
-                                        <div className="flex items-center gap-1">
-                                            <Clock className="w-3 h-3" />
-                                            <span>{result.duration}</span>
+                                        <div className="flex items-center gap-2 bg-blue-50 px-3 py-1.5 rounded-lg">
+                                            <Clock className="w-4 h-4 text-blue-500" />
+                                            <span className="font-medium text-blue-700">{result.duration}</span>
                                         </div>
                                     )}
-                                    <div className="flex items-center gap-1">
-                                        <CheckCircle className="w-3 h-3" />
-                                        <span>
+                                    <div className="flex items-center gap-2 bg-green-50 px-3 py-1.5 rounded-lg">
+                                        <CheckCircle className="w-4 h-4 text-green-500" />
+                                        <span className="font-medium text-green-700">
                                             {result.correctAnswers}/{result.totalQuestions}
                                         </span>
                                     </div>
