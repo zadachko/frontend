@@ -24,15 +24,15 @@ const Page = () => {
 
     // Mock data for results
     const results: TestResult[] = [
-        {
-            id: "1",
-            type: "test",
-            title: "Геометрия — Триъгълници",
-            date: "12.12.2024",
-            correctAnswers: 16,
-            totalQuestions: 20,
-            percentage: 100,
-        },
+        // {
+        //     id: "1",
+        //     type: "test",
+        //     title: "Геометрия — Триъгълници",
+        //     date: "12.12.2024",
+        //     correctAnswers: 16,
+        //     totalQuestions: 20,
+        //     percentage: 100,
+        // },
         {
             id: "2",
             type: "exam",
@@ -43,15 +43,15 @@ const Page = () => {
             percentage: 90,
             duration: "85 мин",
         },
-        {
-            id: "3",
-            type: "test",
-            title: "Алгебра — Квадратни уравнения",
-            date: "05.12.2024",
-            correctAnswers: 7,
-            totalQuestions: 18,
-            percentage: 80,
-        },
+        // {
+        //     id: "3",
+        //     type: "test",
+        //     title: "Алгебра — Квадратни уравнения",
+        //     date: "05.12.2024",
+        //     correctAnswers: 7,
+        //     totalQuestions: 18,
+        //     percentage: 80,
+        // },
         {
             id: "4",
             type: "exam",
@@ -62,15 +62,15 @@ const Page = () => {
             percentage: 72,
             duration: "82 мин",
         },
-        {
-            id: "5",
-            type: "test",
-            title: "Геометрия — Триъгълници",
-            date: "12.12.2024",
-            correctAnswers: 16,
-            totalQuestions: 20,
-            percentage: 62,
-        },
+        // {
+        //     id: "5",
+        //     type: "test",
+        //     title: "Геометрия — Триъгълници",
+        //     date: "12.12.2024",
+        //     correctAnswers: 16,
+        //     totalQuestions: 20,
+        //     percentage: 62,
+        // },
         {
             id: "6",
             type: "exam",
@@ -81,15 +81,15 @@ const Page = () => {
             percentage: 52,
             duration: "85 мин",
         },
-        {
-            id: "7",
-            type: "test",
-            title: "Алгебра — Квадратни уравнения",
-            date: "05.12.2024",
-            correctAnswers: 7,
-            totalQuestions: 18,
-            percentage: 39,
-        },
+        // {
+        //     id: "7",
+        //     type: "test",
+        //     title: "Алгебра — Квадратни уравнения",
+        //     date: "05.12.2024",
+        //     correctAnswers: 7,
+        //     totalQuestions: 18,
+        //     percentage: 39,
+        // },
         {
             id: "8",
             type: "test",
@@ -99,16 +99,16 @@ const Page = () => {
             totalQuestions: 22,
             percentage: 28,
         },
-        {
-            id: "9",
-            type: "exam",
-            title: "Пробен изпит №1",
-            date: "28.11.2024",
-            correctAnswers: 5,
-            totalQuestions: 25,
-            percentage: 14,
-            duration: "88 мин",
-        },
+        // {
+        //     id: "9",
+        //     type: "exam",
+        //     title: "Пробен изпит №1",
+        //     date: "28.11.2024",
+        //     correctAnswers: 5,
+        //     totalQuestions: 25,
+        //     percentage: 14,
+        //     duration: "88 мин",
+        // },
     ]
 
 
@@ -139,7 +139,7 @@ const Page = () => {
                 hue = 85 + ((clamped - 85) / 15) * 35;
             }
 
-            return `hsl(${hue}, 100%, 50%)`;
+            return `hsl(${hue}, 100%, 45%)`; // Slightly darker green tone
         };
 
 
@@ -268,42 +268,33 @@ const Page = () => {
         const totalTests = results.filter((r) => r.type === "test").length
         const totalExams = results.filter((r) => r.type === "exam").length
 
+        const cardData = [
+            { label: "Най-добър резултат", value: `${bestScore}%`, icon: Trophy, color: "bg-blue-100", iconColor: "text-blue-600" },
+            { label: "Среден резултат", value: `${avgScore}%`, icon: Target, color: "bg-amber-100", iconColor: "text-amber-600" },
+            { label: "Решени тестове", value: totalTests, icon: TestTube, color: "bg-purple-100", iconColor: "text-purple-600" },
+            { label: "Решени матури", value: totalExams, icon: GraduationCap, color: "bg-emerald-100", iconColor: "text-emerald-600" },
+        ]
+
         return (
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-                <Card className="bg-gradient-to-r from-purple-500 to-purple-600 text-white border-0">
-                    <CardContent className="p-4 text-center">
-                        <Trophy className="w-6 h-6 mx-auto mb-2 opacity-90" />
-                        <div className="text-2xl font-bold">{bestScore}%</div>
-                        <div className="text-sm opacity-90">Най-добър резултат</div>
-                    </CardContent>
-                </Card>
-
-                <Card className="bg-gradient-to-r from-emerald-500 to-emerald-600 text-white border-0">
-                    <CardContent className="p-4 text-center">
-                        <Target className="w-6 h-6 mx-auto mb-2 opacity-90" />
-                        <div className="text-2xl font-bold">{avgScore}%</div>
-                        <div className="text-sm opacity-90">Среден резултат</div>
-                    </CardContent>
-                </Card>
-
-                <Card className="bg-gradient-to-r from-blue-500 to-blue-600 text-white border-0">
-                    <CardContent className="p-4 text-center">
-                        <TestTube className="w-6 h-6 mx-auto mb-2 opacity-90" />
-                        <div className="text-2xl font-bold">{totalTests}</div>
-                        <div className="text-sm opacity-90">Решени тестове</div>
-                    </CardContent>
-                </Card>
-
-                <Card className="bg-gradient-to-r from-amber-500 to-amber-600 text-white border-0">
-                    <CardContent className="p-4 text-center">
-                        <GraduationCap className="w-6 h-6 mx-auto mb-2 opacity-90" />
-                        <div className="text-2xl font-bold">{totalExams}</div>
-                        <div className="text-sm opacity-90">Решени матури</div>
-                    </CardContent>
-                </Card>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-4 sm:mb-6">
+                {cardData.map((card, index) => (
+                    <Card
+                        key={index}
+                        className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 px-3 py-3"
+                    >
+                        <CardContent className="flex flex-col items-center justify-center gap-2 p-0">
+                            <div className={`w-9 h-9 rounded-full flex items-center justify-center ${card.color}`}>
+                                <card.icon className={`w-4 h-4 ${card.iconColor}`} />
+                            </div>
+                            <div className="text-lg font-bold text-gray-900 leading-tight">{card.value}</div>
+                            <div className="text-xs text-center text-gray-500 leading-tight">{card.label}</div>
+                        </CardContent>
+                    </Card>
+                ))}
             </div>
         )
     }
+
 
     return (
         <div className="flex flex-1 h-full w-full overflow-hidden">
