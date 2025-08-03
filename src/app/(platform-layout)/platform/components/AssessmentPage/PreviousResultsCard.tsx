@@ -2,7 +2,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { TrendingUp, Trophy, Sparkles } from 'lucide-react';
 import PreviousResult from './PreviousResult';
 
-const PreviousResults = ({ previousResults }: {
+const PreviousResultsCard = ({ previousResults }: {
     previousResults: {
         id: number;
         date: string;
@@ -20,13 +20,13 @@ const PreviousResults = ({ previousResults }: {
                 <CardContent className="p-6 h-full flex flex-col">
                     <div className="flex items-center gap-2 mb-5">
                         <Trophy className="w-5 h-5 text-amber-500" />
-                        <h2 className="text-xl font-medium text-gray-900">Предни Резултати</h2>
+                        <h2 className="text-xl font-medium text-gray-900">Преднишни Резултати</h2>
                     </div>
 
                     {previousResults.length > 0 ? (
                         <div className="space-y-3 flex-1">
-                            {previousResults.map((exam) => (
-                                <PreviousResult key={exam.id} exam={exam} />
+                            {previousResults.map((result) => (
+                                <PreviousResult key={result.id} result={result} />
                             ))}
                         </div>
                     ) : (
@@ -70,4 +70,4 @@ const PreviousResults = ({ previousResults }: {
     )
 }
 
-export default PreviousResults;
+export default PreviousResultsCard;

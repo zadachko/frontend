@@ -1,8 +1,7 @@
 "use client";
 
 import { Card, CardContent } from "@/components/ui/card";
-import { Clock, FileText, AlertCircle, CheckCircle, Play, Target } from "lucide-react";
-import ExamRule from "./components/examRule";
+import { TestTube } from "lucide-react";
 import { useState } from "react";
 import PreviousResultsCard from "../components/AssessmentPage/PreviousResultsCard";
 import AssessmentStartFlow from "../components/AssessmentPage/AssessmentStartFlow";
@@ -10,32 +9,13 @@ import AssessmentStartFlow from "../components/AssessmentPage/AssessmentStartFlo
 const Page = () => {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-    // Green color scheme for exam page
-    const greenColors = {
-        buttonGradient: "from-emerald-500 to-teal-600",
-        buttonHoverGradient: "hover:from-emerald-600 hover:to-teal-700",
+    // Purple color scheme matching the main platform page
+    const purpleColors = {
+        buttonGradient: "from-[#6F58C9] to-[#5A4BA3]",
+        buttonHoverGradient: "hover:from-[#5A4BA3] hover:to-[#6F58C9]",
         iconBg: "bg-amber-50",
         iconColor: "text-amber-600"
     };
-
-    const examRules = [
-        {
-            icon: Clock,
-            text: "90 минути време с видим таймер",
-        },
-        {
-            icon: FileText,
-            text: "25 въпроса с избираем отговор покриващи всички теми",
-        },
-        {
-            icon: AlertCircle,
-            text: "Няма връщане назад - отговорите са финални след подаване",
-        },
-        {
-            icon: CheckCircle,
-            text: "Автоматично подаване при изтичане на времето",
-        },
-    ];
 
     // Mock previous exam results
     const previousResults = [
@@ -85,24 +65,11 @@ const Page = () => {
                         <Card className="group hover:shadow-lg transition-all duration-300 bg-white border border-gray-200 shadow-sm h-full">
                             <CardContent className="p-8 text-center h-full flex flex-col justify-center">
                                 <div className="mb-6">
-                                    <div className="inline-flex p-3 rounded-full bg-emerald-50 mb-4 group-hover:scale-105 transition-transform duration-300">
-                                        <Play className="w-8 h-8 text-emerald-600" />
+                                    <div className="inline-flex p-3 rounded-full bg-[#6F58C9]/10 mb-4 group-hover:scale-105 transition-transform duration-300">
+                                        <TestTube className="w-8 h-8 text-[#6F58C9]" />
                                     </div>
                                     <h1 className="text-3xl font-semibold text-gray-900 mb-3">Пробен Изпит</h1>
                                     <p className="text-gray-600 text-lg mb-6">Тествай знанията си по математика за 7-ми клас</p>
-                                </div>
-
-                                {/* Rules */}
-                                <div className="bg-gray-50 rounded-lg p-5 mb-6 border border-gray-100">
-                                    <h2 className="text-xl font-medium text-gray-900 mb-4 flex items-center justify-center gap-2">
-                                        <Target className="w-5 h-5 text-emerald-600" />
-                                        Правила на Изпита
-                                    </h2>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-left">
-                                        {examRules.map((rule, index) => (
-                                            <ExamRule key={index} rule={rule} index={index} />
-                                        ))}
-                                    </div>
                                 </div>
 
                                 <AssessmentStartFlow
@@ -110,7 +77,7 @@ const Page = () => {
                                     setIsDialogOpen={setIsDialogOpen}
                                     handleStartExam={handleStartExam}
                                     handleConfirmExam={handleConfirmExam}
-                                    colors={greenColors}
+                                    colors={purpleColors}
                                 />
                             </CardContent>
                         </Card>
