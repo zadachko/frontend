@@ -278,7 +278,13 @@ const Page = () => {
                     </div>
 
                     {/* Previous Results Sidebar */}
-                    <PreviousResultsCard previousResults={previousResults} />
+                    <PreviousResultsCard
+                        previousResults={previousResults}
+                        colors={{
+                            buttonGradient: "from-[#6F58C9] to-[#5A4BA3]",
+                            buttonHoverGradient: "hover:from-[#5A4BA3] hover:to-[#6F58C9]"
+                        }}
+                    />
                 </div>
             </div>
         </div>

@@ -1,8 +1,10 @@
 import { Card, CardContent } from '@/components/ui/card';
-import { TrendingUp, Trophy, Sparkles } from 'lucide-react';
+import { TrendingUp, Trophy, Sparkles, ArrowRight } from 'lucide-react';
 import PreviousResult from './PreviousResult';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
-const PreviousResultsCard = ({ previousResults }: {
+interface PreviousResultsCardProps {
     previousResults: {
         id: number;
         date: string;
@@ -10,8 +12,17 @@ const PreviousResultsCard = ({ previousResults }: {
         totalQuestions: number;
         correctAnswers: number;
         timeSpent: string;
-    }[]
-}) => {
+    }[];
+    colors?: {
+        buttonGradient: string;
+        buttonHoverGradient: string;
+    };
+}
+
+const PreviousResultsCard = ({ previousResults, colors = {
+    buttonGradient: "from-[#6F58C9] to-[#5A4BA3]",
+    buttonHoverGradient: "hover:from-[#5A4BA3] hover:to-[#6F58C9]"
+} }: PreviousResultsCardProps) => {
 
 
     return (
@@ -24,11 +35,25 @@ const PreviousResultsCard = ({ previousResults }: {
                     </div>
 
                     {previousResults.length > 0 ? (
-                        <div className="space-y-3 flex-1">
-                            {previousResults.map((result) => (
-                                <PreviousResult key={result.id} result={result} />
-                            ))}
-                        </div>
+                        <>
+                            <div className="space-y-3 flex-1">
+                                {previousResults.map((result) => (
+                                    <PreviousResult key={result.id} result={result} />
+                                ))}
+                            </div>
+
+                            {/* View All Results Button */}
+                            <div className="mt-6 pt-4 border-t border-gray-100">
+                                <Link href="/platform/results">
+                                    <Button
+                                        className={`w-full bg-gradient-to-r ${colors.buttonGradient} ${colors.buttonHoverGradient} text-white font-medium transition-all duration-200 shadow-sm hover:shadow-md p-4`}
+                                    >
+                                        Виж всички резултати
+                                        <ArrowRight className="w-4 h-4 ml-2" />
+                                    </Button>
+                                </Link>
+                            </div>
+                        </>
                     ) : (
                         <div className="flex-1 flex flex-col items-center justify-center text-center py-6">
                             <div className="mb-4">
