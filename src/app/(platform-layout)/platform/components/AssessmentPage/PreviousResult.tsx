@@ -1,7 +1,7 @@
 import { Calendar } from 'lucide-react'
 import React from 'react'
 
-type PreviousExamResultProps = {
+type PreviousResultProps = {
     exam: {
         id: number;
         date: string;
@@ -11,7 +11,7 @@ type PreviousExamResultProps = {
         score: number;
     };
 }
-const PreviousExamResult = ({ exam }: PreviousExamResultProps) => {
+const PreviousResult = ({ exam }: PreviousResultProps) => {
     const getProgressColor = (score: number) => {
         if (score >= 80) return "#10b981";
         if (score >= 60) return "#f59e0b";
@@ -73,4 +73,4 @@ const PreviousExamResult = ({ exam }: PreviousExamResultProps) => {
     )
 }
 
-export default PreviousExamResult;
+export default PreviousResult;
