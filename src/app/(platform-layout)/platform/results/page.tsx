@@ -26,62 +26,91 @@ const Page = () => {
     const results: TestResult[] = [
         {
             id: "1",
-            type: "exam",
-            title: "Пробен изпит №3",
-            date: "15.12.2024",
-            correctAnswers: 21,
-            totalQuestions: 25,
-            percentage: 84,
-            duration: "82 мин",
-        },
-        {
-            id: "2",
             type: "test",
             title: "Геометрия — Триъгълници",
             date: "12.12.2024",
-            correctAnswers: 15,
+            correctAnswers: 16,
             totalQuestions: 20,
-            percentage: 75,
+            percentage: 100,
         },
         {
-            id: "3",
+            id: "2",
             type: "exam",
             title: "Пробен изпит №2",
             date: "08.12.2024",
-            correctAnswers: 18,
+            correctAnswers: 13,
             totalQuestions: 25,
-            percentage: 12,
+            percentage: 90,
             duration: "85 мин",
         },
         {
-            id: "4",
+            id: "3",
             type: "test",
             title: "Алгебра — Квадратни уравнения",
             date: "05.12.2024",
-            correctAnswers: 12,
+            correctAnswers: 7,
             totalQuestions: 18,
-            percentage: 48,
+            percentage: 80,
+        },
+        {
+            id: "4",
+            type: "exam",
+            title: "Пробен изпит №3",
+            date: "15.12.2024",
+            correctAnswers: 25,
+            totalQuestions: 25,
+            percentage: 72,
+            duration: "82 мин",
         },
         {
             id: "5",
             type: "test",
-            title: "Дроби и десетични числа",
-            date: "01.12.2024",
+            title: "Геометрия — Триъгълници",
+            date: "12.12.2024",
             correctAnswers: 16,
-            totalQuestions: 22,
-            percentage: 73,
+            totalQuestions: 20,
+            percentage: 62,
         },
         {
             id: "6",
             type: "exam",
+            title: "Пробен изпит №2",
+            date: "08.12.2024",
+            correctAnswers: 13,
+            totalQuestions: 25,
+            percentage: 52,
+            duration: "85 мин",
+        },
+        {
+            id: "7",
+            type: "test",
+            title: "Алгебра — Квадратни уравнения",
+            date: "05.12.2024",
+            correctAnswers: 7,
+            totalQuestions: 18,
+            percentage: 39,
+        },
+        {
+            id: "8",
+            type: "test",
+            title: "Дроби и десетични числа",
+            date: "01.12.2024",
+            correctAnswers: 3,
+            totalQuestions: 22,
+            percentage: 28,
+        },
+        {
+            id: "9",
+            type: "exam",
             title: "Пробен изпит №1",
             date: "28.11.2024",
-            correctAnswers: 17,
+            correctAnswers: 5,
             totalQuestions: 25,
-            percentage: 68,
+            percentage: 14,
             duration: "88 мин",
         },
     ]
+
 
     const filteredResults = results.filter((result) => {
         if (activeTab === "all") return true
@@ -94,11 +123,25 @@ const Page = () => {
         const isExam = result.type === "exam";
         const iconBg = isExam ? "bg-emerald-100" : "bg-purple-100";
         const iconColor = isExam ? "text-emerald-600" : "text-purple-600";
-        const progressBarColor = result.percentage >= 80
-            ? "bg-emerald-500"
-            : result.percentage >= 60
-                ? "bg-yellow-500"
-                : "bg-red-500"
+
+        const getSmoothColor = (percentage: number): string => {
+            const clamped = Math.max(0, Math.min(percentage, 100));
+            let hue: number;
+
+            if (clamped <= 50) {
+                // Red to Yellow: hue 0 → 60
+                hue = (clamped / 50) * 60;
+            } else if (clamped <= 85) {
+                // Yellow to Yellow-Green: hue 60 → 85 (slight hue shift)
+                hue = 60 + ((clamped - 50) / 35) * 25;
+            } else {
+                // Yellow-Green to Green: hue 85 → 120 (stronger hue shift)
+                hue = 85 + ((clamped - 85) / 15) * 35;
+            }
+
+            return `hsl(${hue}, 100%, 50%)`;
+        };
+
 
 
         return (
@@ -150,9 +193,12 @@ const Page = () => {
                                 <div className="text-right text-lg font-bold text-gray-800">{result.percentage}%</div>
                                 <div className="w-full h-2 rounded bg-gray-200 mt-1 overflow-hidden">
                                     <div
-                                        className={`h-full ${progressBarColor}`}
-                                        style={{ width: `${result.percentage}%` }}
-                                    ></div>
+                                        className="h-full transition-all duration-300"
+                                        style={{
+                                            width: `${result.percentage}%`,
+                                            backgroundColor: getSmoothColor(result.percentage),
+                                        }}
+                                    />
                                 </div>
                             </div>
                             <Button
