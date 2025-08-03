@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { ChevronDown } from "lucide-react"
+import { ChevronDown, LayoutGrid, X } from "lucide-react"
 import { problemCategories } from "./mock-data"
 import type { MobileMenuType } from "./navbar-types"
 
@@ -17,12 +17,27 @@ export function MobileCategories({ openMobileMenu, setOpenMobileMenu }: MobileCa
                 onClick={() =>
                     setOpenMobileMenu(openMobileMenu === "categories" ? null : "categories")
                 }
-                className="flex items-center gap-2 px-3 py-2 text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-colors backdrop-blur-sm"
+                className="relative w-7 h-7 flex items-center justify-center group focus:outline-none"
+                aria-label={openMobileMenu === "categories" ? "Close menu" : "Open menu"}
             >
-                <span className="font-medium text-sm">Категории</span>
-                <ChevronDown
-                    className={`w-4 h-4 transition-transform duration-200 ${openMobileMenu === "categories" ? "rotate-180" : ""
-                        }`}
+                <span className="sr-only">{openMobileMenu === "categories" ? "Close menu" : "Open menu"}</span>
+
+                {/* Top bar */}
+                <span
+                    className={`absolute w-7 h-0.5 bg-white rounded transition-all duration-300 ease-in-out
+      ${openMobileMenu === "categories" ? 'rotate-45 translate-y-0' : '-translate-y-[8px]'}`}
+                />
+
+                {/* Middle bar */}
+                <span
+                    className={`absolute w-7 h-0.5 bg-white rounded transition-all duration-300 ease-in-out
+      ${openMobileMenu === "categories" ? 'opacity-0' : 'opacity-100'}`}
+                />
+
+                {/* Bottom bar */}
+                <span
+                    className={`absolute w-7 h-0.5 bg-white rounded transition-all duration-300 ease-in-out
+      ${openMobileMenu === "categories" ? '-rotate-45 translate-y-0' : 'translate-y-[8px]'}`}
                 />
             </button>
 

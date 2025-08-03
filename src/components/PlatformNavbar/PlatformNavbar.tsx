@@ -21,9 +21,9 @@ export function PlatformNavbar() {
             <div className="flex items-center justify-between">
                 {/* Left side - Logo and Desktop Navigation */}
                 <div className="flex items-center gap-4 sm:gap-8">
+                    <MobileCategories openMobileMenu={openMobileMenu} setOpenMobileMenu={setOpenMobileMenu} />
                     <Logo />
                     <CategoriesDropdown />
-                    <MobileCategories openMobileMenu={openMobileMenu} setOpenMobileMenu={setOpenMobileMenu} />
                 </div>
 
                 {/* Right side - Streak, Notifications and Account */}
