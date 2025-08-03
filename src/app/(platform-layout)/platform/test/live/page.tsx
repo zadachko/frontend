@@ -7,14 +7,7 @@ import { Clock, } from "lucide-react";
 import Question from "@/app/(platform-layout)/platform/components/Question/Question";
 import type { DiagramData } from "geometry-diagram-renderer";
 import { useRouter } from "next/navigation";
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-} from "@/components/ui/dialog";
+
 
 type Question = {
     id: number
@@ -26,6 +19,7 @@ type Question = {
     solution?: string
 }
 import { QuestionsNavigatorGrid } from "@/app/(platform-layout)/platform/components/QuestionsNavigatorGrid/QuestionsNavigatorGrid";
+import AssessmentSubmitDialog from "../../components/AssessmentPage/AssessmentSubmitDialog";
 
 const sampleTriangleData: DiagramData = {
     points: {
@@ -327,29 +321,18 @@ const LiveExamPage = () => {
             </div>
 
             {/* Submit Confirmation Dialog */}
-            <Dialog open={showSubmitDialog} onOpenChange={setShowSubmitDialog}>
-                <DialogContent className="sm:max-w-md">
-                    <DialogHeader>
-                        <DialogTitle>Потвърди изпращане на изпита</DialogTitle>
-                        <DialogDescription>
-                            Сигурни ли сте, че искате да изпратите изпита? Това действие не може да бъде отменено.
-                        </DialogDescription>
-                    </DialogHeader>
-                    <div className="py-4">
-                        <p className="text-sm text-gray-600">
-                            Отговорени въпроси: <span className="font-semibold text-emerald-600">{questionsAnswered}</span> / <span className="font-semibold">{totalQuestions}</span>
-                        </p>
-                    </div>
-                    <DialogFooter className="flex gap-2">
-                        <Button variant="outline" onClick={cancelSubmit}>
-                            Отказ
-                        </Button>
-                        <Button onClick={confirmSubmit} className="bg-emerald-600 hover:bg-emerald-700">
-                            Изпрати изпита
-                        </Button>
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog>
+            <AssessmentSubmitDialog
+                showSubmitDialog={showSubmitDialog}
+                setShowSubmitDialog={setShowSubmitDialog}
+                questionsAnswered={questionsAnswered}
+                totalQuestions={totalQuestions}
+                cancelSubmit={cancelSubmit}
+                confirmSubmit={confirmSubmit}
+                colors={{
+                    primary: "[#6F58C9]",
+                    primaryHover: "[#5A4BA3]"
+                }}
+            />
 
             {/* Low Time Warning */}
             {timeLeft < 600 && (
