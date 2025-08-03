@@ -283,11 +283,11 @@ const Page = () => {
                         className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 px-3 py-3"
                     >
                         <CardContent className="flex flex-col items-center justify-center gap-2 p-0">
-                            <div className={`w-9 h-9 rounded-full flex items-center justify-center ${card.color}`}>
-                                <card.icon className={`w-4 h-4 ${card.iconColor}`} />
+                            <div className={`w-12 h-12 rounded-full flex items-center justify-center ${card.color}`}>
+                                <card.icon className={`w-6 h-6 ${card.iconColor}`} />
                             </div>
                             <div className="text-lg font-bold text-gray-900 leading-tight">{card.value}</div>
-                            <div className="text-xs text-center text-gray-500 leading-tight">{card.label}</div>
+                            <div className="text-sm text-center text-gray-500 leading-tight">{card.label}</div>
                         </CardContent>
                     </Card>
                 ))}
