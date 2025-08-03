@@ -2,13 +2,16 @@ import Link from "next/link"
 import { ChevronDown } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { problemCategories } from "./mock-data"
+import { useState } from "react"
 
 export function CategoriesDropdown() {
+    const [isOpen, setIsOpen] = useState(false)
+
     return (
-        <DropdownMenu>
+        <DropdownMenu onOpenChange={(open) => setIsOpen(open)}>
             <DropdownMenuTrigger className="hidden md:flex items-center gap-2 px-4 py-2 text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-colors backdrop-blur-sm cursor-pointer">
                 <span className="font-medium">Категории</span>
-                <ChevronDown className="w-4 h-4" />
+                <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`} />
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-80 p-2 bg-white border border-[#755bc5]/20 shadow-xl" align="start">
                 <div className="grid grid-cols-1 gap-1">

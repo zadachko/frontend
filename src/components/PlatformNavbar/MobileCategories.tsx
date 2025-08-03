@@ -14,11 +14,16 @@ export function MobileCategories({ openMobileMenu, setOpenMobileMenu }: MobileCa
     return (
         <div className="relative md:hidden">
             <button
-                onClick={() => setOpenMobileMenu(openMobileMenu === "categories" ? null : "categories")}
+                onClick={() =>
+                    setOpenMobileMenu(openMobileMenu === "categories" ? null : "categories")
+                }
                 className="flex items-center gap-2 px-3 py-2 text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-colors backdrop-blur-sm"
             >
                 <span className="font-medium text-sm">Категории</span>
-                <ChevronDown className="w-4 h-4" />
+                <ChevronDown
+                    className={`w-4 h-4 transition-transform duration-200 ${openMobileMenu === "categories" ? "rotate-180" : ""
+                        }`}
+                />
             </button>
 
             {openMobileMenu === "categories" && (

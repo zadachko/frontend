@@ -8,19 +8,22 @@ import {
     DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu"
 import { userData } from "./mock-data"
+import { useState } from "react"
 
 export function AccountDropdown() {
+    const [isOpen, setIsOpen] = useState(false)
+
     const xpProgress = (userData.currentXP / (userData.currentXP + userData.xpToNextLevel)) * 100
 
     return (
-        <DropdownMenu>
+        <DropdownMenu onOpenChange={(open) => setIsOpen(open)}>
             <DropdownMenuTrigger className="hidden md:flex items-center gap-2 p-2 text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-colors backdrop-blur-sm cursor-pointer">
                 <div className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/30">
                     <User className="w-5 h-5 text-white" />
                 </div>
-                <ChevronDown className="w-4 h-4" />
+                <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`} />
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-80 bg-white border border-[#755bc5]/20 shadow-xl" align="end">
+            <DropdownMenuContent className="w-80 p-0 bg-white border border-[#755bc5]/20 shadow-xl" align="end">
                 {/* User Profile Header */}
                 <div className="p-4 bg-gradient-to-r from-[#f0eeff] to-white border-b border-gray-100">
                     <div className="flex items-center gap-4 mb-4">

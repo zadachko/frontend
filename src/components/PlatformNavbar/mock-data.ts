@@ -7,7 +7,7 @@ export const userData: UserData = {
     level: 111,
     currentXP: 46214,
     xpToNextLevel: 8795,
-    avatar: "/avatar.png",
+    avatar: "/avatar.png"
 }
 
 export const streakData: StreakData = {
