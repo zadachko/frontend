@@ -693,8 +693,8 @@ const PlatformNavbar = () => {
                         )}
                     </div>
                 </div>
-            </div>
-        </nav>
+            </div >
+        </nav >
     )
 }
 
