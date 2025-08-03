@@ -284,7 +284,7 @@ const LiveExamPage = () => {
     const questionsAnswered = Object.keys(answers).length
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-gray-50 mx-auto">
             <div className="flex h-screen">
                 {/* Left Column - Questions */}
                 <div className="flex-1 overflow-y-auto">
@@ -301,7 +301,7 @@ const LiveExamPage = () => {
                 </div>
 
                 {/* Right Sidebar - Navigation */}
-                <div className="w-80 bg-white border-l border-gray-200 flex flex-col">
+                <div className="w-80 bg-white border-l border-gray-200 flex flex-col h-[calc(100vh-100px)]">
                     {/* Timer */}
                     <div className="p-6 border-b border-gray-200">
                         <Card className="bg-gradient-to-r from-emerald-500 to-teal-600 border-0 shadow-md">
@@ -364,8 +364,8 @@ const LiveExamPage = () => {
                                 <span className="text-gray-600">Неотговорен</span>
                             </div>
                         </div>
-                    </div>
 
+                    </div>
                     {/* Submit Button */}
                     <div className="p-6 border-t border-gray-200">
                         <Button
