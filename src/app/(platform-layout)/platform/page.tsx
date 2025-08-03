@@ -116,10 +116,18 @@ const page = () => {
 
                     {/* Recent Activity Section */}
                     <section className="space-y-4">
-                        <h2 className="text-2xl font-semibold text-gray-900 flex items-center gap-2">
-                            <Clock className="w-6 h-6 text-[#6F58C9]" />
-                            Последни задачи и тестове
-                        </h2>
+                        <div className="flex items-center justify-between">
+                            <h2 className="text-2xl font-semibold text-gray-900 flex items-center gap-2">
+                                <Clock className="w-6 h-6 text-[#6F58C9]" />
+                                Последни задачи и тестове
+                            </h2>
+                            <Link href="/platform/results">
+                                <Button variant="default" className="bg-[#6F58C9] hover:bg-[#5A4BA3] text-white">
+                                    <BarChart3 className="w-4 h-4 mr-2" />
+                                    Виж всички резултати
+                                </Button>
+                            </Link>
+                        </div>
                         {recentActivities.length > 0 ? (
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                 {recentActivities.map((activity) => (
