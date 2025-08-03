@@ -142,7 +142,7 @@ const Page = () => {
     const handleConfirmExam = () => {
         setIsDialogOpen(false);
         // Navigate to the exam page
-        window.location.href = "/platform/exam/live";
+        window.location.href = "/platform/test/live";
     };
 
     const handleCategorySelect = (categoryName: string) => {

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Clock } from "lucide-react";
+import { Clock, } from "lucide-react";
 import Question from "@/app/(platform-layout)/platform/components/Question/Question";
 import type { DiagramData } from "geometry-diagram-renderer";
 import { useRouter } from "next/navigation";
@@ -245,12 +245,6 @@ const LiveExamPage = () => {
         return () => clearInterval(timer)
     }, [])
 
-    // Format time display
-    const formatTime = (seconds: number) => {
-        const minutes = Math.floor(seconds / 60)
-        const secs = seconds % 60
-        return `${minutes.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`
-    }
 
     const handleAnswerChange = (questionId: number, value: string) => {
         setAnswers((prev) => ({
@@ -302,18 +296,6 @@ const LiveExamPage = () => {
 
                 {/* Right Sidebar - Navigation */}
                 <div className="w-80 bg-white border-l border-gray-200 flex flex-col h-[calc(100vh-100px)]">
-                    {/* Timer */}
-                    <div className="p-6 border-b border-gray-200">
-                        <Card className="bg-gradient-to-r from-emerald-500 to-teal-600 border-0 shadow-md">
-                            <CardContent className="p-0 text-center">
-                                <div className="flex items-center justify-center gap-2 text-white">
-                                    <Clock className="w-5 h-5" />
-                                    <span className="font-mono text-2xl font-bold">{formatTime(timeLeft)}</span>
-                                </div>
-                                <p className="text-emerald-100 text-sm mt-1">Оставащо време</p>
-                            </CardContent>
-                        </Card>
-                    </div>
 
                     {/* Question Navigator */}
                     <QuestionsNavigatorGrid
@@ -323,13 +305,13 @@ const LiveExamPage = () => {
                         currentQuestion={currentQuestion}
                         goToQuestion={goToQuestion}
                         colors={{
-                            primary: "emerald",
-                            primaryLight: "emerald-50",
-                            primaryHover: "emerald-300",
-                            answeredBg: "green-100",
-                            answeredBorder: "green-200",
-                            answeredText: "green-800",
-                            answeredHover: "green-200"
+                            primary: "[#6F58C9]",
+                            primaryLight: "[#6F58C9]/10",
+                            primaryHover: "[#6F58C9]/30",
+                            answeredBg: "[#6F58C9]/20",
+                            answeredBorder: "[#6F58C9]/40",
+                            answeredText: "[#6F58C9]",
+                            answeredHover: "[#6F58C9]/30"
                         }}
                     />
                     {/* Submit Button */}
