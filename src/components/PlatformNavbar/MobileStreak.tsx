@@ -1,0 +1,93 @@
+"use client"
+
+import { Flame, Calendar, Trophy, Target } from "lucide-react"
+import { streakData, weekDays } from "./mock-data"
+import type { MobileMenuType } from "./navbar-types"
+
+interface MobileStreakProps {
+    openMobileMenu: MobileMenuType
+    setOpenMobileMenu: (menu: MobileMenuType) => void
+}
+
+export function MobileStreak({ openMobileMenu, setOpenMobileMenu }: MobileStreakProps) {
+    return (
+        <div className="relative md:hidden">
+            <button
+                onClick={() => setOpenMobileMenu(openMobileMenu === "streak" ? null : "streak")}
+                className="flex items-center gap-1 px-2 py-1 text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-colors backdrop-blur-sm"
+            >
+                <Flame className="w-4 h-4 text-orange-300" />
+                <span className="font-medium text-sm">{streakData.current}</span>
+            </button>
+
+            {openMobileMenu === "streak" && (
+                <div className="fixed top-[64px] bottom-0 left-0 right-0 z-40 bg-white overflow-y-auto shadow-2xl border-t border-gray-200 animate-slide-in">
+                    <div className="flex-1 overflow-y-auto p-4">
+                        <div className="flex items-center gap-4 mb-6">
+                            <div className="p-4 bg-orange-100 rounded-xl">
+                                <Flame className="w-8 h-8 text-orange-500" />
+                            </div>
+                            <div>
+                                <h3 className="font-bold text-2xl text-gray-900">Текуща серия</h3>
+                                <p className="text-4xl font-bold text-orange-500">{streakData.current} дни</p>
+                            </div>
+                        </div>
+                        <p className="text-lg text-gray-600 mb-8">Продължавай да решаваш задачи всеки ден!</p>
+
+                        {/* This Week */}
+                        <div className="mb-8">
+                            <h4 className="font-bold text-xl text-gray-900 mb-4 flex items-center gap-2">
+                                <Calendar className="w-5 h-5 text-[#755bc5]" />
+                                Тази седмица
+                            </h4>
+                            <div className="flex gap-3 justify-center">
+                                {weekDays.map((day, index) => (
+                                    <div key={index} className="flex flex-col items-center gap-2">
+                                        <div
+                                            className={`w-12 h-12 rounded-full flex items-center justify-center text-sm font-medium ${streakData.thisWeek[index] ? "bg-[#755bc5] text-white shadow-lg" : "bg-gray-100 text-gray-400"
+                                                }`}
+                                        >
+                                            {day}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Stats */}
+                        <div className="grid grid-cols-1 gap-4">
+                            <div className="p-6 rounded-xl bg-[#f0eeff]/50 text-center">
+                                <div className="flex items-center justify-center gap-2 mb-2">
+                                    <Trophy className="w-6 h-6 text-yellow-500" />
+                                </div>
+                                <p className="text-3xl font-bold text-gray-900">{streakData.longest}</p>
+                                <p className="text-lg text-gray-500">Най-дълга серия</p>
+                            </div>
+                            <div className="p-6 rounded-xl bg-[#f0eeff]/50 text-center">
+                                <div className="flex items-center justify-center gap-2 mb-2">
+                                    <Calendar className="w-6 h-6 text-[#755bc5]" />
+                                </div>
+                                <p className="text-3xl font-bold text-gray-900">{streakData.thisMonth}</p>
+                                <p className="text-lg text-gray-500">Дни този месец</p>
+                            </div>
+                            <div className="p-6 rounded-xl bg-[#f0eeff]/50 text-center">
+                                <div className="flex items-center justify-center gap-2 mb-2">
+                                    <Target className="w-6 h-6 text-green-500" />
+                                </div>
+                                <p className="text-3xl font-bold text-gray-900">{streakData.total}</p>
+                                <p className="text-lg text-gray-500">Общо дни</p>
+                            </div>
+                        </div>
+
+                        <div className="mt-8 p-6 bg-gradient-to-r from-[#f0eeff] to-white border border-[#755bc5]/20 rounded-xl">
+                            <p className="text-lg text-center text-gray-600">
+                                <span className="font-bold text-[#755bc5]">Съвет:</span> Решавай поне една задача всеки ден за да
+                                запазиш серията си!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </div>
+    )
+}
