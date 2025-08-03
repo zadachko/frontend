@@ -50,7 +50,7 @@ const Page = () => {
             date: "08.12.2024",
             correctAnswers: 18,
             totalQuestions: 25,
-            percentage: 72,
+            percentage: 12,
             duration: "85 мин",
         },
         {
@@ -60,7 +60,7 @@ const Page = () => {
             date: "05.12.2024",
             correctAnswers: 12,
             totalQuestions: 18,
-            percentage: 67,
+            percentage: 48,
         },
         {
             id: "5",
@@ -91,32 +91,34 @@ const Page = () => {
     })
 
     const ResultRow = ({ result }: { result: TestResult }) => {
+        const isExam = result.type === "exam";
+        const iconBg = isExam ? "bg-emerald-100" : "bg-purple-100";
+        const iconColor = isExam ? "text-emerald-600" : "text-purple-600";
         const progressBarColor = result.percentage >= 80
             ? "bg-emerald-500"
             : result.percentage >= 60
                 ? "bg-yellow-500"
                 : "bg-red-500"
 
+
         return (
             <Card className="hover:shadow-md transition-all duration-200 bg-white border border-gray-200">
-                <CardContent className="px-4 sm:px-6">
+                <CardContent className="px-4 sm:px-6 py-4">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                        {/* Left Section */}
+                        {/* Left Side */}
                         <div className="flex items-start gap-4 flex-1 min-w-0">
-                            {/* Icon */}
-                            <div className="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center bg-[#ECE8FB]">
-                                {result.type === "exam" ? (
-                                    <GraduationCap className="w-5 h-5 text-[#6F58C9]" />
+                            <div className={`flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center ${iconBg}`}>
+                                {isExam ? (
+                                    <GraduationCap className={`w-5 h-5 ${iconColor}`} />
                                 ) : (
-                                    <TestTube className="w-5 h-5 text-[#6F58C9]" />
+                                    <TestTube className={`w-5 h-5 ${iconColor}`} />
                                 )}
                             </div>
 
-                            {/* Content */}
                             <div className="flex-1 min-w-0">
                                 <div className="flex items-center gap-2 mb-1 flex-wrap">
-                                    <Badge variant="secondary" className="bg-[#ECE8FB] text-[#6F58C9] text-xs">
-                                        {result.type === "exam" ? "Матура" : "Тест"}
+                                    <Badge variant="secondary" className={`${iconBg} ${iconColor} text-xs`}>
+                                        {isExam ? "Матура" : "Тест"}
                                     </Badge>
                                     <h3 className="font-semibold text-gray-900 truncate">{result.title}</h3>
                                 </div>
@@ -142,7 +144,7 @@ const Page = () => {
                             </div>
                         </div>
 
-                        {/* Right Section */}
+                        {/* Right Side */}
                         <div className="flex flex-col items-end justify-center gap-2 sm:w-36 w-full">
                             <div className="w-full">
                                 <div className="text-right text-lg font-bold text-gray-800">{result.percentage}%</div>
