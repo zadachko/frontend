@@ -183,10 +183,12 @@ const page = () => {
                                         <h3 className="text-xl font-semibold mb-2">Създай свой тест</h3>
                                         <p className="text-white/90 mb-6">Избери тема и ниво на трудност</p>
                                     </div>
-                                    <Button size="lg" className="bg-white text-[#6F58C9] hover:bg-gray-100 font-semibold px-8 py-3 h-12">
-                                        Започни
-                                        <ChevronRight className="w-4 h-4 ml-2" />
-                                    </Button>
+                                    <Link href="/platform/test">
+                                        <Button size="lg" className="bg-white text-[#6F58C9] hover:bg-gray-100 font-semibold px-8 py-3 h-12">
+                                            Започни
+                                            <ChevronRight className="w-4 h-4 ml-2" />
+                                        </Button>
+                                    </Link>
                                 </CardContent>
                             </Card>
                         </section>
