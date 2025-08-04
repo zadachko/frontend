@@ -44,6 +44,8 @@ const Sidebar = () => {
                                 src={userData.avatar || "/placeholder.svg?height=128&width=128"}
                                 alt={userData.name}
                                 className="w-full h-full object-cover"
+                                width={128}
+                                height={128}
                             />
                         </div>
                         {/* Level Badge - positioned like in the image */}
