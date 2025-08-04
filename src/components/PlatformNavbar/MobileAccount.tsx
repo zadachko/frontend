@@ -4,6 +4,7 @@ import Link from "next/link"
 import { User, BarChart3, Star, Settings, CreditCard, LogOut } from "lucide-react"
 import { userData } from "./mock-data"
 import type { MobileMenuType } from "./navbar-types"
+import Image from "next/image"
 
 interface MobileAccountProps {
     openMobileMenu: MobileMenuType
@@ -32,10 +33,12 @@ export function MobileAccount({ openMobileMenu, setOpenMobileMenu }: MobileAccou
                             <div className="flex items-center gap-4 mb-6">
                                 <div className="relative">
                                     <div className="w-20 h-20 rounded-full border-4 border-white overflow-hidden bg-gray-100 shadow-lg">
-                                        <img
+                                        <Image
                                             src={userData.avatar || "/placeholder.svg?height=80&width=80"}
                                             alt={userData.name}
                                             className="w-full h-full object-cover"
+                                            width={80}
+                                            height={80}
                                         />
                                     </div>
                                     <div className="absolute -top-1 -right-1 w-10 h-10 bg-[#755bc5] rounded-full flex items-center justify-center border-3 border-white shadow-lg">

@@ -1,5 +1,5 @@
 import { Calculator, Ruler, Hash, BarChart3, FileText, Sigma } from "lucide-react"
-import type { UserData, StreakData, ProblemCategory, DailyMission, Notification } from "./navbar-types"
+import type { UserData, StreakData, ProblemCategory, DailyMission, Notification } from "@/types"
 
 export const userData: UserData = {
     name: "Антон Янков",

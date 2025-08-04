@@ -9,15 +9,7 @@ import type { DiagramData } from "geometry-diagram-renderer";
 import { useRouter } from "next/navigation";
 
 
-type Question = {
-    id: number
-    statement: string
-    type: "text" | "multiple"
-    options?: string[]
-    diagramData?: DiagramData
-    points?: number
-    solution?: string
-}
+import type { Question } from "@/types"
 import { QuestionsNavigatorGrid } from "@/app/(platform-layout)/platform/components/QuestionsNavigatorGrid/QuestionsNavigatorGrid";
 import AssessmentSubmitDialog from "../../components/AssessmentPage/AssessmentSubmitDialog";
 

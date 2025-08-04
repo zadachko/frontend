@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { Trophy, Target, TestTube, GraduationCap } from "lucide-react"
-import type { TestResult } from "./test-result"
+import type { TestResult } from "@/types"
 
 interface StatsCardsProps {
     results: TestResult[]

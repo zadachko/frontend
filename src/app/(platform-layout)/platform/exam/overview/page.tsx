@@ -7,18 +7,7 @@ import { useRouter } from "next/navigation";
 import type { DiagramData } from "geometry-diagram-renderer";
 import Question from "@/app/(platform-layout)/platform/components/Question/Question";
 
-type Question = {
-    id: number
-    statement: string
-    type: "text" | "multiple"
-    options?: string[]
-    diagramData?: DiagramData
-    correctAnswer: string
-    userAnswer?: string
-    isCorrect?: boolean
-    points?: number
-    solution?: string
-}
+import type { Question as QuestionType } from "@/types"
 
 const sampleTriangleData: DiagramData = {
     points: {
@@ -57,7 +46,7 @@ const ExamOverviewPage = () => {
     };
 
     // Mock questions with results - in a real app, this would come from the backen
-    const questions: Question[] = [
+    const questions: QuestionType[] = [
         {
             id: 1,
             statement: "Решете: $\\displaystyle \\frac{2}{3} + \\frac{1}{6}$",

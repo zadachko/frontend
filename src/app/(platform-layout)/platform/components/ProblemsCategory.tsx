@@ -4,15 +4,8 @@ import { Progress } from '@/components/ui/progress';
 import { ChevronRight } from 'lucide-react';
 import React from 'react';
 
-type Category = {
-    name: string,
-    problems: number,
-    completed: number,
-    bgColor: string,
-    iconColor?: string,
-    icon?: React.ElementType
-}
-const ProblemsCategory = ({ category, index }: { category: Category, index: number }) => {
+import type { Category } from "@/types"
+const ProblemsCategory = ({ category, index, favorites, toggleFavorite }: { category: Category, index: number, favorites: string[], toggleFavorite: (categoryName: string) => void }) => {
     return (
         <Card
             key={index}

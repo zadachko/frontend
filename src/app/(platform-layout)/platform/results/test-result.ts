@@ -1,11 +1,2 @@
-export interface TestResult {
-    id: string
-    type: "test" | "exam"
-    title: string
-    date: string
-    correctAnswers: number
-    totalQuestions: number
-    percentage: number
-    duration?: string
-    category?: string
-}
+// Re-export TestResult from shared types
+export type { TestResult } from '@/types'

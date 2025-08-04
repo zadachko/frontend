@@ -6,15 +6,7 @@ import { Button } from '@/components/ui/button'
 import { TestTube, BookOpen } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import React from 'react'
-type Activity = {
-    id: number
-    type: string
-    title: string
-    status: string
-    statusType: string
-    date: string
-    action: string
-}
+import type { Activity } from "@/types"
 const RecentResourceCard = ({ activity }: { activity: Activity }) => {
     const router = useRouter();
     const getStatusColor = (type: string) => {

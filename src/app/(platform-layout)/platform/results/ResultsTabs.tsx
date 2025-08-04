@@ -2,7 +2,7 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { BarChart3, TestTube, GraduationCap } from "lucide-react"
-import type { TestResult } from "./test-result"
+import type { TestResult } from "@/types"
 import { ResultRow } from "./ResultRow"
 import { EmptyState } from "./EmptyState"
 

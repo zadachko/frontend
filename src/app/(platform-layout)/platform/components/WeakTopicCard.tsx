@@ -2,11 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import React from 'react';
 
-type WeakTopic = {
-    name: string;
-    score: number;
-    lastAttempt: string;
-}
+import type { WeakTopic } from "@/types"
 
 const WeakTopicCard = ({ topic, index }: { topic: WeakTopic, index: number }) => {
     return (

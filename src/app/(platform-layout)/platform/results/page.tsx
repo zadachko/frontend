@@ -5,7 +5,7 @@ import { BarChart3 } from "lucide-react"
 import Sidebar from "@/components/Sidebar/Sidebar"
 import { StatsCards } from "./StatsCards"
 import { ResultsTabs } from "./ResultsTabs"
-import type { TestResult } from "./test-result"
+import type { TestResult } from "@/types"
 
 const Page = () => {
     const [activeTab, setActiveTab] = useState("all")

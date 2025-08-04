@@ -4,7 +4,7 @@ import type React from "react"
 
 import { useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
-import { CheckCircle, AlertCircle, Mail, Clock, MessageSquare, ChevronDown, HelpCircle, Facebook, Instagram, Twitter, Phone } from "lucide-react"
+import { CheckCircle, AlertCircle, Mail, Clock, ChevronDown, HelpCircle, Facebook, Instagram, Twitter, Phone } from "lucide-react"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 
 // Animation variants
