@@ -7,7 +7,7 @@ import OpenAnswer from './OpenAnswer';
 import type { DiagramData } from 'geometry-diagram-renderer';
 import MultipleChoiceAnswer from './MultipleChoiceAnswer';
 import { Badge } from '@/components/ui/badge';
-import QuestionFullScreenModal from './QuestionFullScreenModal';
+import TaskSolutionModal from './TaskSolutionModal';
 
 type QuestionProps = {
     question: {
@@ -16,6 +16,7 @@ type QuestionProps = {
         type: 'text' | 'multiple';
         options?: string[];
         diagramData?: DiagramData;
+        points?: number;
     };
     answers: {
         [key: number]: string;
@@ -69,14 +70,28 @@ const Question = ({
                     </div>
                 )}
 
-                <CardContent className="p-8">
-                    {/* First row: number + statement */}
-                    <div className="flex items-start gap-4 mb-4">
-                        <QuestionBadge
-                            questionNumber={question.id}
-                            onCircleClick={handleCircleClick}
-                        />
-                        <QuestionStatement statement={question.statement} diagramData={question.diagramData} />
+                <CardContent className="px-8 py-4">
+                    {/* First row: number + statement + points */}
+                    <div className="flex items-start justify-between mb-4">
+                        <div className="flex items-start gap-4">
+                            <QuestionBadge
+                                questionNumber={question.id}
+                                onCircleClick={handleCircleClick}
+                            />
+                            <QuestionStatement
+                                statement={question.statement}
+                                diagramData={question.diagramData}
+                            />
+                        </div>
+
+                        {question.points && (
+                            <Badge
+                                variant="secondary"
+                                className="bg-blue-100 text-blue-800 font-semibold"
+                            >
+                                {question.points}т.
+                            </Badge>
+                        )}
                     </div>
 
                     {/* Second row: answer inputs aligned with statement */}
@@ -105,8 +120,8 @@ const Question = ({
                 </CardContent>
             </Card>
 
-            {/* Full Screen Modal */}
-            <QuestionFullScreenModal
+            {/* Task Solution Modal */}
+            <TaskSolutionModal
                 isOpen={isModalOpen}
                 onClose={handleCloseModal}
                 question={question}
