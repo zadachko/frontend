@@ -9,7 +9,7 @@ import type { DiagramData } from "geometry-diagram-renderer";
 import { useRouter } from "next/navigation";
 
 
-import type { Question } from "@/types"
+import type { Question as QuestionType } from "@/types"
 import { QuestionsNavigatorGrid } from "@/app/(platform-layout)/platform/components/QuestionsNavigatorGrid/QuestionsNavigatorGrid";
 import AssessmentSubmitDialog from "../../components/AssessmentPage/AssessmentSubmitDialog";
 
@@ -45,7 +45,7 @@ const LiveExamPage = () => {
     const router = useRouter()
 
     // Sample questions data
-    const questions: Question[] = [
+    const questions: QuestionType[] = [
         {
             id: 1,
             statement: "Решете: $\\displaystyle \\frac{2}{3} + \\frac{1}{6}$",

@@ -16,7 +16,7 @@ import WeakTopicMissingCard from "./components/WeakTopicMissingCard"
 import Link from "next/link"
 import Sidebar from "@/components/Sidebar/Sidebar"
 import { ResultRow } from "./results/ResultRow"
-import type { TestResult } from "@/types"
+import type { Category, TestResult } from "@/types"
 const page = () => {
     const recentActivities: TestResult[] = [
         {
@@ -25,7 +25,6 @@ const page = () => {
             title: "Тест: Геометрия — Триъгълници",
             percentage: 45,
             date: "24.07.2025",
-            duration: "25 мин",
             correctAnswers: 9,
             totalQuestions: 20,
             category: "Геометрия",
@@ -36,7 +35,6 @@ const page = () => {
             title: "Алгебра — Практика №12",
             percentage: 85,
             date: "23.07.2025",
-            duration: "18 мин",
             correctAnswers: 17,
             totalQuestions: 20,
             category: "Алгебра",
@@ -254,7 +252,7 @@ const page = () => {
                         </h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                             {problemCategories.map((category, index) => (
-                                <ProblemsCategory key={index} category={category} index={index} />
+                                <ProblemsCategory key={index} category={category as unknown as Category} index={index} />
                             ))}
                         </div>
                     </section>
