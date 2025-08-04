@@ -9,8 +9,8 @@ type Category = {
     problems: number,
     completed: number,
     bgColor: string,
-    iconColor: string,
-    icon: React.ElementType
+    iconColor?: string,
+    icon?: React.ElementType
 }
 const ProblemsCategory = ({ category, index }: { category: Category, index: number }) => {
     return (
@@ -20,9 +20,11 @@ const ProblemsCategory = ({ category, index }: { category: Category, index: numb
         >
             <CardContent className="p-6">
                 <div className="flex items-start gap-3 mb-4">
-                    <div className={`p-3 rounded-lg ${category.bgColor}`}>
-                        <category.icon className={`w-6 h-6 ${category.iconColor}`} />
-                    </div>
+                    {category.icon && (
+                        <div className={`p-3 rounded-lg ${category.bgColor}`}>
+                            <category.icon className={`w-6 h-6 ${category.iconColor || ''}`} />
+                        </div>
+                    )}
                     <div className="flex-1">
                         <h3 className="text-lg font-semibold text-gray-900 mb-1">{category.name}</h3>
                         <p className="text-sm text-gray-600 mb-3">{category.problems} задачи</p>

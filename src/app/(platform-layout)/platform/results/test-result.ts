@@ -7,4 +7,5 @@ export interface TestResult {
     totalQuestions: number
     percentage: number
     duration?: string
+    category?: string
 }

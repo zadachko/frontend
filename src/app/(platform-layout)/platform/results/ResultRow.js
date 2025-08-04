@@ -3,26 +3,19 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { TestTube, GraduationCap, Clock, CheckCircle, Calendar } from "lucide-react"
-import type { TestResult } from "./test-result"
 
-interface ResultRowProps {
-    result: TestResult
-    onClick?: () => void
-    hideIcon?: boolean
-}
-
-export const ResultRow = ({ result, onClick, hideIcon = false }: ResultRowProps) => {
+export const ResultRow = ({ result, onClick, hideIcon = false }) => {
     const isExam = result.type === "exam"
     const iconBg = isExam ? "bg-emerald-100" : "bg-purple-100"
     const iconColor = isExam ? "text-emerald-600" : "text-purple-600"
 
-    const getProgressColor = (score: number) => {
+    const getProgressColor = (score) => {
         if (score >= 80) return "#10b981"
         if (score >= 60) return "#f59e0b"
         return "#ef4444"
     }
 
-    const getGrade = (percentage: number): string => {
+    const getGrade = (percentage) => {
         const grade = (2 + (percentage / 100) * 4).toFixed(2)
         return grade
     }
