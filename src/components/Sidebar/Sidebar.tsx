@@ -81,11 +81,11 @@ const Sidebar = () => {
                     <div className="flex items-center justify-between mb-3">
                         <div className="flex items-center gap-2">
                             <BarChart3 className="w-5 h-5 text-[#755bc5]" />
-                            <span className="text-lg font-semibold text-gray-700">Ниво {userData.level}</span>
+                            <span className="text-[1.03125rem] font-semibold text-gray-700">Ниво {userData.level}</span>
                         </div>
                         <div className="flex items-center gap-2">
                             <Star className="w-5 h-5 text-yellow-500" />
-                            <span className="text-lg font-semibold text-gray-700">{userData.currentXP.toLocaleString('en-US')} XP</span>
+                            <span className="text-[1.03125rem] font-semibold text-gray-700">{userData.currentXP.toLocaleString('en-US')} XP</span>
                         </div>
                     </div>
 
@@ -123,7 +123,7 @@ const Sidebar = () => {
 
                 {/* Daily Missions */}
                 <div className="bg-white rounded-xl p-4 shadow-md border border-[#755bc5]/10">
-                    <h3 className="text-lg font-semibold mb-4 text-center text-gray-800 flex items-center justify-center gap-2">
+                    <h3 className="text-[1.03125rem] font-semibold mb-4 text-center text-gray-800 flex items-center justify-center gap-2">
                         <Target className="w-5 h-5 text-[#755bc5]" />
                         Дневни мисии
                     </h3>

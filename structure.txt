@@ -1,0 +1,165 @@
+.
+├── README.md
+├── components.json
+├── eslint.config.mjs
+├── libs
+│   └── geometry-diagram-renderer
+│       ├── README.md
+│       ├── eslint.config.js
+│       ├── global.css
+│       ├── index.html
+│       ├── package-lock.json
+│       ├── package.json
+│       ├── public
+│       │   └── vite.svg
+│       ├── src
+│       │   ├── lib
+│       │   │   ├── components
+│       │   │   │   ├── AngleLabelComponent.tsx
+│       │   │   │   ├── EdgeComponent.tsx
+│       │   │   │   ├── Label.tsx
+│       │   │   │   ├── PointComponent.tsx
+│       │   │   │   └── SideLabelComponent.tsx
+│       │   │   ├── index.ts
+│       │   │   ├── renderers
+│       │   │   │   └── Renderer.tsx
+│       │   │   ├── types.ts
+│       │   │   └── utils
+│       │   │       ├── applyStepActions.ts
+│       │   │       └── getLabelOffsetForPoint.ts
+│       │   ├── main.tsx
+│       │   ├── playground
+│       │   │   └── Playground.tsx
+│       │   └── vite-env.d.ts
+│       ├── src.zip
+│       ├── tsconfig.app.json
+│       ├── tsconfig.json
+│       ├── tsconfig.lib.json
+│       ├── tsconfig.node.json
+│       └── vite.config.ts
+├── next-env.d.ts
+├── next.config.mjs
+├── next.config.ts
+├── package-lock.json
+├── package.json
+├── postcss.config.mjs
+├── public
+│   ├── avatar.png
+│   └── hero-img.svg
+├── src
+│   ├── app
+│   │   ├── (auth-layout)
+│   │   │   ├── layout.tsx
+│   │   │   ├── login
+│   │   │   │   └── page.tsx
+│   │   │   └── register
+│   │   │       └── page.tsx
+│   │   ├── (navbar-layout)
+│   │   │   ├── about
+│   │   │   │   └── page.tsx
+│   │   │   ├── contact
+│   │   │   │   └── page.tsx
+│   │   │   ├── layout.tsx
+│   │   │   ├── page.tsx
+│   │   │   └── pricing
+│   │   │       └── page.tsx
+│   │   ├── (platform-layout)
+│   │   │   ├── layout.tsx
+│   │   │   └── platform
+│   │   │       ├── categories
+│   │   │       │   ├── [categoryId]
+│   │   │       │   │   └── page.tsx
+│   │   │       │   └── page.tsx
+│   │   │       ├── common
+│   │   │       │   └── utilities
+│   │   │       │       └── renderWithMath.tsx
+│   │   │       ├── components
+│   │   │       │   ├── ProblemsCategory.tsx
+│   │   │       │   ├── Question
+│   │   │       │   │   ├── MultipleChoiceAnswer.tsx
+│   │   │       │   │   ├── OpenAnswer.tsx
+│   │   │       │   │   ├── Question.tsx
+│   │   │       │   │   ├── QuestionBadge.tsx
+│   │   │       │   │   ├── QuestionFullScreenModal.tsx
+│   │   │       │   │   └── QuestionStatement.tsx
+│   │   │       │   ├── RecentResourceCard.tsx
+│   │   │       │   ├── RecentResourceMissingCard.tsx
+│   │   │       │   ├── WeakTopicCard.tsx
+│   │   │       │   └── WeakTopicMissingCard.tsx
+│   │   │       ├── exam
+│   │   │       │   ├── components
+│   │   │       │   │   ├── examRule.tsx
+│   │   │       │   │   └── previousExamResult.tsx
+│   │   │       │   ├── live
+│   │   │       │   │   └── page.tsx
+│   │   │       │   ├── overview
+│   │   │       │   │   └── page.tsx
+│   │   │       │   └── page.tsx
+│   │   │       ├── page.tsx
+│   │   │       ├── problems
+│   │   │       │   └── [problemId]
+│   │   │       │       └── page.tsx
+│   │   │       ├── results
+│   │   │       │   ├── EmptyState.tsx
+│   │   │       │   ├── ResultRow.tsx
+│   │   │       │   ├── ResultsTabs.tsx
+│   │   │       │   ├── StatsCards.tsx
+│   │   │       │   ├── page.tsx
+│   │   │       │   └── test-result.ts
+│   │   │       └── settings
+│   │   │           └── page.tsx
+│   │   ├── favicon.ico
+│   │   └── globals.css
+│   ├── components
+│   │   ├── Footer
+│   │   │   └── Footer.tsx
+│   │   ├── LandpageSections
+│   │   │   ├── Features.tsx
+│   │   │   ├── Hero.tsx
+│   │   │   ├── TaskPreview.tsx
+│   │   │   └── Testimonials.tsx
+│   │   ├── Navbar
+│   │   │   ├── Navbar.tsx
+│   │   │   └── NavbarMobileMenuLink.tsx
+│   │   ├── PlatformNavbar
+│   │   │   ├── AccountDropdown.tsx
+│   │   │   ├── CategoriesDropdown.tsx
+│   │   │   ├── Logo.tsx
+│   │   │   ├── MobileAccount.tsx
+│   │   │   ├── MobileCategories.tsx
+│   │   │   ├── MobileNotifications.tsx
+│   │   │   ├── MobileStreak.tsx
+│   │   │   ├── NotificationsDropdown.tsx
+│   │   │   ├── PlatformNavbar.tsx
+│   │   │   ├── StreakDropdown.tsx
+│   │   │   ├── mock-data.ts
+│   │   │   └── navbar-types.ts
+│   │   ├── Sidebar
+│   │   │   └── Sidebar.tsx
+│   │   └── ui
+│   │       ├── accordion.tsx
+│   │       ├── animated-counter.tsx
+│   │       ├── badge.tsx
+│   │       ├── button.tsx
+│   │       ├── card.tsx
+│   │       ├── dialog.tsx
+│   │       ├── dropdown-menu.tsx
+│   │       ├── input.tsx
+│   │       ├── label.tsx
+│   │       ├── progress.tsx
+│   │       ├── sheet.tsx
+│   │       ├── switch.tsx
+│   │       ├── tabs.tsx
+│   │       └── textarea.tsx
+│   ├── config
+│   │   └── texts.ts
+│   ├── hooks
+│   │   └── isMobile.ts
+│   └── lib
+│       └── utils.ts
+├── src.zip
+├── structure.txt
+├── tailwind.config.ts
+└── tsconfig.json
+
+46 directories, 117 files
