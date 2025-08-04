@@ -69,7 +69,7 @@ const Page = () => {
             </div>
 
             <div className="flex-1 overflow-y-auto bg-gray-50 p-4 md:p-6 lg:p-8">
-                <div className="max-w-6xl mx-auto space-y-6">
+                <div className="max-w-5xl mx-auto space-y-6">
                     {/* Header */}
                     <div className="text-center md:text-left">
                         <h1 className="text-3xl font-bold text-gray-900 mb-2 flex items-center gap-3 justify-center md:justify-start">
