@@ -16,7 +16,8 @@ import {
     Award,
     ChevronDown
 } from 'lucide-react'
-import ProblemsCategory from '@/components/ProblemsCategory/ProblemsCategory';
+import ProblemsCategory from '@/app/(platform-layout)/platform/components/ProblemsCategory';
+import { Category } from '@/types';
 
 const Page = () => {
     const [favorites, setFavorites] = useState<string[]>([])
@@ -119,10 +120,11 @@ const Page = () => {
                 animate="show"
             >
                 <AnimatePresence>
-                    {sortedCategories.map((category) => (
+                    {sortedCategories.map((category, index) => (
                         <ProblemsCategory
                             key={category.name}
-                            category={category}
+                            category={category as unknown as Category}
+                            index={index}
                             favorites={favorites}
                             toggleFavorite={toggleFavorite}
                         />

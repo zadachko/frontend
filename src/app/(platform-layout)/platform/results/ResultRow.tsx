@@ -3,7 +3,7 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { TestTube, GraduationCap, Clock, CheckCircle, Calendar } from "lucide-react"
-import type { TestResult } from "./test-result"
+import type { TestResult } from "@/types"
 
 interface ResultRowProps {
     result: TestResult

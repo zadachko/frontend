@@ -1,7 +1,6 @@
 import type React from "react"
 import type { Metadata } from "next"
 import "../globals.css"
-import Sidebar from "@/components/Sidebar/Sidebar"
 import PlatformNavbar from "@/components/PlatformNavbar/PlatformNavbar"
 
 export const metadata: Metadata = {

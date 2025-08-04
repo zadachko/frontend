@@ -1,7 +1,6 @@
 "use client"
 
 import Link from "next/link"
-import { ChevronDown, LayoutGrid, X } from "lucide-react"
 import { problemCategories } from "./mock-data"
 import type { MobileMenuType } from "./navbar-types"
 

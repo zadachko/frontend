@@ -16,7 +16,7 @@ import WeakTopicMissingCard from "./components/WeakTopicMissingCard"
 import Link from "next/link"
 import Sidebar from "@/components/Sidebar/Sidebar"
 import { ResultRow } from "./results/ResultRow"
-import type { TestResult } from "./results/test-result"
+import type { TestResult } from "@/types"
 const page = () => {
     const recentActivities: TestResult[] = [
         {

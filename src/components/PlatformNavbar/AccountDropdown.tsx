@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 import { User, ChevronDown, BarChart3, Star, Settings, CreditCard, LogOut } from "lucide-react"
 import {
     DropdownMenu,
@@ -29,10 +30,12 @@ export function AccountDropdown() {
                     <div className="flex items-center gap-4 mb-4">
                         <div className="relative">
                             <div className="w-16 h-16 rounded-full border-3 border-white overflow-hidden bg-gray-100 shadow-md">
-                                <img
+                                <Image
                                     src={userData.avatar || "/placeholder.svg?height=64&width=64"}
                                     alt={userData.name}
                                     className="w-full h-full object-cover"
+                                    width={64}
+                                    height={64}
                                 />
                             </div>
                             <div className="absolute -top-1 -right-1 w-8 h-8 bg-[#755bc5] rounded-full flex items-center justify-center border-2 border-white shadow-md">

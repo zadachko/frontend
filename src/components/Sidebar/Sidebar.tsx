@@ -1,5 +1,6 @@
 "use client"
 import { Star, Check, Target, BarChart3 } from "lucide-react"
+import Image from "next/image"
 
 const Sidebar = () => {
     // Mock user data
@@ -39,7 +40,7 @@ const Sidebar = () => {
                 <div className="relative mb-6 flex justify-center">
                     <div className="relative">
                         <div className="w-32 h-32 rounded-full border-4 border-white overflow-hidden bg-gray-100 shadow-lg">
-                            <img
+                            <Image
                                 src={userData.avatar || "/placeholder.svg?height=128&width=128"}
                                 alt={userData.name}
                                 className="w-full h-full object-cover"
