@@ -1,11 +1,12 @@
 "use client"
 
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Trophy, Target, Clock } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Trophy, Clock, Calendar, CheckCircle } from "lucide-react";
 import type { DiagramData } from "geometry-diagram-renderer";
 import Question from "@/app/(platform-layout)/platform/components/Question/Question";
 import { QuestionsNavigatorGrid } from "@/app/(platform-layout)/platform/components/QuestionsNavigatorGrid/QuestionsNavigatorGrid";
+import { Badge } from "@/components/ui/badge";
 
 import type { Question as QuestionType } from "@/types"
 
@@ -138,6 +139,98 @@ const ExamOverviewPage = () => {
             correctAnswer: "20",
             userAnswer: "20",
             points: 1
+        },
+        {
+            id: 11,
+            statement: "Решете: $\\displaystyle \\frac{2}{3} + \\frac{1}{6}$",
+            type: "multiple",
+            options: [
+                "$\\displaystyle \\frac{1}{2}$",
+                "$\\displaystyle \\frac{5}{6}$",
+                "$\\displaystyle 1$",
+                "$\\displaystyle \\frac{2}{3}$"
+            ],
+            correctAnswer: "$\\displaystyle \\frac{5}{6}$",
+            userAnswer: "$\\displaystyle \\frac{5}{6}$",
+            points: 1,
+            solution: "<p><strong>Решение:</strong></p><p>За да съберем дробите $\\frac{2}{3}$ и $\\frac{1}{6}$, първо трябва да намерим общ знаменател.</p><p>Най-малкият общ знаменател на 3 и 6 е 6.</p><p>$\\frac{2}{3} = \\frac{2 \\times 2}{3 \\times 2} = \\frac{4}{6}$</p><p>$\\frac{1}{6}$ вече има знаменател 6.</p><p>Сега можем да съберем: $\\frac{4}{6} + \\frac{1}{6} = \\frac{5}{6}$</p><p><strong>Отговор: $\\frac{5}{6}$</strong></p>"
+        },
+        {
+            id: 12,
+            statement: "Каква е площта на правоъгълник с дължина 8 cm и ширина 5 cm?",
+            type: "text",
+            diagramData: sampleTriangleData,
+            correctAnswer: "40 cm²",
+            userAnswer: "35 cm²",
+            points: 1,
+            solution: "<p><strong>Решение:</strong></p><p>Площта на правоъгълник се изчислява по формулата: <strong>Площ = дължина × ширина</strong></p><p>В нашия случай:</p><p>Дължина = 8 cm</p><p>Ширина = 5 cm</p><p>Площ = 8 cm × 5 cm = 40 cm²</p><p><strong>Отговор: 40 cm²</strong></p>"
+        },
+        {
+            id: 13,
+            statement: "Кое от следните е еквивалентно на 3/4?",
+            type: "multiple",
+            options: ["0.75", "0.34", "4/3", "7.5"],
+            correctAnswer: "0.75",
+            userAnswer: "0.75",
+            points: 1
+        },
+        {
+            id: 14,
+            statement: "Изчислете: 15 + 28 - 12 × 2",
+            type: "text",
+            correctAnswer: "19",
+            userAnswer: "12",
+            points: 1
+        },
+        {
+            id: 15,
+            statement: "Какъв е периметърът на квадрат с дължина на страната 6 cm?",
+            type: "multiple",
+            options: ["12 cm", "24 cm", "36 cm", "18 cm"],
+            correctAnswer: "24 cm",
+            userAnswer: "12 cm",
+            points: 1
+        },
+        {
+            id: 16,
+            statement: "Опростете: 2(x + 3) - 4",
+            type: "text",
+            correctAnswer: "2x + 2",
+            userAnswer: "2x + 2",
+            points: 1
+        },
+        {
+            id: 17,
+            statement: "Преобразувайте 0.6 в дроб в най-ниската форма.",
+            type: "text",
+            correctAnswer: "3/5",
+            userAnswer: "6/10",
+            points: 1
+        },
+        {
+            id: 18,
+            statement: "Кой ъгъл е по-голям от 90°, но по-малък от 180°?",
+            type: "multiple",
+            options: ["Acute angle", "Right angle", "Obtuse angle", "Straight angle"],
+            correctAnswer: "Obtuse angle",
+            userAnswer: "Obtuse angle",
+            points: 1
+        },
+        {
+            id: 19,
+            statement: "Намерете стойността на y: 2y - 5 = 11",
+            type: "text",
+            correctAnswer: "8",
+            userAnswer: "8",
+            points: 1
+        },
+        {
+            id: 20,
+            statement: "Колко е 25% от 80?",
+            type: "text",
+            correctAnswer: "20",
+            userAnswer: "20",
+            points: 1
         }
     ];
 
@@ -222,55 +315,76 @@ const ExamOverviewPage = () => {
                     {/* Overview Data */}
                     <div className="p-6 border-b border-gray-200">
                         <div className="space-y-4">
-                            <Card className="bg-gradient-to-br from-emerald-500 to-teal-600 text-white border-0 shadow-md">
-                                <CardHeader className="pb-2">
-                                    <CardTitle className="flex items-center gap-2 text-white text-sm">
-                                        <Trophy className="w-4 h-4" />
-                                        Общ резултат
-                                    </CardTitle>
-                                </CardHeader>
-                                <CardContent className="p-4">
-                                    <div className="text-3xl font-bold mb-1">{examResults.score}%</div>
-                                    <p className="text-emerald-100 text-xs">
-                                        {examResults.correctAnswers} от {examResults.totalQuestions} правилни отговора
-                                    </p>
+                            {/* Main Score Card - Similar to ResultRow */}
+                            <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200">
+                                <CardContent className="p-4 pt-0">
+                                    <div className="flex justify-center mb-4">
+                                        <h3 className="font-semibold text-gray-900 text-md">Резултати от изпита</h3>
+                                    </div>
+                                    <div className="flex items-center justify-between">
+                                        {/* Left Side - Info */}
+                                        <div className="flex-1 min-w-0 pr-4">
+                                            <div className="flex items-center gap-2 mb-3">
+                                                <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-emerald-100">
+                                                    <Trophy className="w-4 h-4 text-emerald-600" />
+                                                </div>
+                                                <Badge variant="secondary" className="bg-emerald-100 text-emerald-600 text-xs">
+                                                    Матура
+                                                </Badge>
+                                            </div>
+
+                                            <div className="flex flex-col gap-2 text-xs text-gray-600">
+                                                <div className="flex items-center gap-1">
+                                                    <Calendar className="w-3 h-3 text-gray-500" />
+                                                    <span>{examResults.examDate}</span>
+                                                </div>
+                                                <div className="flex items-center gap-1">
+                                                    <Clock className="w-3 h-3 text-blue-500" />
+                                                    <span className="text-blue-700">{examResults.timeSpent}</span>
+                                                </div>
+                                                <div className="flex items-center gap-1">
+                                                    <CheckCircle className="w-3 h-3 text-green-500" />
+                                                    <span className="text-green-700 font-medium">
+                                                        {examResults.correctAnswers}/{examResults.totalQuestions}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Right Side - Circular Progress */}
+                                        <div className="relative w-16 h-16 flex items-center justify-center flex-shrink-0">
+                                            <svg className="w-16 h-16" viewBox="0 0 36 36">
+                                                <path
+                                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                                    fill="none"
+                                                    stroke="#e5e7eb"
+                                                    strokeWidth="2"
+                                                />
+                                                <path
+                                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                                    fill="none"
+                                                    stroke={examResults.score >= 80 ? "#10b981" : examResults.score >= 60 ? "#f59e0b" : "#ef4444"}
+                                                    strokeWidth="2"
+                                                    strokeDasharray={`${examResults.score}, 100`}
+                                                    strokeLinecap="round"
+                                                    className="transition-all duration-500 origin-center"
+                                                />
+                                            </svg>
+                                            <div className="absolute inset-0 flex items-center justify-center">
+                                                <span className="text-sm font-semibold text-gray-900">
+                                                    {(2 + (examResults.score / 100) * 4).toFixed(2)}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </CardContent>
                             </Card>
 
-                            <div className="grid grid-cols-2 gap-3">
-                                <Card className="border-0 shadow-sm">
-                                    <CardHeader className="pb-2">
-                                        <CardTitle className="flex items-center gap-2 text-xs">
-                                            <Target className="w-3 h-3" />
-                                            Правилни
-                                        </CardTitle>
-                                    </CardHeader>
-                                    <CardContent className="p-3">
-                                        <div className="text-lg font-bold text-green-600">
-                                            {examResults.correctAnswers}
-                                        </div>
-                                    </CardContent>
-                                </Card>
-
-                                <Card className="border-0 shadow-sm">
-                                    <CardHeader className="pb-2">
-                                        <CardTitle className="flex items-center gap-2 text-xs">
-                                            <Clock className="w-3 h-3" />
-                                            Време
-                                        </CardTitle>
-                                    </CardHeader>
-                                    <CardContent className="p-3">
-                                        <div className="text-lg font-bold text-blue-600">
-                                            {examResults.timeSpent}
-                                        </div>
-                                    </CardContent>
-                                </Card>
-                            </div>
                         </div>
                     </div>
 
                     {/* Questions Navigator Grid - Centered */}
-                    <div className="flex-1 flex items-center justify-center">
+                    <div className="flex-1 flex items-start justify-center">
                         <QuestionsNavigatorGrid
                             answers={answers}
                             totalQuestions={questions.length}
