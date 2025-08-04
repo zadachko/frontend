@@ -5,7 +5,7 @@ import { ChevronRight } from 'lucide-react';
 import React from 'react';
 
 import type { Category } from "@/types"
-const ProblemsCategory = ({ category, index, favorites, toggleFavorite }: { category: Category, index: number, favorites: string[], toggleFavorite: (categoryName: string) => void }) => {
+const ProblemsCategory = ({ category, index }: { category: Category, index: number }) => {
     return (
         <Card
             key={index}
