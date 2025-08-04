@@ -9,6 +9,11 @@ import {
     Play,
     Target,
     BarChart3,
+    Calculator,
+    Ruler,
+    Hash,
+    FileText,
+    Sigma,
 } from "lucide-react"
 import WeakTopicCard from "./components/WeakTopicCard"
 import ProblemsCategory from "./components/ProblemsCategory"
@@ -72,41 +77,53 @@ const page = () => {
     const problemCategories = [
         {
             name: "Алгебра",
+            icon: Calculator,
             problems: 324,
             completed: 89,
             bgColor: "bg-purple-100",
+            iconColor: "text-purple-600",
         },
         {
             name: "Геометрия",
+            icon: Ruler,
             problems: 267,
             completed: 156,
             bgColor: "bg-blue-100",
+            iconColor: "text-blue-600",
         },
         {
             name: "Дроби",
+            icon: Hash,
             problems: 198,
             completed: 87,
             bgColor: "bg-green-100",
+            iconColor: "text-green-600",
         },
         {
             name: "Статистика",
+            icon: BarChart3,
             problems: 145,
             completed: 34,
             bgColor: "bg-orange-100",
+            iconColor: "text-orange-600",
         },
         {
             name: "Текстови задачи",
+            icon: FileText,
             problems: 289,
             completed: 112,
             bgColor: "bg-pink-100",
+            iconColor: "text-pink-600",
         },
         {
             name: "Пре-алгебра",
+            icon: Sigma,
             problems: 176,
             completed: 98,
             bgColor: "bg-teal-100",
+            iconColor: "text-teal-600",
         },
-    ]
+    ];
     return (
         <div className="flex flex-1 h-full w-full overflow-hidden">
             <div className="hidden md:block h-full w-80 flex-shrink-0">
