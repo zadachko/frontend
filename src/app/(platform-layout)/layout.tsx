@@ -1,7 +1,6 @@
 import type React from "react"
 import type { Metadata } from "next"
 import "../globals.css"
-import Sidebar from "@/components/Sidebar/Sidebar"
 import PlatformNavbar from "@/components/PlatformNavbar/PlatformNavbar"
 
 export const metadata: Metadata = {
@@ -15,7 +14,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <div className="flex flex-col h-screen">
           <PlatformNavbar />
-          <div className="flex flex-1 overflow-hidden">
+          <div className="flex flex-1 overflow-auto">
             {children}
           </div>
         </div>
