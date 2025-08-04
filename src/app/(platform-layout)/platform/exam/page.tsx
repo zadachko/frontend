@@ -77,7 +77,7 @@ const Page = () => {
 
     return (
 
-        <div className="min-h-screen bg-gray-50 w-screen flex items-center justify-center p-4 mx-auto">
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4 mx-auto">
             <div className="w-full max-w-7xl">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     {/* Main Exam Card */}
