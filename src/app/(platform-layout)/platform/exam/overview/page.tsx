@@ -1,11 +1,11 @@
 "use client"
 
-import { Button } from "@/components/ui/button";
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, Trophy, Clock, Target } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { Trophy, Target, Clock } from "lucide-react";
 import type { DiagramData } from "geometry-diagram-renderer";
 import Question from "@/app/(platform-layout)/platform/components/Question/Question";
+import { QuestionsNavigatorGrid } from "@/app/(platform-layout)/platform/components/QuestionsNavigatorGrid/QuestionsNavigatorGrid";
 
 type Question = {
     id: number
@@ -44,7 +44,7 @@ const sampleTriangleData: DiagramData = {
 };
 
 const ExamOverviewPage = () => {
-    const router = useRouter();
+    const [currentQuestion, setCurrentQuestion] = useState(1);
 
     // Mock exam results - in a real app, this would come from the backend
     const examResults = {
@@ -173,107 +173,125 @@ const ExamOverviewPage = () => {
         // This is read-only, so we don't need to handle changes
     };
 
+    // Function to get question status for the navigator grid
+    const getQuestionStatus = (questionNum: number) => {
+        const question = questions.find(q => q.id === questionNum);
+        if (!question || !question.userAnswer) return "unanswered";
+
+        const isCorrect = question.userAnswer === question.correctAnswer;
+        return isCorrect ? "correct" : "incorrect";
+    };
+
+    // Function to handle navigation to a specific question
+    const goToQuestion = (questionNum: number) => {
+        setCurrentQuestion(questionNum);
+        // Scroll to the question element
+        const questionElement = document.getElementById(`question-${questionNum}`);
+        if (questionElement) {
+            questionElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    };
+
+    // Colors for the navigator grid
+    const navigatorColors = {
+        primary: "emerald",
+        primaryLight: "emerald-50",
+        primaryHover: "emerald-400",
+        answeredBg: "green-100",
+        answeredBorder: "green-500",
+        answeredText: "green-800",
+        answeredHover: "green-200"
+    };
+
     return (
         <div className="min-h-screen bg-gray-50 mx-auto">
-            <div className="max-w-6xl mx-auto p-6">
-                {/* Header */}
-                <div className="mb-8">
-                    <Button
-                        variant="ghost"
-                        onClick={() => router.push('/platform')}
-                        className="mb-4 flex items-center gap-2"
-                    >
-                        <ArrowLeft className="w-4 h-4" />
-                        Обратно към начало
-                    </Button>
-                    <h1 className="text-3xl font-bold text-gray-900">Резултати от изпита</h1>
-                    <p className="text-gray-600 mt-2">Преглед на вашите отговори и резултати</p>
+            <div className="flex h-screen">
+                {/* Left Column - Questions */}
+                <div className="flex-1 overflow-y-auto">
+                    <div className="p-6 max-w-4xl mx-auto">
+                        {/* Questions Review */}
+                        <div className="space-y-8">
+                            {questions.map((question) => (
+                                <div key={question.id} id={`question-${question.id}`}>
+                                    <Question
+                                        question={questionsForDisplay.find(q => q.id === question.id)!}
+                                        answers={answers}
+                                        handleAnswerChange={handleAnswerChange}
+                                        isReviewMode={true}
+                                        correctAnswer={question.correctAnswer}
+                                        userAnswer={question.userAnswer}
+                                        solution={question.solution}
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                 </div>
 
-                {/* Score Summary */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                    <Card className="bg-gradient-to-br from-emerald-500 to-teal-600 text-white">
-                        <CardHeader className="pb-2">
-                            <CardTitle className="flex items-center gap-2 text-white">
-                                <Trophy className="w-5 h-5" />
-                                Общ резултат
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="text-4xl font-bold mb-2">{examResults.score}%</div>
-                            <p className="text-emerald-100">
-                                {examResults.correctAnswers} от {examResults.totalQuestions} правилни отговора
-                            </p>
-                        </CardContent>
-                    </Card>
+                {/* Right Sidebar - Navigation */}
+                <div className="w-80 bg-white border-l border-gray-200 flex flex-col h-[calc(100vh-100px)]">
+                    {/* Overview Data */}
+                    <div className="p-6 border-b border-gray-200">
+                        <div className="space-y-4">
+                            <Card className="bg-gradient-to-br from-emerald-500 to-teal-600 text-white border-0 shadow-md">
+                                <CardHeader className="pb-2">
+                                    <CardTitle className="flex items-center gap-2 text-white text-sm">
+                                        <Trophy className="w-4 h-4" />
+                                        Общ резултат
+                                    </CardTitle>
+                                </CardHeader>
+                                <CardContent className="p-4">
+                                    <div className="text-3xl font-bold mb-1">{examResults.score}%</div>
+                                    <p className="text-emerald-100 text-xs">
+                                        {examResults.correctAnswers} от {examResults.totalQuestions} правилни отговора
+                                    </p>
+                                </CardContent>
+                            </Card>
 
-                    <Card>
-                        <CardHeader className="pb-2">
-                            <CardTitle className="flex items-center gap-2 text-sm">
-                                <Target className="w-4 h-4" />
-                                Правилни отговори
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="text-2xl font-bold text-green-600 mb-1">
-                                {examResults.correctAnswers}
+                            <div className="grid grid-cols-2 gap-3">
+                                <Card className="border-0 shadow-sm">
+                                    <CardHeader className="pb-2">
+                                        <CardTitle className="flex items-center gap-2 text-xs">
+                                            <Target className="w-3 h-3" />
+                                            Правилни
+                                        </CardTitle>
+                                    </CardHeader>
+                                    <CardContent className="p-3">
+                                        <div className="text-lg font-bold text-green-600">
+                                            {examResults.correctAnswers}
+                                        </div>
+                                    </CardContent>
+                                </Card>
+
+                                <Card className="border-0 shadow-sm">
+                                    <CardHeader className="pb-2">
+                                        <CardTitle className="flex items-center gap-2 text-xs">
+                                            <Clock className="w-3 h-3" />
+                                            Време
+                                        </CardTitle>
+                                    </CardHeader>
+                                    <CardContent className="p-3">
+                                        <div className="text-lg font-bold text-blue-600">
+                                            {examResults.timeSpent}
+                                        </div>
+                                    </CardContent>
+                                </Card>
                             </div>
-                            <p className="text-sm text-gray-600">
-                                От {examResults.totalQuestions} въпроса
-                            </p>
-                        </CardContent>
-                    </Card>
+                        </div>
+                    </div>
 
-                    <Card>
-                        <CardHeader className="pb-2">
-                            <CardTitle className="flex items-center gap-2 text-sm">
-                                <Clock className="w-4 h-4" />
-                                Време
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="text-2xl font-bold text-blue-600 mb-1">
-                                {examResults.timeSpent}
-                            </div>
-                            <p className="text-sm text-gray-600">
-                                {examResults.examDate}
-                            </p>
-                        </CardContent>
-                    </Card>
-                </div>
-
-                {/* Questions Review */}
-
-                <div className="space-y-6">
-                    {questions.map((question) => (
-                        <Question
-                            key={question.id}
-                            question={questionsForDisplay.find(q => q.id === question.id)!}
+                    {/* Questions Navigator Grid - Centered */}
+                    <div className="flex-1 flex items-center justify-center">
+                        <QuestionsNavigatorGrid
                             answers={answers}
-                            handleAnswerChange={handleAnswerChange}
-                            isReviewMode={true}
-                            correctAnswer={question.correctAnswer}
-                            userAnswer={question.userAnswer}
-                            solution={question.solution}
+                            totalQuestions={questions.length}
+                            getQuestionStatus={getQuestionStatus}
+                            currentQuestion={currentQuestion}
+                            goToQuestion={goToQuestion}
+                            colors={navigatorColors}
+                            reviewMode={true}
                         />
-                    ))}
-                </div>
-
-
-                {/* Action Buttons */}
-                <div className="flex gap-4 mt-8">
-                    <Button
-                        onClick={() => router.push('/platform/exam')}
-                        className="bg-emerald-600 hover:bg-emerald-700"
-                    >
-                        Нов изпит
-                    </Button>
-                    <Button
-                        variant="outline"
-                        onClick={() => router.push('/platform')}
-                    >
-                        Към платформата
-                    </Button>
+                    </div>
                 </div>
             </div>
         </div>
