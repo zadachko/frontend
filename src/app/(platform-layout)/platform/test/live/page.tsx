@@ -311,7 +311,7 @@ const LiveExamPage = () => {
                     {/* Submit Button */}
                     <div className="p-6 border-t border-gray-200">
                         <Button
-                            className="w-full bg-gradient-to-br from-emerald-500 to-teal-600 text-white hover:bg-gray-100 font-semibold text-lg py-3 h-12"
+                            className="w-full bg-gradient-to-br from-[#6F58C9] to-[#5A4BA3] text-white hover:bg-gray-100 font-semibold text-lg py-3 h-12"
                             onClick={handleSubmitExam}
                         >
                             Изпрати
