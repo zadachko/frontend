@@ -28,11 +28,11 @@ const Page = () => {
             bgColor: "bg-purple-100",
             iconColor: "text-purple-600",
             subcategories: [
-                { name: "Линейни уравнения", icon: Target, difficulty: "Лесно", problems: 45 },
-                { name: "Квадратни уравнения", icon: TrendingUp, difficulty: "Средно", problems: 38 },
-                { name: "Системи уравнения", icon: Zap, difficulty: "Сложно", problems: 52 },
-                { name: "Алгебрични изрази", icon: BookOpen, difficulty: "Лесно", problems: 67 },
-                { name: "Факторизация", icon: Brain, difficulty: "Средно", problems: 41 }
+                { name: "Линейни уравнения", icon: Target, problems: 45 },
+                { name: "Квадратни уравнения", icon: TrendingUp, problems: 38 },
+                { name: "Системи уравнения", icon: Zap, problems: 52 },
+                { name: "Алгебрични изрази", icon: BookOpen, problems: 67 },
+                { name: "Факторизация", icon: Brain, problems: 41 }
             ]
         },
         {
@@ -42,11 +42,11 @@ const Page = () => {
             bgColor: "bg-blue-100",
             iconColor: "text-blue-600",
             subcategories: [
-                { name: "Площ и периметър", icon: Target, difficulty: "Лесно", problems: 58 },
-                { name: "Обем и повърхнина", icon: TrendingUp, difficulty: "Средно", problems: 43 },
-                { name: "Питагорова теорема", icon: Zap, difficulty: "Сложно", problems: 39 },
-                { name: "Подобни триъгълници", icon: BookOpen, difficulty: "Средно", problems: 47 },
-                { name: "Окръжности и кръгове", icon: Brain, difficulty: "Сложно", problems: 35 }
+                { name: "Площ и периметър", icon: Target, problems: 58 },
+                { name: "Обем и повърхнина", icon: TrendingUp, problems: 43 },
+                { name: "Питагорова теорема", icon: Zap, problems: 39 },
+                { name: "Подобни триъгълници", icon: BookOpen, problems: 47 },
+                { name: "Окръжности и кръгове", icon: Brain, problems: 35 }
             ]
         },
         {
@@ -56,11 +56,11 @@ const Page = () => {
             bgColor: "bg-green-100",
             iconColor: "text-green-600",
             subcategories: [
-                { name: "Събиране и изваждане", icon: Target, difficulty: "Лесно", problems: 42 },
-                { name: "Умножение и деление", icon: TrendingUp, difficulty: "Средно", problems: 38 },
-                { name: "Смесени числа", icon: Zap, difficulty: "Сложно", problems: 31 },
-                { name: "Десятични дроби", icon: BookOpen, difficulty: "Средно", problems: 45 },
-                { name: "Проценти", icon: Brain, difficulty: "Сложно", problems: 28 }
+                { name: "Събиране и изваждане", icon: Target, problems: 42 },
+                { name: "Умножение и деление", icon: TrendingUp, problems: 38 },
+                { name: "Смесени числа", icon: Zap, problems: 31 },
+                { name: "Десятични дроби", icon: BookOpen, problems: 45 },
+                { name: "Проценти", icon: Brain, problems: 28 }
             ]
         },
         {
@@ -70,11 +70,11 @@ const Page = () => {
             bgColor: "bg-orange-100",
             iconColor: "text-orange-600",
             subcategories: [
-                { name: "Средна стойност", icon: Target, difficulty: "Лесно", problems: 32 },
-                { name: "Медиана и мода", icon: TrendingUp, difficulty: "Средно", problems: 28 },
-                { name: "Графики и диаграми", icon: Zap, difficulty: "Сложно", problems: 35 },
-                { name: "Вероятности", icon: BookOpen, difficulty: "Средно", problems: 25 },
-                { name: "Данни и интерпретация", icon: Brain, difficulty: "Сложно", problems: 22 }
+                { name: "Средна стойност", icon: Target, problems: 32 },
+                { name: "Медиана и мода", icon: TrendingUp, problems: 28 },
+                { name: "Графики и диаграми", icon: Zap, problems: 35 },
+                { name: "Вероятности", icon: BookOpen, problems: 25 },
+                { name: "Данни и интерпретация", icon: Brain, problems: 22 }
             ]
         },
         {
@@ -84,11 +84,11 @@ const Page = () => {
             bgColor: "bg-pink-100",
             iconColor: "text-pink-600",
             subcategories: [
-                { name: "Движение и време", icon: Target, difficulty: "Лесно", problems: 55 },
-                { name: "Работа и производителност", icon: TrendingUp, difficulty: "Средно", problems: 48 },
-                { name: "Процентни задачи", icon: Zap, difficulty: "Сложно", problems: 42 },
-                { name: "Геометрични задачи", icon: BookOpen, difficulty: "Средно", problems: 51 },
-                { name: "Алгебрични задачи", icon: Brain, difficulty: "Сложно", problems: 45 }
+                { name: "Движение и време", icon: Target, problems: 55 },
+                { name: "Работа и производителност", icon: TrendingUp, problems: 48 },
+                { name: "Процентни задачи", icon: Zap, problems: 42 },
+                { name: "Геометрични задачи", icon: BookOpen, problems: 51 },
+                { name: "Алгебрични задачи", icon: Brain, problems: 45 }
             ]
         },
         {
@@ -98,11 +98,11 @@ const Page = () => {
             bgColor: "bg-teal-100",
             iconColor: "text-teal-600",
             subcategories: [
-                { name: "Цели числа", icon: Target, difficulty: "Лесно", problems: 38 },
-                { name: "Рационални числа", icon: TrendingUp, difficulty: "Средно", problems: 32 },
-                { name: "Степенуване", icon: Zap, difficulty: "Сложно", problems: 29 },
-                { name: "Коренуване", icon: BookOpen, difficulty: "Средно", problems: 35 },
-                { name: "Алгебрични изрази", icon: Brain, difficulty: "Сложно", problems: 27 }
+                { name: "Цели числа", icon: Target, problems: 38 },
+                { name: "Рационални числа", icon: TrendingUp, problems: 32 },
+                { name: "Степенуване", icon: Zap, problems: 29 },
+                { name: "Коренуване", icon: BookOpen, problems: 35 },
+                { name: "Алгебрични изрази", icon: Brain, problems: 27 }
             ]
         }
     ];
@@ -155,19 +155,6 @@ const Page = () => {
     };
 
     const selectedCategoryData = categories.find(cat => cat.name === selectedCategory);
-
-    const getDifficultyColor = (difficulty: string) => {
-        switch (difficulty) {
-            case "Лесно":
-                return "text-green-600 bg-green-50";
-            case "Средно":
-                return "text-yellow-600 bg-yellow-50";
-            case "Сложно":
-                return "text-red-600 bg-red-50";
-            default:
-                return "text-gray-600 bg-gray-50";
-        }
-    };
 
     return (
 
@@ -229,9 +216,7 @@ const Page = () => {
                                                         <div className={`inline-flex p-2 rounded-lg ${selectedCategoryData.bgColor} transition-transform duration-200`}>
                                                             <subcategory.icon className={`w-4 h-4 ${selectedCategoryData.iconColor}`} />
                                                         </div>
-                                                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${getDifficultyColor(subcategory.difficulty)}`}>
-                                                            {subcategory.difficulty}
-                                                        </span>
+
                                                     </div>
                                                     <div className="text-left">
                                                         <div className="text-sm font-medium text-gray-900 mb-1">{subcategory.name}</div>
