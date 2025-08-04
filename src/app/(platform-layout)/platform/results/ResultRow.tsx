@@ -35,24 +35,28 @@ export const ResultRow = ({ result }: ResultRowProps) => {
 
     return (
         <Card className="hover:shadow-md transition-all duration-200 bg-white border border-gray-200">
-            <CardContent className="px-4 sm:px-6 py-2">
+            <CardContent className="px-4 sm:px-6">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     {/* Left Side */}
                     <div className="flex items-start gap-4 flex-1 min-w-0">
-                        <div className={`flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center ${iconBg}`}>
-                            {isExam ? (
-                                <GraduationCap className={`w-5 h-5 ${iconColor}`} />
-                            ) : (
-                                <TestTube className={`w-5 h-5 ${iconColor}`} />
-                            )}
-                        </div>
+                        <div className="flex flex-col gap-2 w-full">
+                            <div className="flex items-center gap-2 flex-wrap mb-1">
+                                <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${iconBg}`}>
+                                    {isExam ? (
+                                        <GraduationCap className={`w-5 h-5 ${iconColor}`} />
+                                    ) : (
+                                        <TestTube className={`w-5 h-5 ${iconColor}`} />
+                                    )}
+                                </div>
 
-                        <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-2 mb-1 flex-wrap">
-                                <Badge variant="secondary" className={`${iconBg} ${iconColor} text-xs`}>
-                                    {isExam ? "Матура" : "Тест"}
-                                </Badge>
-                                <h3 className="font-semibold text-gray-900 truncate">{result.title}</h3>
+                                <div className="flex-1 min-w-0 flex items-center gap-2">
+                                    <Badge variant="secondary" className={`${iconBg} ${iconColor} text-xs flex-shrink-0`}>
+                                        {isExam ? "Матура" : "Тест"}
+                                    </Badge>
+                                    <h3 className="font-semibold text-gray-900 truncate">
+                                        {result.title}
+                                    </h3>
+                                </div>
                             </div>
 
                             <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600">
@@ -77,22 +81,26 @@ export const ResultRow = ({ result }: ResultRowProps) => {
                     </div>
 
                     {/* Right Side */}
-                    <div className="flex flex-col items-end justify-center gap-2 sm:w-36 w-full">
-                        <div className="w-full">
-                            <div className="text-right text-lg font-bold text-gray-800">
-                                {result.percentage}% <span className="text-[0.9375rem] font-normal text-gray-600">({getGrade(result.percentage)})</span>
-                            </div>
-                            <div className="w-full h-2 rounded bg-gray-200 mt-1 overflow-hidden">
-                                <div
-                                    className="h-full transition-all duration-300"
-                                    style={{
-                                        width: `${result.percentage}%`,
-                                        backgroundColor: getSmoothColor(result.percentage),
-                                    }}
-                                />
-                            </div>
+                    <div className="flex flex-col gap-2 w-full sm:w-36">
+                        <div className="text-lg font-bold text-gray-800 text-center sm:text-right">
+                            {result.percentage}%{" "}
+                            <span className="text-[0.9375rem] font-normal text-gray-600 ml-1">
+                                ({getGrade(result.percentage)})
+                            </span>
                         </div>
-                        <Button size="sm" className="bg-[#6F58C9] hover:bg-[#5A4BA3] text-white w-full sm:w-auto">
+                        <div className="w-full h-2 rounded bg-gray-200 overflow-hidden">
+                            <div
+                                className="h-full transition-all duration-300"
+                                style={{
+                                    width: `${result.percentage}%`,
+                                    backgroundColor: getSmoothColor(result.percentage),
+                                }}
+                            />
+                        </div>
+                        <Button
+                            size="sm"
+                            className="bg-[#6F58C9] hover:bg-[#5A4BA3] text-white w-full sm:w-auto flex justify-center sm:justify-end"
+                        >
                             <Eye className="w-4 h-4 sm:mr-1" />
                             <span className="hidden sm:inline">Виж</span>
                         </Button>
