@@ -7,7 +7,7 @@ import OpenAnswer from './OpenAnswer';
 import type { DiagramData } from 'geometry-diagram-renderer';
 import MultipleChoiceAnswer from './MultipleChoiceAnswer';
 import { Badge } from '@/components/ui/badge';
-import TaskSolutionModal from './TaskSolutionModal';
+import QuestionSolutionModal from './QuestionSolutionModal';
 
 type QuestionProps = {
     question: {
@@ -120,8 +120,8 @@ const Question = ({
                 </CardContent>
             </Card>
 
-            {/* Task Solution Modal */}
-            <TaskSolutionModal
+            {/* Question Solution Modal */}
+            <QuestionSolutionModal
                 isOpen={isModalOpen}
                 onClose={handleCloseModal}
                 question={question}

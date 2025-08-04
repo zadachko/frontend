@@ -4,7 +4,7 @@ import { X, CheckCircle } from 'lucide-react';
 import type { DiagramData } from 'geometry-diagram-renderer';
 import { renderWithMath } from '../../common/utilities/renderWithMath';
 
-type TaskSolutionModalProps = {
+type QuestionSolutionModalProps = {
     isOpen: boolean;
     onClose: () => void;
     question: {
@@ -22,7 +22,7 @@ type TaskSolutionModalProps = {
     userAnswer?: string;
 };
 
-const TaskSolutionModal = ({
+const QuestionSolutionModal = ({
     isOpen,
     onClose,
     question,
@@ -32,7 +32,7 @@ const TaskSolutionModal = ({
     isReviewMode = false,
     correctAnswer,
     userAnswer,
-}: TaskSolutionModalProps) => {
+}: QuestionSolutionModalProps) => {
 
     // Handle ESC key press
     useEffect(() => {
@@ -141,4 +141,4 @@ const TaskSolutionModal = ({
     );
 };
 
-export default TaskSolutionModal; 
+export default QuestionSolutionModal; 
