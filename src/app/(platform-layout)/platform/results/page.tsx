@@ -13,9 +13,9 @@ const Page = () => {
     // Mock data for results
     const results: TestResult[] = [
         {
-            id: "2",
+            id: "5",
             type: "exam",
-            title: "Пробен изпит №2",
+            title: "Пробен изпит №3",
             date: "08.12.2024",
             correctAnswers: 13,
             totalQuestions: 25,
@@ -23,7 +23,7 @@ const Page = () => {
             duration: "85 мин",
         },
         {
-            id: "3",
+            id: "4",
             type: "test",
             title: "Алгебра — Квадратни уравнения",
             date: "05.12.2024",
@@ -32,9 +32,9 @@ const Page = () => {
             percentage: 80,
         },
         {
-            id: "4",
+            id: "3",
             type: "exam",
-            title: "Пробен изпит №3",
+            title: "Пробен изпит №2",
             date: "15.12.2024",
             correctAnswers: 25,
             totalQuestions: 25,
@@ -42,9 +42,9 @@ const Page = () => {
             duration: "82 мин",
         },
         {
-            id: "6",
+            id: "2",
             type: "exam",
-            title: "Пробен изпит №2",
+            title: "Пробен изпит №1",
             date: "08.12.2024",
             correctAnswers: 13,
             totalQuestions: 25,
@@ -52,7 +52,7 @@ const Page = () => {
             duration: "85 мин",
         },
         {
-            id: "8",
+            id: "1",
             type: "test",
             title: "Дроби и десетични числа",
             date: "01.12.2024",

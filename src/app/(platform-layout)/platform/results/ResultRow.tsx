@@ -18,17 +18,19 @@ export const ResultRow = ({ result }: ResultRowProps) => {
         let hue: number
 
         if (clamped <= 50) {
-            // Red to Yellow: hue 0 → 60
             hue = (clamped / 50) * 60
         } else if (clamped <= 85) {
-            // Yellow to Yellow-Green: hue 60 → 85 (slight hue shift)
             hue = 60 + ((clamped - 50) / 35) * 25
         } else {
-            // Yellow-Green to Green: hue 85 → 120 (stronger hue shift)
             hue = 85 + ((clamped - 85) / 15) * 35
         }
 
-        return `hsl(${hue}, 100%, 45%)` // Slightly darker green tone
+        return `hsl(${hue}, 100%, 45%)`
+    }
+
+    const getGrade = (percentage: number): string => {
+        const grade = (2 + (percentage / 100) * 4).toFixed(2)
+        return grade
     }
 
     return (
@@ -54,19 +56,19 @@ export const ResultRow = ({ result }: ResultRowProps) => {
                             </div>
 
                             <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600">
-                                <div className="flex items-center gap-2 bg-gray-50 px-3 py-1.5 rounded-lg">
+                                <div className="flex items-center gap-1">
                                     <Calendar className="w-4 h-4 text-gray-500" />
-                                    <span className="font-medium">{result.date}</span>
+                                    <span>{result.date}</span>
                                 </div>
                                 {result.duration && (
-                                    <div className="flex items-center gap-2 bg-blue-50 px-3 py-1.5 rounded-lg">
+                                    <div className="flex items-center gap-1">
                                         <Clock className="w-4 h-4 text-blue-500" />
-                                        <span className="font-medium text-blue-700">{result.duration}</span>
+                                        <span className="text-blue-700">{result.duration}</span>
                                     </div>
                                 )}
-                                <div className="flex items-center gap-2 bg-green-50 px-3 py-1.5 rounded-lg">
+                                <div className="flex items-center gap-1">
                                     <CheckCircle className="w-4 h-4 text-green-500" />
-                                    <span className="font-medium text-green-700">
+                                    <span className="text-green-700 font-medium">
                                         {result.correctAnswers}/{result.totalQuestions}
                                     </span>
                                 </div>
@@ -77,7 +79,9 @@ export const ResultRow = ({ result }: ResultRowProps) => {
                     {/* Right Side */}
                     <div className="flex flex-col items-end justify-center gap-2 sm:w-36 w-full">
                         <div className="w-full">
-                            <div className="text-right text-lg font-bold text-gray-800">{result.percentage}%</div>
+                            <div className="text-right text-lg font-bold text-gray-800">
+                                {result.percentage}% <span className="text-[0.9375rem] font-normal text-gray-600">({getGrade(result.percentage)})</span>
+                            </div>
                             <div className="w-full h-2 rounded bg-gray-200 mt-1 overflow-hidden">
                                 <div
                                     className="h-full transition-all duration-300"
