@@ -7,7 +7,7 @@ interface QuestionsNavigatorGridProps {
     getQuestionStatus: (questionNum: number) => string;
     currentQuestion: number;
     goToQuestion: (questionNum: number) => void;
-    colors?: {
+    colors: {
         primary: string;
         primaryLight: string;
         primaryHover: string;
@@ -24,15 +24,7 @@ export const QuestionsNavigatorGrid = ({
     getQuestionStatus,
     currentQuestion,
     goToQuestion,
-    colors = {
-        primary: "emerald",
-        primaryLight: "emerald-50",
-        primaryHover: "emerald-300",
-        answeredBg: "green-100",
-        answeredBorder: "green-200",
-        answeredText: "green-800",
-        answeredHover: "green-200"
-    }
+    colors
 }: QuestionsNavigatorGridProps) => {
     return (
         <div className="flex-1 p-6">

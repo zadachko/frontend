@@ -300,12 +300,12 @@ const LiveExamPage = () => {
                         goToQuestion={goToQuestion}
                         colors={{
                             primary: "[#6F58C9]",
-                            primaryLight: "[#6F58C9]/10",
-                            primaryHover: "[#6F58C9]/30",
-                            answeredBg: "[#6F58C9]/20",
-                            answeredBorder: "[#6F58C9]/40",
+                            primaryLight: "[#6F58C91A]",
+                            primaryHover: "[#6F58C94D]",
+                            answeredBg: "[#6F58C933]",
+                            answeredBorder: "[#6F58C966]",
                             answeredText: "[#6F58C9]",
-                            answeredHover: "[#6F58C9]/30"
+                            answeredHover: "[#6F58C94D]"
                         }}
                     />
                     {/* Submit Button */}
