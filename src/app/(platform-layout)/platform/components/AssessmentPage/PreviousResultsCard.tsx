@@ -13,16 +13,13 @@ interface PreviousResultsCardProps {
         correctAnswers: number;
         timeSpent: string;
     }[];
-    colors?: {
+    colors: {
         buttonGradient: string;
         buttonHoverGradient: string;
     };
 }
 
-const PreviousResultsCard = ({ previousResults, colors = {
-    buttonGradient: "from-[#6F58C9] to-[#5A4BA3]",
-    buttonHoverGradient: "hover:from-[#5A4BA3] hover:to-[#6F58C9]"
-} }: PreviousResultsCardProps) => {
+const PreviousResultsCard = ({ previousResults, colors }: PreviousResultsCardProps) => {
 
 
     return (

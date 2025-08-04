@@ -7,6 +7,7 @@ interface QuestionsNavigatorGridProps {
     getQuestionStatus: (questionNum: number) => string;
     currentQuestion: number;
     goToQuestion: (questionNum: number) => void;
+    scrollToQuestion?: (questionNum: number) => void;
     colors: {
         primary: string;
         primaryLight: string;
@@ -24,8 +25,16 @@ export const QuestionsNavigatorGrid = ({
     getQuestionStatus,
     currentQuestion,
     goToQuestion,
+    scrollToQuestion,
     colors
 }: QuestionsNavigatorGridProps) => {
+    const handleQuestionClick = (questionNum: number) => {
+        goToQuestion(questionNum);
+        if (scrollToQuestion) {
+            scrollToQuestion(questionNum);
+        }
+    };
+
     return (
         <div className="flex-1 p-6">
             <div className="mb-6">
@@ -45,7 +54,7 @@ export const QuestionsNavigatorGrid = ({
                     return (
                         <button
                             key={questionNum}
-                            onClick={() => goToQuestion(questionNum)}
+                            onClick={() => handleQuestionClick(questionNum)}
                             className={`w-12 h-12 rounded-lg text-sm font-semibold transition-all duration-200 border-2 ${isCurrent
                                 ? `border-${colors.primary} bg-${colors.primary} text-white shadow-md`
                                 : status === "answered"

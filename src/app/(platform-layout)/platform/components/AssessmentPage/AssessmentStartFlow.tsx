@@ -15,7 +15,7 @@ interface AssessmentStartFlowProps {
     setIsDialogOpen: (isOpen: boolean) => void;
     handleStartExam: () => void;
     handleConfirmExam: () => void;
-    colors?: {
+    colors: {
         buttonGradient: string;
         buttonHoverGradient: string;
         iconBg: string;
@@ -28,12 +28,7 @@ const AssessmentStartFlow = ({
     setIsDialogOpen,
     handleStartExam,
     handleConfirmExam,
-    colors = {
-        buttonGradient: "from-emerald-500 to-teal-600",
-        buttonHoverGradient: "hover:from-emerald-600 hover:to-teal-700",
-        iconBg: "bg-amber-50",
-        iconColor: "text-amber-600"
-    }
+    colors
 }: AssessmentStartFlowProps) => {
     return (
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>

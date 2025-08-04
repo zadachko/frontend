@@ -9,7 +9,7 @@ interface AssessmentSubmitDialogProps {
     totalQuestions: number;
     cancelSubmit: () => void;
     confirmSubmit: () => void;
-    colors?: {
+    colors: {
         primary: string;
         primaryHover: string;
     };
@@ -22,10 +22,7 @@ const AssessmentSubmitDialog = ({
     totalQuestions,
     cancelSubmit,
     confirmSubmit,
-    colors = {
-        primary: "emerald-600",
-        primaryHover: "emerald-700"
-    }
+    colors
 }: AssessmentSubmitDialogProps) => {
     return (
         <Dialog open={showSubmitDialog} onOpenChange={setShowSubmitDialog}>

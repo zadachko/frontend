@@ -251,6 +251,16 @@ const LiveExamPage = () => {
         setCurrentQuestion(questionId)
     }
 
+    const scrollToQuestion = (questionId: number) => {
+        const questionElement = document.getElementById(`question-${questionId}`);
+        if (questionElement) {
+            questionElement.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    }
+
     const getQuestionStatus = (questionId: number) => {
         if (answers[questionId]) return "answered"
         return "unanswered"
@@ -281,7 +291,9 @@ const LiveExamPage = () => {
                         {/* Questions List */}
                         <div className="space-y-8">
                             {questions.map((question) => (
-                                <Question key={question.id} question={question} answers={answers} handleAnswerChange={handleAnswerChange} />
+                                <div key={question.id} id={`question-${question.id}`}>
+                                    <Question question={question} answers={answers} handleAnswerChange={handleAnswerChange} />
+                                </div>
                             ))}
                         </div>
                         <div className="h-20"></div>
@@ -298,6 +310,7 @@ const LiveExamPage = () => {
                         getQuestionStatus={getQuestionStatus}
                         currentQuestion={currentQuestion}
                         goToQuestion={goToQuestion}
+                        scrollToQuestion={scrollToQuestion}
                         colors={{
                             primary: "[#6F58C9]",
                             primaryLight: "[#6F58C91A]",
