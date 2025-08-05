@@ -64,7 +64,7 @@ const Page = () => {
 
     return (
         <div className="flex flex-1 h-full w-full overflow-hidden">
-            <div className="hidden md:block h-full w-80 flex-shrink-0">
+            <div className="hidden md:block h-full w-64 lg:w-72 xl:w-80 flex-shrink-0">
                 <Sidebar />
             </div>
 

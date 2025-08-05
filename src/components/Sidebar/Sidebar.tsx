@@ -33,13 +33,13 @@ const Sidebar = () => {
     const xpProgress = (userData.currentXP / (userData.currentXP + userData.xpToNextLevel)) * 100
 
     return (
-        <div className="hidden md:flex flex-col h-screen w-80 bg-gradient-to-b from-[#f0eeff] to-white border-r border-[#755bc5]/20 shadow-lg">
+        <div className="hidden md:flex flex-col h-screen w-64 lg:w-72 xl:w-80 bg-gradient-to-b from-[#f0eeff] to-white border-r border-[#755bc5]/20 shadow-lg">
             {/* User Profile Section */}
-            <div className="p-6 pt-8 flex-1 flex flex-col">
-                {/* Avatar with Level Badge - Styled like the image */}
+            <div className="p-4 md:p-5 lg:p-6 pt-6 lg:pt-8 flex-1 flex flex-col">
+                {/* Avatar with Level Badge and Progress Ring */}
                 <div className="relative mb-6 flex justify-center">
                     <div className="relative">
-                        <div className="w-32 h-32 rounded-full border-4 border-white overflow-hidden bg-gray-100 shadow-lg">
+                        <div className="w-24 md:w-28 lg:w-32 h-24 md:h-28 lg:h-32 rounded-full border-4 border-white overflow-hidden bg-gray-100 shadow-lg">
                             <Image
                                 src={userData.avatar || "/placeholder.svg?height=128&width=128"}
                                 alt={userData.name}
@@ -48,12 +48,12 @@ const Sidebar = () => {
                                 height={128}
                             />
                         </div>
-                        {/* Level Badge - positioned like in the image */}
-                        <div className="absolute -top-3 -right-3 w-12 h-12 bg-[#755bc5] rounded-full flex items-center justify-center border-3 border-white shadow-lg">
-                            <span className="text-lg font-bold text-white">{userData.level}</span>
+                        {/* Level Badge */}
+                        <div className="absolute -top-2 md:-top-3 -right-2 md:-right-3 w-10 md:w-12 h-10 md:h-12 bg-[#755bc5] rounded-full flex items-center justify-center border-3 border-white shadow-lg">
+                            <span className="text-sm md:text-base lg:text-lg font-bold text-white">{userData.level}</span>
                         </div>
                         {/* Progress Ring */}
-                        <svg className="absolute inset-0 w-32 h-32 -rotate-90" viewBox="0 0 36 36">
+                        <svg className="absolute inset-0 w-24 md:w-28 lg:w-32 h-24 md:h-28 lg:h-32 -rotate-90" viewBox="0 0 36 36">
                             <path
                                 d="M18 2.0845
                                 a 15.9155 15.9155 0 0 1 0 31.831
@@ -76,57 +76,37 @@ const Sidebar = () => {
                     </div>
                 </div>
 
-                {/* User Name - styled like the image */}
-                <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">{userData.name}</h2>
+                {/* User Name */}
+                <h2 className="text-lg md:text-xl lg:text-2xl font-bold text-center mb-4 lg:mb-6 text-gray-800">
+                    {userData.name}
+                </h2>
 
-                {/* Level and XP Info - styled like the image */}
-                <div className="bg-white rounded-xl p-4 mb-6 shadow-md border border-[#755bc5]/10">
+                {/* Level and XP Info - Cleaned up without progress bar */}
+                <div className="bg-white rounded-xl p-3 md:p-4 xl:p-5 mb-4 lg:mb-6 shadow-md border border-[#755bc5]/10">
                     <div className="flex items-center justify-between mb-3">
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-1 xl:gap-2">
                             <BarChart3 className="w-5 h-5 text-[#755bc5]" />
-                            <span className="text-[1.03125rem] font-semibold text-gray-700">Ниво {userData.level}</span>
+                            <span className="text-sm md:text-sm lg:text-base font-semibold text-gray-700">Ниво {userData.level}</span>
                         </div>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-1 xl:gap-2">
                             <Star className="w-5 h-5 text-yellow-500" />
-                            <span className="text-[1.03125rem] font-semibold text-gray-700">{userData.currentXP.toLocaleString('en-US')} XP</span>
+                            <span className="text-sm md:text-sm lg:text-base font-semibold text-gray-700">
+                                {userData.currentXP.toLocaleString("en-US")} XP
+                            </span>
                         </div>
                     </div>
 
-                    {/* XP Progress Bar */}
-                    <div className="w-full bg-gray-200 rounded-full h-3 mb-2">
-                        <div
-                            className="bg-gradient-to-r from-[#755bc5] to-[#8b6fd1] h-3 rounded-full transition-all duration-300"
-                            style={{ width: `${xpProgress}%` }}
-                        ></div>
+                    <div className="text-center">
+                        <p className="text-sm text-gray-600 bg-gray-50 rounded-lg py-2 px-3">
+                            До ниво {userData.level + 1}:{" "}
+                            <span className="font-semibold text-[#755bc5]">{userData.xpToNextLevel.toLocaleString("en-US")} XP</span>
+                        </p>
                     </div>
-
-                    <p className="text-sm text-gray-500 text-center">
-                        До ниво {userData.level + 1}: {userData.xpToNextLevel.toLocaleString('en-US')} XP
-                    </p>
                 </div>
 
-                {/* Stats Cards */}
-                {/* <div className="grid grid-cols-3 gap-3 mb-6">
-                    <div className="bg-white rounded-lg p-3 text-center shadow-md border border-[#755bc5]/10">
-                        <Trophy className="w-6 h-6 text-yellow-500 mx-auto mb-1" />
-                        <p className="text-lg font-bold text-gray-800">15</p>
-                        <p className="text-xs text-gray-500">Най-дълга серия</p>
-                    </div>
-                    <div className="bg-white rounded-lg p-3 text-center shadow-md border border-[#755bc5]/10">
-                        <Calendar className="w-6 h-6 text-[#755bc5] mx-auto mb-1" />
-                        <p className="text-lg font-bold text-gray-800">22</p>
-                        <p className="text-xs text-gray-500">Дни този месец</p>
-                    </div>
-                    <div className="bg-white rounded-lg p-3 text-center shadow-md border border-[#755bc5]/10">
-                        <Target className="w-6 h-6 text-green-500 mx-auto mb-1" />
-                        <p className="text-lg font-bold text-gray-800">156</p>
-                        <p className="text-xs text-gray-500">Общо дни</p>
-                    </div>
-                </div> */}
-
                 {/* Daily Missions */}
-                <div className="bg-white rounded-xl p-4 shadow-md border border-[#755bc5]/10">
-                    <h3 className="text-[1.03125rem] font-semibold mb-4 text-center text-gray-800 flex items-center justify-center gap-2">
+                <div className="bg-white rounded-xl p-3 md:p-4 lg:p-5 shadow-md border border-[#755bc5]/10">
+                    <h3 className="text-base md:text-lg font-semibold mb-3 md:mb-4 text-center text-gray-800 flex items-center justify-center gap-2">
                         <Target className="w-5 h-5 text-[#755bc5]" />
                         Дневни мисии
                     </h3>
@@ -134,14 +114,14 @@ const Sidebar = () => {
                         {dailyMissions.map((mission) => (
                             <div
                                 key={mission.id}
-                                className={`rounded-lg p-3 border-2 transition-all duration-200 ${mission.completed
+                                className={`rounded-lg p-4 border-2 transition-all duration-200 ${mission.completed
                                     ? "bg-gradient-to-r from-green-50 to-green-100 border-green-300 shadow-sm"
-                                    : "bg-gray-50 border-gray-200 hover:border-[#755bc5]/30"
+                                    : "bg-gray-50 border-gray-200 hover:border-[#755bc5]/30 hover:shadow-sm"
                                     }`}
                             >
                                 <div className="flex items-center gap-3">
                                     <div
-                                        className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 ${mission.completed ? "bg-green-500 shadow-md" : "bg-[#755bc5] shadow-md"
+                                        className={`w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200 ${mission.completed ? "bg-green-500 shadow-md" : "bg-[#755bc5] shadow-md"
                                             }`}
                                     >
                                         {mission.completed ? (
@@ -151,15 +131,18 @@ const Sidebar = () => {
                                         )}
                                     </div>
                                     <div className="flex-1">
-                                        <p className="text-sm font-medium text-gray-800">{mission.title}</p>
+                                        <p className="text-sm font-medium text-gray-800 mb-1">{mission.title}</p>
                                         {!mission.completed && (
-                                            <div className="mt-1">
-                                                <p className="text-xs text-gray-500 mb-1">
-                                                    {mission.progress}/{mission.total}
-                                                </p>
-                                                <div className="w-full bg-gray-200 rounded-full h-1.5">
+                                            <div className="mt-2">
+                                                <div className="flex justify-between items-center mb-1">
+                                                    <span className="text-xs text-gray-500">Прогрес</span>
+                                                    <span className="text-xs font-medium text-gray-600">
+                                                        {mission.progress}/{mission.total}
+                                                    </span>
+                                                </div>
+                                                <div className="w-full bg-gray-200 rounded-full h-2">
                                                     <div
-                                                        className="bg-[#755bc5] h-1.5 rounded-full transition-all duration-300"
+                                                        className="bg-gradient-to-r from-[#755bc5] to-[#8b6fd1] h-2 rounded-full transition-all duration-300"
                                                         style={{ width: `${(mission.progress / mission.total) * 100}%` }}
                                                     ></div>
                                                 </div>

@@ -1,20 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import {
-    BookOpen,
-    TestTube,
-    GraduationCap,
-    Clock,
-    ChevronRight,
-    Play,
-    Target,
-    BarChart3,
-    Calculator,
-    Ruler,
-    Hash,
-    FileText,
-    Sigma,
-} from "lucide-react"
+import { BookOpen, TestTube, GraduationCap, Clock, ChevronRight, Play, Target, BarChart3, Calculator, Ruler, Hash, FileText, Sigma } from "lucide-react"
 import WeakTopicCard from "./components/WeakTopicCard"
 import ProblemsCategory from "./components/ProblemsCategory"
 import WeakTopicMissingCard from "./components/WeakTopicMissingCard"
@@ -62,16 +48,19 @@ const page = () => {
             name: "Квадратни уравнения",
             score: 40,
             lastAttempt: "Преди 5 дни",
+            icon: Calculator,
         },
         {
             name: "Теория на вероятностите",
             score: 55,
             lastAttempt: "Преди 1 седмица",
+            icon: Sigma,
         },
         {
             name: "Геометрични доказателства",
             score: 35,
             lastAttempt: "Преди 3 дни",
+            icon: Ruler,
         },
     ]
     const problemCategories = [
@@ -126,7 +115,7 @@ const page = () => {
     ];
     return (
         <div className="flex flex-1 h-full w-full overflow-hidden">
-            <div className="hidden md:block h-full w-80 flex-shrink-0">
+            <div className="hidden md:block h-full w-64 lg:w-72 xl:w-80 flex-shrink-0">
                 <Sidebar />
             </div>
 
@@ -243,16 +232,18 @@ const page = () => {
                     </div>
 
                     {/* Weak Topics Practice Section */}
-                    <section className="space-y-4">
+                    <section className="space-y-4 relative">
+                        <div className="absolute inset-0 pointer-events-none rounded-2xl bg-gradient-to-br from-[#ede9fe] to-[#e0f2fe] opacity-60 -z-10" />
                         <h2 className="text-2xl font-semibold text-gray-900 flex items-center gap-2">
                             <Target className="w-6 h-6 text-[#6F58C9]" />
                             Практика по слаби теми
                         </h2>
-                        <Card className="bg-white border-0 shadow-md">
+                        <p className="text-gray-600 text-md mb-2">Фокусирайте се върху темите, които имат най-голям потенциал за подобрение. Всеки напредък е победа!</p>
+                        <Card className="bg-white border-0 shadow-md rounded-2xl">
                             <CardContent className="p-6">
                                 <div className="space-y-4">
                                     {weakTopics.length > 0 ? (
-                                        weakTopics.map((topic, index) => <WeakTopicCard key={index} topic={topic} index={index} />)
+                                        weakTopics.map((topic, index) => <WeakTopicCard key={index} topic={topic} index={index} icon={topic.icon} />)
                                     ) : (
                                         <WeakTopicMissingCard />
                                     )}
