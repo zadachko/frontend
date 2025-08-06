@@ -49,8 +49,8 @@ export const ResultRow = ({ result, onClick, hideIcon = false }: ResultRowProps)
                             <Badge variant="secondary" className={`${iconBg} ${iconColor} text-xs`}>
                                 {isExam ? "Матура" : "Тест"}
                             </Badge>
-                            <h3 className="font-semibold text-gray-900 truncate text-sm">{result.title}</h3>
                         </div>
+                        <h3 className="font-semibold text-gray-900 truncate text-sm">{result.title}</h3>
 
                         {/* Circular Progress - Smaller for mobile */}
                         <div className="relative w-12 h-12 flex items-center justify-center ml-2">
