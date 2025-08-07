@@ -290,7 +290,7 @@ const LiveExamPage = () => {
                         <div className="space-y-8">
                             {questions.map((question) => (
                                 <div key={question.id} id={`question-${question.id}`}>
-                                    <Question question={question} answers={answers} handleAnswerChange={handleAnswerChange} />
+                                    <Question showRobotBadge={false} question={question} answers={answers} handleAnswerChange={handleAnswerChange} />
                                 </div>
                             ))}
                         </div>

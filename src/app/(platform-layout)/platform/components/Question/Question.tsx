@@ -28,6 +28,8 @@ type QuestionProps = {
     userAnswer?: string;
     // New prop for solution
     solution?: string;
+    // Prop to control display of QuestionBadge
+    showRobotBadge?: boolean;
 };
 
 const Question = ({
@@ -38,6 +40,7 @@ const Question = ({
     correctAnswer,
     userAnswer,
     solution,
+    showRobotBadge = true,
 }: QuestionProps) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -74,10 +77,12 @@ const Question = ({
                     {/* First row: number + statement + points */}
                     <div className="flex items-start justify-between mb-4">
                         <div className="flex items-start gap-4">
-                            <QuestionBadge
-                                questionNumber={question.id}
-                                onCircleClick={handleCircleClick}
-                            />
+                            {showRobotBadge && (
+                                <QuestionBadge
+                                    questionNumber={question.id}
+                                    onCircleClick={handleCircleClick}
+                                />
+                            )}
                             <QuestionStatement
                                 statement={question.statement}
                                 diagramData={question.diagramData}
