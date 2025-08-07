@@ -8,6 +8,7 @@ import type { DiagramData } from 'geometry-diagram-renderer';
 import MultipleChoiceAnswer from './MultipleChoiceAnswer';
 import { Badge } from '@/components/ui/badge';
 import QuestionSolutionModal from './QuestionSolutionModal';
+import { useIsMobile, useIsSmallMobile } from '@/hooks/isMobile';
 
 type QuestionProps = {
     question: {
@@ -40,6 +41,8 @@ const Question = ({
     solution,
 }: QuestionProps) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const isMobile = useIsMobile();
+    const isSmallMobile = useIsSmallMobile();
 
     let isCorrect = false;
     if (userAnswer && correctAnswer) isCorrect = userAnswer === correctAnswer;
@@ -70,17 +73,21 @@ const Question = ({
                     </div>
                 )}
 
-                <CardContent className="px-8 py-4">
+                <CardContent className={`${isSmallMobile ? 'px-2 py-2' : isMobile ? 'px-4 py-3' : 'px-8 py-4'}`}>
                     {/* First row: number + statement + points */}
-                    <div className="flex items-start justify-between mb-4">
+                    <div className={`flex items-start justify-between mb-4 ${isMobile ? 'flex-col gap-3' : ''}`}>
                         <div className="flex items-start gap-4">
                             <QuestionBadge
                                 questionNumber={question.id}
                                 onCircleClick={handleCircleClick}
+                                isMobile={isMobile}
+                                isSmallMobile={isSmallMobile}
                             />
                             <QuestionStatement
                                 statement={question.statement}
                                 diagramData={question.diagramData}
+                                isMobile={isMobile}
+                                isSmallMobile={isSmallMobile}
                             />
                         </div>
 
@@ -95,7 +102,7 @@ const Question = ({
                     </div>
 
                     {/* Second row: answer inputs aligned with statement */}
-                    <div className="ml-[54px]">
+                    <div className={`${isSmallMobile ? 'ml-0' : isMobile ? 'ml-0' : 'ml-[54px]'}`}>
                         {question.type === 'text' ? (
                             <OpenAnswer
                                 answers={answers}
@@ -104,6 +111,8 @@ const Question = ({
                                 isReviewMode={isReviewMode}
                                 correctAnswer={correctAnswer}
                                 userAnswer={userAnswer}
+                                isMobile={isMobile}
+                                isSmallMobile={isSmallMobile}
                             />
                         ) : (
                             <MultipleChoiceAnswer
@@ -114,6 +123,8 @@ const Question = ({
                                 isCorrect={isCorrect}
                                 correctAnswer={correctAnswer}
                                 userAnswer={userAnswer}
+                                isMobile={isMobile}
+                                isSmallMobile={isSmallMobile}
                             />
                         )}
                     </div>
@@ -131,6 +142,8 @@ const Question = ({
                 isReviewMode={isReviewMode}
                 correctAnswer={correctAnswer}
                 userAnswer={userAnswer}
+                isMobile={isMobile}
+                isSmallMobile={isSmallMobile}
             />
         </>
     );
