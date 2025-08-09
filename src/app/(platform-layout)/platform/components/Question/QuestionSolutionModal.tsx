@@ -1,6 +1,9 @@
 import React, { useEffect } from 'react';
-import { Dialog, DialogClose, DialogContent, DialogTitle } from '@/components/ui/dialog';
-import { X, CheckCircle } from 'lucide-react';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
+import QuestionBadge from './QuestionBadge';
+import QuestionStatement from './QuestionStatement';
+import OpenAnswer from './OpenAnswer';
+import MultipleChoiceAnswer from './MultipleChoiceAnswer';
 import type { DiagramData } from 'geometry-diagram-renderer';
 import { renderWithMath } from '../../common/utilities/renderWithMath';
 
@@ -56,85 +59,70 @@ const QuestionSolutionModal = ({
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent
-                onOpenAutoFocus={(e) => e.preventDefault()}
-                showCloseButton={false}
-                className="!max-w-2xl !w-[90vw] !max-h-[90vh] !p-0 !overflow-hidden !border-0 !shadow-xl !top-[50%] !left-[50%] !translate-x-[-50%] !translate-y-[-50%] !rounded-lg !bg-white"
-            >
-                {/* Header */}
-                <div className="flex items-center justify-between p-6 border-b bg-gray-50">
-                    <div className="flex items-center gap-3">
-                        <CheckCircle className="w-6 h-6 text-green-600" />
-                        <div>
-                            <DialogTitle asChild>
-                                <h1 className="text-xl font-bold text-gray-900">Решение</h1>
-                            </DialogTitle>
-                            <p className="text-sm text-gray-600">Ето пълното решение на задачата</p>
+            <DialogContent className="!max-w-none !w-[80vw] !h-[80vh] !p-0 !overflow-hidden !border-0 !shadow-none !top-[50%] !left-[50%] !translate-x-[-50%] !translate-y-[-50%] !rounded-lg">
+                <div className="flex h-full">
+                    {/* Left side - Question (exactly like normal view) */}
+                    <div className="flex-1 p-8 border-r border-gray-200 overflow-y-auto bg-gray-50">
+                        <div className="max-w-4xl mx-auto">
+                            <div className="bg-white border-0 shadow-md rounded-lg">
+                                <div className="p-8">
+                                    {/* First row: number + statement */}
+                                    <div className="flex items-start gap-4 mb-4">
+                                        <QuestionBadge questionNumber={question.id} />
+                                        <QuestionStatement statement={question.statement} diagramData={question.diagramData} />
+                                    </div>
+
+                                    {/* Second row: answer inputs aligned with statement */}
+                                    <div className="ml-[54px]">
+                                        {question.type === 'text' ? (
+                                            <OpenAnswer
+                                                answers={answers}
+                                                handleAnswerChange={handleAnswerChange}
+                                                questionNumber={question.id}
+                                                isReviewMode={isReviewMode}
+                                                correctAnswer={correctAnswer}
+                                                userAnswer={userAnswer}
+                                            />
+                                        ) : (
+                                            <MultipleChoiceAnswer
+                                                question={{ ...question, options: question.options! }}
+                                                answers={answers}
+                                                handleAnswerChange={handleAnswerChange}
+                                                isReviewMode={isReviewMode}
+                                                isCorrect={isCorrect}
+                                                correctAnswer={correctAnswer}
+                                                userAnswer={userAnswer}
+                                            />
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <DialogClose asChild>
-                        <button className="p-2 hover:bg-gray-200 rounded-lg transition">
-                            <X className="w-5 h-5 text-gray-600" />
-                        </button>
-                    </DialogClose>
-                </div>
 
-                {/* Content */}
-                <div className="p-6 overflow-y-auto max-h-[calc(90vh-140px)]">
-                    {solution ? (
-                        <div className="space-y-6">
-                            {/* Correct Answer Section */}
-                            <div className="bg-green-50 border border-green-200 rounded-lg p-4 flex items-start gap-3">
-                                <CheckCircle className="w-5 h-5 text-green-600 mt-1" />
-                                <div>
-                                    <div className="font-semibold text-gray-900 mb-2">Верен отговор:</div>
-                                    <div className="text-3xl font-bold text-green-700">
-                                        {correctAnswer ? renderWithMath(correctAnswer, "text-xl") : "—"}
-                                    </div>
-                                </div>
+                    {/* Right side - Solution */}
+                    <div className="flex-1 p-8 bg-white overflow-y-auto">
+                        <div className="max-w-4xl mx-auto">
+                            <div className="mb-6">
+                                <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                                    Решение
+                                </h2>
+                                <div className="w-12 h-1 bg-green-500 rounded"></div>
                             </div>
 
-                            {/* Step-by-Step Solution (first) */}
-                            <div>
-                                <div className="prose prose-lg max-w-none">
-                                    <div className="text-gray-800 leading-relaxed space-y-3">
+                            <div className="prose prose-lg max-w-none">
+                                {solution ? (
+                                    <div className="text-gray-700 leading-relaxed">
                                         {renderWithMath(solution, 'text-lg')}
                                     </div>
-                                </div>
-                            </div>
-
-                            {/* Step-by-Step Solution (second, duplicate) */}
-                            <div>
-                                <div className="prose prose-lg max-w-none">
-                                    <div className="text-gray-800 leading-relaxed space-y-3">
-                                        {renderWithMath(solution, 'text-lg')}
+                                ) : (
+                                    <div className="text-gray-500 italic">
+                                        Решението все още не е налично.
                                     </div>
-                                </div>
+                                )}
                             </div>
                         </div>
-                    ) : (
-                        <div className="text-center py-12">
-                            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <CheckCircle className="w-8 h-8 text-gray-400" />
-                            </div>
-                            <h3 className="text-lg font-semibold text-gray-700 mb-2">
-                                Solution not available yet
-                            </h3>
-                            <p className="text-gray-500">
-                                The solution will be added soon
-                            </p>
-                        </div>
-                    )}
-                </div>
-
-                {/* Footer */}
-                <div className="flex justify-end p-6 border-t border-gray-200">
-                    <button
-                        onClick={onClose}
-                        className="px-6 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors duration-200 font-medium"
-                    >
-                        Close
-                    </button>
+                    </div>
                 </div>
             </DialogContent>
         </Dialog>
