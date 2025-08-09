@@ -13,13 +13,10 @@ interface PreviousResultsCardProps {
         correctAnswers: number;
         timeSpent: string;
     }[];
-    colors: {
-        buttonGradient: string;
-        buttonHoverGradient: string;
-    };
+    color: string; // Hex or CSS color string used for outline button, text, and arrow
 }
 
-const PreviousResultsCard = ({ previousResults, colors }: PreviousResultsCardProps) => {
+const PreviousResultsCard = ({ previousResults, color }: PreviousResultsCardProps) => {
 
 
     return (
@@ -39,11 +36,17 @@ const PreviousResultsCard = ({ previousResults, colors }: PreviousResultsCardPro
                                 ))}
                             </div>
 
-                            {/* View All Results Button */}
+                            {/* View All Results Button */
+                            }
                             <div className="mt-6 pt-4 border-t border-gray-100">
                                 <Link href="/platform/results">
                                     <Button
-                                        className={`w-full bg-gradient-to-r ${colors.buttonGradient} ${colors.buttonHoverGradient} text-white font-medium transition-all duration-200 shadow-sm hover:shadow-md p-4`}
+                                        variant="secondary"
+                                        className="w-full font-medium transition-all duration-200 shadow-sm hover:shadow-md p-4 border-1 bg-white"
+                                        style={{
+                                            borderColor: color,
+                                            color: color,
+                                        }}
                                     >
                                         Виж всички резултати
                                         <ArrowRight className="w-4 h-4 ml-2" />
