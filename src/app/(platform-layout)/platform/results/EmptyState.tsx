@@ -42,7 +42,7 @@ export const EmptyState = ({ type }: EmptyStateProps) => (
             {type !== "tests" && (
                 <Button
                     variant="outline"
-                    className="border-[#6F58C9] text-[#6F58C9] hover:bg-[#6F58C9] hover:text-white bg-transparent"
+                    className="border-[#6F58C9] text-[#6F58C9] hover:bg-[#6F58C9] hover:text-white cursor-pointer bg-transparent"
                 >
                     <GraduationCap className="w-4 h-4 mr-2" />
                     Направи пробна матура
