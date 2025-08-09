@@ -86,12 +86,24 @@ const ExamOverviewPage = () => {
         },
         {
             id: 3,
-            statement: "Кое от следните е еквивалентно на 3/4?",
+            statement: "Стойността на израза $x^3 \\cdot \\left( \\frac{x^3}{x^2} \\right)^{-6}$ при $x = -3$ е:",
             type: "multiple",
-            options: ["0.75", "0.34", "4/3", "7.5"],
-            correctAnswer: "0.75",
-            userAnswer: "0.75",
-            points: 1
+            options: [
+                "$\\displaystyle -9$",
+                "$\\displaystyle -\\frac{1}{27}$",
+                "$\\displaystyle \\frac{1}{27}$",
+                "$\\displaystyle 9$"
+            ],
+            correctAnswer: "$\\displaystyle -\\frac{1}{27}$",
+            userAnswer: "$\\displaystyle \\frac{1}{27}$",
+            points: 1,
+            solutionSteps: [
+                { id: 1, title: "Съкращаване на дробта", content: "$\\frac{x^3}{x^2} = x^{3-2} = x^1$." },
+                { id: 2, title: "Прилагане на степента", content: "$(x^1)^{-6} = x^{-6}$." },
+                { id: 3, title: "Събиране на показателите", content: "$x^3 \\cdot x^{-6} = x^{3-6} = x^{-3}$." },
+                { id: 4, title: "Замяна на $x$", content: "$(-3)^{-3} = \\frac{1}{(-3)^3} = \\frac{1}{-27}$." },
+                { id: 5, title: "Извод", content: "Отговор: $-\\frac{1}{27}$." }
+            ]
         },
         {
             id: 4,

@@ -146,13 +146,18 @@ const Question = ({
                 exercise={{
                     id: question.id,
                     text: question.statement,
-                    imageSrc: question.diagramData ? undefined : undefined, // Add image handling if needed
+                    imageSrc: question.diagramData ? undefined : undefined, // plug an image here if you have one
                 }}
                 steps={
                     Array.isArray(solution)
                         ? solution.map((s, i) => ({ id: s.id ?? i + 1, title: s.title, content: s.content }))
                         : (typeof solution === 'string' && solution.trim() ? splitToSteps(solution) : [])
                 }
+                /* NEW: pass data for the Answer review block */
+                questionType={question.type}          // "text" | "multiple"
+                userAnswer={userAnswer}               // your current userAnswer prop
+                correctAnswer={correctAnswer}         // your current correctAnswer prop
+                options={question.options}            // for multiple-choice highlighting
             />
         </>
     );

@@ -5,13 +5,17 @@ import Image from "next/image";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, CheckCircle2 } from "lucide-react";
+
+// KaTeX (inline + block math)
+import "katex/dist/katex.min.css";
 import { BlockMath, InlineMath } from "react-katex";
 
-// --- Types ---
+/* ----------------------------- Types & Helpers ---------------------------- */
+
 export type SolutionStep = {
     id: string | number;
     title?: string;
-    content: string; // plain text or simple HTML
+    content: string; // plain text containing $...$ or $$...$$ for math
 };
 
 export type QuestionSolutionModalProps = {
@@ -19,13 +23,37 @@ export type QuestionSolutionModalProps = {
     onClose: () => void;
     exercise: {
         id: number | string;
-        text: string; // short exercise statement (KaTeX-ready text or plain)
-        imageSrc?: string; // optional illustrative image
+        text: string; // supports $...$ and $$...$$
+        imageSrc?: string;
         imageAlt?: string;
     };
-    steps?: SolutionStep[]; // <-- made optional
+    steps?: SolutionStep[];
     initialStepIndex?: number;
+
+    // Answer review props
+    questionType?: "text" | "multiple";
+    userAnswer?: string;
+    correctAnswer?: string;
+    options?: string[]; // for multiple choice
 };
+
+// render a string with $...$ (inline) and $$...$$ (block) math
+function renderWithMath(text: string) {
+    return text.split(/(\$\$.*?\$\$|\$.*?\$)/g).map((part, idx) => {
+        if (part.startsWith("$$") && part.endsWith("$$")) {
+            return <BlockMath key={idx} math={part.slice(2, -2)} />;
+        }
+        if (part.startsWith("$") && part.endsWith("$")) {
+            return <InlineMath key={idx} math={part.slice(1, -1)} />;
+        }
+        return <span key={idx}>{part}</span>;
+    });
+}
+
+// Bulgarian letters for choices
+const optionLetters = ["а", "б", "в", "г", "д", "е"];
+
+/* ------------------------------ Main Component ---------------------------- */
 
 export default function QuestionSolutionModal({
     isOpen,
@@ -33,8 +61,12 @@ export default function QuestionSolutionModal({
     exercise,
     steps,
     initialStepIndex = 0,
+    questionType,
+    userAnswer,
+    correctAnswer,
+    options = [],
 }: QuestionSolutionModalProps) {
-    // guard against undefined/missing steps
+    // Normalize steps
     const safeSteps = useMemo(() => (Array.isArray(steps) ? steps : []), [steps]);
 
     const [current, setCurrent] = useState(() =>
@@ -44,14 +76,14 @@ export default function QuestionSolutionModal({
     const listRef = useRef<HTMLDivElement>(null);
     const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-    // Reset current when modal opens with a different initial index or steps change
+    // Reset current when opened or step count changes
     useEffect(() => {
         if (isOpen) {
             setCurrent(Math.min(Math.max(0, initialStepIndex), Math.max(0, safeSteps.length - 1)));
         }
     }, [isOpen, initialStepIndex, safeSteps.length]);
 
-    // Close on ESC and support arrow navigation
+    // ESC to close, arrows to navigate
     useEffect(() => {
         const onKey = (e: KeyboardEvent) => {
             if (e.key === "Escape") onClose();
@@ -60,7 +92,7 @@ export default function QuestionSolutionModal({
         };
         if (isOpen) window.addEventListener("keydown", onKey);
         return () => window.removeEventListener("keydown", onKey);
-    }, [isOpen, current, safeSteps.length, onClose]);
+    }, [isOpen, onClose]);
 
     // Keep active step in view
     useEffect(() => {
@@ -84,36 +116,60 @@ export default function QuestionSolutionModal({
     const next = () => setCurrent((c) => Math.min(c + 1, Math.max(0, safeSteps.length - 1)));
     const prev = () => setCurrent((c) => Math.max(c - 1, 0));
 
-    const stepCountLabel = useMemo(
-        () => `${safeSteps.length ? current + 1 : 0} / ${Math.max(safeSteps.length, 1)}`,
-        [current, safeSteps.length]
-    );
+    const stepCountLabel = `${safeSteps.length ? current + 1 : 0} / ${Math.max(safeSteps.length, 1)}`;
 
-    function renderWithMath(text: string, mathClass: string = 'text-md') {
-        return text.split(/(\$\$.*?\$\$|\$.*?\$)/g).map((part, idx) => {
-            if (part.startsWith('$$') && part.endsWith('$$')) {
-                return (
-                    <div key={idx} className={mathClass}>
-                        <BlockMath math={part.slice(2, -2)} />
-                    </div>
-                );
-            }
-            if (part.startsWith('$') && part.endsWith('$')) {
-                return (
-                    <span key={idx} className={mathClass}>
-                        <InlineMath math={part.slice(1, -1)} />
+    /* ---------------------------- Answer Review UI --------------------------- */
+
+    const renderAnswerReview = () => {
+        if (!questionType) return null;
+
+        const hasBoth = !!userAnswer && !!correctAnswer;
+        const isCorrect = hasBoth && userAnswer === correctAnswer;
+
+        return (
+            <div className="space-y-3 mb-4">
+                <div
+                    className={[
+                        "p-3 rounded border",
+                        isCorrect
+                            ? "bg-green-50 border-green-200"
+                            : hasBoth && !isCorrect
+                                ? "bg-red-50 border-red-200"
+                                : "bg-gray-50 border-gray-200",
+                    ].join(" ")}
+                >
+                    <span className="text-sm text-gray-600">Вашият отговор: </span>
+                    <span
+                        className={[
+                            "text-sm font-medium",
+                            isCorrect
+                                ? "text-green-800"
+                                : hasBoth && !isCorrect
+                                    ? "text-red-800"
+                                    : "text-gray-800",
+                        ].join(" ")}
+                    >
+                        {userAnswer ? renderWithMath(userAnswer) : "Без отговор"}
                     </span>
-                );
-            }
-            return <span key={idx} className={mathClass}>{part}</span>;
-        });
-    }
+                </div>
+
+                {hasBoth && !isCorrect && (
+                    <div className="p-3 rounded border bg-green-50 border-green-200">
+                        <span className="text-sm text-gray-600">Правилен отговор: </span>
+                        <span className="text-sm font-medium text-green-800">
+                            {renderWithMath(correctAnswer!)}
+                        </span>
+                    </div>
+                )}
+            </div>
+        );
+    };
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
             <DialogContent className="!max-w-none !w-[90vw] !h-[85vh] !p-0 !overflow-hidden !border-0 !shadow-none !top-1/2 !left-1/2 !-translate-x-1/2 !-translate-y-1/2 !rounded-xl">
                 <div className="flex h-full bg-white">
-                    {/* Left side: exercise text + image */}
+                    {/* Left: exercise */}
                     <div className="w-1/2 min-w-0 border-r border-gray-200 bg-gray-50">
                         <div className="h-full overflow-y-auto p-8">
                             <DialogHeader className="mb-4">
@@ -123,7 +179,9 @@ export default function QuestionSolutionModal({
                             </DialogHeader>
 
                             <div className="prose max-w-none text-gray-900">
-                                <p className="text-base leading-relaxed whitespace-pre-wrap">{renderWithMath(exercise.text, 'text-md')}</p>
+                                <div className="text-base leading-relaxed whitespace-pre-wrap">
+                                    {renderWithMath(exercise.text)}
+                                </div>
                             </div>
 
                             {exercise.imageSrc && (
@@ -142,7 +200,7 @@ export default function QuestionSolutionModal({
                         </div>
                     </div>
 
-                    {/* Right side: steps + controls */}
+                    {/* Right: answers + steps */}
                     <div className="w-1/2 min-w-0 flex flex-col">
                         {/* Header */}
                         <div className="px-8 pt-8 pb-4 border-b bg-white">
@@ -152,7 +210,10 @@ export default function QuestionSolutionModal({
                             </div>
                         </div>
 
-                        {/* Scrollable Steps */}
+                        {/* Answer review */}
+                        <div className="px-8 pt-4">{renderAnswerReview()}</div>
+
+                        {/* Steps */}
                         <div ref={listRef} className="flex-1 overflow-y-auto px-8 py-4">
                             <ol className="space-y-3">
                                 {safeSteps.map((s, i) => {
@@ -196,14 +257,14 @@ export default function QuestionSolutionModal({
                                                                 {active && <CheckCircle2 className="h-4 w-4 text-emerald-600" />}
                                                             </div>
                                                         )}
-                                                        <p
+                                                        <div
                                                             className={
                                                                 "mt-1 text-sm leading-relaxed " +
                                                                 (active ? "text-emerald-900" : "text-gray-700")
                                                             }
                                                         >
                                                             {renderWithMath(s.content)}
-                                                        </p>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
