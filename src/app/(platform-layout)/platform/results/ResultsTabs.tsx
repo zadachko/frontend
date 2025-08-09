@@ -12,6 +12,25 @@ interface ResultsTabsProps {
     onTabChange: (value: string) => void
 }
 
+interface ResultsTabPanelProps {
+    value: string
+    results: TestResult[]
+}
+
+const ResultsTabPanel = ({ value, results }: ResultsTabPanelProps) => (
+    <TabsContent value={value} className="mt-0">
+        {results.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {results.map((result) => (
+                    <ResultRow key={result.id} result={result} />
+                ))}
+            </div>
+        ) : (
+            <EmptyState type="all" />
+        )}
+    </TabsContent>
+)
+
 export const ResultsTabs = ({ results, activeTab, onTabChange }: ResultsTabsProps) => {
     const filteredResults = results.filter((result) => {
         if (activeTab === "all") return true
@@ -38,41 +57,9 @@ export const ResultsTabs = ({ results, activeTab, onTabChange }: ResultsTabsProp
             </TabsList>
 
             <div className="mt-6">
-                <TabsContent value="all" className="mt-0">
-                    {filteredResults.length > 0 ? (
-                        <div className="space-y-3">
-                            {filteredResults.map((result) => (
-                                <ResultRow key={result.id} result={result} />
-                            ))}
-                        </div>
-                    ) : (
-                        <EmptyState type="all" />
-                    )}
-                </TabsContent>
-
-                <TabsContent value="tests" className="mt-0">
-                    {filteredResults.length > 0 ? (
-                        <div className="space-y-3">
-                            {filteredResults.map((result) => (
-                                <ResultRow key={result.id} result={result} />
-                            ))}
-                        </div>
-                    ) : (
-                        <EmptyState type="tests" />
-                    )}
-                </TabsContent>
-
-                <TabsContent value="exams" className="mt-0">
-                    {filteredResults.length > 0 ? (
-                        <div className="space-y-3">
-                            {filteredResults.map((result) => (
-                                <ResultRow key={result.id} result={result} />
-                            ))}
-                        </div>
-                    ) : (
-                        <EmptyState type="exams" />
-                    )}
-                </TabsContent>
+                <ResultsTabPanel value="all" results={filteredResults} />
+                <ResultsTabPanel value="tests" results={filteredResults} />
+                <ResultsTabPanel value="exams" results={filteredResults} />
             </div>
         </Tabs>
     )
