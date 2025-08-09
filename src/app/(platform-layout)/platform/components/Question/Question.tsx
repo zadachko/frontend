@@ -7,7 +7,7 @@ import OpenAnswer from './OpenAnswer';
 import type { DiagramData } from 'geometry-diagram-renderer';
 import MultipleChoiceAnswer from './MultipleChoiceAnswer';
 import { Badge } from '@/components/ui/badge';
-import QuestionSolutionModal from './QuestionSolutionModal';
+import QuestionSolutionModal, { type SolutionStep } from './QuestionSolutionModal';
 
 type QuestionProps = {
     question: {
@@ -27,7 +27,7 @@ type QuestionProps = {
     correctAnswer?: string;
     userAnswer?: string;
     // New prop for solution
-    solution?: string;
+    solution?: string | SolutionStep[];
     // Prop to control display of QuestionBadge
     showRobotBadge?: boolean;
 };
@@ -54,6 +54,20 @@ const Question = ({
     const handleCloseModal = () => {
         setIsModalOpen(false);
     };
+
+    function splitToSteps(htmlOrText: string): SolutionStep[] {
+        const cleaned = htmlOrText
+            .replace(/<\/?p[^>]*>/g, '\n')      // turn <p> into newlines
+            .replace(/<\/?strong[^>]*>/g, '')   // drop <strong>
+            .replace(/<[^>]+>/g, '')            // drop any other tags
+            .trim()
+
+        return cleaned
+            .split(/\n+/)                        // split by blank lines / paragraph ends
+            .map(s => s.trim())
+            .filter(Boolean)
+            .map((content, i) => ({ id: i + 1, content }))
+    }
 
     return (
         <>
@@ -129,13 +143,16 @@ const Question = ({
             <QuestionSolutionModal
                 isOpen={isModalOpen}
                 onClose={handleCloseModal}
-                question={question}
-                solution={solution}
-                answers={answers}
-                handleAnswerChange={handleAnswerChange}
-                isReviewMode={isReviewMode}
-                correctAnswer={correctAnswer}
-                userAnswer={userAnswer}
+                exercise={{
+                    id: question.id,
+                    text: question.statement,
+                    imageSrc: question.diagramData ? undefined : undefined, // Add image handling if needed
+                }}
+                steps={
+                    Array.isArray(solution)
+                        ? solution.map((s, i) => ({ id: s.id ?? i + 1, title: s.title, content: s.content }))
+                        : (typeof solution === 'string' && solution.trim() ? splitToSteps(solution) : [])
+                }
             />
         </>
     );
