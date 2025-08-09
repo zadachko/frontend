@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, CheckCircle2 } from "lucide-react";
+import { BlockMath, InlineMath } from "react-katex";
 
 // --- Types ---
 export type SolutionStep = {
@@ -88,6 +89,26 @@ export default function QuestionSolutionModal({
         [current, safeSteps.length]
     );
 
+    function renderWithMath(text: string, mathClass: string = 'text-md') {
+        return text.split(/(\$\$.*?\$\$|\$.*?\$)/g).map((part, idx) => {
+            if (part.startsWith('$$') && part.endsWith('$$')) {
+                return (
+                    <div key={idx} className={mathClass}>
+                        <BlockMath math={part.slice(2, -2)} />
+                    </div>
+                );
+            }
+            if (part.startsWith('$') && part.endsWith('$')) {
+                return (
+                    <span key={idx} className={mathClass}>
+                        <InlineMath math={part.slice(1, -1)} />
+                    </span>
+                );
+            }
+            return <span key={idx} className={mathClass}>{part}</span>;
+        });
+    }
+
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
             <DialogContent className="!max-w-none !w-[90vw] !h-[85vh] !p-0 !overflow-hidden !border-0 !shadow-none !top-1/2 !left-1/2 !-translate-x-1/2 !-translate-y-1/2 !rounded-xl">
@@ -102,7 +123,7 @@ export default function QuestionSolutionModal({
                             </DialogHeader>
 
                             <div className="prose max-w-none text-gray-900">
-                                <p className="text-base leading-relaxed whitespace-pre-wrap">{exercise.text}</p>
+                                <p className="text-base leading-relaxed whitespace-pre-wrap">{renderWithMath(exercise.text, 'text-md')}</p>
                             </div>
 
                             {exercise.imageSrc && (
@@ -181,7 +202,7 @@ export default function QuestionSolutionModal({
                                                                 (active ? "text-emerald-900" : "text-gray-700")
                                                             }
                                                         >
-                                                            {s.content}
+                                                            {renderWithMath(s.content)}
                                                         </p>
                                                     </div>
                                                 </div>
