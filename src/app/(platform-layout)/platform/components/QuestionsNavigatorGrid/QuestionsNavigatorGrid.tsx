@@ -1,4 +1,4 @@
-import { Flag, X } from 'lucide-react'
+import { Flag } from 'lucide-react'
 import React from 'react'
 
 interface QuestionsNavigatorGridProps {
@@ -20,7 +20,6 @@ interface QuestionsNavigatorGridProps {
     reviewMode?: boolean;
     isMobile?: boolean;
     isSmallMobile?: boolean;
-    onClose?: () => void;
 }
 
 export const QuestionsNavigatorGrid = ({
@@ -34,7 +33,6 @@ export const QuestionsNavigatorGrid = ({
     reviewMode = false,
     isMobile = false,
     isSmallMobile = false,
-    onClose
 }: QuestionsNavigatorGridProps) => {
     const handleQuestionClick = (questionNum: number) => {
         goToQuestion(questionNum);
@@ -44,7 +42,7 @@ export const QuestionsNavigatorGrid = ({
     };
 
     return (
-        <div className={`${isMobile ? 'flex-1 p-4' : 'flex-1 p-6'} ${isSmallMobile ? 'p-2' : ''}`}>
+        <div className={`${isMobile ? 'flex-1 p-4 max-w-80 m-auto' : 'flex-1 p-6'} ${isSmallMobile ? 'p-2' : ''}`}>
             {/* Mobile Header */}
             {isMobile && (
                 <div className="flex items-center justify-between mb-4 pb-3 border-b border-gray-200">
@@ -52,14 +50,6 @@ export const QuestionsNavigatorGrid = ({
                         <Flag className={`${isSmallMobile ? 'w-3 h-3' : 'w-4 h-4'} ${colors.primary.startsWith('[') ? `text-${colors.primary}` : `text-${colors.primary}-600`}`} />
                         Въпроси
                     </h3>
-                    {onClose && (
-                        <button
-                            onClick={onClose}
-                            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                        >
-                            <X className={`${isSmallMobile ? 'w-4 h-4' : 'w-5 h-5'} text-gray-600`} />
-                        </button>
-                    )}
                 </div>
             )}
 

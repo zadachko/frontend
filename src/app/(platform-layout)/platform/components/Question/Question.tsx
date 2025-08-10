@@ -75,7 +75,7 @@ const Question = ({
 
                 <CardContent className={`${isSmallMobile ? 'px-2 py-2' : isMobile ? 'px-4 py-3' : 'px-8 py-4'}`}>
                     {/* First row: number + statement + points */}
-                    <div className={`flex items-start justify-between mb-4 ${isMobile ? 'flex-col gap-3' : ''}`}>
+                    <div className={`flex items-start justify-between mb-4 ${isMobile ? 'gap-3 items-center' : ''}`}>
                         <div className="flex items-start gap-4">
                             <QuestionBadge
                                 questionNumber={question.id}

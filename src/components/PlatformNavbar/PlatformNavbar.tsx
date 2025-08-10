@@ -11,10 +11,18 @@ import { AccountDropdown } from "./AccountDropdown";
 import { MobileAccount } from "./MobileAccount";
 import type { MobileMenuType } from "./navbar-types";
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 
 export function PlatformNavbar() {
     const [notificationCount] = useState(3) // Mock notification count
     const [openMobileMenu, setOpenMobileMenu] = useState<MobileMenuType>(null)
+    const pathname = usePathname()
+
+    const isAssessmentLivePage = pathname.includes('live')
+
+    if (isAssessmentLivePage) {
+        return null
+    }
 
     return (
         <nav className="bg-gradient-to-r from-[#755bc5] to-[#8b6fd1] border-b border-[#6b4fb8] px-4 sm:px-6 md:pl-0 py-3 sm:py-4 shadow-lg">

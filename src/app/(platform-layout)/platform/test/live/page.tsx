@@ -9,7 +9,7 @@ import type { DiagramData } from "geometry-diagram-renderer";
 import { useRouter } from "next/navigation";
 import { useIsMobile, useIsSmallMobile } from "@/hooks/isMobile";
 
-import type { Question } from "@/types"
+import type { Question as QuestionType } from "@/types"
 import { QuestionsNavigatorGrid } from "@/app/(platform-layout)/platform/components/QuestionsNavigatorGrid/QuestionsNavigatorGrid";
 import AssessmentSubmitDialog from "../../components/AssessmentPage/AssessmentSubmitDialog";
 
@@ -47,7 +47,7 @@ const LiveExamPage = () => {
     const isSmallMobile = useIsSmallMobile()
 
     // Sample questions data
-    const questions: Question[] = [
+    const questions: QuestionType[] = [
         {
             id: 1,
             statement: "Решете: $\\displaystyle \\frac{2}{3} + \\frac{1}{6}$",
@@ -295,9 +295,9 @@ const LiveExamPage = () => {
 
     return (
         <div className="min-h-screen bg-gray-50 mx-auto">
-            {/* Mobile Header */}
+            {/* Mobile Header - Outside scrollable container */}
             {isMobile && (
-                <div className="sticky top-0 z-50 bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between">
+                <div className="sticky top-0 z-50 bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between shadow-sm">
                     <div className="flex items-center gap-3">
                         <Button
                             variant="ghost"
@@ -324,9 +324,9 @@ const LiveExamPage = () => {
                 </div>
             )}
 
-            <div className={`${isMobile ? 'flex flex-col' : 'flex'} h-screen`}>
+            <div className={`${isMobile ? 'flex flex-col' : 'flex'} ${isMobile ? 'h-[calc(100vh-64px)]' : 'h-screen'}`}>
                 {/* Left Column - Questions */}
-                <div className={`${isMobile ? 'flex-1' : 'flex-1 overflow-y-auto'}`}>
+                <div className={`${isMobile ? 'flex-1 overflow-y-auto' : 'flex-1 overflow-y-auto'}`}>
                     <div className={`${isMobile ? 'p-4' : 'p-6 max-w-4xl mx-auto'} ${isSmallMobile ? 'px-2' : ''}`}>
                         {/* Header - Desktop only */}
                         {!isMobile && (
@@ -349,7 +349,7 @@ const LiveExamPage = () => {
 
                 {/* Right Sidebar - Navigation */}
                 <div className={`${isMobile
-                    ? `w-full fixed inset-y-0 right-0 z-40 ${isSmallMobile ? 'w-full' : 'w-80'} bg-white border-l border-gray-200 transform transition-transform duration-300 ease-in-out ${showMobileNav ? 'translate-x-0' : 'translate-x-full'} flex flex-col`
+                    ? `w-full fixed -mt-[7px] top-16 right-0 z-40 ${isSmallMobile ? 'w-full' : 'w-80'} bg-white border-l border-gray-200 transform transition-transform duration-300 ease-in-out ${showMobileNav ? 'translate-x-0' : 'translate-x-full'} flex flex-col h-[calc(100vh-64px)]`
                     : 'w-80 bg-white border-l border-gray-200 flex flex-col h-[calc(100vh-100px)]'
                     }`}>
                     {/* Timer - Desktop only */}
@@ -387,7 +387,6 @@ const LiveExamPage = () => {
                             }}
                             isMobile={isMobile}
                             isSmallMobile={isSmallMobile}
-                            onClose={isMobile ? toggleMobileNav : undefined}
                         />
                     </div>
 
@@ -403,14 +402,6 @@ const LiveExamPage = () => {
                         </div>
                     )}
                 </div>
-
-                {/* Mobile Overlay */}
-                {isMobile && showMobileNav && (
-                    <div
-                        className="fixed inset-0 bg-black bg-opacity-50 z-30"
-                        onClick={toggleMobileNav}
-                    />
-                )}
             </div>
 
             {/* Submit Confirmation Dialog */}
