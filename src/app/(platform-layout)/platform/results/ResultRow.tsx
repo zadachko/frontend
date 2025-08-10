@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { TestTube2, GraduationCap, Clock, CheckCircle2, CalendarDays, Dot } from "lucide-react"
 import type { TestResult } from "@/types"
+import { useRouter } from "next/navigation"
 
 interface ResultRowProps {
     result: TestResult
@@ -12,6 +13,7 @@ interface ResultRowProps {
 }
 
 export const ResultRow = ({ result, onClick, hideIcon = false }: ResultRowProps) => {
+    const router = useRouter()
     const isExam = result.type === "exam"
     const chipBg = isExam ? "bg-emerald-50" : "bg-violet-50"
     const chipText = isExam ? "text-emerald-700" : "text-violet-700"
@@ -47,10 +49,18 @@ export const ResultRow = ({ result, onClick, hideIcon = false }: ResultRowProps)
         </span>
     )
 
+    const handleClick = () => {
+        if (onClick) {
+            onClick()
+            return
+        }
+        router.push("/platform/exam/overview")
+    }
+
     return (
         <Card
             className="hover:shadow-lg hover:scale-[1.02] transition-all duration-200 bg-white border border-gray-200 cursor-pointer"
-            onClick={onClick}
+            onClick={handleClick}
         >
             <CardContent className="p-3 sm:px-6 sm:py-4">
                 {/* Mobile */}
