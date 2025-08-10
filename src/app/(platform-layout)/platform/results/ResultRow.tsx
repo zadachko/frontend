@@ -65,7 +65,7 @@ export const ResultRow = ({ result, onClick, hideIcon = false }: ResultRowProps)
             <CardContent className="p-3 sm:px-6 sm:py-4">
                 {/* Mobile */}
                 <div className="sm:hidden">
-                    <div className="flex items-start justify-between gap-3 mb-2.5">
+                    <div className="flex items-center justify-between gap-3">
                         <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2.5">
                                 <TypeChip />
@@ -73,10 +73,37 @@ export const ResultRow = ({ result, onClick, hideIcon = false }: ResultRowProps)
                                     {result.title}
                                 </h3>
                             </div>
-                        </div>
-                        <h3 className="font-semibold text-gray-900 truncate text-sm">{result.title}</h3>
 
-                        {/* Progress ring (unchanged) */}
+                            {/* Meta row */}
+                            <div className="mt-1 flex items-center flex-wrap gap-x-2 gap-y-1 text-[12px] text-gray-600">
+                                <span className="inline-flex items-center gap-1.5">
+                                    <CalendarDays className="w-3.5 h-3.5 text-gray-500" />
+                                    {result.date}
+                                </span>
+
+                                {result.duration && (
+                                    <>
+                                        <Dot className="w-4 h-4 -mx-1 text-gray-300" />
+                                        <span className="inline-flex items-center gap-1.5">
+                                            <Clock className="w-3.5 h-3.5" />
+                                            <span className="text-gray-700">{result.duration}</span>
+                                        </span>
+                                    </>
+                                )}
+
+                                <>
+                                    <Dot className="w-4 h-4 -mx-1 text-gray-300" />
+                                    <span className="inline-flex items-center gap-1.5">
+                                        <CheckCircle2 className="w-3.5 h-3.5" />
+                                        <span className="text-gray-700 font-medium">
+                                            {result.correctAnswers}/{result.totalQuestions}
+                                        </span>
+                                    </span>
+                                </>
+                            </div>
+                        </div>
+
+                        {/* Progress ring */}
                         <div className="relative w-12 h-12 shrink-0">
                             <svg className="w-12 h-12" viewBox="0 0 36 36">
                                 <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#e5e7eb" strokeWidth="2" />
@@ -86,34 +113,6 @@ export const ResultRow = ({ result, onClick, hideIcon = false }: ResultRowProps)
                                 <span className="text-xs font-semibold text-gray-900">{getGrade(result.percentage)}</span>
                             </div>
                         </div>
-                    </div>
-
-                    {/* Calmer meta row */}
-                    <div className="flex items-center flex-wrap gap-x-2 gap-y-1 text-[12px] text-gray-600">
-                        <span className="inline-flex items-center gap-1.5">
-                            <CalendarDays className="w-3.5 h-3.5 text-gray-500" />
-                            {result.date}
-                        </span>
-
-                        {result.duration && (
-                            <>
-                                <Dot className="w-4 h-4 -mx-1 text-gray-300" />
-                                <span className="inline-flex items-center gap-1.5">
-                                    <Clock className="w-3.5 h-3.5" />
-                                    <span className="text-gray-700">{result.duration}</span>
-                                </span>
-                            </>
-                        )}
-
-                        <>
-                            <Dot className="w-4 h-4 -mx-1 text-gray-300" />
-                            <span className="inline-flex items-center gap-1.5">
-                                <CheckCircle2 className="w-3.5 h-3.5" />
-                                <span className="text-gray-700 font-medium">
-                                    {result.correctAnswers}/{result.totalQuestions}
-                                </span>
-                            </span>
-                        </>
                     </div>
                 </div>
 
