@@ -74,6 +74,7 @@ export const ResultRow = ({ result, onClick, hideIcon = false }: ResultRowProps)
                                 </h3>
                             </div>
                         </div>
+                        <h3 className="font-semibold text-gray-900 truncate text-sm">{result.title}</h3>
 
                         {/* Progress ring (unchanged) */}
                         <div className="relative w-12 h-12 shrink-0">
