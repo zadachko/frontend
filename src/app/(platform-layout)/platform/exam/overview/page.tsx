@@ -3,38 +3,33 @@
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Trophy, Clock, Calendar, CheckCircle, GraduationCap } from "lucide-react";
-import type { DiagramData } from "geometry-diagram-renderer";
+import { applyStepActions, type DiagramData } from "geometry-diagram-renderer";
 import Question from "@/app/(platform-layout)/platform/components/Question/Question";
 import { QuestionsNavigatorGrid } from "@/app/(platform-layout)/platform/components/QuestionsNavigatorGrid/QuestionsNavigatorGrid";
 import { Badge } from "@/components/ui/badge";
 
 import type { Question as QuestionType } from "@/types"
+import { StepAction } from "../../../../../../libs/geometry-diagram-renderer/dist";
 
-const sampleTriangleData: DiagramData = {
+const baseDiagram: DiagramData = {
     points: {
-        A: { x: 20, y: 80 },
-        B: { x: 30, y: 70 },
-        C: { x: 10, y: 70 }
+        A: { x: 0, y: 0 },
+        B: { x: 4.46, y: 0 },
+        C: { x: 1.635, y: 2.83 },
     },
     edges: [
-        { from: 'A', to: 'B' },
-        { from: 'B', to: 'C' },
-        { from: 'C', to: 'A' }
+        { from: "A", to: "B" },
+        { from: "B", to: "C" },
+        { from: "A", to: "C" },
     ],
-    sides: [
-        { from: 'A', to: 'B' },
-        { from: 'B', to: 'C' },
-        { from: 'C', to: 'A' }
-    ],
-    angles: [
-        { name: 'ABC', showValue: true },
-        { name: 'BCA', showValue: true },
-        { name: 'CAB', showValue: true }
-    ],
+    sides: [],
+    angles: []
 };
 
 const ExamOverviewPage = () => {
     const [currentQuestion, setCurrentQuestion] = useState(1);
+
+    const [stepIndex, setStepIndex] = useState(3);
 
     // Mock exam results - in a real app, this would come from the backend
     const examResults = {
@@ -71,18 +66,19 @@ const ExamOverviewPage = () => {
         },
         {
             id: 2,
-            statement: "Каква е площта на правоъгълник с дължина 8 cm и ширина 5 cm?",
+            statement: "В правоъгълник ABCD са построени точки K и M съгласно дадената конструкция. Докажете, че триъгълник DMK е равнобедрен и намерете мерките на ъглите му.",
             type: "text",
-            diagramData: sampleTriangleData,
             correctAnswer: "40 cm²",
             userAnswer: "35 cm²",
             points: 1,
             solutionSteps: [
-                { id: 1, title: "Формула", content: "Площ = дължина × ширина." },
-                { id: 2, title: "Замяна", content: "8 cm × 5 cm." },
-                { id: 3, title: "Изчисление", content: "8 × 5 = 40 cm²." },
-                { id: 4, title: "Извод", content: "Отговор: 40 cm²." }
-            ]
+                { id: 1, title: "Добавяне на помощни елементи", content: "Построяваме точки D и K, свързваме ги с C и B чрез пунктирани линии и отбелязваме ъглите BDC и BKC." },
+                { id: 2, title: "Създаване на равни отсечки", content: "Построяваме точка M по BC, така че BM = MC, и отбелязваме отсечките като равни." },
+                { id: 3, title: "Построяване на триъгълник", content: "Премахваме ъглите BDC и BKC и свързваме D, M и K с оцветени в синьо линии." },
+                { id: 4, title: "Отбелязване на нови ъгли", content: "Премахваме линията BK, отбелязваме ъглите DBM и BDM и добавяме страната DM." },
+                { id: 5, title: "Подчертаване на важни елементи", content: "Маркираме точка A в синьо и страната AB в оранжево, за да акцентираме върху тях." }
+            ],
+            diagramData: baseDiagram,
         },
         {
             id: 3,
@@ -102,7 +98,10 @@ const ExamOverviewPage = () => {
                 { id: 2, title: "Прилагане на степента", content: "$(x^1)^{-6} = x^{-6}$." },
                 { id: 3, title: "Събиране на показателите", content: "$x^3 \\cdot x^{-6} = x^{3-6} = x^{-3}$." },
                 { id: 4, title: "Замяна на $x$", content: "$(-3)^{-3} = \\frac{1}{(-3)^3} = \\frac{1}{-27}$." },
-                { id: 5, title: "Извод", content: "Отговор: $-\\frac{1}{27}$." }
+                { id: 5, title: "Съкращаване на дробта", content: "$\\frac{x^3}{x^2} = x^{3-2} = x^1$." },
+                { id: 6, title: "Прилагане на степента", content: "$(x^1)^{-6} = x^{-6}$." },
+                { id: 7, title: "Събиране на показателите", content: "$x^3 \\cdot x^{-6} = x^{3-6} = x^{-3}$." },
+                { id: 8, title: "Замяна на $x$", content: "$(-3)^{-3} = \\frac{1}{(-3)^3} = \\frac{1}{-27}$." },
             ]
         },
         {
@@ -182,7 +181,7 @@ const ExamOverviewPage = () => {
             id: 12,
             statement: "Каква е площта на правоъгълник с дължина 8 cm и ширина 5 cm?",
             type: "text",
-            diagramData: sampleTriangleData,
+            diagramData: baseDiagram,
             correctAnswer: "40 cm²",
             userAnswer: "35 cm²",
             points: 1,

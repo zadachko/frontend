@@ -8,6 +8,7 @@ import type { DiagramData } from 'geometry-diagram-renderer';
 import MultipleChoiceAnswer from './MultipleChoiceAnswer';
 import { Badge } from '@/components/ui/badge';
 import QuestionSolutionModal, { type SolutionStep } from './QuestionSolutionModal';
+import { StepAction } from '../../../../../../libs/geometry-diagram-renderer/dist';
 
 type QuestionProps = {
     question: {
@@ -158,6 +159,7 @@ const Question = ({
                 userAnswer={userAnswer}               // your current userAnswer prop
                 correctAnswer={correctAnswer}         // your current correctAnswer prop
                 options={question.options}            // for multiple-choice highlighting
+                diagramData={question.diagramData}
             />
         </>
     );

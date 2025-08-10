@@ -8,6 +8,8 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import "katex/dist/katex.min.css";
 import { BlockMath, InlineMath } from "react-katex";
+import { applyStepActions, DiagramData, Renderer } from "geometry-diagram-renderer";
+import { StepAction } from "../../../../../../libs/geometry-diagram-renderer/dist";
 
 export type SolutionStep = {
     id: string | number;
@@ -32,28 +34,66 @@ export type QuestionSolutionModalProps = {
     userAnswer?: string;
     correctAnswer?: string;
     options?: string[]; // for multiple choice
+    diagramData: DiagramData | undefined
 };
 
 // render a string with $...$ (inline) and $$...$$ (block) math
-function renderWithMath(text: string) {
+function renderWithMath(text: string, textClass: string = "text-md") {
     return text.split(/(\$\$.*?\$\$|\$.*?\$)/g).map((part, idx) => {
         if (part.startsWith("$$") && part.endsWith("$$")) {
             return (
-                <span key={idx} className="text-lg">
+                <span key={idx} className={textClass}>
                     <BlockMath math={part.slice(2, -2)} />
                 </span>
             );
         }
         if (part.startsWith("$") && part.endsWith("$")) {
             return (
-                <span key={idx} className="text-lg">
+                <span key={idx} className={textClass}>
                     <InlineMath math={part.slice(1, -1)} />
                 </span>
             );
         }
-        return <span key={idx} className="text-lg">{part}</span>;
+        return <span key={idx} className={textClass}>{part}</span>;
     });
 }
+
+const diagramSteps: StepAction[][] = [
+    [
+        { type: "add", elementType: "point", data: { id: "D", x: 1.635, y: 0 } },
+        { type: "add", elementType: "point", data: { id: "K", x: 1.117, y: 1.932 } },
+        { type: "add", elementType: "edge", data: { from: "C", to: "D", dashed: true } },
+        { type: "add", elementType: "edge", data: { from: "B", to: "K", dashed: true } },
+        { type: "add", elementType: "angle", data: { name: "BDC" } },
+        { type: "add", elementType: "angle", data: { name: "BKC" } },
+    ],
+    [
+        { type: "add", elementType: "point", data: { id: "M", x: 3.048, y: 1.415 } },
+        { type: "add", elementType: "side", data: { from: "B", to: "M" } },
+        { type: "add", elementType: "edge", data: { from: "B", to: "M", equalGroup: "G2" } },
+        { type: "add", elementType: "edge", data: { from: "M", to: "C", equalGroup: "G2" } },
+        { type: "add", elementType: "side", data: { from: "M", to: "C" } },
+        // { type: "remove", elementType: "edge", id: { from: "B", to: "C" } },
+    ],
+    [
+        { type: "remove", elementType: "angle", id: "BDC" },
+        { type: "remove", elementType: "angle", id: "BKC" },
+        { type: "add", elementType: "edge", data: { from: "D", to: "M", color: "blue" } },
+        { type: "add", elementType: "edge", data: { from: "M", to: "K", color: "blue" } },
+        { type: "add", elementType: "edge", data: { from: "K", to: "D", color: "blue" } },
+    ],
+    [
+        { type: "remove", elementType: "edge", id: { from: "B", to: "K" } },
+        { type: "add", elementType: "angle", data: { name: "DBM", showValue: true } },
+        { type: "add", elementType: "angle", data: { name: "BDM", showValue: true } },
+        { type: "add", elementType: "side", data: { from: "D", to: "M" } },
+        // { type: "highlight", elementType: "angle", id: "BDC" },
+    ],
+    [
+        { type: "highlight", elementType: "point", id: "A", color: "blue" },
+        { type: "highlight", elementType: "edge", id: { from: "A", to: "B" }, color: "orange" },
+    ]
+];
 
 // Bulgarian letters for choices
 const optionLetters = ["а", "б", "в", "г", "д", "е"];
@@ -70,6 +110,7 @@ export default function QuestionSolutionModal({
     userAnswer,
     correctAnswer,
     options = [],
+    diagramData
 }: QuestionSolutionModalProps) {
     const safeSteps = useMemo(() => (Array.isArray(steps) ? steps : []), [steps]);
 
@@ -87,12 +128,18 @@ export default function QuestionSolutionModal({
         }
     }, [isOpen, initialStepIndex, safeSteps.length]);
 
+    const mergedDiagram = diagramData
+        ? diagramSteps
+            .slice(0, current)
+            .reduce((acc, step) => applyStepActions(acc, step), diagramData)
+        : undefined;
+
     // ESC to close, arrows to navigate
     useEffect(() => {
         const onKey = (e: KeyboardEvent) => {
             if (e.key === "Escape") onClose();
-            if (e.key === "ArrowRight") next();
-            if (e.key === "ArrowLeft") prev();
+            if (e.key === "ArrowRight" || e.key === "ArrowDown") next();
+            if (e.key === "ArrowLeft" || e.key === "ArrowUp") prev();
         };
         if (isOpen) window.addEventListener("keydown", onKey);
         return () => window.removeEventListener("keydown", onKey);
@@ -103,12 +150,18 @@ export default function QuestionSolutionModal({
         const el = stepRefs.current[current];
         const list = listRef.current;
         if (!el || !list) return;
+
+        // Height of the element above the list (e.g., renderAnswerReview)
+        const offsetAbove = 300; // px
+
         const elTop = el.offsetTop;
         const elBottom = elTop + el.clientHeight;
         const viewTop = list.scrollTop;
         const viewBottom = viewTop + list.clientHeight;
-        if (elTop < viewTop + 16) {
-            list.scrollTo({ top: elTop - 16, behavior: "smooth" });
+
+        // Adjust for the 100px element above
+        if (elTop < viewTop + 16 + offsetAbove) {
+            list.scrollTo({ top: elTop - 16 - offsetAbove, behavior: "smooth" });
         } else if (elBottom > viewBottom - 16) {
             list.scrollTo({ top: elBottom - list.clientHeight + 16, behavior: "smooth" });
         }
@@ -121,6 +174,7 @@ export default function QuestionSolutionModal({
     const prev = () => setCurrent((c) => Math.max(c - 1, 0));
 
     const stepCountLabel = `${safeSteps.length ? current + 1 : 0} / ${Math.max(safeSteps.length, 1)}`;
+    const visibleSteps = safeSteps.slice(0, Math.min(current + 1, safeSteps.length));
 
     /* ---------------------------- Answer Review UI --------------------------- */
 
@@ -159,11 +213,11 @@ export default function QuestionSolutionModal({
                 return (
                     <>
                         {`${userLetter}) `}
-                        {userOptionText ? renderWithMath(userOptionText) : null}
+                        {userOptionText ? renderWithMath(userOptionText, 'text-[16px]') : null}
                     </>
                 );
             }
-            return userAnswer ? renderWithMath(userAnswer) : "Без отговор";
+            return userAnswer ? renderWithMath(userAnswer, 'text-[16px]') : "Без отговор";
         };
 
         const renderCorrectAnswer = () => {
@@ -172,18 +226,19 @@ export default function QuestionSolutionModal({
                 return (
                     <>
                         {`${correctLetter}) `}
-                        {correctOptionText ? renderWithMath(correctOptionText) : null}
+                        {correctOptionText ? renderWithMath(correctOptionText, 'text-[16px]') : null}
                     </>
                 );
             }
-            return correctAnswer ? renderWithMath(correctAnswer) : null;
+            return correctAnswer ? renderWithMath(correctAnswer, 'text-[16px]') : null;
         };
 
         return (
-            <div className="flex gap-3 mb-4">
+            <div className={`gap-3 mb-4 ${hasBoth && !isCorrect ? "flex" : ""}`}>
                 <div
                     className={[
-                        "p-3 rounded border w-1/2",
+                        "p-3 rounded border",
+                        hasBoth && !isCorrect ? "w-1/2" : "w-full",
                         isCorrect
                             ? "bg-green-50 border-green-200"
                             : hasBoth && !isCorrect
@@ -220,10 +275,10 @@ export default function QuestionSolutionModal({
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className="!max-w-none !w-[90vw] !h-[85vh] !p-0 !overflow-hidden !border-0 !shadow-none !top-1/2 !left-1/2 !-translate-x-1/2 !-translate-y-1/2 !rounded-xl">
-                <div className="flex h-full bg-white">
+            <DialogContent showCloseButton className="!max-w-none !w-[90vw] !h-[85vh] !p-0 !overflow-hidden !border-0 !shadow-none !top-1/2 !left-1/2 !-translate-x-1/2 !-translate-y-1/2 !rounded-xl">
+                <div className="flex h-full min-h-0 bg-white">
                     {/* Left: exercise */}
-                    <div className="w-1/2 min-w-0 border-r border-gray-200 bg-gray-50">
+                    <div className="w-1/2 min-w-0 min-h-0 border-r border-gray-200 bg-gray-50">
                         <div className="h-full overflow-y-auto p-8">
                             <DialogHeader className="mb-4">
                                 <DialogTitle className="text-lg font-semibold text-gray-900">
@@ -233,28 +288,30 @@ export default function QuestionSolutionModal({
 
                             <div className="prose max-w-none text-gray-900">
                                 <div className="text-base leading-relaxed whitespace-pre-wrap">
-                                    {renderWithMath(exercise.text)}
+                                    {renderWithMath(exercise.text, 'text-[18px]')}
                                 </div>
                             </div>
 
-                            {exercise.imageSrc && (
-                                <div className="mt-6 relative w-full overflow-hidden rounded-lg border bg-white shadow-sm">
-                                    <div className="aspect-[16/10] w-full">
-                                        <Image
-                                            src={exercise.imageSrc}
-                                            alt={exercise.imageAlt || "exercise image"}
-                                            fill
-                                            className="object-contain"
-                                            sizes="(max-width: 768px) 100vw, 50vw"
-                                        />
+                            {mergedDiagram ? (
+                                <Renderer diagramData={mergedDiagram} width={700} height={700} />
+                            ) : (
+                                visibleSteps.length > 0 && (
+                                    <div className="mt-6 w-full rounded-lg border bg-white shadow-sm p-4">
+                                        <ol className="pl-0 space-y-2" style={{ listStyleType: "none", paddingLeft: 0, marginLeft: 0 }}>
+                                            {visibleSteps.map((s) => (
+                                                <li key={s.id} className="text-base leading-relaxed">
+                                                    {renderWithMath(s.content, 'text-[18px]')}
+                                                </li>
+                                            ))}
+                                        </ol>
                                     </div>
-                                </div>
+                                )
                             )}
                         </div>
                     </div>
 
                     {/* Right: answers + steps */}
-                    <div className="w-1/2 min-w-0 flex flex-col">
+                    <div className="w-1/2 min-w-0 min-h-0 flex flex-col">
                         {/* Header */}
                         <div className="px-8 pt-8 pb-4 border-b bg-white">
                             <div className="flex items-center justify-between">
@@ -305,7 +362,7 @@ export default function QuestionSolutionModal({
                                                                         (active ? "text-emerald-700" : "text-gray-900")
                                                                     }
                                                                 >
-                                                                    {s.title}
+                                                                    {renderWithMath(s.title, 'text-[15px]')}
                                                                 </h4>
                                                             </div>
                                                         )}
@@ -315,7 +372,7 @@ export default function QuestionSolutionModal({
                                                                 (active ? "text-emerald-900" : "text-gray-700")
                                                             }
                                                         >
-                                                            {renderWithMath(s.content)}
+                                                            {renderWithMath(s.content, 'text-[17px]')}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -345,6 +402,6 @@ export default function QuestionSolutionModal({
                     </div>
                 </div>
             </DialogContent>
-        </Dialog>
+        </Dialog >
     );
 }
