@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Trophy, Clock, Calendar, CheckCircle } from "lucide-react";
+import { Trophy, Clock, Calendar, CheckCircle, GraduationCap } from "lucide-react";
 import type { DiagramData } from "geometry-diagram-renderer";
 import Question from "@/app/(platform-layout)/platform/components/Question/Question";
 import { QuestionsNavigatorGrid } from "@/app/(platform-layout)/platform/components/QuestionsNavigatorGrid/QuestionsNavigatorGrid";
@@ -347,14 +347,10 @@ const ExamOverviewPage = () => {
                                     <div className="flex items-center justify-between">
                                         {/* Left Side - Info */}
                                         <div className="flex-1 min-w-0 pr-4">
-                                            <div className="flex items-center gap-2 mb-3">
-                                                <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-emerald-100">
-                                                    <Trophy className="w-4 h-4 text-emerald-600" />
-                                                </div>
-                                                <Badge variant="secondary" className="bg-emerald-100 text-emerald-600 text-xs">
-                                                    Матура
-                                                </Badge>
-                                            </div>
+                                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 mb-3">
+                                                <GraduationCap className="h-3.5 w-3.5" />
+                                                Матура
+                                            </span>
 
                                             <div className="flex flex-col gap-2 text-xs text-gray-600">
                                                 <div className="flex items-center gap-1">
