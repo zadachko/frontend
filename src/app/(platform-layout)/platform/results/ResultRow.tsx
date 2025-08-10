@@ -59,7 +59,7 @@ export const ResultRow = ({ result, onClick, hideIcon = false }: ResultRowProps)
 
     return (
         <Card
-            className="hover:shadow-lg hover:scale-[1.02] transition-all duration-200 bg-white border border-gray-200 cursor-pointer"
+            className="hover:shadow-lg hover:scale-[1.02] transition-all duration-200 bg-white border border-gray-200 cursor-pointer py-4 lg:py-6"
             onClick={handleClick}
         >
             <CardContent className="p-3 sm:px-6 sm:py-4">
