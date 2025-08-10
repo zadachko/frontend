@@ -4,13 +4,10 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, CheckCircle2 } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
-// KaTeX (inline + block math)
 import "katex/dist/katex.min.css";
 import { BlockMath, InlineMath } from "react-katex";
-
-/* ----------------------------- Types & Helpers ---------------------------- */
 
 export type SolutionStep = {
     id: string | number;
@@ -41,12 +38,20 @@ export type QuestionSolutionModalProps = {
 function renderWithMath(text: string) {
     return text.split(/(\$\$.*?\$\$|\$.*?\$)/g).map((part, idx) => {
         if (part.startsWith("$$") && part.endsWith("$$")) {
-            return <BlockMath key={idx} math={part.slice(2, -2)} />;
+            return (
+                <span key={idx} className="text-lg">
+                    <BlockMath math={part.slice(2, -2)} />
+                </span>
+            );
         }
         if (part.startsWith("$") && part.endsWith("$")) {
-            return <InlineMath key={idx} math={part.slice(1, -1)} />;
+            return (
+                <span key={idx} className="text-lg">
+                    <InlineMath math={part.slice(1, -1)} />
+                </span>
+            );
         }
-        return <span key={idx}>{part}</span>;
+        return <span key={idx} className="text-lg">{part}</span>;
     });
 }
 
@@ -66,7 +71,6 @@ export default function QuestionSolutionModal({
     correctAnswer,
     options = [],
 }: QuestionSolutionModalProps) {
-    // Normalize steps
     const safeSteps = useMemo(() => (Array.isArray(steps) ? steps : []), [steps]);
 
     const [current, setCurrent] = useState(() =>
@@ -124,13 +128,62 @@ export default function QuestionSolutionModal({
         if (!questionType) return null;
 
         const hasBoth = !!userAnswer && !!correctAnswer;
-        const isCorrect = hasBoth && userAnswer === correctAnswer;
+
+        // Map a provided answer (option text OR letter) to its canonical letter
+        const getIndexForAnswer = (answer?: string): number | null => {
+            if (!answer) return null;
+            const idxFromOption = options?.indexOf(answer);
+            if (typeof idxFromOption === "number" && idxFromOption >= 0) return idxFromOption;
+            const normalized = answer.replace(/\)\s*$/, "").trim().toLowerCase();
+            const idxFromLetter = optionLetters.findIndex((l) => l === normalized);
+            if (idxFromLetter >= 0) return idxFromLetter;
+            return null;
+        };
+
+        const userIndex = questionType === "multiple" ? getIndexForAnswer(userAnswer) : null;
+        const correctIndex = questionType === "multiple" ? getIndexForAnswer(correctAnswer) : null;
+        const userLetter = userIndex != null ? optionLetters[userIndex] : null;
+        const correctLetter = correctIndex != null ? optionLetters[correctIndex] : null;
+        const userOptionText = userIndex != null ? options[userIndex] : null;
+        const correctOptionText = correctIndex != null ? options[correctIndex] : null;
+
+        const isCorrect = hasBoth && (
+            questionType === "multiple"
+                ? userIndex != null && correctIndex != null && userIndex === correctIndex
+                : userAnswer === correctAnswer
+        );
+
+        const renderUserAnswer = () => {
+            if (questionType === "multiple") {
+                if (userIndex == null) return "Без отговор";
+                return (
+                    <>
+                        {`${userLetter}) `}
+                        {userOptionText ? renderWithMath(userOptionText) : null}
+                    </>
+                );
+            }
+            return userAnswer ? renderWithMath(userAnswer) : "Без отговор";
+        };
+
+        const renderCorrectAnswer = () => {
+            if (questionType === "multiple") {
+                if (correctIndex == null) return null;
+                return (
+                    <>
+                        {`${correctLetter}) `}
+                        {correctOptionText ? renderWithMath(correctOptionText) : null}
+                    </>
+                );
+            }
+            return correctAnswer ? renderWithMath(correctAnswer) : null;
+        };
 
         return (
-            <div className="space-y-3 mb-4">
+            <div className="flex gap-3 mb-4">
                 <div
                     className={[
-                        "p-3 rounded border",
+                        "p-3 rounded border w-1/2",
                         isCorrect
                             ? "bg-green-50 border-green-200"
                             : hasBoth && !isCorrect
@@ -149,15 +202,15 @@ export default function QuestionSolutionModal({
                                     : "text-gray-800",
                         ].join(" ")}
                     >
-                        {userAnswer ? renderWithMath(userAnswer) : "Без отговор"}
+                        {renderUserAnswer()}
                     </span>
                 </div>
 
                 {hasBoth && !isCorrect && (
-                    <div className="p-3 rounded border bg-green-50 border-green-200">
+                    <div className="p-3 rounded border bg-green-50 border-green-200 w-1/2">
                         <span className="text-sm text-gray-600">Правилен отговор: </span>
                         <span className="text-sm font-medium text-green-800">
-                            {renderWithMath(correctAnswer!)}
+                            {renderCorrectAnswer()}
                         </span>
                     </div>
                 )}
@@ -254,7 +307,6 @@ export default function QuestionSolutionModal({
                                                                 >
                                                                     {s.title}
                                                                 </h4>
-                                                                {active && <CheckCircle2 className="h-4 w-4 text-emerald-600" />}
                                                             </div>
                                                         )}
                                                         <div
