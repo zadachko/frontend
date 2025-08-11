@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge"
 import QuestionSolutionModal, { type SolutionStep } from "./QuestionSolutionModal"
 import type { StepAction } from "geometry-diagram-renderer"
 import { BookOpen, Eye } from "lucide-react"
+import QuestionBadge from "./QuestionBadge"
 
 type QuestionProps = {
     question: {
@@ -51,7 +52,7 @@ const Question = ({
     let isCorrect = false
     if (userAnswer && correctAnswer) isCorrect = userAnswer === correctAnswer
 
-    const handleSolutionClick = () => {
+    const handleCircleClick = () => {
         setIsModalOpen(true)
     }
 
@@ -91,38 +92,31 @@ const Question = ({
                 <CardContent className="px-8 py-4">
                     {/* Header row with question number, statement and points */}
                     <div className="flex items-start justify-between mb-4">
-                        <div className="flex items-start gap-4 flex-1">
-                            {/* Question Number Badge */}
-                            <div className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm bg-gray-100 text-gray-600 mt-1">
-                                {question.id}
-                            </div>
+                        <div className="flex items-start gap-4">
+                            {showRobotBadge && (
+                                <QuestionBadge
+                                    questionNumber={question.id}
+                                    onCircleClick={handleCircleClick}
+                                />
+                            )}
 
-                            {/* Question Statement */}
-                            <div className="flex-1">
-                                <QuestionStatement statement={question.statement} diagramData={question.diagramData} />
-                            </div>
+                            <QuestionStatement
+                                statement={question.statement}
+                                diagramData={question.diagramData}
+                            />
                         </div>
 
-                        {/* Points Badge */}
                         {question.points && (
-                            <Badge variant="secondary" className="bg-blue-100 text-blue-800 font-semibold ml-4">
+                            <Badge
+                                variant="secondary"
+                                className="bg-blue-100 text-blue-800 font-semibold"
+                            >
                                 {question.points}т.
                             </Badge>
                         )}
                     </div>
 
-                    {/* Solution Button - positioned prominently */}
-                    {showRobotBadge && (
-                        <div className="mb-4 ml-14">
-                            <button
-                                onClick={handleSolutionClick}
-                                className="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-[#755bc5] to-[#8b6fd1] text-white text-sm font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105 cursor-pointer"
-                            >
-                                <Eye className="w-4 h-4" />
-                                Виж решението
-                            </button>
-                        </div>
-                    )}
+
 
                     {/* Answer inputs aligned with statement */}
                     <div className="ml-14">
