@@ -9,7 +9,7 @@ import MultipleChoiceAnswer from './MultipleChoiceAnswer';
 import { Badge } from '@/components/ui/badge';
 import QuestionSolutionModal, { SolutionStep } from './QuestionSolutionModal';
 import { useIsMobile, useIsSmallMobile } from '@/hooks/isMobile';
-import { StepAction } from '../../../../../../libs/geometry-diagram-renderer/dist';
+import { StepAction } from 'geometry-diagram-renderer';
 
 type QuestionProps = {
     question: {
