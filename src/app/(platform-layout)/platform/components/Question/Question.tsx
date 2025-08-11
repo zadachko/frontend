@@ -1,38 +1,40 @@
-import { Card, CardContent } from '@/components/ui/card';
-import React, { useState } from 'react';
-import 'katex/dist/katex.min.css';
-import QuestionBadge from './QuestionBadge';
-import QuestionStatement from './QuestionStatement';
-import OpenAnswer from './OpenAnswer';
-import type { DiagramData } from 'geometry-diagram-renderer';
-import MultipleChoiceAnswer from './MultipleChoiceAnswer';
-import { Badge } from '@/components/ui/badge';
-import QuestionSolutionModal, { type SolutionStep } from './QuestionSolutionModal';
-import type { StepAction } from 'geometry-diagram-renderer';
+"use client"
+
+import { Card, CardContent } from "@/components/ui/card"
+import { useState } from "react"
+import "katex/dist/katex.min.css"
+import QuestionStatement from "./QuestionStatement"
+import OpenAnswer from "./OpenAnswer"
+import type { DiagramData } from "geometry-diagram-renderer"
+import MultipleChoiceAnswer from "./MultipleChoiceAnswer"
+import { Badge } from "@/components/ui/badge"
+import QuestionSolutionModal, { type SolutionStep } from "./QuestionSolutionModal"
+import type { StepAction } from "geometry-diagram-renderer"
+import { BookOpen, Eye } from "lucide-react"
 
 type QuestionProps = {
     question: {
-        id: number;
-        statement: string;
-        type: 'text' | 'multiple';
-        options?: string[];
-        diagramData?: DiagramData;
+        id: number
+        statement: string
+        type: "text" | "multiple"
+        options?: string[]
+        diagramData?: DiagramData
         diagramSteps?: StepAction[][]
-        points?: number;
-    };
+        points?: number
+    }
     answers: {
-        [key: number]: string;
-    };
-    handleAnswerChange: (questionId: number, value: string) => void;
+        [key: number]: string
+    }
+    handleAnswerChange: (questionId: number, value: string) => void
     // New props for review mode
-    isReviewMode?: boolean;
-    correctAnswer?: string;
-    userAnswer?: string;
+    isReviewMode?: boolean
+    correctAnswer?: string
+    userAnswer?: string
     // New prop for solution
-    solution?: string | SolutionStep[];
-    // Prop to control display of QuestionBadge
-    showRobotBadge?: boolean;
-};
+    solution?: string | SolutionStep[]
+    // Prop to control display of solution button
+    showRobotBadge?: boolean
+}
 
 const Question = ({
     question,
@@ -44,39 +46,36 @@ const Question = ({
     solution,
     showRobotBadge = true,
 }: QuestionProps) => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false)
 
-    let isCorrect = false;
-    if (userAnswer && correctAnswer) isCorrect = userAnswer === correctAnswer;
+    let isCorrect = false
+    if (userAnswer && correctAnswer) isCorrect = userAnswer === correctAnswer
 
-    const handleCircleClick = () => {
-        setIsModalOpen(true);
-    };
+    const handleSolutionClick = () => {
+        setIsModalOpen(true)
+    }
 
     const handleCloseModal = () => {
-        setIsModalOpen(false);
-    };
+        setIsModalOpen(false)
+    }
 
     function splitToSteps(htmlOrText: string): SolutionStep[] {
         const cleaned = htmlOrText
-            .replace(/<\/?p[^>]*>/g, '\n')      // turn <p> into newlines
-            .replace(/<\/?strong[^>]*>/g, '')   // drop <strong>
-            .replace(/<[^>]+>/g, '')            // drop any other tags
+            .replace(/<\/?p[^>]*>/g, "\n") // turn <p> into newlines
+            .replace(/<\/?strong[^>]*>/g, "") // drop <strong>
+            .replace(/<[^>]+>/g, "") // drop any other tags
             .trim()
 
         return cleaned
-            .split(/\n+/)                        // split by blank lines / paragraph ends
-            .map(s => s.trim())
+            .split(/\n+/) // split by blank lines / paragraph ends
+            .map((s) => s.trim())
             .filter(Boolean)
             .map((content, i) => ({ id: i + 1, content }))
     }
 
     return (
         <>
-            <Card
-                key={question.id}
-                className="bg-white border-0 shadow-md transition-all duration-300 relative"
-            >
+            <Card key={question.id} className="bg-white border-0 shadow-md transition-all duration-300 relative">
                 {/* Result Badge for Review Mode */}
                 {isReviewMode && (
                     <div className="absolute top-4 right-4 z-10">
@@ -90,34 +89,44 @@ const Question = ({
                 )}
 
                 <CardContent className="px-8 py-4">
-                    {/* First row: number + statement + points */}
+                    {/* Header row with question number, statement and points */}
                     <div className="flex items-start justify-between mb-4">
-                        <div className="flex items-start gap-4">
-                            {showRobotBadge && (
-                                <QuestionBadge
-                                    questionNumber={question.id}
-                                    onCircleClick={handleCircleClick}
-                                />
-                            )}
-                            <QuestionStatement
-                                statement={question.statement}
-                                diagramData={question.diagramData}
-                            />
+                        <div className="flex items-start gap-4 flex-1">
+                            {/* Question Number Badge */}
+                            <div className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm bg-gray-100 text-gray-600 mt-1">
+                                {question.id}
+                            </div>
+
+                            {/* Question Statement */}
+                            <div className="flex-1">
+                                <QuestionStatement statement={question.statement} diagramData={question.diagramData} />
+                            </div>
                         </div>
 
+                        {/* Points Badge */}
                         {question.points && (
-                            <Badge
-                                variant="secondary"
-                                className="bg-blue-100 text-blue-800 font-semibold"
-                            >
+                            <Badge variant="secondary" className="bg-blue-100 text-blue-800 font-semibold ml-4">
                                 {question.points}т.
                             </Badge>
                         )}
                     </div>
 
-                    {/* Second row: answer inputs aligned with statement */}
-                    <div className="ml-[54px]">
-                        {question.type === 'text' ? (
+                    {/* Solution Button - positioned prominently */}
+                    {showRobotBadge && (
+                        <div className="mb-4 ml-14">
+                            <button
+                                onClick={handleSolutionClick}
+                                className="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-[#755bc5] to-[#8b6fd1] text-white text-sm font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105 cursor-pointer"
+                            >
+                                <Eye className="w-4 h-4" />
+                                Виж решението
+                            </button>
+                        </div>
+                    )}
+
+                    {/* Answer inputs aligned with statement */}
+                    <div className="ml-14">
+                        {question.type === "text" ? (
                             <OpenAnswer
                                 answers={answers}
                                 handleAnswerChange={handleAnswerChange}
@@ -148,23 +157,24 @@ const Question = ({
                 exercise={{
                     id: question.id,
                     text: question.statement,
-                    imageSrc: question.diagramData ? undefined : undefined, // plug an image here if you have one
+                    imageSrc: question.diagramData ? undefined : undefined,
                 }}
                 steps={
                     Array.isArray(solution)
                         ? solution.map((s, i) => ({ id: s.id ?? i + 1, title: s.title, content: s.content }))
-                        : (typeof solution === 'string' && solution.trim() ? splitToSteps(solution) : [])
+                        : typeof solution === "string" && solution.trim()
+                            ? splitToSteps(solution)
+                            : []
                 }
-                /* NEW: pass data for the Answer review block */
-                questionType={question.type}          // "text" | "multiple"
-                userAnswer={userAnswer}               // your current userAnswer prop
-                correctAnswer={correctAnswer}         // your current correctAnswer prop
-                options={question.options}            // for multiple-choice highlighting
+                questionType={question.type}
+                userAnswer={userAnswer}
+                correctAnswer={correctAnswer}
+                options={question.options}
                 diagramData={question.diagramData}
                 diagramSteps={question.diagramSteps}
             />
         </>
-    );
-};
+    )
+}
 
-export default Question;
+export default Question
