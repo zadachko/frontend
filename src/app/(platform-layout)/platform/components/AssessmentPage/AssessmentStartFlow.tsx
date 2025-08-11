@@ -35,47 +35,47 @@ const AssessmentStartFlow = ({
             <DialogTrigger asChild>
                 <Button
                     size="lg"
-                    className={`bg-gradient-to-r ${colors.buttonGradient} ${colors.buttonHoverGradient} text-white font-semibold px-8 py-3 h-12 text-lg transition-all duration-300 shadow-sm`}
+                    className={`bg-gradient-to-r ${colors.buttonGradient} ${colors.buttonHoverGradient} text-white font-semibold px-4 sm:px-6 lg:px-8 py-2 sm:py-3 h-10 sm:h-12 text-sm sm:text-base lg:text-lg transition-all duration-300 shadow-sm w-full sm:w-auto`}
                     onClick={handleStartExam}
                 >
-                    <Play className="w-4 h-4 mr-2" />
+                    <Play className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
                     Започни Пробен Изпит
                 </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-md">
+            <DialogContent className="sm:max-w-md mx-4">
                 <DialogHeader>
-                    <div className="flex items-center gap-3 mb-2">
-                        <div className={`inline-flex p-2 rounded-full ${colors.iconBg}`}>
-                            <AlertTriangle className={`w-5 h-5 ${colors.iconColor}`} />
+                    <div className="flex items-center gap-2 sm:gap-3 mb-2">
+                        <div className={`inline-flex p-1.5 sm:p-2 rounded-full ${colors.iconBg}`}>
+                            <AlertTriangle className={`w-4 h-4 sm:w-5 sm:h-5 ${colors.iconColor}`} />
                         </div>
-                        <DialogTitle className="text-xl font-semibold text-gray-900">
+                        <DialogTitle className="text-lg sm:text-xl font-semibold text-gray-900">
                             Потвърди започване на изпита
                         </DialogTitle>
                     </div>
-                    <div className="text-gray-600 text-base leading-relaxed">
-                        <p className="mb-3">
+                    <div className="text-gray-600 text-sm sm:text-base leading-relaxed">
+                        <p className="mb-2 sm:mb-3">
                             Сигурни ли сте, че искате да започнете пробния изпит? След започване:
                         </p>
-                        <ul className="list-disc list-inside space-y-1 text-sm">
+                        <ul className="list-disc list-inside space-y-1 text-xs sm:text-sm">
                             <li>Ще имате 90 минути за 25 въпроса</li>
                             <li>Няма да можете да се връщате към предишни въпроси</li>
                             <li>Изпитът ще се подаде автоматично при изтичане на времето</li>
                         </ul>
                     </div>
                 </DialogHeader>
-                <DialogFooter className="flex gap-3 sm:justify-end">
+                <DialogFooter className="flex flex-col sm:flex-row gap-2 sm:gap-3 sm:justify-end">
                     <Button
                         variant="outline"
                         onClick={() => setIsDialogOpen(false)}
-                        className="border-gray-300 text-gray-700 hover:bg-gray-50"
+                        className="border-gray-300 text-gray-700 hover:bg-gray-50 w-full sm:w-auto"
                     >
                         Отказ
                     </Button>
                     <Button
                         onClick={handleConfirmExam}
-                        className={`bg-gradient-to-r ${colors.buttonGradient} ${colors.buttonHoverGradient} text-white`}
+                        className={`bg-gradient-to-r ${colors.buttonGradient} ${colors.buttonHoverGradient} text-white w-full sm:w-auto`}
                     >
-                        <Play className="w-4 h-4 mr-2" />
+                        <Play className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
                         Започни Изпита
                     </Button>
                 </DialogFooter>

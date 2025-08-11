@@ -1,17 +1,15 @@
-"use client"
-
-import { Card, CardContent } from "@/components/ui/card"
-import { useState } from "react"
-import "katex/dist/katex.min.css"
-import QuestionStatement from "./QuestionStatement"
-import OpenAnswer from "./OpenAnswer"
-import type { DiagramData } from "geometry-diagram-renderer"
-import MultipleChoiceAnswer from "./MultipleChoiceAnswer"
-import { Badge } from "@/components/ui/badge"
-import QuestionSolutionModal, { type SolutionStep } from "./QuestionSolutionModal"
-import type { StepAction } from "geometry-diagram-renderer"
-import { BookOpen, Eye } from "lucide-react"
-import QuestionBadge from "./QuestionBadge"
+import { Card, CardContent } from '@/components/ui/card';
+import React, { useState } from 'react';
+import 'katex/dist/katex.min.css';
+import QuestionBadge from './QuestionBadge';
+import QuestionStatement from './QuestionStatement';
+import OpenAnswer from './OpenAnswer';
+import type { DiagramData } from 'geometry-diagram-renderer';
+import MultipleChoiceAnswer from './MultipleChoiceAnswer';
+import { Badge } from '@/components/ui/badge';
+import QuestionSolutionModal, { SolutionStep } from './QuestionSolutionModal';
+import { useIsMobile, useIsSmallMobile } from '@/hooks/isMobile';
+import { StepAction } from '../../../../../../libs/geometry-diagram-renderer/dist';
 
 type QuestionProps = {
     question: {
@@ -45,9 +43,11 @@ const Question = ({
     correctAnswer,
     userAnswer,
     solution,
-    showRobotBadge = true,
+    showRobotBadge = false,
 }: QuestionProps) => {
-    const [isModalOpen, setIsModalOpen] = useState(false)
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const isMobile = useIsMobile();
+    const isSmallMobile = useIsSmallMobile();
 
     let isCorrect = false
     if (userAnswer && correctAnswer) isCorrect = userAnswer === correctAnswer
@@ -89,20 +89,22 @@ const Question = ({
                     </div>
                 )}
 
-                <CardContent className="px-8 py-4">
-                    {/* Header row with question number, statement and points */}
-                    <div className="flex items-start justify-between mb-4">
+                <CardContent className={`${isSmallMobile ? 'px-2 py-2' : isMobile ? 'px-4 py-3' : 'px-8 py-4'}`}>
+                    {/* First row: number + statement + points */}
+                    <div className={`flex items-start justify-between mb-4 ${isMobile ? 'gap-3 items-center' : ''}`}>
                         <div className="flex items-start gap-4">
-                            {showRobotBadge && (
-                                <QuestionBadge
-                                    questionNumber={question.id}
-                                    onCircleClick={handleCircleClick}
-                                />
-                            )}
-
+                            <QuestionBadge
+                                questionNumber={question.id}
+                                onCircleClick={handleCircleClick}
+                                isMobile={isMobile}
+                                isSmallMobile={isSmallMobile}
+                                showRobotBadge={showRobotBadge}
+                            />
                             <QuestionStatement
                                 statement={question.statement}
                                 diagramData={question.diagramData}
+                                isMobile={isMobile}
+                                isSmallMobile={isSmallMobile}
                             />
                         </div>
 
@@ -116,11 +118,9 @@ const Question = ({
                         )}
                     </div>
 
-
-
-                    {/* Answer inputs aligned with statement */}
-                    <div className="ml-14">
-                        {question.type === "text" ? (
+                    {/* Second row: answer inputs aligned with statement */}
+                    <div className={`${isSmallMobile ? 'ml-0' : isMobile ? 'ml-0' : 'ml-[54px]'}`}>
+                        {question.type === 'text' ? (
                             <OpenAnswer
                                 answers={answers}
                                 handleAnswerChange={handleAnswerChange}
@@ -128,6 +128,8 @@ const Question = ({
                                 isReviewMode={isReviewMode}
                                 correctAnswer={correctAnswer}
                                 userAnswer={userAnswer}
+                                isMobile={isMobile}
+                                isSmallMobile={isSmallMobile}
                             />
                         ) : (
                             <MultipleChoiceAnswer
@@ -138,14 +140,16 @@ const Question = ({
                                 isCorrect={isCorrect}
                                 correctAnswer={correctAnswer}
                                 userAnswer={userAnswer}
+                                isMobile={isMobile}
+                                isSmallMobile={isSmallMobile}
                             />
                         )}
                     </div>
-                </CardContent>
-            </Card>
+                </CardContent >
+            </Card >
 
             {/* Question Solution Modal */}
-            <QuestionSolutionModal
+            < QuestionSolutionModal
                 isOpen={isModalOpen}
                 onClose={handleCloseModal}
                 exercise={{

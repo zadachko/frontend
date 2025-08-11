@@ -3,11 +3,11 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Clock, } from "lucide-react";
+import { Clock, Menu, X } from "lucide-react";
 import Question from "@/app/(platform-layout)/platform/components/Question/Question";
 import type { DiagramData } from "geometry-diagram-renderer";
 import { useRouter } from "next/navigation";
-
+import { useIsMobile, useIsSmallMobile } from "@/hooks/isMobile";
 
 import type { Question as QuestionType } from "@/types"
 import { QuestionsNavigatorGrid } from "@/app/(platform-layout)/platform/components/QuestionsNavigatorGrid/QuestionsNavigatorGrid";
@@ -36,13 +36,15 @@ const sampleTriangleData: DiagramData = {
     ],
 };
 
-
 const LiveExamPage = () => {
     const [timeLeft, setTimeLeft] = useState(90 * 60) // 90 minutes in seconds
     const [answers, setAnswers] = useState<{ [key: number]: string }>({})
     const [currentQuestion, setCurrentQuestion] = useState(1)
     const [showSubmitDialog, setShowSubmitDialog] = useState(false)
+    const [showMobileNav, setShowMobileNav] = useState(false)
     const router = useRouter()
+    const isMobile = useIsMobile()
+    const isSmallMobile = useIsSmallMobile()
 
     // Sample questions data
     const questions: QuestionType[] = [
@@ -231,6 +233,12 @@ const LiveExamPage = () => {
         return () => clearInterval(timer)
     }, [])
 
+    // Format time display
+    const formatTime = (seconds: number) => {
+        const minutes = Math.floor(seconds / 60)
+        const secs = seconds % 60
+        return `${minutes.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`
+    }
 
     const handleAnswerChange = (questionId: number, value: string) => {
         setAnswers((prev) => ({
@@ -241,6 +249,10 @@ const LiveExamPage = () => {
 
     const goToQuestion = (questionId: number) => {
         setCurrentQuestion(questionId)
+        // Close mobile nav when navigating to a question
+        if (isMobile) {
+            setShowMobileNav(false)
+        }
     }
 
     const scrollToQuestion = (questionId: number) => {
@@ -250,6 +262,10 @@ const LiveExamPage = () => {
                 behavior: 'smooth',
                 block: 'start'
             });
+        }
+        // Close mobile nav when scrolling to a question
+        if (isMobile) {
+            setShowMobileNav(false)
         }
     }
 
@@ -271,20 +287,60 @@ const LiveExamPage = () => {
         setShowSubmitDialog(false)
     }
 
+    const toggleMobileNav = () => {
+        setShowMobileNav(!showMobileNav)
+    }
+
     const questionsAnswered = Object.keys(answers).length
 
     return (
         <div className="min-h-screen bg-gray-50 mx-auto">
-            <div className="flex h-screen">
+            {/* Mobile Header - Outside scrollable container */}
+            {isMobile && (
+                <div className="sticky top-0 z-50 bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between shadow-sm">
+                    <div className="flex items-center gap-3">
+                        <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={toggleMobileNav}
+                            className="p-2"
+                        >
+                            {showMobileNav ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                        </Button>
+                        <div className="flex items-center gap-2">
+                            <Clock className="w-4 h-4 text-[#6F58C9]" />
+                            <span className="font-mono text-lg font-bold text-[#6F58C9]">
+                                {formatTime(timeLeft)}
+                            </span>
+                        </div>
+                    </div>
+                    <Button
+                        size="sm"
+                        className="bg-gradient-to-r from-[#6F58C9] to-[#5A4BA3] text-white hover:from-[#5A4BA3] hover:to-[#4A3B93]"
+                        onClick={handleSubmitExam}
+                    >
+                        Изпрати
+                    </Button>
+                </div>
+            )}
+
+            <div className={`${isMobile ? 'flex flex-col' : 'flex'} ${isMobile ? 'h-[calc(100vh-64px)]' : 'h-screen'}`}>
                 {/* Left Column - Questions */}
-                <div className="flex-1 overflow-y-auto">
-                    <div className="p-6 max-w-4xl mx-auto">
-                        {/* Header */}
+                <div className={`${isMobile ? 'flex-1 overflow-y-auto' : 'flex-1 overflow-y-auto'}`}>
+                    <div className={`${isMobile ? 'p-4' : 'p-6 max-w-4xl mx-auto'} ${isSmallMobile ? 'px-2' : ''}`}>
+                        {/* Header - Desktop only */}
+                        {!isMobile && (
+                            <div className="mb-6">
+                                <h1 className="text-2xl font-bold text-gray-900 mb-2">Тест</h1>
+                                <p className="text-gray-600">Отговорете на всички въпроси в рамките на 90 минути</p>
+                            </div>
+                        )}
+
                         {/* Questions List */}
-                        <div className="space-y-8">
+                        <div className="space-y-6">
                             {questions.map((question) => (
                                 <div key={question.id} id={`question-${question.id}`}>
-                                    <Question question={question} answers={answers} handleAnswerChange={handleAnswerChange} />
+                                    <Question question={question} answers={answers} handleAnswerChange={handleAnswerChange} isReviewMode={true} />
                                 </div>
                             ))}
                         </div>
@@ -292,35 +348,59 @@ const LiveExamPage = () => {
                 </div>
 
                 {/* Right Sidebar - Navigation */}
-                <div className="w-80 bg-white border-l border-gray-200 flex flex-col h-[calc(100vh-100px)]">
+                <div className={`${isMobile
+                    ? `w-full fixed -mt-[7px] top-16 right-0 z-40 ${isSmallMobile ? 'w-full' : 'w-80'} bg-white border-l border-gray-200 transform transition-transform duration-300 ease-in-out ${showMobileNav ? 'translate-x-0' : 'translate-x-full'} flex flex-col h-[calc(100vh-64px)]`
+                    : 'w-80 bg-white border-l border-gray-200 flex flex-col h-[calc(100vh-100px)]'
+                    }`}>
+                    {/* Timer - Desktop only */}
+                    {!isMobile && (
+                        <div className="p-6 border-b border-gray-200">
+                            <Card className="bg-gradient-to-r from-[#6F58C9] to-[#5A4BA3] border-0 shadow-md">
+                                <CardContent className="p-0 text-center">
+                                    <div className="flex items-center justify-center gap-2 text-white">
+                                        <Clock className="w-5 h-5" />
+                                        <span className="font-mono text-2xl font-bold">{formatTime(timeLeft)}</span>
+                                    </div>
+                                    <p className="text-purple-100 text-sm mt-1">Оставащо време</p>
+                                </CardContent>
+                            </Card>
+                        </div>
+                    )}
 
                     {/* Question Navigator */}
-                    <QuestionsNavigatorGrid
-                        answers={answers}
-                        totalQuestions={totalQuestions}
-                        getQuestionStatus={getQuestionStatus}
-                        currentQuestion={currentQuestion}
-                        goToQuestion={goToQuestion}
-                        scrollToQuestion={scrollToQuestion}
-                        colors={{
-                            primary: "[#6F58C9]",
-                            primaryLight: "[#6F58C91A]",
-                            primaryHover: "[#6F58C94D]",
-                            answeredBg: "[#6F58C933]",
-                            answeredBorder: "[#6F58C966]",
-                            answeredText: "[#6F58C9]",
-                            answeredHover: "[#6F58C94D]"
-                        }}
-                    />
-                    {/* Submit Button */}
-                    <div className="p-6 border-t border-gray-200">
-                        <Button
-                            className="w-full bg-gradient-to-br from-[#6F58C9] to-[#5A4BA3] text-white hover:bg-gray-100 font-semibold text-lg py-3 h-12"
-                            onClick={handleSubmitExam}
-                        >
-                            Изпрати
-                        </Button>
+                    <div className={`${isMobile ? 'flex-1 overflow-y-auto' : 'flex-1'}`}>
+                        <QuestionsNavigatorGrid
+                            answers={answers}
+                            totalQuestions={totalQuestions}
+                            getQuestionStatus={getQuestionStatus}
+                            currentQuestion={currentQuestion}
+                            goToQuestion={goToQuestion}
+                            scrollToQuestion={scrollToQuestion}
+                            colors={{
+                                primary: "[#6F58C9]",
+                                primaryLight: "[#6F58C91A]",
+                                primaryHover: "[#6F58C94D]",
+                                answeredBg: "[#6F58C933]",
+                                answeredBorder: "[#6F58C966]",
+                                answeredText: "[#6F58C9]",
+                                answeredHover: "[#6F58C94D]"
+                            }}
+                            isMobile={isMobile}
+                            isSmallMobile={isSmallMobile}
+                        />
                     </div>
+
+                    {/* Submit Button - Desktop only */}
+                    {!isMobile && (
+                        <div className="p-6 border-t border-gray-200">
+                            <Button
+                                className="w-full bg-gradient-to-br from-[#6F58C9] to-[#5A4BA3] text-white hover:bg-gray-100 font-semibold text-lg py-3 h-12"
+                                onClick={handleSubmitExam}
+                            >
+                                Изпрати
+                            </Button>
+                        </div>
+                    )}
                 </div>
             </div>
 
@@ -336,11 +416,13 @@ const LiveExamPage = () => {
                     primary: "[#6F58C9]",
                     primaryHover: "[#5A4BA3]"
                 }}
+                isMobile={isMobile}
+                isSmallMobile={isSmallMobile}
             />
 
             {/* Low Time Warning */}
             {timeLeft < 600 && (
-                <div className="fixed bottom-4 left-4 z-50">
+                <div className={`fixed z-50 ${isMobile ? 'bottom-4 left-4 right-4' : 'bottom-4 left-4'}`}>
                     <Card className="bg-red-50 border-red-200 shadow-lg">
                         <CardContent className="p-4">
                             <div className="flex items-center gap-2 text-red-800">

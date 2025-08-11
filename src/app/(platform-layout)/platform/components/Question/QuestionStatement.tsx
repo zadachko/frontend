@@ -6,16 +6,23 @@ import { renderWithMath } from '@/app/(platform-layout)/platform/common/utilitie
 type QuestionStatementProps = {
     statement: string
     diagramData?: DiagramData
+    isMobile?: boolean
+    isSmallMobile?: boolean
 }
-const QuestionStatement = ({ statement, diagramData }: QuestionStatementProps) => {
+
+const QuestionStatement = ({ statement, diagramData, isMobile = false, isSmallMobile = false }: QuestionStatementProps) => {
     return (
         <div className="flex-1">
-            <h3 className="text-base font-semibold text-gray-900 leading-relaxed mb-3">
-                {renderWithMath(statement, 'text-md')}
+            <h3 className={`${isSmallMobile ? 'text-xs' : isMobile ? 'text-sm' : 'text-base'} font-semibold text-gray-900 leading-relaxed mb-3`}>
+                {renderWithMath(statement, isSmallMobile ? 'text-xs' : isMobile ? 'text-sm' : 'text-md')}
             </h3>
             {diagramData && (
                 <div className="rounded-lg">
-                    <Renderer diagramData={diagramData} width={700} height={450} />
+                    <Renderer
+                        diagramData={diagramData}
+                        width={isSmallMobile ? 280 : isMobile ? 350 : 700}
+                        height={isSmallMobile ? 180 : isMobile ? 225 : 450}
+                    />
                 </div>
             )}
         </div>
