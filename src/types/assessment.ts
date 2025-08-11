@@ -1,4 +1,5 @@
-import type { DiagramData } from "geometry-diagram-renderer"
+import { SolutionStep } from "@/app/(platform-layout)/platform/components/Question/QuestionSolutionModal"
+import type { DiagramData, StepAction } from "geometry-diagram-renderer"
 
 export interface TestResult {
     id: string
@@ -18,11 +19,12 @@ export interface Question {
     type: "text" | "multiple"
     options?: string[]
     diagramData?: DiagramData
+    diagramSteps?: StepAction[][]
     correctAnswer?: string
     userAnswer?: string
     isCorrect?: boolean
     points?: number
     solution?: string
+    solutionSteps?: SolutionStep[] // ✅ new optional multi-step field
 }
 
- 

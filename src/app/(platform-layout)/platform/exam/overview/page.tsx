@@ -2,39 +2,70 @@
 
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Trophy, Clock, Calendar, CheckCircle } from "lucide-react";
-import type { DiagramData } from "geometry-diagram-renderer";
+import { Trophy, Clock, Calendar, CheckCircle, GraduationCap } from "lucide-react";
+import { type DiagramData, type StepAction } from "geometry-diagram-renderer";
 import Question from "@/app/(platform-layout)/platform/components/Question/Question";
 import { QuestionsNavigatorGrid } from "@/app/(platform-layout)/platform/components/QuestionsNavigatorGrid/QuestionsNavigatorGrid";
 import { Badge } from "@/components/ui/badge";
 
 import type { Question as QuestionType } from "@/types"
+// StepAction is imported from the package above
 
-const sampleTriangleData: DiagramData = {
+const baseDiagram: DiagramData = {
     points: {
-        A: { x: 20, y: 80 },
-        B: { x: 30, y: 70 },
-        C: { x: 10, y: 70 }
+        A: { x: 0, y: 0 },
+        B: { x: 4.46, y: 0 },
+        C: { x: 1.635, y: 2.83 },
     },
     edges: [
-        { from: 'A', to: 'B' },
-        { from: 'B', to: 'C' },
-        { from: 'C', to: 'A' }
+        { from: "A", to: "B" },
+        { from: "B", to: "C" },
+        { from: "A", to: "C" },
     ],
-    sides: [
-        { from: 'A', to: 'B' },
-        { from: 'B', to: 'C' },
-        { from: 'C', to: 'A' }
-    ],
-    angles: [
-        { name: 'ABC', showValue: true },
-        { name: 'BCA', showValue: true },
-        { name: 'CAB', showValue: true }
-    ],
+    sides: [],
+    angles: []
 };
+const exampleSteps: StepAction[][] = [
+    [
+        { type: "add", elementType: "point", data: { id: "D", x: 1.635, y: 0 } },
+        { type: "add", elementType: "point", data: { id: "K", x: 1.117, y: 1.932 } },
+        { type: "add", elementType: "edge", data: { from: "C", to: "D", dashed: true } },
+        { type: "add", elementType: "edge", data: { from: "B", to: "K", dashed: true } },
+        { type: "add", elementType: "angle", data: { name: "BDC" } },
+        { type: "add", elementType: "angle", data: { name: "BKC" } },
+    ],
+    [
+        { type: "add", elementType: "point", data: { id: "M", x: 3.048, y: 1.415 } },
+        { type: "add", elementType: "side", data: { from: "B", to: "M" } },
+        { type: "add", elementType: "edge", data: { from: "B", to: "M", equalGroup: "G2" } },
+        { type: "add", elementType: "edge", data: { from: "M", to: "C", equalGroup: "G2" } },
+        { type: "add", elementType: "side", data: { from: "M", to: "C" } },
+        // { type: "remove", elementType: "edge", id: { from: "B", to: "C" } },
+    ],
+    [
+        { type: "remove", elementType: "angle", id: "BDC" },
+        { type: "remove", elementType: "angle", id: "BKC" },
+        { type: "add", elementType: "edge", data: { from: "D", to: "M", color: "blue" } },
+        { type: "add", elementType: "edge", data: { from: "M", to: "K", color: "blue" } },
+        { type: "add", elementType: "edge", data: { from: "K", to: "D", color: "blue" } },
+    ],
+    [
+        { type: "remove", elementType: "edge", id: { from: "B", to: "K" } },
+        { type: "add", elementType: "angle", data: { name: "DBM", showValue: true } },
+        { type: "add", elementType: "angle", data: { name: "BDM", showValue: true } },
+        { type: "add", elementType: "side", data: { from: "D", to: "M" } },
+        // { type: "highlight", elementType: "angle", id: "BDC" },
+    ],
+    [
+        { type: "highlight", elementType: "point", id: "A", color: "blue" },
+        { type: "highlight", elementType: "edge", id: { from: "A", to: "B" }, color: "orange" },
+    ]
+];
 
 const ExamOverviewPage = () => {
     const [currentQuestion, setCurrentQuestion] = useState(1);
+
+    const [stepIndex, setStepIndex] = useState(3);
 
     // Mock exam results - in a real app, this would come from the backend
     const examResults = {
@@ -61,26 +92,54 @@ const ExamOverviewPage = () => {
             correctAnswer: "$\\displaystyle \\frac{5}{6}$",
             userAnswer: "$\\displaystyle \\frac{5}{6}$",
             points: 1,
-            solution: "<p><strong>Решение:</strong></p><p>За да съберем дробите $\\frac{2}{3}$ и $\\frac{1}{6}$, първо трябва да намерим общ знаменател.</p><p>Най-малкият общ знаменател на 3 и 6 е 6.</p><p>$\\frac{2}{3} = \\frac{2 \\times 2}{3 \\times 2} = \\frac{4}{6}$</p><p>$\\frac{1}{6}$ вече има знаменател 6.</p><p>Сега можем да съберем: $\\frac{4}{6} + \\frac{1}{6} = \\frac{5}{6}$</p><p><strong>Отговор: $\\frac{5}{6}$</strong></p>"
+            // NEW: multi-step version (you can remove the old `solution` if you want)
+            solutionSteps: [
+                { id: 1, title: "Общ знаменател", content: "Най-малкият общ знаменател на 3 и 6 е 6." },
+                { id: 2, title: "Приравняване", content: "$\\frac{2}{3} = \\frac{4}{6}$; $\\frac{1}{6}$ остава същото." },
+                { id: 3, title: "Събиране", content: "$\\frac{4}{6} + \\frac{1}{6} = \\frac{5}{6}$." },
+                { id: 4, title: "Извод", content: "Отговор: $\\frac{5}{6}$." }
+            ]
         },
         {
             id: 2,
-            statement: "Каква е площта на правоъгълник с дължина 8 cm и ширина 5 cm?",
+            statement: "В правоъгълник ABCD са построени точки K и M съгласно дадената конструкция. Докажете, че триъгълник DMK е равнобедрен и намерете мерките на ъглите му.",
             type: "text",
-            diagramData: sampleTriangleData,
             correctAnswer: "40 cm²",
             userAnswer: "35 cm²",
             points: 1,
-            solution: "<p><strong>Решение:</strong></p><p>Площта на правоъгълник се изчислява по формулата: <strong>Площ = дължина × ширина</strong></p><p>В нашия случай:</p><p>Дължина = 8 cm</p><p>Ширина = 5 cm</p><p>Площ = 8 cm × 5 cm = 40 cm²</p><p><strong>Отговор: 40 cm²</strong></p>"
+            solutionSteps: [
+                { id: 1, title: "Добавяне на помощни елементи", content: "Построяваме точки D и K, свързваме ги с C и B чрез пунктирани линии и отбелязваме ъглите BDC и BKC." },
+                { id: 2, title: "Създаване на равни отсечки", content: "Построяваме точка M по BC, така че BM = MC, и отбелязваме отсечките като равни." },
+                { id: 3, title: "Построяване на триъгълник", content: "Премахваме ъглите BDC и BKC и свързваме D, M и K с оцветени в синьо линии." },
+                { id: 4, title: "Отбелязване на нови ъгли", content: "Премахваме линията BK, отбелязваме ъглите DBM и BDM и добавяме страната DM." },
+                { id: 5, title: "Подчертаване на важни елементи", content: "Маркираме точка A в синьо и страната AB в оранжево, за да акцентираме върху тях." }
+            ],
+            diagramData: baseDiagram,
+            diagramSteps: exampleSteps
         },
         {
             id: 3,
-            statement: "Кое от следните е еквивалентно на 3/4?",
+            statement: "Стойността на израза $x^3 \\cdot \\left( \\frac{x^3}{x^2} \\right)^{-6}$ при $x = -3$ е:",
             type: "multiple",
-            options: ["0.75", "0.34", "4/3", "7.5"],
-            correctAnswer: "0.75",
-            userAnswer: "0.75",
-            points: 1
+            options: [
+                "$\\displaystyle -9$",
+                "$\\displaystyle -\\frac{1}{27}$",
+                "$\\displaystyle \\frac{1}{27}$",
+                "$\\displaystyle 9$"
+            ],
+            correctAnswer: "$\\displaystyle -\\frac{1}{27}$",
+            userAnswer: "$\\displaystyle \\frac{1}{27}$",
+            points: 1,
+            solutionSteps: [
+                { id: 1, title: "Съкращаване на дробта", content: "$\\frac{x^3}{x^2} = x^{3-2} = x^1$." },
+                { id: 2, title: "Прилагане на степента", content: "$(x^1)^{-6} = x^{-6}$." },
+                { id: 3, title: "Събиране на показателите", content: "$x^3 \\cdot x^{-6} = x^{3-6} = x^{-3}$." },
+                { id: 4, title: "Замяна на $x$", content: "$(-3)^{-3} = \\frac{1}{(-3)^3} = \\frac{1}{-27}$." },
+                { id: 5, title: "Съкращаване на дробта", content: "$\\frac{x^3}{x^2} = x^{3-2} = x^1$." },
+                { id: 6, title: "Прилагане на степента", content: "$(x^1)^{-6} = x^{-6}$." },
+                { id: 7, title: "Събиране на показателите", content: "$x^3 \\cdot x^{-6} = x^{3-6} = x^{-3}$." },
+                { id: 8, title: "Замяна на $x$", content: "$(-3)^{-3} = \\frac{1}{(-3)^3} = \\frac{1}{-27}$." },
+            ]
         },
         {
             id: 4,
@@ -159,7 +218,7 @@ const ExamOverviewPage = () => {
             id: 12,
             statement: "Каква е площта на правоъгълник с дължина 8 cm и ширина 5 cm?",
             type: "text",
-            diagramData: sampleTriangleData,
+            diagramData: baseDiagram,
             correctAnswer: "40 cm²",
             userAnswer: "35 cm²",
             points: 1,
@@ -240,7 +299,8 @@ const ExamOverviewPage = () => {
         statement: q.statement,
         type: q.type,
         options: q.options,
-        diagramData: q.diagramData
+        diagramData: q.diagramData,
+        diagramSteps: q.diagramSteps,
     }));
 
     // Create answers object for the Question component
@@ -302,7 +362,8 @@ const ExamOverviewPage = () => {
                                         isReviewMode={true}
                                         correctAnswer={question.correctAnswer}
                                         userAnswer={question.userAnswer}
-                                        solution={question.solution}
+                                        solution={(question as any).solutionSteps ?? question.solution}
+                                        showRobotBadge={true}
                                     />
                                 </div>
                             ))}
@@ -324,14 +385,10 @@ const ExamOverviewPage = () => {
                                     <div className="flex items-center justify-between">
                                         {/* Left Side - Info */}
                                         <div className="flex-1 min-w-0 pr-4">
-                                            <div className="flex items-center gap-2 mb-3">
-                                                <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-emerald-100">
-                                                    <Trophy className="w-4 h-4 text-emerald-600" />
-                                                </div>
-                                                <Badge variant="secondary" className="bg-emerald-100 text-emerald-600 text-xs">
-                                                    Матура
-                                                </Badge>
-                                            </div>
+                                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 mb-3">
+                                                <GraduationCap className="h-3.5 w-3.5" />
+                                                Матура
+                                            </span>
 
                                             <div className="flex flex-col gap-2 text-xs text-gray-600">
                                                 <div className="flex items-center gap-1">
