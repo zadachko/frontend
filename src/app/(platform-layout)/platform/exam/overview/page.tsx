@@ -3,13 +3,13 @@
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Trophy, Clock, Calendar, CheckCircle, GraduationCap } from "lucide-react";
-import { applyStepActions, type DiagramData } from "geometry-diagram-renderer";
+import { type DiagramData, type StepAction } from "geometry-diagram-renderer";
 import Question from "@/app/(platform-layout)/platform/components/Question/Question";
 import { QuestionsNavigatorGrid } from "@/app/(platform-layout)/platform/components/QuestionsNavigatorGrid/QuestionsNavigatorGrid";
 import { Badge } from "@/components/ui/badge";
 
 import type { Question as QuestionType } from "@/types"
-import { StepAction } from "../../../../../../libs/geometry-diagram-renderer/dist";
+// StepAction is imported from the package above
 
 const baseDiagram: DiagramData = {
     points: {
@@ -25,6 +25,42 @@ const baseDiagram: DiagramData = {
     sides: [],
     angles: []
 };
+const exampleSteps: StepAction[][] = [
+    [
+        { type: "add", elementType: "point", data: { id: "D", x: 1.635, y: 0 } },
+        { type: "add", elementType: "point", data: { id: "K", x: 1.117, y: 1.932 } },
+        { type: "add", elementType: "edge", data: { from: "C", to: "D", dashed: true } },
+        { type: "add", elementType: "edge", data: { from: "B", to: "K", dashed: true } },
+        { type: "add", elementType: "angle", data: { name: "BDC" } },
+        { type: "add", elementType: "angle", data: { name: "BKC" } },
+    ],
+    [
+        { type: "add", elementType: "point", data: { id: "M", x: 3.048, y: 1.415 } },
+        { type: "add", elementType: "side", data: { from: "B", to: "M" } },
+        { type: "add", elementType: "edge", data: { from: "B", to: "M", equalGroup: "G2" } },
+        { type: "add", elementType: "edge", data: { from: "M", to: "C", equalGroup: "G2" } },
+        { type: "add", elementType: "side", data: { from: "M", to: "C" } },
+        // { type: "remove", elementType: "edge", id: { from: "B", to: "C" } },
+    ],
+    [
+        { type: "remove", elementType: "angle", id: "BDC" },
+        { type: "remove", elementType: "angle", id: "BKC" },
+        { type: "add", elementType: "edge", data: { from: "D", to: "M", color: "blue" } },
+        { type: "add", elementType: "edge", data: { from: "M", to: "K", color: "blue" } },
+        { type: "add", elementType: "edge", data: { from: "K", to: "D", color: "blue" } },
+    ],
+    [
+        { type: "remove", elementType: "edge", id: { from: "B", to: "K" } },
+        { type: "add", elementType: "angle", data: { name: "DBM", showValue: true } },
+        { type: "add", elementType: "angle", data: { name: "BDM", showValue: true } },
+        { type: "add", elementType: "side", data: { from: "D", to: "M" } },
+        // { type: "highlight", elementType: "angle", id: "BDC" },
+    ],
+    [
+        { type: "highlight", elementType: "point", id: "A", color: "blue" },
+        { type: "highlight", elementType: "edge", id: { from: "A", to: "B" }, color: "orange" },
+    ]
+];
 
 const ExamOverviewPage = () => {
     const [currentQuestion, setCurrentQuestion] = useState(1);
@@ -79,6 +115,7 @@ const ExamOverviewPage = () => {
                 { id: 5, title: "Подчертаване на важни елементи", content: "Маркираме точка A в синьо и страната AB в оранжево, за да акцентираме върху тях." }
             ],
             diagramData: baseDiagram,
+            diagramSteps: exampleSteps
         },
         {
             id: 3,
@@ -262,7 +299,8 @@ const ExamOverviewPage = () => {
         statement: q.statement,
         type: q.type,
         options: q.options,
-        diagramData: q.diagramData
+        diagramData: q.diagramData,
+        diagramSteps: q.diagramSteps,
     }));
 
     // Create answers object for the Question component

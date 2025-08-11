@@ -8,8 +8,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import "katex/dist/katex.min.css";
 import { BlockMath, InlineMath } from "react-katex";
-import { applyStepActions, DiagramData, Renderer } from "geometry-diagram-renderer";
-import { StepAction } from "../../../../../../libs/geometry-diagram-renderer/dist";
+import { applyStepActions, type DiagramData, Renderer, type StepAction } from "geometry-diagram-renderer";
 
 export type SolutionStep = {
     id: string | number;
@@ -34,7 +33,8 @@ export type QuestionSolutionModalProps = {
     userAnswer?: string;
     correctAnswer?: string;
     options?: string[]; // for multiple choice
-    diagramData: DiagramData | undefined
+    diagramData?: DiagramData
+    diagramSteps?: StepAction[][]
 };
 
 // render a string with $...$ (inline) and $$...$$ (block) math
@@ -58,43 +58,6 @@ function renderWithMath(text: string, textClass: string = "text-md") {
     });
 }
 
-const diagramSteps: StepAction[][] = [
-    [
-        { type: "add", elementType: "point", data: { id: "D", x: 1.635, y: 0 } },
-        { type: "add", elementType: "point", data: { id: "K", x: 1.117, y: 1.932 } },
-        { type: "add", elementType: "edge", data: { from: "C", to: "D", dashed: true } },
-        { type: "add", elementType: "edge", data: { from: "B", to: "K", dashed: true } },
-        { type: "add", elementType: "angle", data: { name: "BDC" } },
-        { type: "add", elementType: "angle", data: { name: "BKC" } },
-    ],
-    [
-        { type: "add", elementType: "point", data: { id: "M", x: 3.048, y: 1.415 } },
-        { type: "add", elementType: "side", data: { from: "B", to: "M" } },
-        { type: "add", elementType: "edge", data: { from: "B", to: "M", equalGroup: "G2" } },
-        { type: "add", elementType: "edge", data: { from: "M", to: "C", equalGroup: "G2" } },
-        { type: "add", elementType: "side", data: { from: "M", to: "C" } },
-        // { type: "remove", elementType: "edge", id: { from: "B", to: "C" } },
-    ],
-    [
-        { type: "remove", elementType: "angle", id: "BDC" },
-        { type: "remove", elementType: "angle", id: "BKC" },
-        { type: "add", elementType: "edge", data: { from: "D", to: "M", color: "blue" } },
-        { type: "add", elementType: "edge", data: { from: "M", to: "K", color: "blue" } },
-        { type: "add", elementType: "edge", data: { from: "K", to: "D", color: "blue" } },
-    ],
-    [
-        { type: "remove", elementType: "edge", id: { from: "B", to: "K" } },
-        { type: "add", elementType: "angle", data: { name: "DBM", showValue: true } },
-        { type: "add", elementType: "angle", data: { name: "BDM", showValue: true } },
-        { type: "add", elementType: "side", data: { from: "D", to: "M" } },
-        // { type: "highlight", elementType: "angle", id: "BDC" },
-    ],
-    [
-        { type: "highlight", elementType: "point", id: "A", color: "blue" },
-        { type: "highlight", elementType: "edge", id: { from: "A", to: "B" }, color: "orange" },
-    ]
-];
-
 // Bulgarian letters for choices
 const optionLetters = ["а", "б", "в", "г", "д", "е"];
 
@@ -110,7 +73,8 @@ export default function QuestionSolutionModal({
     userAnswer,
     correctAnswer,
     options = [],
-    diagramData
+    diagramData,
+    diagramSteps
 }: QuestionSolutionModalProps) {
     const safeSteps = useMemo(() => (Array.isArray(steps) ? steps : []), [steps]);
 
@@ -128,7 +92,7 @@ export default function QuestionSolutionModal({
         }
     }, [isOpen, initialStepIndex, safeSteps.length]);
 
-    const mergedDiagram = diagramData
+    const mergedDiagram = diagramData && diagramSteps
         ? diagramSteps
             .slice(0, current)
             .reduce((acc, step) => applyStepActions(acc, step), diagramData)
