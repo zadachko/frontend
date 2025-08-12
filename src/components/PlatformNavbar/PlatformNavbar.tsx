@@ -18,7 +18,7 @@ export function PlatformNavbar() {
     const [openMobileMenu, setOpenMobileMenu] = useState<MobileMenuType>(null)
     const pathname = usePathname()
 
-    const isAssessmentLivePage = pathname.includes('live')
+    const isAssessmentLivePage = pathname.includes('live') || pathname.includes('overview')
 
     if (isAssessmentLivePage) {
         return null

@@ -280,7 +280,7 @@ const LiveExamPage = () => {
 
     const confirmSubmit = () => {
         setShowSubmitDialog(false)
-        router.push('/platform/exam/overview')
+        router.push('/platform/test/overview')
     }
 
     const cancelSubmit = () => {

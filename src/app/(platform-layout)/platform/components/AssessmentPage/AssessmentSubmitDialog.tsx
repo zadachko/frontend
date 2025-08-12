@@ -30,7 +30,7 @@ const AssessmentSubmitDialog = ({
 }: AssessmentSubmitDialogProps) => {
     return (
         <Dialog open={showSubmitDialog} onOpenChange={setShowSubmitDialog}>
-            <DialogContent className={`${isSmallMobile ? 'w-[98vw] max-w-none mx-2' : isMobile ? 'w-[95vw] max-w-none mx-4' : 'sm:max-w-md'}`}>
+            <DialogContent className={`${isSmallMobile ? 'w-[98vw] max-w-none' : isMobile ? 'w-[95vw] max-w-none mx-4' : 'sm:max-w-md'}`}>
                 <DialogHeader>
                     <DialogTitle className={`${isSmallMobile ? 'text-base' : isMobile ? 'text-lg' : ''}`}>Потвърди изпращане на изпита</DialogTitle>
                     <DialogDescription className={`${isSmallMobile ? 'text-xs' : isMobile ? 'text-sm' : ''}`}>
