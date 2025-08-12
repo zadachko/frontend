@@ -128,6 +128,7 @@ export default function ContactPage() {
                 setFormState("idle")
             }, 5000)
         } catch (error) {
+            console.error(error)
             setFormState("error")
         }
     }

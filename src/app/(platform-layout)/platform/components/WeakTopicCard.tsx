@@ -1,13 +1,12 @@
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { Target, Flame, Star } from 'lucide-react';
 import React from 'react';
 import type { WeakTopic } from "@/types"
 
 type WeakTopicCardProps = {
     topic: WeakTopic;
     index: number;
-    icon: React.ElementType; // This allows passing lucide-react icons
+    icon: React.ElementType;
 };
 
 const WeakTopicCard = ({ topic, index, icon: Icon }: WeakTopicCardProps) => {

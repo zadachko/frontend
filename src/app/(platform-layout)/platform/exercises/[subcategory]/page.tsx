@@ -3,22 +3,23 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { ChevronRight, Home, BookOpen, Play, CheckCircle, Clock, Lightbulb, Target, Star } from 'lucide-react'
 import Link from "next/link"
-import { categoriesData, getSubcategoryById } from "@/lib/categories-data"
+import { categoriesData } from "@/lib/categories-data"
 import { notFound } from "next/navigation"
 
 interface ExercisesPageProps {
-    params: {
+    params: Promise<{
         subcategory: string
-    }
+    }>
 }
 
-export default function ExercisesPage({ params }: ExercisesPageProps) {
+export default async function ExercisesPage({ params }: ExercisesPageProps) {
+    const { subcategory: subcategoryParam } = await params
     // Find the subcategory across all categories
     let subcategory = null
     let parentCategory = null
 
     for (const category of categoriesData) {
-        const found = category.subcategories.find(sub => sub.id === params.subcategory)
+        const found = category.subcategories.find(sub => sub.id === subcategoryParam)
         if (found) {
             subcategory = found
             parentCategory = category
@@ -143,7 +144,7 @@ export default function ExercisesPage({ params }: ExercisesPageProps) {
                     </h2>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {subcategory.exercises.map((exercise, index) => (
+                        {subcategory.exercises.map((exercise) => (
                             <Card key={exercise.id} className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border-0">
                                 <CardContent className="p-6">
                                     <div className="flex items-start justify-between mb-4">

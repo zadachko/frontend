@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Trophy, Clock, Calendar, CheckCircle, GraduationCap } from "lucide-react";
+import { Clock, Calendar, CheckCircle, GraduationCap } from "lucide-react";
 import { type DiagramData, type StepAction } from "geometry-diagram-renderer";
 import Question from "@/app/(platform-layout)/platform/components/Question/Question";
 import { QuestionsNavigatorGrid } from "@/app/(platform-layout)/platform/components/QuestionsNavigatorGrid/QuestionsNavigatorGrid";
-import { Badge } from "@/components/ui/badge";
+
 
 import type { Question as QuestionType } from "@/types"
 // StepAction is imported from the package above
@@ -64,8 +64,6 @@ const exampleSteps: StepAction[][] = [
 
 const ExamOverviewPage = () => {
     const [currentQuestion, setCurrentQuestion] = useState(1);
-
-    const [stepIndex, setStepIndex] = useState(3);
 
     // Mock exam results - in a real app, this would come from the backend
     const examResults = {
@@ -362,7 +360,7 @@ const ExamOverviewPage = () => {
                                         isReviewMode={true}
                                         correctAnswer={question.correctAnswer}
                                         userAnswer={question.userAnswer}
-                                        solution={(question as any).solutionSteps ?? question.solution}
+                                        solution={(question as QuestionType).solutionSteps ?? question.solution}
                                         showRobotBadge={true}
                                     />
                                 </div>

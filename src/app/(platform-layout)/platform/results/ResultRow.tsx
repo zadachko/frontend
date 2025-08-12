@@ -1,7 +1,6 @@
 "use client"
 
 import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { TestTube2, GraduationCap, Clock, CheckCircle2, CalendarDays, Dot } from "lucide-react"
 import type { TestResult } from "@/types"
 import { useRouter } from "next/navigation"
@@ -12,16 +11,9 @@ interface ResultRowProps {
     hideIcon?: boolean
 }
 
-export const ResultRow = ({ result, onClick, hideIcon = false }: ResultRowProps) => {
+export const ResultRow = ({ result, onClick }: ResultRowProps) => {
     const router = useRouter()
     const isExam = result.type === "exam"
-    const chipBg = isExam ? "bg-emerald-50" : "bg-violet-50"
-    const chipText = isExam ? "text-emerald-700" : "text-violet-700"
-    const chipIcon = isExam ? (
-        <GraduationCap className="h-3.5 w-3.5" />
-    ) : (
-        <TestTube2 className="h-3.5 w-3.5" />
-    )
 
     const getProgressColor = (score: number) => {
         if (score >= 80) return "#10b981"

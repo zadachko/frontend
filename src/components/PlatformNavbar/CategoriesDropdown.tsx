@@ -1,7 +1,6 @@
 import Link from "next/link"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { problemCategories } from "./mock-data"
-import { useState } from "react"
 
 // 3x3 Grid of Dots Icon Component
 function GridIcon({ className }: { className?: string }) {
@@ -26,10 +25,8 @@ function GridIcon({ className }: { className?: string }) {
 }
 
 export function CategoriesDropdown() {
-    const [isOpen, setIsOpen] = useState(false)
-
     return (
-        <DropdownMenu onOpenChange={(open) => setIsOpen(open)}>
+        <DropdownMenu>
             <DropdownMenuTrigger className="hidden md:flex items-center gap-2 px-3 py-2 text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-colors backdrop-blur-sm cursor-pointer">
                 <GridIcon className="w-7 h-7" />
                 <span className="font-medium">Категории</span>

@@ -79,7 +79,6 @@ export default function QuestionSolutionModal({
     diagramData,
     diagramSteps,
 }: QuestionSolutionModalProps) {
-    console.log(diagramData, diagramSteps)
     const safeSteps = useMemo(() => (Array.isArray(steps) ? steps : []), [steps])
 
     const [current, setCurrent] = useState(() =>
