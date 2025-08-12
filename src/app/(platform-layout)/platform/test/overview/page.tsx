@@ -2,7 +2,7 @@
 
 import { useState, useRef } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Clock, Calendar, CheckCircle, GraduationCap, Menu, X } from "lucide-react";
+import { Clock, Calendar, CheckCircle, BookOpen, Menu, X } from "lucide-react";
 import { type DiagramData, type StepAction } from "geometry-diagram-renderer";
 import Question from "@/app/(platform-layout)/platform/components/Question/Question";
 import { QuestionsNavigatorGrid } from "@/app/(platform-layout)/platform/components/QuestionsNavigatorGrid/QuestionsNavigatorGrid";
@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/button";
 import { useIsMobile, useIsSmallMobile } from "@/hooks/isMobile";
 
 import type { Question as QuestionType } from "@/types"
-// StepAction is imported from the package above
 
 const baseDiagram: DiagramData = {
     points: {
@@ -26,6 +25,7 @@ const baseDiagram: DiagramData = {
     sides: [],
     angles: []
 };
+
 const exampleSteps: StepAction[][] = [
     [
         { type: "add", elementType: "point", data: { id: "D", x: 1.635, y: 0 } },
@@ -41,7 +41,6 @@ const exampleSteps: StepAction[][] = [
         { type: "add", elementType: "edge", data: { from: "B", to: "M", equalGroup: "G2" } },
         { type: "add", elementType: "edge", data: { from: "M", to: "C", equalGroup: "G2" } },
         { type: "add", elementType: "side", data: { from: "M", to: "C" } },
-        // { type: "remove", elementType: "edge", id: { from: "B", to: "C" } },
     ],
     [
         { type: "remove", elementType: "angle", id: "BDC" },
@@ -55,7 +54,6 @@ const exampleSteps: StepAction[][] = [
         { type: "add", elementType: "angle", data: { name: "DBM", showValue: true } },
         { type: "add", elementType: "angle", data: { name: "BDM", showValue: true } },
         { type: "add", elementType: "side", data: { from: "D", to: "M" } },
-        // { type: "highlight", elementType: "angle", id: "BDC" },
     ],
     [
         { type: "highlight", elementType: "point", id: "A", color: "blue" },
@@ -63,7 +61,7 @@ const exampleSteps: StepAction[][] = [
     ]
 ];
 
-const ExamOverviewPage = () => {
+const TestOverviewPage = () => {
     const [currentQuestion, setCurrentQuestion] = useState(1);
     const [showMobileNav, setShowMobileNav] = useState(false);
     const isMobile = useIsMobile();
@@ -72,17 +70,17 @@ const ExamOverviewPage = () => {
     // Add ref for main content container
     const mainContentRef = useRef<HTMLDivElement>(null)
 
-    // Mock exam results - in a real app, this would come from the backend
-    const examResults = {
+    // Mock test results - in a real app, this would come from the backend
+    const testResults = {
         totalQuestions: 25,
-        correctAnswers: 18,
-        incorrectAnswers: 7,
-        score: 72, // percentage
-        timeSpent: "85 minutes",
-        examDate: "15 декември 2024"
+        correctAnswers: 20,
+        incorrectAnswers: 5,
+        score: 80, // percentage
+        timeSpent: "78 minutes",
+        testDate: "15 декември 2024"
     };
 
-    // Mock questions with results - in a real app, this would come from the backen
+    // Mock questions with results - in a real app, this would come from the backend
     const questions: QuestionType[] = [
         {
             id: 1,
@@ -97,7 +95,6 @@ const ExamOverviewPage = () => {
             correctAnswer: "$\\displaystyle \\frac{5}{6}$",
             userAnswer: "$\\displaystyle \\frac{5}{6}$",
             points: 1,
-            // NEW: multi-step version (you can remove the old `solution` if you want)
             solutionSteps: [
                 { id: 1, title: "Общ знаменател", content: "Най-малкият общ знаменател на 3 и 6 е 6." },
                 { id: 2, title: "Приравняване", content: "$\\frac{2}{3} = \\frac{4}{6}$; $\\frac{1}{6}$ остава същото." },
@@ -109,8 +106,8 @@ const ExamOverviewPage = () => {
             id: 2,
             statement: "В правоъгълник ABCD са построени точки K и M съгласно дадената конструкция. Докажете, че триъгълник DMK е равнобедрен и намерете мерките на ъглите му.",
             type: "text",
-            correctAnswer: "40 cm²",
-            userAnswer: "35 cm²",
+            correctAnswer: "Триъгълникът DMK е равнобедрен с ъгли 60°, 60°, 60°",
+            userAnswer: "Триъгълникът DMK е равнобедрен с ъгли 60°, 60°, 60°",
             points: 1,
             solutionSteps: [
                 { id: 1, title: "Добавяне на помощни елементи", content: "Построяваме точки D и K, свързваме ги с C и B чрез пунктирани линии и отбелязваме ъглите BDC и BKC." },
@@ -140,10 +137,6 @@ const ExamOverviewPage = () => {
                 { id: 2, title: "Прилагане на степента", content: "$(x^1)^{-6} = x^{-6}$." },
                 { id: 3, title: "Събиране на показателите", content: "$x^3 \\cdot x^{-6} = x^{3-6} = x^{-3}$." },
                 { id: 4, title: "Замяна на $x$", content: "$(-3)^{-3} = \\frac{1}{(-3)^3} = \\frac{1}{-27}$." },
-                { id: 5, title: "Съкращаване на дробта", content: "$\\frac{x^3}{x^2} = x^{3-2} = x^1$." },
-                { id: 6, title: "Прилагане на степента", content: "$(x^1)^{-6} = x^{-6}$." },
-                { id: 7, title: "Събиране на показателите", content: "$x^3 \\cdot x^{-6} = x^{3-6} = x^{-3}$." },
-                { id: 8, title: "Замяна на $x$", content: "$(-3)^{-3} = \\frac{1}{(-3)^3} = \\frac{1}{-27}$." },
             ]
         },
         {
@@ -151,7 +144,7 @@ const ExamOverviewPage = () => {
             statement: "Изчислете: 15 + 28 - 12 × 2",
             type: "text",
             correctAnswer: "19",
-            userAnswer: "12",
+            userAnswer: "19",
             points: 1
         },
         {
@@ -160,7 +153,7 @@ const ExamOverviewPage = () => {
             type: "multiple",
             options: ["12 cm", "24 cm", "36 cm", "18 cm"],
             correctAnswer: "24 cm",
-            userAnswer: "12 cm",
+            userAnswer: "24 cm",
             points: 1
         },
         {
@@ -206,94 +199,127 @@ const ExamOverviewPage = () => {
         },
         {
             id: 11,
-            statement: "Решете: $\\displaystyle \\frac{2}{3} + \\frac{1}{6}$",
-            type: "multiple",
-            options: [
-                "$\\displaystyle \\frac{1}{2}$",
-                "$\\displaystyle \\frac{5}{6}$",
-                "$\\displaystyle 1$",
-                "$\\displaystyle \\frac{2}{3}$"
-            ],
-            correctAnswer: "$\\displaystyle \\frac{5}{6}$",
-            userAnswer: "$\\displaystyle \\frac{5}{6}$",
-            points: 1,
-            solution: "<p><strong>Решение:</strong></p><p>За да съберем дробите $\\frac{2}{3}$ и $\\frac{1}{6}$, първо трябва да намерим общ знаменател.</p><p>Най-малкият общ знаменател на 3 и 6 е 6.</p><p>$\\frac{2}{3} = \\frac{2 \\times 2}{3 \\times 2} = \\frac{4}{6}$</p><p>$\\frac{1}{6}$ вече има знаменател 6.</p><p>Сега можем да съберем: $\\frac{4}{6} + \\frac{1}{6} = \\frac{5}{6}$</p><p><strong>Отговор: $\\frac{5}{6}$</strong></p>"
+            statement: "Колко е стойността на π (пи) с точност до две десетични места?",
+            type: "text",
+            correctAnswer: "3.14",
+            userAnswer: "3.14",
+            points: 1
         },
         {
             id: 12,
-            statement: "Каква е площта на правоъгълник с дължина 8 cm и ширина 5 cm?",
-            type: "text",
-            diagramData: baseDiagram,
-            correctAnswer: "40 cm²",
-            userAnswer: "35 cm²",
-            points: 1,
-            solution: "<p><strong>Решение:</strong></p><p>Площта на правоъгълник се изчислява по формулата: <strong>Площ = дължина × ширина</strong></p><p>В нашия случай:</p><p>Дължина = 8 cm</p><p>Ширина = 5 cm</p><p>Площ = 8 cm × 5 cm = 40 cm²</p><p><strong>Отговор: 40 cm²</strong></p>"
+            statement: "Кое от следните е просто число?",
+            type: "multiple",
+            options: ["15", "21", "23", "27"],
+            correctAnswer: "23",
+            userAnswer: "23",
+            points: 1
         },
         {
             id: 13,
-            statement: "Кое от следните е еквивалентно на 3/4?",
-            type: "multiple",
-            options: ["0.75", "0.34", "4/3", "7.5"],
-            correctAnswer: "0.75",
-            userAnswer: "0.75",
+            statement: "Изчислете площта на кръг с радиус 4 cm.",
+            type: "text",
+            correctAnswer: "50.24 cm²",
+            userAnswer: "50.24 cm²",
             points: 1
         },
         {
             id: 14,
-            statement: "Изчислете: 15 + 28 - 12 × 2",
+            statement: "Колко е наклона на линията y = 2x + 3?",
             type: "text",
-            correctAnswer: "19",
-            userAnswer: "12",
+            correctAnswer: "2",
+            userAnswer: "2",
             points: 1
         },
         {
             id: 15,
-            statement: "Какъв е периметърът на квадрат с дължина на страната 6 cm?",
+            statement: "Кое от следните е еквивалентно на 2/3?",
             type: "multiple",
-            options: ["12 cm", "24 cm", "36 cm", "18 cm"],
-            correctAnswer: "24 cm",
-            userAnswer: "12 cm",
+            options: ["4/6", "6/9", "8/12", "All of the above"],
+            correctAnswer: "All of the above",
+            userAnswer: "All of the above",
             points: 1
         },
         {
             id: 16,
-            statement: "Опростете: 2(x + 3) - 4",
+            statement: "Решете уравнението: 2x + 5 = 13",
             type: "text",
-            correctAnswer: "2x + 2",
-            userAnswer: "2x + 2",
+            correctAnswer: "4",
+            userAnswer: "4",
             points: 1
         },
         {
             id: 17,
-            statement: "Преобразувайте 0.6 в дроб в най-ниската форма.",
+            statement: "Какъв е периметърът на правоъгълник с дължина 10 cm и ширина 6 cm?",
             type: "text",
-            correctAnswer: "3/5",
-            userAnswer: "6/10",
+            correctAnswer: "32 cm",
+            userAnswer: "32 cm",
             points: 1
         },
         {
             id: 18,
-            statement: "Кой ъгъл е по-голям от 90°, но по-малък от 180°?",
+            statement: "Кое от следните е делител на 24?",
             type: "multiple",
-            options: ["Acute angle", "Right angle", "Obtuse angle", "Straight angle"],
-            correctAnswer: "Obtuse angle",
-            userAnswer: "Obtuse angle",
-            points: 1
-        },
-        {
-            id: 19,
-            statement: "Намерете стойността на y: 2y - 5 = 11",
-            type: "text",
+            options: ["5", "7", "8", "9"],
             correctAnswer: "8",
             userAnswer: "8",
             points: 1
         },
         {
-            id: 20,
-            statement: "Колко е 25% от 80?",
+            id: 19,
+            statement: "Преобразувайте 3/5 в десетична дроб.",
             type: "text",
-            correctAnswer: "20",
-            userAnswer: "20",
+            correctAnswer: "0.6",
+            userAnswer: "0.6",
+            points: 1
+        },
+        {
+            id: 20,
+            statement: "Колко е стойността на x в уравнението: 3x - 7 = 8",
+            type: "text",
+            correctAnswer: "5",
+            userAnswer: "5",
+            points: 1
+        },
+        {
+            id: 21,
+            statement: "Кой от следните ъгли измерва 90 градуса?",
+            type: "multiple",
+            options: ["Acute angle", "Right angle", "Obtuse angle", "Straight angle"],
+            correctAnswer: "Right angle",
+            userAnswer: "Right angle",
+            points: 1
+        },
+        {
+            id: 22,
+            statement: "Изчислете: 15 × 4 ÷ 2 + 7",
+            type: "text",
+            correctAnswer: "37",
+            userAnswer: "37",
+            points: 1
+        },
+        {
+            id: 23,
+            statement: "Колко е 20% от 150?",
+            type: "text",
+            correctAnswer: "30",
+            userAnswer: "30",
+            points: 1
+        },
+        {
+            id: 24,
+            statement: "Кое от следните е кратно на 6?",
+            type: "multiple",
+            options: ["14", "18", "22", "26"],
+            correctAnswer: "18",
+            userAnswer: "18",
+            points: 1
+        },
+        {
+            id: 25,
+            statement: "Опростете израза: 2(x + 4) - 3x",
+            type: "text",
+            correctAnswer: "-x + 8",
+            userAnswer: "-x + 8",
             points: 1
         }
     ];
@@ -372,15 +398,15 @@ const ExamOverviewPage = () => {
         }
     }
 
-    // Colors for the navigator grid
+    // Colors for the navigator grid - using purple theme for tests
     const navigatorColors = {
-        primary: "emerald",
-        primaryLight: "emerald-50",
-        primaryHover: "emerald-400",
-        answeredBg: "green-100",
-        answeredBorder: "green-500",
-        answeredText: "green-800",
-        answeredHover: "green-200"
+        primary: "[#6F58C9]",
+        primaryLight: "[#6F58C91A]",
+        primaryHover: "[#6F58C94D]",
+        answeredBg: "[#6F58C933]",
+        answeredBorder: "[#6F58C966]",
+        answeredText: "[#6F58C9]",
+        answeredHover: "[#6F58C94D]"
     };
 
     return (
@@ -398,8 +424,8 @@ const ExamOverviewPage = () => {
                             {showMobileNav ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
                         </Button>
                         <div className="flex items-center gap-2">
-                            <GraduationCap className="w-4 h-4 text-emerald-600" />
-                            <span className="font-semibold text-emerald-600">
+                            <BookOpen className="w-4 h-4 text-[#6F58C9]" />
+                            <span className="font-semibold text-[#6F58C9]">
                                 Резултати
                             </span>
                         </div>
@@ -407,7 +433,7 @@ const ExamOverviewPage = () => {
                     <div className="flex items-center gap-2">
                         <CheckCircle className="w-4 h-4 text-green-600" />
                         <span className="text-sm font-medium text-green-700">
-                            {examResults.correctAnswers}/{examResults.totalQuestions}
+                            {testResults.correctAnswers}/{testResults.totalQuestions}
                         </span>
                     </div>
                 </div>
@@ -423,7 +449,7 @@ const ExamOverviewPage = () => {
                         {/* Header - Desktop only */}
                         {!isMobile && (
                             <div className="mb-6">
-                                <h1 className="text-2xl font-bold text-gray-900 mb-2">Преглед на изпита</h1>
+                                <h1 className="text-2xl font-bold text-gray-900 mb-2">Преглед на теста</h1>
                                 <p className="text-gray-600">Прегледайте вашите отговори и резултати</p>
                             </div>
                         )}
@@ -463,29 +489,29 @@ const ExamOverviewPage = () => {
                             <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200">
                                 <CardContent className="p-4 pt-0">
                                     <div className="flex justify-center mb-4">
-                                        <h3 className="font-semibold text-gray-900 text-md">Резултати от изпита</h3>
+                                        <h3 className="font-semibold text-gray-900 text-md">Резултати от теста</h3>
                                     </div>
                                     <div className="flex items-center justify-between">
                                         {/* Left Side - Info */}
                                         <div className="flex-1 min-w-0 pr-4">
-                                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 mb-3">
-                                                <GraduationCap className="h-3.5 w-3.5" />
-                                                Матура
+                                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 mb-3">
+                                                <BookOpen className="h-3.5 w-3.5" />
+                                                Тест
                                             </span>
 
                                             <div className="flex flex-col gap-2 text-xs text-gray-600">
                                                 <div className="flex items-center gap-1">
                                                     <Calendar className="w-3 h-3 text-gray-500" />
-                                                    <span>{examResults.examDate}</span>
+                                                    <span>{testResults.testDate}</span>
                                                 </div>
                                                 <div className="flex items-center gap-1">
-                                                    <Clock className="w-3 h-3 text-blue-500" />
-                                                    <span className="text-blue-700">{examResults.timeSpent}</span>
+                                                    <Clock className="w-3 h-3 text-purple-500" />
+                                                    <span className="text-purple-700">{testResults.timeSpent}</span>
                                                 </div>
                                                 <div className="flex items-center gap-1">
                                                     <CheckCircle className="w-3 h-3 text-green-500" />
                                                     <span className="text-green-700 font-medium">
-                                                        {examResults.correctAnswers}/{examResults.totalQuestions}
+                                                        {testResults.correctAnswers}/{testResults.totalQuestions}
                                                     </span>
                                                 </div>
                                             </div>
@@ -503,16 +529,16 @@ const ExamOverviewPage = () => {
                                                 <path
                                                     d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                                                     fill="none"
-                                                    stroke={examResults.score >= 80 ? "#10b981" : examResults.score >= 60 ? "#f59e0b" : "#ef4444"}
+                                                    stroke={testResults.score >= 80 ? "#10b981" : testResults.score >= 60 ? "#f59e0b" : "#ef4444"}
                                                     strokeWidth="2"
-                                                    strokeDasharray={`${examResults.score}, 100`}
+                                                    strokeDasharray={`${testResults.score}, 100`}
                                                     strokeLinecap="round"
                                                     className="transition-all duration-500 origin-center"
                                                 />
                                             </svg>
                                             <div className="absolute inset-0 flex items-center justify-center">
                                                 <span className="text-sm font-semibold text-gray-900">
-                                                    {(2 + (examResults.score / 100) * 4).toFixed(2)}
+                                                    {(2 + (testResults.score / 100) * 4).toFixed(2)}
                                                 </span>
                                             </div>
                                         </div>
@@ -544,4 +570,4 @@ const ExamOverviewPage = () => {
     );
 };
 
-export default ExamOverviewPage; 
+export default TestOverviewPage;
