@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Clock, Menu, X } from "lucide-react";
@@ -45,6 +45,9 @@ const LiveExamPage = () => {
     const router = useRouter()
     const isMobile = useIsMobile()
     const isSmallMobile = useIsSmallMobile()
+
+    // Add ref for main content container
+    const mainContentRef = useRef<HTMLDivElement>(null)
 
     // Sample questions data
     const questions: QuestionType[] = [
@@ -291,6 +294,17 @@ const LiveExamPage = () => {
         setShowMobileNav(!showMobileNav)
     }
 
+    // Add synchronized scrolling handler
+    const handleSidebarScroll = (event: React.WheelEvent) => {
+        if (mainContentRef.current) {
+            // Prevent the default scroll behavior on the sidebar
+            event.preventDefault()
+
+            // Apply the scroll delta to the main content
+            mainContentRef.current.scrollTop += event.deltaY
+        }
+    }
+
     const questionsAnswered = Object.keys(answers).length
 
     return (
@@ -326,7 +340,10 @@ const LiveExamPage = () => {
 
             <div className={`${isMobile ? 'flex flex-col' : 'flex'} ${isMobile ? 'h-[calc(100vh-64px)]' : 'h-screen'}`}>
                 {/* Left Column - Questions */}
-                <div className={`${isMobile ? 'flex-1 overflow-y-auto' : 'flex-1 overflow-y-auto'}`}>
+                <div
+                    ref={mainContentRef}
+                    className={`${isMobile ? 'flex-1 overflow-y-auto' : 'flex-1 overflow-y-auto'}`}
+                >
                     <div className={`${isMobile ? 'p-4' : 'p-6 max-w-4xl mx-auto'} ${isSmallMobile ? 'px-2' : ''}`}>
                         {/* Header - Desktop only */}
                         {!isMobile && (
@@ -348,10 +365,13 @@ const LiveExamPage = () => {
                 </div>
 
                 {/* Right Sidebar - Navigation */}
-                <div className={`${isMobile
-                    ? `w-full fixed -mt-[7px] top-16 right-0 z-40 ${isSmallMobile ? 'w-full' : 'w-80'} bg-white border-l border-gray-200 transform transition-transform duration-300 ease-in-out ${showMobileNav ? 'translate-x-0' : 'translate-x-full'} flex flex-col h-[calc(100vh-64px)]`
-                    : 'w-80 bg-white border-l border-gray-200 flex flex-col h-[calc(100vh-100px)]'
-                    }`}>
+                <div
+                    className={`${isMobile
+                        ? `w-full fixed -mt-[7px] top-16 right-0 z-40 ${isSmallMobile ? 'w-full' : 'w-80'} bg-white border-l border-gray-200 transform transition-transform duration-300 ease-in-out ${showMobileNav ? 'translate-x-0' : 'translate-x-full'} flex flex-col h-[calc(100vh-64px)]`
+                        : 'w-80 bg-white border-l border-gray-200 flex flex-col h-100vh'
+                        }`}
+                    onWheel={handleSidebarScroll}
+                >
                     {/* Timer - Desktop only */}
                     {!isMobile && (
                         <div className="p-6 border-b border-gray-200">
