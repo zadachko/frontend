@@ -440,7 +440,6 @@ const ExamOverviewPage = () => {
                                         correctAnswer={question.correctAnswer}
                                         userAnswer={question.userAnswer}
                                         solution={(question as QuestionType).solutionSteps ?? question.solution}
-                                        showRobotBadge={true}
                                     />
                                 </div>
                             ))}
