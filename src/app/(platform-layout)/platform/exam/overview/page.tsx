@@ -1,13 +1,13 @@
 "use client"
 
 import { useState, useRef } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Clock, Calendar, CheckCircle, GraduationCap, Menu, X } from "lucide-react";
+import { CheckCircle, GraduationCap, Menu, X } from "lucide-react";
 import { type DiagramData, type StepAction } from "geometry-diagram-renderer";
 import Question from "@/app/(platform-layout)/platform/components/Question/Question";
 import { QuestionsNavigatorGrid } from "@/app/(platform-layout)/platform/components/QuestionsNavigatorGrid/QuestionsNavigatorGrid";
 import { Button } from "@/components/ui/button";
 import { useIsMobile, useIsSmallMobile } from "@/hooks/isMobile";
+import AssessmentOverviewSidebar from "../../components/AssessmentPage/AssessmentOverviewSidebar";
 
 import type { Question as QuestionType } from "@/types"
 // StepAction is imported from the package above
@@ -459,65 +459,26 @@ const ExamOverviewPage = () => {
                     <div className="p-6 border-b border-gray-200">
                         <div className="space-y-4">
                             {/* Main Score Card - Similar to ResultRow */}
-                            <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200">
-                                <CardContent className="p-4 pt-0">
-                                    <div className="flex justify-center mb-4">
-                                        <h3 className="font-semibold text-gray-900 text-md">Резултати от изпита</h3>
-                                    </div>
-                                    <div className="flex items-center justify-between">
-                                        {/* Left Side - Info */}
-                                        <div className="flex-1 min-w-0 pr-4">
-                                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 mb-3">
-                                                <GraduationCap className="h-3.5 w-3.5" />
-                                                Матура
-                                            </span>
 
-                                            <div className="flex flex-col gap-2 text-xs text-gray-600">
-                                                <div className="flex items-center gap-1">
-                                                    <Calendar className="w-3 h-3 text-gray-500" />
-                                                    <span>{examResults.examDate}</span>
-                                                </div>
-                                                <div className="flex items-center gap-1">
-                                                    <Clock className="w-3 h-3 text-blue-500" />
-                                                    <span className="text-blue-700">{examResults.timeSpent}</span>
-                                                </div>
-                                                <div className="flex items-center gap-1">
-                                                    <CheckCircle className="w-3 h-3 text-green-500" />
-                                                    <span className="text-green-700 font-medium">
-                                                        {examResults.correctAnswers}/{examResults.totalQuestions}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
+                            <AssessmentOverviewSidebar
+                                title="Резултати от изпита"
+                                badge={{
+                                    icon: <GraduationCap className="h-3.5 w-3.5" />,
+                                    label: "Матура",
+                                    bgColor: "bg-emerald-100",
+                                    textColor: "text-emerald-800",
+                                }}
+                                results={{
+                                    date: examResults.examDate,
+                                    timeSpent: examResults.timeSpent,
+                                    correctAnswers: examResults.correctAnswers,
+                                    totalQuestions: examResults.totalQuestions,
+                                    score: examResults.score,
+                                }}
+                                timeColor="text-blue-500"
+                                timeTextColor="text-blue-700"
+                            />
 
-                                        {/* Right Side - Circular Progress */}
-                                        <div className="relative w-16 h-16 flex items-center justify-center flex-shrink-0">
-                                            <svg className="w-16 h-16" viewBox="0 0 36 36">
-                                                <path
-                                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                                                    fill="none"
-                                                    stroke="#e5e7eb"
-                                                    strokeWidth="2"
-                                                />
-                                                <path
-                                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                                                    fill="none"
-                                                    stroke={examResults.score >= 80 ? "#10b981" : examResults.score >= 60 ? "#f59e0b" : "#ef4444"}
-                                                    strokeWidth="2"
-                                                    strokeDasharray={`${examResults.score}, 100`}
-                                                    strokeLinecap="round"
-                                                    className="transition-all duration-500 origin-center"
-                                                />
-                                            </svg>
-                                            <div className="absolute inset-0 flex items-center justify-center">
-                                                <span className="text-sm font-semibold text-gray-900">
-                                                    {(2 + (examResults.score / 100) * 4).toFixed(2)}
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </CardContent>
-                            </Card>
 
                         </div>
                     </div>
