@@ -1,13 +1,13 @@
 "use client"
 
 import { useState, useRef } from "react";
-import { CheckCircle, GraduationCap, Menu, X } from "lucide-react";
+import { GraduationCap } from "lucide-react";
 import { type DiagramData, type StepAction } from "geometry-diagram-renderer";
 import Question from "@/app/(platform-layout)/platform/components/Question/Question";
 import { QuestionsNavigatorGrid } from "@/app/(platform-layout)/platform/components/QuestionsNavigatorGrid/QuestionsNavigatorGrid";
-import { Button } from "@/components/ui/button";
 import { useIsMobile, useIsSmallMobile } from "@/hooks/isMobile";
 import AssessmentOverviewSidebar from "../../components/AssessmentPage/AssessmentOverviewSidebar";
+import AssessmentOverviewMobileHeader from "../../components/AssessmentPage/AssessmentOverviewMobileHeader";
 
 import type { Question as QuestionType } from "@/types"
 // StepAction is imported from the package above
@@ -386,32 +386,17 @@ const ExamOverviewPage = () => {
     return (
         <div className="min-h-screen bg-gray-50 mx-auto">
             {/* Mobile Header - Outside scrollable container */}
-            {isMobile && (
-                <div className="sticky top-0 z-50 bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between shadow-sm">
-                    <div className="flex items-center gap-3">
-                        <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={toggleMobileNav}
-                            className="p-2"
-                        >
-                            {showMobileNav ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-                        </Button>
-                        <div className="flex items-center gap-2">
-                            <GraduationCap className="w-4 h-4 text-emerald-600" />
-                            <span className="font-semibold text-emerald-600">
-                                Резултати
-                            </span>
-                        </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <CheckCircle className="w-4 h-4 text-green-600" />
-                        <span className="text-sm font-medium text-green-700">
-                            {examResults.correctAnswers}/{examResults.totalQuestions}
-                        </span>
-                    </div>
-                </div>
-            )}
+
+            <AssessmentOverviewMobileHeader
+                isMobile={isMobile}
+                showMobileNav={showMobileNav}
+                toggleMobileNav={toggleMobileNav}
+                Icon={GraduationCap}
+                iconColor="text-emerald-600"
+                correctAnswers={examResults.correctAnswers}
+                totalQuestions={examResults.totalQuestions}
+            />
+
 
             <div className={`${isMobile ? 'flex flex-col' : 'flex'} ${isMobile ? 'h-[calc(100vh-64px)] -mt-[7px]' : 'h-screen'}`}>
                 {/* Left Column - Questions */}
