@@ -1,14 +1,12 @@
-"use client"
-
+'use client';
 import { useState, useRef } from "react";
 import { BookOpen } from "lucide-react";
 import { type DiagramData, type StepAction } from "geometry-diagram-renderer";
 import Question from "@/app/(platform-layout)/platform/components/Question/Question";
 import { QuestionsNavigatorGrid } from "@/app/(platform-layout)/platform/components/QuestionsNavigatorGrid/QuestionsNavigatorGrid";
 import { useIsMobile, useIsSmallMobile } from "@/hooks/isMobile";
-
-
-
+import AssessmentOverviewSidebar from "../../components/AssessmentPage/AssessmentOverviewSidebar";
+import AssessmentOverviewMobileHeader from "../../components/AssessmentPage/AssessmentOverviewMobileHeader";
 import type { Question as QuestionType } from "@/types"
 
 const baseDiagram: DiagramData = {
@@ -60,9 +58,6 @@ const exampleSteps: StepAction[][] = [
         { type: "highlight", elementType: "edge", id: { from: "A", to: "B" }, color: "orange" },
     ]
 ];
-
-import AssessmentOverviewSidebar from "../../components/AssessmentPage/AssessmentOverviewSidebar";
-import AssessmentOverviewMobileHeader from "../../components/AssessmentPage/AssessmentOverviewMobileHeader";
 
 const TestOverviewPage = () => {
     const [currentQuestion, setCurrentQuestion] = useState(1);

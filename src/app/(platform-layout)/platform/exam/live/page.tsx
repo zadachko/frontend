@@ -1,11 +1,10 @@
-"use client"
+'use client';
 
 import { useState, useEffect, useRef } from "react";
 import Question from "@/app/(platform-layout)/platform/components/Question/Question";
 import type { DiagramData } from "geometry-diagram-renderer";
 import { useRouter } from "next/navigation";
 import { useIsMobile, useIsSmallMobile } from "@/hooks/isMobile";
-
 import type { Question as QuestionType } from "@/types"
 import AssessmentSubmitDialog from "../../components/AssessmentPage/AssessmentSubmitDialog";
 import { AssessmentMobileHeader } from "../../components/AssessmentPage/AssessmentMobileHeader";
