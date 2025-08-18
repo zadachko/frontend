@@ -2,7 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 import "../globals.css"
 import PlatformNavbar from "@/components/PlatformNavbar/PlatformNavbar"
-
+import Providers from "@/app/providers"
 export const metadata: Metadata = {
   title: "Zadachko.com",
   description: "Подготви се за НВО 7. клас по математика ",
@@ -15,7 +15,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <div className="flex flex-col h-screen">
           <PlatformNavbar />
           <div className="flex flex-1 overflow-auto">
-            {children}
+            <Providers>
+              {children}
+            </Providers>
           </div>
         </div>
       </body>

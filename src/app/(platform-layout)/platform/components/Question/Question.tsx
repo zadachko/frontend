@@ -31,8 +31,6 @@ type QuestionProps = {
     userAnswer?: string
     // New prop for solution
     solution?: string | SolutionStep[]
-    // Prop to control display of solution button
-    showRobotBadge?: boolean
 }
 
 const Question = ({
@@ -43,7 +41,6 @@ const Question = ({
     correctAnswer,
     userAnswer,
     solution,
-    showRobotBadge = false,
 }: QuestionProps) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const isMobile = useIsMobile();
@@ -98,7 +95,7 @@ const Question = ({
                                 onCircleClick={handleCircleClick}
                                 isMobile={isMobile}
                                 isSmallMobile={isSmallMobile}
-                                showRobotBadge={showRobotBadge}
+                                showSolutionButton={isReviewMode}
                             />
                             <QuestionStatement
                                 statement={question.statement}

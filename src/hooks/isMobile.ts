@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 
+// screen width <= 768
 export function useIsMobile(): boolean {
 	const [isMobile, setIsMobile] = useState(false);
 
@@ -42,24 +43,32 @@ export function useIsMobile(): boolean {
 	return isMobile;
 }
 
+//  screen width <= 460
 export function useIsSmallMobile(): boolean {
+	const isMobile = useIsMobile();
 	const [isSmallMobile, setIsSmallMobile] = useState(false);
 
 	useEffect(() => {
 		const checkIsSmallMobile = () => {
-			setIsSmallMobile(window.innerWidth <= 460);
+			// Only check if already mobile to avoid unnecessary calculations
+			if (isMobile) {
+				setIsSmallMobile(window.innerWidth <= 460);
+			} else {
+				setIsSmallMobile(false);
+			}
 		};
 
-		// Check on mount
+		// Check on mount and when isMobile changes
 		checkIsSmallMobile();
 
-		// Add resize listener
-		window.addEventListener('resize', checkIsSmallMobile);
-
-		return () => {
-			window.removeEventListener('resize', checkIsSmallMobile);
-		};
-	}, []);
+		// Add resize listener only if mobile
+		if (isMobile) {
+			window.addEventListener('resize', checkIsSmallMobile);
+			return () => {
+				window.removeEventListener('resize', checkIsSmallMobile);
+			};
+		}
+	}, [isMobile]);
 
 	return isSmallMobile;
 }

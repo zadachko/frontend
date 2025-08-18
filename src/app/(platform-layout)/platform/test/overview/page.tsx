@@ -1,14 +1,12 @@
-"use client"
-
+'use client';
 import { useState, useRef } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Clock, Calendar, CheckCircle, BookOpen, Menu, X } from "lucide-react";
+import { BookOpen } from "lucide-react";
 import { type DiagramData, type StepAction } from "geometry-diagram-renderer";
 import Question from "@/app/(platform-layout)/platform/components/Question/Question";
 import { QuestionsNavigatorGrid } from "@/app/(platform-layout)/platform/components/QuestionsNavigatorGrid/QuestionsNavigatorGrid";
-import { Button } from "@/components/ui/button";
 import { useIsMobile, useIsSmallMobile } from "@/hooks/isMobile";
-
+import AssessmentOverviewSidebar from "../../components/AssessmentPage/AssessmentOverviewSidebar";
+import AssessmentOverviewMobileHeader from "../../components/AssessmentPage/AssessmentOverviewMobileHeader";
 import type { Question as QuestionType } from "@/types"
 
 const baseDiagram: DiagramData = {
@@ -412,32 +410,17 @@ const TestOverviewPage = () => {
     return (
         <div className="min-h-screen bg-gray-50 mx-auto">
             {/* Mobile Header - Outside scrollable container */}
-            {isMobile && (
-                <div className="sticky top-0 z-50 bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between shadow-sm">
-                    <div className="flex items-center gap-3">
-                        <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={toggleMobileNav}
-                            className="p-2"
-                        >
-                            {showMobileNav ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-                        </Button>
-                        <div className="flex items-center gap-2">
-                            <BookOpen className="w-4 h-4 text-[#6F58C9]" />
-                            <span className="font-semibold text-[#6F58C9]">
-                                Резултати
-                            </span>
-                        </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <CheckCircle className="w-4 h-4 text-green-600" />
-                        <span className="text-sm font-medium text-green-700">
-                            {testResults.correctAnswers}/{testResults.totalQuestions}
-                        </span>
-                    </div>
-                </div>
-            )}
+
+            <AssessmentOverviewMobileHeader
+                isMobile={isMobile}
+                showMobileNav={showMobileNav}
+                toggleMobileNav={toggleMobileNav}
+                Icon={BookOpen}
+                iconColor="text-[#6F58C9]"
+                correctAnswers={testResults.correctAnswers}
+                totalQuestions={testResults.totalQuestions}
+            />
+
 
             <div className={`${isMobile ? 'flex flex-col' : 'flex'} ${isMobile ? 'h-[calc(100vh-64px)] -mt-[7px]' : 'h-screen'}`}>
                 {/* Left Column - Questions */}
@@ -466,7 +449,6 @@ const TestOverviewPage = () => {
                                         correctAnswer={question.correctAnswer}
                                         userAnswer={question.userAnswer}
                                         solution={(question as QuestionType).solutionSteps ?? question.solution}
-                                        showRobotBadge={true}
                                     />
                                 </div>
                             ))}
@@ -483,71 +465,25 @@ const TestOverviewPage = () => {
                     onWheel={handleSidebarScroll}
                 >
                     {/* Overview Data */}
-                    <div className="p-6 border-b border-gray-200">
-                        <div className="space-y-4">
-                            {/* Main Score Card - Similar to ResultRow */}
-                            <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200">
-                                <CardContent className="p-4 pt-0">
-                                    <div className="flex justify-center mb-4">
-                                        <h3 className="font-semibold text-gray-900 text-md">Резултати от теста</h3>
-                                    </div>
-                                    <div className="flex items-center justify-between">
-                                        {/* Left Side - Info */}
-                                        <div className="flex-1 min-w-0 pr-4">
-                                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 mb-3">
-                                                <BookOpen className="h-3.5 w-3.5" />
-                                                Тест
-                                            </span>
+                    <AssessmentOverviewSidebar
+                        title="Резултати от теста"
+                        badge={{
+                            icon: <BookOpen className="h-3.5 w-3.5" />,
+                            label: "Тест",
+                            bgColor: "bg-purple-100",
+                            textColor: "text-purple-800",
+                        }}
+                        results={{
+                            date: testResults.testDate,
+                            timeSpent: testResults.timeSpent,
+                            correctAnswers: testResults.correctAnswers,
+                            totalQuestions: testResults.totalQuestions,
+                            score: testResults.score,
+                        }}
+                        timeColor="text-purple-500"
+                        timeTextColor="text-purple-700"
+                    />
 
-                                            <div className="flex flex-col gap-2 text-xs text-gray-600">
-                                                <div className="flex items-center gap-1">
-                                                    <Calendar className="w-3 h-3 text-gray-500" />
-                                                    <span>{testResults.testDate}</span>
-                                                </div>
-                                                <div className="flex items-center gap-1">
-                                                    <Clock className="w-3 h-3 text-purple-500" />
-                                                    <span className="text-purple-700">{testResults.timeSpent}</span>
-                                                </div>
-                                                <div className="flex items-center gap-1">
-                                                    <CheckCircle className="w-3 h-3 text-green-500" />
-                                                    <span className="text-green-700 font-medium">
-                                                        {testResults.correctAnswers}/{testResults.totalQuestions}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        {/* Right Side - Circular Progress */}
-                                        <div className="relative w-16 h-16 flex items-center justify-center flex-shrink-0">
-                                            <svg className="w-16 h-16" viewBox="0 0 36 36">
-                                                <path
-                                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                                                    fill="none"
-                                                    stroke="#e5e7eb"
-                                                    strokeWidth="2"
-                                                />
-                                                <path
-                                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                                                    fill="none"
-                                                    stroke={testResults.score >= 80 ? "#10b981" : testResults.score >= 60 ? "#f59e0b" : "#ef4444"}
-                                                    strokeWidth="2"
-                                                    strokeDasharray={`${testResults.score}, 100`}
-                                                    strokeLinecap="round"
-                                                    className="transition-all duration-500 origin-center"
-                                                />
-                                            </svg>
-                                            <div className="absolute inset-0 flex items-center justify-center">
-                                                <span className="text-sm font-semibold text-gray-900">
-                                                    {(2 + (testResults.score / 100) * 4).toFixed(2)}
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </CardContent>
-                            </Card>
-
-                        </div>
-                    </div>
 
                     {/* Questions Navigator Grid - Centered */}
                     <div className={`${isMobile ? 'flex-1 overflow-y-auto' : 'flex-1'} flex items-start justify-center`}>
