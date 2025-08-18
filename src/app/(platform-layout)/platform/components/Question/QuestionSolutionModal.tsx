@@ -206,7 +206,7 @@ export default function QuestionSolutionModal({
                 </div>
 
                 {hasBoth && !isCorrect && (
-                    <div className="p-2 md:p-3 rounded border bg-green-50 border-green-200 w-1/2">
+                    <div className="p-2 md:p-3 rounded border bg-green-50 border-green-200 w-1/2 flex justify-center">
                         <span className="text-xs md:text-sm text-gray-600">Правилен отговор: </span>
                         <span className="text-xs md:text-sm font-medium text-green-800">{renderCorrectAnswer()}</span>
                     </div>

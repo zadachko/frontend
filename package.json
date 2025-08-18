@@ -4,11 +4,15 @@
 	"private": true,
 	"scripts": {
 		"dev": "next dev",
-		"build": "next build",
+		"generate": "graphql-codegen --config codegen.ts",
+		"build": "npm run generate && next build",
 		"start": "next start",
 		"lint": "next lint"
 	},
 	"dependencies": {
+		"@apollo/client": "^3.13.9",
+		"@apollo/client-integration-nextjs": "^0.12.3",
+		"@apollo/experimental-nextjs-app-support": "^0.12.2",
 		"@radix-ui/react-accordion": "^1.2.10",
 		"@radix-ui/react-dialog": "^1.1.14",
 		"@radix-ui/react-dropdown-menu": "^2.1.15",
@@ -21,6 +25,7 @@
 		"clsx": "^2.1.1",
 		"framer-motion": "^12.10.0",
 		"geometry-diagram-renderer": "^0.0.1",
+		"graphql": "^16.11.0",
 		"katex": "^0.16.22",
 		"lucide-react": "^0.484.0",
 		"next": "15.2.4",
@@ -33,6 +38,10 @@
 	},
 	"devDependencies": {
 		"@eslint/eslintrc": "^3",
+		"@graphql-codegen/cli": "^5.0.7",
+		"@graphql-codegen/typescript": "^4.1.6",
+		"@graphql-codegen/typescript-operations": "^4.6.1",
+		"@graphql-codegen/typescript-react-apollo": "^4.3.3",
 		"@tailwindcss/postcss": "^4.1.11",
 		"@types/node": "^20",
 		"@types/react": "^19",

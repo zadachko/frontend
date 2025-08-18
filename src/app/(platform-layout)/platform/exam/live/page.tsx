@@ -9,7 +9,7 @@ import type { Question as QuestionType } from "@/types"
 import AssessmentSubmitDialog from "../../components/AssessmentPage/AssessmentSubmitDialog";
 import { AssessmentMobileHeader } from "../../components/AssessmentPage/AssessmentMobileHeader";
 import AssessmentSidebar from "../../components/AssessmentPage/AssessmentSidebar";
-
+import { useGetExamQuestionsQuery } from "@/gql/operations";
 const sampleTriangleData: DiagramData = {
     points: {
         A: { x: 20, y: 80 },
@@ -35,6 +35,14 @@ const sampleTriangleData: DiagramData = {
 
 
 const LiveExamPage = () => {
+
+    const { data, loading, error } = useGetExamQuestionsQuery({
+        variables: { examId: 1 },
+    });
+
+    console.log(data?.questions);
+
+
     const [timeLeft, setTimeLeft] = useState(90 * 60) // 90 minutes in seconds
     const [answers, setAnswers] = useState<{ [key: number]: string }>({})
     const [currentQuestion, setCurrentQuestion] = useState(1)
