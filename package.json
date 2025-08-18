@@ -5,7 +5,7 @@
 	"scripts": {
 		"dev": "next dev",
 		"generate": "graphql-codegen --config codegen.ts",
-		"build": "npm run generate && next build",
+		"build": "next build",
 		"start": "next start",
 		"lint": "next lint"
 	},
