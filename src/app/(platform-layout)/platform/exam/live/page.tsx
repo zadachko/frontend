@@ -36,7 +36,7 @@ const sampleTriangleData: DiagramData = {
 
 const LiveExamPage = () => {
 
-    const { data, loading, error } = useGetExamQuestionsQuery({
+    const { data } = useGetExamQuestionsQuery({
         variables: { examId: 1 },
     });
 
