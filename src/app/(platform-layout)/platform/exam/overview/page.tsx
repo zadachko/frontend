@@ -99,10 +99,25 @@ const ExamOverviewPage = () => {
             points: 1,
             // NEW: multi-step version (you can remove the old `solution` if you want)
             solutionSteps: [
-                { id: 1, title: "Общ знаменател", content: "Най-малкият общ знаменател на 3 и 6 е 6." },
-                { id: 2, title: "Приравняване", content: "$\\frac{2}{3} = \\frac{4}{6}$; $\\frac{1}{6}$ остава същото." },
-                { id: 3, title: "Събиране", content: "$\\frac{4}{6} + \\frac{1}{6} = \\frac{5}{6}$." },
-                { id: 4, title: "Извод", content: "Отговор: $\\frac{5}{6}$." }
+                {
+                    id: 1,
+                    title: "Намиране на общ знаменател",
+                    exerciseText: "Решете: $\\dfrac{2}{3} + \\dfrac{1}{6}$",
+                    solutionText:
+                        "Общ знаменател на 3 и 6 е 6. Преобразуваме: $\\dfrac{2}{3} = \\dfrac{4}{6}$.",
+                },
+                {
+                    id: 2,
+                    title: "Събиране на дробите",
+                    exerciseText: "Съберете дробите $\\dfrac{4}{6} + \\dfrac{1}{6}$",
+                    solutionText: "$\\dfrac{4}{6} + \\dfrac{1}{6} = \\dfrac{5}{6}$.",
+                },
+                {
+                    id: 3,
+                    title: "Окончателен отговор",
+                    exerciseText: "Краен резултат:",
+                    solutionText: "Получаваме $\\dfrac{5}{6}$.",
+                }
             ]
         },
         {
@@ -113,11 +128,11 @@ const ExamOverviewPage = () => {
             userAnswer: "35 cm²",
             points: 1,
             solutionSteps: [
-                { id: 1, title: "Добавяне на помощни елементи", content: "Построяваме точки D и K, свързваме ги с C и B чрез пунктирани линии и отбелязваме ъглите BDC и BKC." },
-                { id: 2, title: "Създаване на равни отсечки", content: "Построяваме точка M по BC, така че BM = MC, и отбелязваме отсечките като равни." },
-                { id: 3, title: "Построяване на триъгълник", content: "Премахваме ъглите BDC и BKC и свързваме D, M и K с оцветени в синьо линии." },
-                { id: 4, title: "Отбелязване на нови ъгли", content: "Премахваме линията BK, отбелязваме ъглите DBM и BDM и добавяме страната DM." },
-                { id: 5, title: "Подчертаване на важни елементи", content: "Маркираме точка A в синьо и страната AB в оранжево, за да акцентираме върху тях." }
+                { id: 1, title: "Добавяне на помощни елементи", exerciseText: "Построяваме точки D и K, свързваме ги с C и B чрез пунктирани линии и отбелязваме ъглите BDC и BKC.", solutionText: "Построяваме точки D и K, свързваме ги с C и B чрез пунктирани линии и отбелязваме ъглите BDC и BKC." },
+                { id: 2, title: "Създаване на равни отсечки", exerciseText: "Построяваме точка M по BC, така че BM = MC, и отбелязваме отсечките като равни.", solutionText: "Построяваме точка M по BC, така че BM = MC, и отбелязваме отсечките като равни." },
+                { id: 3, title: "Построяване на триъгълник", exerciseText: "Премахваме ъглите BDC и BKC и свързваме D, M и K с оцветени в синьо линии.", solutionText: "Премахваме ъглите BDC и BKC и свързваме D, M и K с оцветени в синьо линии." },
+                { id: 4, title: "Отбелязване на нови ъгли", exerciseText: "Премахваме линията BK, отбелязваме ъглите DBM и BDM и добавяме страната DM.", solutionText: "Премахваме линията BK, отбелязваме ъглите DBM и BDM и добавяме страната DM." },
+                { id: 5, title: "Подчертаване на важни елементи", exerciseText: "Маркираме точка A в синьо и страната AB в оранжево, за да акцентираме върху тях.", solutionText: "Маркираме точка A в синьо и страната AB в оранжево, за да акцентираме върху тях." }
             ],
             diagramData: baseDiagram,
             diagramSteps: exampleSteps
@@ -136,14 +151,11 @@ const ExamOverviewPage = () => {
             userAnswer: "$\\displaystyle \\frac{1}{27}$",
             points: 1,
             solutionSteps: [
-                { id: 1, title: "Съкращаване на дробта", content: "$\\frac{x^3}{x^2} = x^{3-2} = x^1$." },
-                { id: 2, title: "Прилагане на степента", content: "$(x^1)^{-6} = x^{-6}$." },
-                { id: 3, title: "Събиране на показателите", content: "$x^3 \\cdot x^{-6} = x^{3-6} = x^{-3}$." },
-                { id: 4, title: "Замяна на $x$", content: "$(-3)^{-3} = \\frac{1}{(-3)^3} = \\frac{1}{-27}$." },
-                { id: 5, title: "Съкращаване на дробта", content: "$\\frac{x^3}{x^2} = x^{3-2} = x^1$." },
-                { id: 6, title: "Прилагане на степента", content: "$(x^1)^{-6} = x^{-6}$." },
-                { id: 7, title: "Събиране на показателите", content: "$x^3 \\cdot x^{-6} = x^{3-6} = x^{-3}$." },
-                { id: 8, title: "Замяна на $x$", content: "$(-3)^{-3} = \\frac{1}{(-3)^3} = \\frac{1}{-27}$." },
+                { id: 1, title: "Съкращаване на дробта", exerciseText: "$\\frac{x^3}{x^2} = x^{3-2} = x^1$.", solutionText: "$\\frac{x^3}{x^2} = x^{3-2} = x^1$." },
+                { id: 2, title: "Прилагане на степента", exerciseText: "$(x^1)^{-6} = x^{-6}$.", solutionText: "$(x^1)^{-6} = x^{-6}$." },
+                { id: 3, title: "Събиране на показателите", exerciseText: "$x^3 \\cdot x^{-6} = x^{3-6} = x^{-3}$.", solutionText: "$x^3 \\cdot x^{-6} = x^{3-6} = x^{-3}$." },
+                { id: 4, title: "Замяна на $x$", exerciseText: "$(-3)^{-3} = \\frac{1}{(-3)^3} = \\frac{1}{-27}$.", solutionText: "$(-3)^{-3} = \\frac{1}{(-3)^3} = \\frac{1}{-27}$." },
+                { id: 5, title: "Съкращаване на дробта", exerciseText: "$\\frac{x^3}{x^2} = x^{3-2} = x^1$.", solutionText: "$\\frac{x^3}{x^2} = x^{3-2} = x^1$." }
             ]
         },
         {
@@ -217,7 +229,6 @@ const ExamOverviewPage = () => {
             correctAnswer: "$\\displaystyle \\frac{5}{6}$",
             userAnswer: "$\\displaystyle \\frac{5}{6}$",
             points: 1,
-            solution: "<p><strong>Решение:</strong></p><p>За да съберем дробите $\\frac{2}{3}$ и $\\frac{1}{6}$, първо трябва да намерим общ знаменател.</p><p>Най-малкият общ знаменател на 3 и 6 е 6.</p><p>$\\frac{2}{3} = \\frac{2 \\times 2}{3 \\times 2} = \\frac{4}{6}$</p><p>$\\frac{1}{6}$ вече има знаменател 6.</p><p>Сега можем да съберем: $\\frac{4}{6} + \\frac{1}{6} = \\frac{5}{6}$</p><p><strong>Отговор: $\\frac{5}{6}$</strong></p>"
         },
         {
             id: 12,
@@ -227,7 +238,6 @@ const ExamOverviewPage = () => {
             correctAnswer: "40 cm²",
             userAnswer: "35 cm²",
             points: 1,
-            solution: "<p><strong>Решение:</strong></p><p>Площта на правоъгълник се изчислява по формулата: <strong>Площ = дължина × ширина</strong></p><p>В нашия случай:</p><p>Дължина = 8 cm</p><p>Ширина = 5 cm</p><p>Площ = 8 cm × 5 cm = 40 cm²</p><p><strong>Отговор: 40 cm²</strong></p>"
         },
         {
             id: 13,
@@ -424,7 +434,7 @@ const ExamOverviewPage = () => {
                                         isReviewMode={true}
                                         correctAnswer={question.correctAnswer}
                                         userAnswer={question.userAnswer}
-                                        solution={(question as QuestionType).solutionSteps ?? question.solution}
+                                        solution={(question as QuestionType).solutionSteps}
                                     />
                                 </div>
                             ))}

@@ -22,9 +22,6 @@ export interface Question {
     diagramSteps?: StepAction[][]
     correctAnswer?: string
     userAnswer?: string
-    isCorrect?: boolean
     points?: number
-    solution?: string
-    solutionSteps?: SolutionStep[] // ✅ new optional multi-step field
+    solutionSteps?: SolutionStep[]
 }
-

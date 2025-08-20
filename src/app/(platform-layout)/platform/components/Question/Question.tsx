@@ -68,7 +68,7 @@ const Question = ({
             .split(/\n+/) // split by blank lines / paragraph ends
             .map((s) => s.trim())
             .filter(Boolean)
-            .map((content, i) => ({ id: i + 1, content }))
+            .map((content, i) => ({ id: i + 1, exerciseText: content, solutionText: content }))
     }
 
     return (
@@ -156,7 +156,7 @@ const Question = ({
                 }}
                 steps={
                     Array.isArray(solution)
-                        ? solution.map((s, i) => ({ id: s.id ?? i + 1, title: s.title, content: s.content }))
+                        ? solution.map((s, i) => ({ id: s.id ?? i + 1, title: s.title, exerciseText: s.exerciseText, solutionText: s.solutionText }))
                         : typeof solution === "string" && solution.trim()
                             ? splitToSteps(solution)
                             : []

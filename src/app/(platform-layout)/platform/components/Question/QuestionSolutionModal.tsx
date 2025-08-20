@@ -12,7 +12,8 @@ import { applyStepActions, type DiagramData, Renderer, type StepAction } from "g
 export type SolutionStep = {
     id: string | number
     title?: string
-    content: string // plain text containing $...$ or $$...$$ for math
+    exerciseText: string // plain text containing $...$ or $$...$$ for math
+    solutionText: string // plain text containing $...$ or $$...$$ for math
 }
 
 export type QuestionSolutionModalProps = {
@@ -252,7 +253,7 @@ export default function QuestionSolutionModal({
                                         <ol className="pl-0 space-y-2" style={{ listStyleType: "none", paddingLeft: 0, marginLeft: 0 }}>
                                             {visibleSteps.map((s) => (
                                                 <li key={s.id} className="text-base leading-relaxed">
-                                                    {renderWithMath(s.content, 'text-[18px]')}
+                                                    {renderWithMath(s.exerciseText, 'text-[18px]')}
                                                 </li>
                                             ))}
                                         </ol>
@@ -293,7 +294,7 @@ export default function QuestionSolutionModal({
                                                         </h4>
                                                     )}
                                                     <div className="text-sm leading-relaxed text-emerald-900">
-                                                        {renderWithMath(currentStep.content, "text-sm")}
+                                                        {renderWithMath(currentStep.solutionText, "text-sm")}
                                                     </div>
                                                 </div>
                                             </div>
@@ -345,7 +346,7 @@ export default function QuestionSolutionModal({
                                                                             "mt-1 text-sm leading-relaxed " + (active ? "text-emerald-900" : "text-gray-700")
                                                                         }
                                                                     >
-                                                                        {renderWithMath(s.content, "text-[17px]")}
+                                                                        {renderWithMath(s.solutionText, "text-[17px]")}
                                                                     </div>
                                                                 </div>
                                                             </div>

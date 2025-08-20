@@ -94,10 +94,10 @@ const TestOverviewPage = () => {
             userAnswer: "$\\displaystyle \\frac{5}{6}$",
             points: 1,
             solutionSteps: [
-                { id: 1, title: "Общ знаменател", content: "Най-малкият общ знаменател на 3 и 6 е 6." },
-                { id: 2, title: "Приравняване", content: "$\\frac{2}{3} = \\frac{4}{6}$; $\\frac{1}{6}$ остава същото." },
-                { id: 3, title: "Събиране", content: "$\\frac{4}{6} + \\frac{1}{6} = \\frac{5}{6}$." },
-                { id: 4, title: "Извод", content: "Отговор: $\\frac{5}{6}$." }
+                { id: 1, title: "Общ знаменател", exerciseText: "Най-малкият общ знаменател на 3 и 6 е 6.", solutionText: "Най-малкият общ знаменател на 3 и 6 е 6." },
+                { id: 2, title: "Приравняване", exerciseText: "$\\frac{2}{3} = \\frac{4}{6}$; $\\frac{1}{6}$ остава същото.", solutionText: "$\\frac{2}{3} = \\frac{4}{6}$; $\\frac{1}{6}$ остава същото." },
+                { id: 3, title: "Събиране", exerciseText: "$\\frac{4}{6} + \\frac{1}{6} = \\frac{5}{6}$.", solutionText: "$\\frac{4}{6} + \\frac{1}{6} = \\frac{5}{6}$." },
+                { id: 4, title: "Извод", exerciseText: "Отговор: $\\frac{5}{6}$.", solutionText: "Отговор: $\\frac{5}{6}$." }
             ]
         },
         {
@@ -108,11 +108,11 @@ const TestOverviewPage = () => {
             userAnswer: "Триъгълникът DMK е равнобедрен с ъгли 60°, 60°, 60°",
             points: 1,
             solutionSteps: [
-                { id: 1, title: "Добавяне на помощни елементи", content: "Построяваме точки D и K, свързваме ги с C и B чрез пунктирани линии и отбелязваме ъглите BDC и BKC." },
-                { id: 2, title: "Създаване на равни отсечки", content: "Построяваме точка M по BC, така че BM = MC, и отбелязваме отсечките като равни." },
-                { id: 3, title: "Построяване на триъгълник", content: "Премахваме ъглите BDC и BKC и свързваме D, M и K с оцветени в синьо линии." },
-                { id: 4, title: "Отбелязване на нови ъгли", content: "Премахваме линията BK, отбелязваме ъглите DBM и BDM и добавяме страната DM." },
-                { id: 5, title: "Подчертаване на важни елементи", content: "Маркираме точка A в синьо и страната AB в оранжево, за да акцентираме върху тях." }
+                { id: 1, title: "Добавяне на помощни елементи", exerciseText: "Построяваме точки D и K, свързваме ги с C и B чрез пунктирани линии и отбелязваме ъглите BDC и BKC.", solutionText: "Построяваме точки D и K, свързваме ги с C и B чрез пунктирани линии и отбелязваме ъглите BDC и BKC." },
+                { id: 2, title: "Създаване на равни отсечки", exerciseText: "Построяваме точка M по BC, така че BM = MC, и отбелязваме отсечките като равни.", solutionText: "Построяваме точка M по BC, така че BM = MC, и отбелязваме отсечките като равни." },
+                { id: 3, title: "Построяване на триъгълник", exerciseText: "Премахваме ъглите BDC и BKC и свързваме D, M и K с оцветени в синьо линии.", solutionText: "Премахваме ъглите BDC и BKC и свързваме D, M и K с оцветени в синьо линии." },
+                { id: 4, title: "Отбелязване на нови ъгли", exerciseText: "Премахваме линията BK, отбелязваме ъглите DBM и BDM и добавяме страната DM.", solutionText: "Премахваме линията BK, отбелязваме ъглите DBM и BDM и добавяме страната DM." },
+                { id: 5, title: "Подчертаване на важни елементи", exerciseText: "Маркираме точка A в синьо и страната AB в оранжево, за да акцентираме върху тях.", solutionText: "Маркираме точка A в синьо и страната AB в оранжево, за да акцентираме върху тях." }
             ],
             diagramData: baseDiagram,
             diagramSteps: exampleSteps
@@ -131,10 +131,10 @@ const TestOverviewPage = () => {
             userAnswer: "$\\displaystyle \\frac{1}{27}$",
             points: 1,
             solutionSteps: [
-                { id: 1, title: "Съкращаване на дробта", content: "$\\frac{x^3}{x^2} = x^{3-2} = x^1$." },
-                { id: 2, title: "Прилагане на степента", content: "$(x^1)^{-6} = x^{-6}$." },
-                { id: 3, title: "Събиране на показателите", content: "$x^3 \\cdot x^{-6} = x^{3-6} = x^{-3}$." },
-                { id: 4, title: "Замяна на $x$", content: "$(-3)^{-3} = \\frac{1}{(-3)^3} = \\frac{1}{-27}$." },
+                { id: 1, title: "Съкращаване на дробта", exerciseText: "$\\frac{x^3}{x^2} = x^{3-2} = x^1$.", solutionText: "$\\frac{x^3}{x^2} = x^{3-2} = x^1$." },
+                { id: 2, title: "Прилагане на степента", exerciseText: "$(x^1)^{-6} = x^{-6}$.", solutionText: "$(x^1)^{-6} = x^{-6}$." },
+                { id: 3, title: "Събиране на показателите", exerciseText: "$x^3 \\cdot x^{-6} = x^{3-6} = x^{-3}$.", solutionText: "$x^3 \\cdot x^{-6} = x^{3-6} = x^{-3}$." },
+                { id: 4, title: "Замяна на $x$", exerciseText: "$(-3)^{-3} = \\frac{1}{(-3)^3} = \\frac{1}{-27}$.", solutionText: "$(-3)^{-3} = \\frac{1}{(-3)^3} = \\frac{1}{-27}$." },
             ]
         },
         {
@@ -448,7 +448,7 @@ const TestOverviewPage = () => {
                                         isReviewMode={true}
                                         correctAnswer={question.correctAnswer}
                                         userAnswer={question.userAnswer}
-                                        solution={(question as QuestionType).solutionSteps ?? question.solution}
+                                        solution={(question as QuestionType).solutionSteps}
                                     />
                                 </div>
                             ))}
