@@ -115,13 +115,13 @@ const Sidebar = () => {
                             <div
                                 key={mission.id}
                                 className={`rounded-lg p-4 border-2 transition-all duration-200 ${mission.completed
-                                    ? "bg-gradient-to-r from-green-50 to-green-100 border-green-300 shadow-sm"
+                                    ? "bg-gradient-to-r from-gray-50 to-gray-100 border-gray-300 shadow-sm"
                                     : "bg-gray-50 border-gray-200 hover:border-[#755bc5]/30 hover:shadow-sm"
                                     }`}
                             >
                                 <div className="flex items-center gap-3">
                                     <div
-                                        className={`w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200 ${mission.completed ? "bg-green-500 shadow-md" : "bg-[#755bc5] shadow-md"
+                                        className={`w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200 ${mission.completed ? "bg-gray-500 shadow-md" : "bg-[#755bc5] shadow-md"
                                             }`}
                                     >
                                         {mission.completed ? (
@@ -131,7 +131,14 @@ const Sidebar = () => {
                                         )}
                                     </div>
                                     <div className="flex-1">
-                                        <p className="text-sm font-medium text-gray-800 mb-1">{mission.title}</p>
+                                        <p
+                                            className={`text-sm font-medium mb-1 ${mission.completed
+                                                    ? "text-gray-400 line-through"
+                                                    : "text-gray-800"
+                                                }`}
+                                        >
+                                            {mission.title}
+                                        </p>
                                         {!mission.completed && (
                                             <div className="mt-2">
                                                 <div className="flex justify-between items-center mb-1">
