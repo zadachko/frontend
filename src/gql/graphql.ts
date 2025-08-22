@@ -31,6 +31,11 @@ export type AngleInput = {
   label?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type AssignExamInput = {
+  examId: Scalars['Int']['input'];
+  userId: Scalars['String']['input'];
+};
+
 export type AuthResponse = {
   __typename?: 'AuthResponse';
   accessToken: Scalars['String']['output'];
@@ -82,6 +87,7 @@ export type Exam = {
   examQuestions?: Maybe<Array<ExamQuestion>>;
   id: Scalars['Int']['output'];
   updatedAt: Scalars['Date']['output'];
+  userExams?: Maybe<Array<UserExam>>;
 };
 
 export type ExamQuestion = {
@@ -100,6 +106,7 @@ export type LoginInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  assignExamToUser: UserExam;
   createExam: Exam;
   createQuestion: Question;
   createUser: User;
@@ -107,10 +114,16 @@ export type Mutation = {
   deleteUser: Scalars['Boolean']['output'];
   login: AuthResponse;
   refreshToken: AuthResponse;
+  removeExamFromUser: Scalars['Boolean']['output'];
   removeQuestion: Scalars['Boolean']['output'];
   updateExam: Exam;
   updateQuestion: Question;
   updateUser: User;
+};
+
+
+export type MutationAssignExamToUserArgs = {
+  input: AssignExamInput;
 };
 
 
@@ -146,6 +159,12 @@ export type MutationLoginArgs = {
 
 export type MutationRefreshTokenArgs = {
   refreshToken: Scalars['String']['input'];
+};
+
+
+export type MutationRemoveExamFromUserArgs = {
+  examId: Scalars['Int']['input'];
+  userId: Scalars['String']['input'];
 };
 
 
@@ -188,7 +207,9 @@ export type Query = {
   __typename?: 'Query';
   getExam?: Maybe<Exam>;
   getExams?: Maybe<Array<Exam>>;
+  getMyExams?: Maybe<Array<Exam>>;
   getUser?: Maybe<User>;
+  getUserExams?: Maybe<Array<Exam>>;
   getUsers?: Maybe<Array<User>>;
   health: Scalars['String']['output'];
   question: Question;
@@ -206,13 +227,13 @@ export type QueryGetUserArgs = {
 };
 
 
-export type QueryQuestionArgs = {
-  id: Scalars['Int']['input'];
+export type QueryGetUserExamsArgs = {
+  userId: Scalars['String']['input'];
 };
 
 
-export type QueryQuestionsArgs = {
-  examId?: InputMaybe<Scalars['Int']['input']>;
+export type QueryQuestionArgs = {
+  id: Scalars['Int']['input'];
 };
 
 export type Question = {
@@ -340,6 +361,18 @@ export type User = {
   lastName: Scalars['String']['output'];
   role: Role;
   updatedAt: Scalars['Date']['output'];
+  userExams?: Maybe<Array<UserExam>>;
+};
+
+export type UserExam = {
+  __typename?: 'UserExam';
+  assignedAt: Scalars['Date']['output'];
+  completedAt?: Maybe<Scalars['Date']['output']>;
+  exam: Exam;
+  examId: Scalars['Int']['output'];
+  startedAt?: Maybe<Scalars['Date']['output']>;
+  user: User;
+  userId: Scalars['String']['output'];
 };
 
 export type GetExamQuestionsQueryVariables = Exact<{
@@ -347,7 +380,7 @@ export type GetExamQuestionsQueryVariables = Exact<{
 }>;
 
 
-export type GetExamQuestionsQuery = { __typename?: 'Query', questions: Array<{ __typename?: 'Question', id: number, statement: string, type: QuestionType, options?: Array<string> | null, correctAnswer?: string | null, points?: number | null, diagramData?: Array<{ __typename?: 'Point', id: string, x: number, y: number }> | null, diagramSteps?: Array<Array<{ __typename?: 'StepAction', elementType: string, type: string, color?: string | null, id?: string | null, pointData?: { __typename?: 'Point', id: string, x: number, y: number } | null, angleData?: { __typename?: 'Angle', id: string, degrees: number, label?: string | null } | null, edgeData?: { __typename?: 'Edge', from: string, to: string, length?: number | null, label?: string | null } | null, sideData?: { __typename?: 'Side', id: string, length: number, label?: string | null } | null, removeId?: { __typename?: 'RemoveId', from: string, to: string } | null }>> | null, solutionSteps?: Array<{ __typename?: 'SolutionStep', step: number, action: string, result: string, explanation?: string | null, subSteps?: Array<string> | null }> | null }> };
+export type GetExamQuestionsQuery = { __typename?: 'Query', getExam?: { __typename?: 'Exam', id: number, examQuestions?: Array<{ __typename?: 'ExamQuestion', position: number, question: { __typename?: 'Question', id: number, statement: string, type: QuestionType, options?: Array<string> | null, correctAnswer?: string | null, points?: number | null, diagramData?: Array<{ __typename?: 'Point', id: string, x: number, y: number }> | null, diagramSteps?: Array<Array<{ __typename?: 'StepAction', elementType: string, type: string, color?: string | null, id?: string | null, pointData?: { __typename?: 'Point', id: string, x: number, y: number } | null, angleData?: { __typename?: 'Angle', id: string, degrees: number, label?: string | null } | null, edgeData?: { __typename?: 'Edge', from: string, to: string, length?: number | null, label?: string | null } | null, sideData?: { __typename?: 'Side', id: string, length: number, label?: string | null } | null, removeId?: { __typename?: 'RemoveId', from: string, to: string } | null }>> | null, solutionSteps?: Array<{ __typename?: 'SolutionStep', step: number, action: string, result: string, explanation?: string | null, subSteps?: Array<string> | null }> | null } }> | null } | null };
 
 
-export const GetExamQuestionsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetExamQuestions"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"examId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"questions"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"examId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"examId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"statement"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"options"}},{"kind":"Field","name":{"kind":"Name","value":"correctAnswer"}},{"kind":"Field","name":{"kind":"Name","value":"points"}},{"kind":"Field","name":{"kind":"Name","value":"diagramData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"x"}},{"kind":"Field","name":{"kind":"Name","value":"y"}}]}},{"kind":"Field","name":{"kind":"Name","value":"diagramSteps"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"elementType"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"color"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"pointData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"x"}},{"kind":"Field","name":{"kind":"Name","value":"y"}}]}},{"kind":"Field","name":{"kind":"Name","value":"angleData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"degrees"}},{"kind":"Field","name":{"kind":"Name","value":"label"}}]}},{"kind":"Field","name":{"kind":"Name","value":"edgeData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"from"}},{"kind":"Field","name":{"kind":"Name","value":"to"}},{"kind":"Field","name":{"kind":"Name","value":"length"}},{"kind":"Field","name":{"kind":"Name","value":"label"}}]}},{"kind":"Field","name":{"kind":"Name","value":"sideData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"length"}},{"kind":"Field","name":{"kind":"Name","value":"label"}}]}},{"kind":"Field","name":{"kind":"Name","value":"removeId"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"from"}},{"kind":"Field","name":{"kind":"Name","value":"to"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"solutionSteps"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"step"}},{"kind":"Field","name":{"kind":"Name","value":"action"}},{"kind":"Field","name":{"kind":"Name","value":"result"}},{"kind":"Field","name":{"kind":"Name","value":"explanation"}},{"kind":"Field","name":{"kind":"Name","value":"subSteps"}}]}}]}}]}}]} as unknown as DocumentNode<GetExamQuestionsQuery, GetExamQuestionsQueryVariables>;
+export const GetExamQuestionsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetExamQuestions"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"examId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getExam"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"examId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"examQuestions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"position"}},{"kind":"Field","name":{"kind":"Name","value":"question"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"statement"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"options"}},{"kind":"Field","name":{"kind":"Name","value":"correctAnswer"}},{"kind":"Field","name":{"kind":"Name","value":"points"}},{"kind":"Field","name":{"kind":"Name","value":"diagramData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"x"}},{"kind":"Field","name":{"kind":"Name","value":"y"}}]}},{"kind":"Field","name":{"kind":"Name","value":"diagramSteps"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"elementType"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"color"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"pointData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"x"}},{"kind":"Field","name":{"kind":"Name","value":"y"}}]}},{"kind":"Field","name":{"kind":"Name","value":"angleData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"degrees"}},{"kind":"Field","name":{"kind":"Name","value":"label"}}]}},{"kind":"Field","name":{"kind":"Name","value":"edgeData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"from"}},{"kind":"Field","name":{"kind":"Name","value":"to"}},{"kind":"Field","name":{"kind":"Name","value":"length"}},{"kind":"Field","name":{"kind":"Name","value":"label"}}]}},{"kind":"Field","name":{"kind":"Name","value":"sideData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"length"}},{"kind":"Field","name":{"kind":"Name","value":"label"}}]}},{"kind":"Field","name":{"kind":"Name","value":"removeId"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"from"}},{"kind":"Field","name":{"kind":"Name","value":"to"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"solutionSteps"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"step"}},{"kind":"Field","name":{"kind":"Name","value":"action"}},{"kind":"Field","name":{"kind":"Name","value":"result"}},{"kind":"Field","name":{"kind":"Name","value":"explanation"}},{"kind":"Field","name":{"kind":"Name","value":"subSteps"}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetExamQuestionsQuery, GetExamQuestionsQueryVariables>;
