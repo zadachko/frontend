@@ -18,6 +18,7 @@ interface AssessmentSidebarProps {
     isMobile: boolean;
     isSmallMobile: boolean;
     showMobileNav: boolean;
+    setShowMobileNav: (show: boolean) => void;
     handleSidebarScroll: (e: React.WheelEvent<HTMLDivElement>) => void;
 
     // timer
@@ -30,7 +31,7 @@ interface AssessmentSidebarProps {
     getQuestionStatus: (questionNum: number) => string;
     currentQuestion: number;
     goToQuestion: (index: number) => void;
-    scrollToQuestion: (questionNum: number) => void;
+    // scrollToQuestion: (questionNum: number) => void;
 
     // actions
     handleSubmitExam: () => void;
@@ -48,6 +49,7 @@ export default function AssessmentSidebar({
     isMobile,
     isSmallMobile,
     showMobileNav,
+    setShowMobileNav,
     handleSidebarScroll,
     timeLeft,
     formatTime,
@@ -56,7 +58,7 @@ export default function AssessmentSidebar({
     getQuestionStatus,
     currentQuestion,
     goToQuestion,
-    scrollToQuestion,
+    // scrollToQuestion,
     handleSubmitExam,
     timerGradientFrom,
     timerGradientTo,
@@ -65,6 +67,8 @@ export default function AssessmentSidebar({
     buttonGradientTo,
     navigatorColors,
 }: AssessmentSidebarProps) {
+
+
     return (
         <div
             className={`${isMobile
@@ -100,7 +104,7 @@ export default function AssessmentSidebar({
                     getQuestionStatus={getQuestionStatus}
                     currentQuestion={currentQuestion}
                     goToQuestion={goToQuestion}
-                    scrollToQuestion={scrollToQuestion}
+                    setShowMobileNav={setShowMobileNav}
                     colors={navigatorColors}
                     isMobile={isMobile}
                     isSmallMobile={isSmallMobile}

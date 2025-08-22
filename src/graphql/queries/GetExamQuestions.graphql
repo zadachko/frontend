@@ -1,59 +1,13 @@
 query GetExamQuestions($examId: Int!) {
-  getExam(id: $examId) {
-    id
-    examQuestions {
-      position
-      question {
-        id
-        statement
-        type
-        options
-        correctAnswer
-        points
-        diagramData {
-          id
-          x
-          y
-        }
-        diagramSteps {
-          elementType
-          type
-          color
-          id
-          pointData {
-            id
-            x
-            y
-          }
-          angleData {
-            id
-            degrees
-            label
-          }
-          edgeData {
-            from
-            to
-            length
-            label
-          }
-          sideData {
-            id
-            length
-            label
-          }
-          removeId {
-            from
-            to
-          }
-        }
-        solutionSteps {
-          step
-          action
-          result
-          explanation
-          subSteps
-        }
-      }
-    }
-  }
+	getExam(id: $examId) {
+		createdAt
+		examQuestions {
+			question {
+				points
+				statement
+				options
+				type
+			}
+		}
+	}
 }

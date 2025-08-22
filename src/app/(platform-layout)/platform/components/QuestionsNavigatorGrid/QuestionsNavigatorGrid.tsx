@@ -7,7 +7,7 @@ interface QuestionsNavigatorGridProps {
     getQuestionStatus: (questionNum: number) => string;
     currentQuestion: number;
     goToQuestion: (questionNum: number) => void;
-    scrollToQuestion?: (questionNum: number) => void;
+    setShowMobileNav: (show: boolean) => void;
     colors: {
         primary: string;
         primaryLight: string;
@@ -28,12 +28,26 @@ export const QuestionsNavigatorGrid = ({
     getQuestionStatus,
     currentQuestion,
     goToQuestion,
-    scrollToQuestion,
+    setShowMobileNav,
     colors,
     reviewMode = false,
     isMobile = false,
     isSmallMobile = false,
 }: QuestionsNavigatorGridProps) => {
+
+    const scrollToQuestion = (questionNum: number) => {
+        const questionElement = document.getElementById(`question-${questionNum}`);
+        if (questionElement) {
+            questionElement.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+        // Close mobile nav when scrolling to a question
+        if (isMobile) {
+            setShowMobileNav(false);
+        }
+    };
     const handleQuestionClick = (questionNum: number) => {
         goToQuestion(questionNum);
         if (scrollToQuestion) {

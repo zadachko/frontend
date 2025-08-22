@@ -367,20 +367,6 @@ const TestOverviewPage = () => {
         }
     };
 
-    const scrollToQuestion = (questionNum: number) => {
-        const questionElement = document.getElementById(`question-${questionNum}`);
-        if (questionElement) {
-            questionElement.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
-        // Close mobile nav when scrolling to a question
-        if (isMobile) {
-            setShowMobileNav(false);
-        }
-    };
-
     const toggleMobileNav = () => {
         setShowMobileNav(!showMobileNav);
     };
@@ -493,7 +479,7 @@ const TestOverviewPage = () => {
                             getQuestionStatus={getQuestionStatus}
                             currentQuestion={currentQuestion}
                             goToQuestion={goToQuestion}
-                            scrollToQuestion={scrollToQuestion}
+                            setShowMobileNav={setShowMobileNav}
                             colors={navigatorColors}
                             reviewMode={true}
                             isMobile={isMobile}

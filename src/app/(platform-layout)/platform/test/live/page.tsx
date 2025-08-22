@@ -257,20 +257,6 @@ const LiveExamPage = () => {
         }
     }
 
-    const scrollToQuestion = (questionId: number) => {
-        const questionElement = document.getElementById(`question-${questionId}`);
-        if (questionElement) {
-            questionElement.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
-        // Close mobile nav when scrolling to a question
-        if (isMobile) {
-            setShowMobileNav(false)
-        }
-    }
-
     const getQuestionStatus = (questionId: number) => {
         if (answers[questionId]) return "answered"
         return "unanswered"
@@ -363,7 +349,7 @@ const LiveExamPage = () => {
                     getQuestionStatus={getQuestionStatus}
                     currentQuestion={currentQuestion}
                     goToQuestion={goToQuestion}
-                    scrollToQuestion={scrollToQuestion}
+                    setShowMobileNav={setShowMobileNav}
                     handleSubmitExam={handleSubmitExam}
                     timerGradientFrom="from-[#6F58C9]"
                     timerGradientTo="to-[#5A4BA3]"

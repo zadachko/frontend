@@ -31,11 +31,6 @@ export type AngleInput = {
   label?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type AssignExamInput = {
-  examId: Scalars['Int']['input'];
-  userId: Scalars['String']['input'];
-};
-
 export type AuthResponse = {
   __typename?: 'AuthResponse';
   accessToken: Scalars['String']['output'];
@@ -87,7 +82,6 @@ export type Exam = {
   examQuestions?: Maybe<Array<ExamQuestion>>;
   id: Scalars['Int']['output'];
   updatedAt: Scalars['Date']['output'];
-  userExams?: Maybe<Array<UserExam>>;
 };
 
 export type ExamQuestion = {
@@ -106,7 +100,6 @@ export type LoginInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  assignExamToUser: UserExam;
   createExam: Exam;
   createQuestion: Question;
   createUser: User;
@@ -114,16 +107,10 @@ export type Mutation = {
   deleteUser: Scalars['Boolean']['output'];
   login: AuthResponse;
   refreshToken: AuthResponse;
-  removeExamFromUser: Scalars['Boolean']['output'];
   removeQuestion: Scalars['Boolean']['output'];
   updateExam: Exam;
   updateQuestion: Question;
   updateUser: User;
-};
-
-
-export type MutationAssignExamToUserArgs = {
-  input: AssignExamInput;
 };
 
 
@@ -159,12 +146,6 @@ export type MutationLoginArgs = {
 
 export type MutationRefreshTokenArgs = {
   refreshToken: Scalars['String']['input'];
-};
-
-
-export type MutationRemoveExamFromUserArgs = {
-  examId: Scalars['Int']['input'];
-  userId: Scalars['String']['input'];
 };
 
 
@@ -207,9 +188,7 @@ export type Query = {
   __typename?: 'Query';
   getExam?: Maybe<Exam>;
   getExams?: Maybe<Array<Exam>>;
-  getMyExams?: Maybe<Array<Exam>>;
   getUser?: Maybe<User>;
-  getUserExams?: Maybe<Array<Exam>>;
   getUsers?: Maybe<Array<User>>;
   health: Scalars['String']['output'];
   question: Question;
@@ -224,11 +203,6 @@ export type QueryGetExamArgs = {
 
 export type QueryGetUserArgs = {
   id: Scalars['ID']['input'];
-};
-
-
-export type QueryGetUserExamsArgs = {
-  userId: Scalars['String']['input'];
 };
 
 
@@ -361,18 +335,6 @@ export type User = {
   lastName: Scalars['String']['output'];
   role: Role;
   updatedAt: Scalars['Date']['output'];
-  userExams?: Maybe<Array<UserExam>>;
-};
-
-export type UserExam = {
-  __typename?: 'UserExam';
-  assignedAt: Scalars['Date']['output'];
-  completedAt?: Maybe<Scalars['Date']['output']>;
-  exam: Exam;
-  examId: Scalars['Int']['output'];
-  startedAt?: Maybe<Scalars['Date']['output']>;
-  user: User;
-  userId: Scalars['String']['output'];
 };
 
 export type GetExamQuestionsQueryVariables = Exact<{
@@ -380,65 +342,19 @@ export type GetExamQuestionsQueryVariables = Exact<{
 }>;
 
 
-export type GetExamQuestionsQuery = { __typename?: 'Query', getExam?: { __typename?: 'Exam', id: number, examQuestions?: Array<{ __typename?: 'ExamQuestion', position: number, question: { __typename?: 'Question', id: number, statement: string, type: QuestionType, options?: Array<string> | null, correctAnswer?: string | null, points?: number | null, diagramData?: Array<{ __typename?: 'Point', id: string, x: number, y: number }> | null, diagramSteps?: Array<Array<{ __typename?: 'StepAction', elementType: string, type: string, color?: string | null, id?: string | null, pointData?: { __typename?: 'Point', id: string, x: number, y: number } | null, angleData?: { __typename?: 'Angle', id: string, degrees: number, label?: string | null } | null, edgeData?: { __typename?: 'Edge', from: string, to: string, length?: number | null, label?: string | null } | null, sideData?: { __typename?: 'Side', id: string, length: number, label?: string | null } | null, removeId?: { __typename?: 'RemoveId', from: string, to: string } | null }>> | null, solutionSteps?: Array<{ __typename?: 'SolutionStep', step: number, action: string, result: string, explanation?: string | null, subSteps?: Array<string> | null }> | null } }> | null } | null };
+export type GetExamQuestionsQuery = { __typename?: 'Query', getExam?: { __typename?: 'Exam', createdAt: any, examQuestions?: Array<{ __typename?: 'ExamQuestion', question: { __typename?: 'Question', points?: number | null, statement: string, options?: Array<string> | null, type: QuestionType } }> | null } | null };
 
 
 export const GetExamQuestionsDocument = gql`
     query GetExamQuestions($examId: Int!) {
   getExam(id: $examId) {
-    id
+    createdAt
     examQuestions {
-      position
       question {
-        id
-        statement
-        type
-        options
-        correctAnswer
         points
-        diagramData {
-          id
-          x
-          y
-        }
-        diagramSteps {
-          elementType
-          type
-          color
-          id
-          pointData {
-            id
-            x
-            y
-          }
-          angleData {
-            id
-            degrees
-            label
-          }
-          edgeData {
-            from
-            to
-            length
-            label
-          }
-          sideData {
-            id
-            length
-            label
-          }
-          removeId {
-            from
-            to
-          }
-        }
-        solutionSteps {
-          step
-          action
-          result
-          explanation
-          subSteps
-        }
+        statement
+        options
+        type
       }
     }
   }
