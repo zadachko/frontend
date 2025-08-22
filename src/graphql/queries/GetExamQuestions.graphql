@@ -1,13 +1,13 @@
 query GetExamQuestions($examId: Int!) {
-	questions(examId: $examId) {
-		id
-		statement
-		type
-		options
-		points
-		diagramData
-		diagramSteps
-		solution
-		solutionSteps
+	getExam(id: $examId) {
+		createdAt
+		examQuestions {
+			question {
+				points
+				statement
+				options
+				type
+			}
+		}
 	}
 }

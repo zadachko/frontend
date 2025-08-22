@@ -15,33 +15,326 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
+  Date: { input: any; output: any; }
+};
+
+export type Angle = {
+  __typename?: 'Angle';
+  degrees: Scalars['Float']['output'];
+  id: Scalars['String']['output'];
+  label?: Maybe<Scalars['String']['output']>;
+};
+
+export type AngleInput = {
+  degrees: Scalars['Float']['input'];
+  id: Scalars['String']['input'];
+  label?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type AuthResponse = {
+  __typename?: 'AuthResponse';
+  accessToken: Scalars['String']['output'];
+  refreshToken: Scalars['String']['output'];
+  user: User;
+};
+
+export type CreateExamInput = {
+  questionIds?: InputMaybe<Array<Scalars['Int']['input']>>;
+};
+
+export type CreateQuestionInput = {
+  correctAnswer?: InputMaybe<Scalars['String']['input']>;
+  diagramData?: InputMaybe<Array<PointInput>>;
+  diagramSteps?: InputMaybe<Array<Array<StepActionInput>>>;
+  options?: InputMaybe<Array<Scalars['String']['input']>>;
+  points?: InputMaybe<Scalars['Int']['input']>;
+  solutionSteps?: InputMaybe<Array<SolutionStepInput>>;
+  statement: Scalars['String']['input'];
+  type: QuestionType;
+  userAnswer?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type CreateUserInput = {
+  email: Scalars['String']['input'];
+  firstName: Scalars['String']['input'];
+  lastName: Scalars['String']['input'];
+  role: Scalars['String']['input'];
+};
+
+export type Edge = {
+  __typename?: 'Edge';
+  from: Scalars['String']['output'];
+  label?: Maybe<Scalars['String']['output']>;
+  length?: Maybe<Scalars['Float']['output']>;
+  to: Scalars['String']['output'];
+};
+
+export type EdgeInput = {
+  from: Scalars['String']['input'];
+  label?: InputMaybe<Scalars['String']['input']>;
+  length?: InputMaybe<Scalars['Float']['input']>;
+  to: Scalars['String']['input'];
+};
+
+export type Exam = {
+  __typename?: 'Exam';
+  createdAt: Scalars['Date']['output'];
+  examQuestions?: Maybe<Array<ExamQuestion>>;
+  id: Scalars['Int']['output'];
+  updatedAt: Scalars['Date']['output'];
+};
+
+export type ExamQuestion = {
+  __typename?: 'ExamQuestion';
+  exam: Exam;
+  examId: Scalars['Int']['output'];
+  position: Scalars['Int']['output'];
+  question: Question;
+  questionId: Scalars['Int']['output'];
+};
+
+export type LoginInput = {
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+};
+
+export type Mutation = {
+  __typename?: 'Mutation';
+  createExam: Exam;
+  createQuestion: Question;
+  createUser: User;
+  deleteExam: Scalars['Boolean']['output'];
+  deleteUser: Scalars['Boolean']['output'];
+  login: AuthResponse;
+  refreshToken: AuthResponse;
+  removeQuestion: Scalars['Boolean']['output'];
+  updateExam: Exam;
+  updateQuestion: Question;
+  updateUser: User;
+};
+
+
+export type MutationCreateExamArgs = {
+  input: CreateExamInput;
+};
+
+
+export type MutationCreateQuestionArgs = {
+  createQuestionInput: CreateQuestionInput;
+};
+
+
+export type MutationCreateUserArgs = {
+  input: CreateUserInput;
+};
+
+
+export type MutationDeleteExamArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type MutationDeleteUserArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type MutationLoginArgs = {
+  input: LoginInput;
+};
+
+
+export type MutationRefreshTokenArgs = {
+  refreshToken: Scalars['String']['input'];
+};
+
+
+export type MutationRemoveQuestionArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type MutationUpdateExamArgs = {
+  id: Scalars['Int']['input'];
+  input: UpdateExamInput;
+};
+
+
+export type MutationUpdateQuestionArgs = {
+  id: Scalars['Int']['input'];
+  updateQuestionInput: UpdateQuestionInput;
+};
+
+
+export type MutationUpdateUserArgs = {
+  id: Scalars['ID']['input'];
+  input: UpdateUserInput;
+};
+
+export type Point = {
+  __typename?: 'Point';
+  id: Scalars['String']['output'];
+  x: Scalars['Float']['output'];
+  y: Scalars['Float']['output'];
+};
+
+export type PointInput = {
+  id: Scalars['String']['input'];
+  x: Scalars['Float']['input'];
+  y: Scalars['Float']['input'];
 };
 
 export type Query = {
   __typename?: 'Query';
+  getExam?: Maybe<Exam>;
+  getExams?: Maybe<Array<Exam>>;
+  getUser?: Maybe<User>;
+  getUsers?: Maybe<Array<User>>;
   health: Scalars['String']['output'];
+  question: Question;
   questions: Array<Question>;
 };
 
 
-export type QueryQuestionsArgs = {
-  examId: Scalars['Int']['input'];
+export type QueryGetExamArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type QueryGetUserArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryQuestionArgs = {
+  id: Scalars['Int']['input'];
 };
 
 export type Question = {
   __typename?: 'Question';
   correctAnswer?: Maybe<Scalars['String']['output']>;
-  diagramData?: Maybe<Scalars['String']['output']>;
-  diagramSteps?: Maybe<Array<Array<Scalars['String']['output']>>>;
+  createdAt: Scalars['Date']['output'];
+  diagramData?: Maybe<Array<Point>>;
+  diagramSteps?: Maybe<Array<Array<StepAction>>>;
   id: Scalars['Int']['output'];
-  isCorrect?: Maybe<Scalars['Boolean']['output']>;
   options?: Maybe<Array<Scalars['String']['output']>>;
   points?: Maybe<Scalars['Int']['output']>;
-  solution?: Maybe<Scalars['String']['output']>;
-  solutionSteps?: Maybe<Array<Scalars['String']['output']>>;
+  solutionSteps?: Maybe<Array<SolutionStep>>;
   statement: Scalars['String']['output'];
-  type: Scalars['String']['output'];
+  type: QuestionType;
+  updatedAt: Scalars['Date']['output'];
   userAnswer?: Maybe<Scalars['String']['output']>;
+};
+
+export enum QuestionType {
+  Multiple = 'MULTIPLE',
+  Text = 'TEXT'
+}
+
+export type RemoveId = {
+  __typename?: 'RemoveId';
+  from: Scalars['String']['output'];
+  to: Scalars['String']['output'];
+};
+
+export type RemoveIdInput = {
+  from: Scalars['String']['input'];
+  to: Scalars['String']['input'];
+};
+
+export type Role = {
+  __typename?: 'Role';
+  name: Scalars['String']['output'];
+};
+
+export type Side = {
+  __typename?: 'Side';
+  id: Scalars['String']['output'];
+  label?: Maybe<Scalars['String']['output']>;
+  length: Scalars['Float']['output'];
+};
+
+export type SideInput = {
+  id: Scalars['String']['input'];
+  label?: InputMaybe<Scalars['String']['input']>;
+  length: Scalars['Float']['input'];
+};
+
+export type SolutionStep = {
+  __typename?: 'SolutionStep';
+  action: Scalars['String']['output'];
+  explanation?: Maybe<Scalars['String']['output']>;
+  result: Scalars['String']['output'];
+  step: Scalars['Int']['output'];
+  subSteps?: Maybe<Array<Scalars['String']['output']>>;
+};
+
+export type SolutionStepInput = {
+  action: Scalars['String']['input'];
+  explanation?: InputMaybe<Scalars['String']['input']>;
+  result: Scalars['String']['input'];
+  step: Scalars['Int']['input'];
+  subSteps?: InputMaybe<Array<Scalars['String']['input']>>;
+};
+
+export type StepAction = {
+  __typename?: 'StepAction';
+  angleData?: Maybe<Angle>;
+  color?: Maybe<Scalars['String']['output']>;
+  edgeData?: Maybe<Edge>;
+  elementType: Scalars['String']['output'];
+  id?: Maybe<Scalars['String']['output']>;
+  pointData?: Maybe<Point>;
+  removeId?: Maybe<RemoveId>;
+  sideData?: Maybe<Side>;
+  type: Scalars['String']['output'];
+};
+
+export type StepActionInput = {
+  angleData?: InputMaybe<AngleInput>;
+  color?: InputMaybe<Scalars['String']['input']>;
+  edgeData?: InputMaybe<EdgeInput>;
+  elementType: Scalars['String']['input'];
+  id?: InputMaybe<Scalars['String']['input']>;
+  pointData?: InputMaybe<PointInput>;
+  removeId?: InputMaybe<RemoveIdInput>;
+  sideData?: InputMaybe<SideInput>;
+  type: Scalars['String']['input'];
+};
+
+export type UpdateExamInput = {
+  questionIds?: InputMaybe<Array<Scalars['Int']['input']>>;
+};
+
+export type UpdateQuestionInput = {
+  correctAnswer?: InputMaybe<Scalars['String']['input']>;
+  diagramData?: InputMaybe<Array<PointInput>>;
+  diagramSteps?: InputMaybe<Array<Array<StepActionInput>>>;
+  options?: InputMaybe<Array<Scalars['String']['input']>>;
+  points?: InputMaybe<Scalars['Int']['input']>;
+  solutionSteps?: InputMaybe<Array<SolutionStepInput>>;
+  statement?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<QuestionType>;
+  userAnswer?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type UpdateUserInput = {
+  email?: InputMaybe<Scalars['String']['input']>;
+  firstName?: InputMaybe<Scalars['String']['input']>;
+  lastName?: InputMaybe<Scalars['String']['input']>;
+  role?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type User = {
+  __typename?: 'User';
+  createdAt: Scalars['Date']['output'];
+  email: Scalars['String']['output'];
+  firstName: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  lastLoginAt?: Maybe<Scalars['Date']['output']>;
+  lastName: Scalars['String']['output'];
+  role: Role;
+  updatedAt: Scalars['Date']['output'];
 };
 
 export type GetExamQuestionsQueryVariables = Exact<{
@@ -49,21 +342,21 @@ export type GetExamQuestionsQueryVariables = Exact<{
 }>;
 
 
-export type GetExamQuestionsQuery = { __typename?: 'Query', questions: Array<{ __typename?: 'Question', id: number, statement: string, type: string, options?: Array<string> | null, points?: number | null, diagramData?: string | null, diagramSteps?: Array<Array<string>> | null, solution?: string | null, solutionSteps?: Array<string> | null }> };
+export type GetExamQuestionsQuery = { __typename?: 'Query', getExam?: { __typename?: 'Exam', createdAt: any, examQuestions?: Array<{ __typename?: 'ExamQuestion', question: { __typename?: 'Question', points?: number | null, statement: string, options?: Array<string> | null, type: QuestionType } }> | null } | null };
 
 
 export const GetExamQuestionsDocument = gql`
     query GetExamQuestions($examId: Int!) {
-  questions(examId: $examId) {
-    id
-    statement
-    type
-    options
-    points
-    diagramData
-    diagramSteps
-    solution
-    solutionSteps
+  getExam(id: $examId) {
+    createdAt
+    examQuestions {
+      question {
+        points
+        statement
+        options
+        type
+      }
+    }
   }
 }
     `;
