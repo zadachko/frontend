@@ -82,10 +82,6 @@ const ExamOverviewPage = () => {
     }, {} as { [key: number]: string });
 
 
-    const toggleMobileNav = () => {
-        setShowMobileNav(!showMobileNav);
-    };
-
 
     // Colors for the navigator grid
     const navigatorColors = {
@@ -133,7 +129,7 @@ const ExamOverviewPage = () => {
             <AssessmentOverviewMobileHeader
                 isMobile={isMobile}
                 showMobileNav={showMobileNav}
-                toggleMobileNav={toggleMobileNav}
+                setShowMobileNav={setShowMobileNav}
                 Icon={GraduationCap}
                 iconColor="text-emerald-600"
                 correctAnswers={examResults.correctAnswers}

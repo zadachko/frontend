@@ -6,9 +6,8 @@ import { LucideIcon } from "lucide-react";
 interface AssessmentOverviewMobileHeaderProps {
     isMobile: boolean;
     showMobileNav: boolean;
-    toggleMobileNav: () => void;
+    setShowMobileNav: (show: boolean) => void;
 
-    // icon + theme
     Icon: LucideIcon;
     iconColor: string; // e.g. "text-emerald-600" or "text-[#6F58C9]"
 
@@ -20,13 +19,18 @@ interface AssessmentOverviewMobileHeaderProps {
 export default function AssessmentOverviewMobileHeader({
     isMobile,
     showMobileNav,
-    toggleMobileNav,
+    setShowMobileNav,
     Icon,
     iconColor,
     correctAnswers,
     totalQuestions,
 }: AssessmentOverviewMobileHeaderProps) {
     if (!isMobile) return null;
+
+
+    const toggleMobileNav = () => {
+        setShowMobileNav(!showMobileNav)
+    }
 
     return (
         <div className="sticky top-0 z-50 bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between shadow-sm">

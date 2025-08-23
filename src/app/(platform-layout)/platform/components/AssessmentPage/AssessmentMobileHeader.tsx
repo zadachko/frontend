@@ -4,9 +4,7 @@ import { useEffect, useState } from "react";
 
 interface AssessmentMobileHeaderProps {
     showMobileNav: boolean;
-    toggleMobileNav: () => void;
-    // timeLeft: number;
-    // formatTime: (time: number) => string;
+    setShowMobileNav: (show: boolean) => void;
     handleSubmitExam: () => void;
     clockColor: string; // e.g. "text-emerald-600" or "text-[#6F58C9]"
     buttonGradient: {
@@ -19,14 +17,15 @@ interface AssessmentMobileHeaderProps {
 
 export function AssessmentMobileHeader({
     showMobileNav,
-    toggleMobileNav,
-    // timeLeft,
-    // formatTime,
+    setShowMobileNav,
     handleSubmitExam,
     clockColor,
     buttonGradient,
 }: AssessmentMobileHeaderProps) {
 
+    const toggleMobileNav = () => {
+        setShowMobileNav(!showMobileNav)
+    }
 
     const [timeLeft, setTimeLeft] = useState(90 * 60) // 90 minutes in seconds
 

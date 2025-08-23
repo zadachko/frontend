@@ -17,7 +17,7 @@ import AssessmentLoading from "../../components/LoadingScreens/AssessmentLoading
 const LiveExamPage = () => {
 
     const { data, loading, error } = useGetExamLiveQuery({
-        variables: { examId: '4b0c1676-a275-4ed9-9853-52a7cfcdb231' },
+        variables: { examId: '7cc7462e-f307-4f0a-b418-fcfecd5dacfb' },
     });
 
     // console.log(data?.getExam?.examQuestions);
@@ -65,10 +65,6 @@ const LiveExamPage = () => {
         setShowSubmitDialog(false)
     }
 
-    const toggleMobileNav = () => {
-        setShowMobileNav(!showMobileNav)
-    }
-
 
     const questionsAnswered = Object.keys(answers).length
 
@@ -107,7 +103,7 @@ const LiveExamPage = () => {
             {isMobile &&
                 <AssessmentMobileHeader
                     showMobileNav={showMobileNav}
-                    toggleMobileNav={toggleMobileNav}
+                    setShowMobileNav={setShowMobileNav}
                     handleSubmitExam={handleSubmitExam}
                     clockColor="text-emerald-600"
                     buttonGradient={{

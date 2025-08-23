@@ -343,11 +343,6 @@ const TestOverviewPage = () => {
     }, {} as { [key: number]: string });
 
 
-    const toggleMobileNav = () => {
-        setShowMobileNav(!showMobileNav);
-    };
-
-
     // Colors for the navigator grid - using purple theme for tests
     const navigatorColors = {
         primary: "[#6F58C9]",
@@ -366,7 +361,7 @@ const TestOverviewPage = () => {
             <AssessmentOverviewMobileHeader
                 isMobile={isMobile}
                 showMobileNav={showMobileNav}
-                toggleMobileNav={toggleMobileNav}
+                setShowMobileNav={setShowMobileNav}
                 Icon={BookOpen}
                 iconColor="text-[#6F58C9]"
                 correctAnswers={testResults.correctAnswers}

@@ -241,10 +241,6 @@ const LiveExamPage = () => {
         setShowSubmitDialog(false)
     }
 
-    const toggleMobileNav = () => {
-        setShowMobileNav(!showMobileNav)
-    }
-
 
     const questionsAnswered = Object.keys(answers).length
 
@@ -253,7 +249,7 @@ const LiveExamPage = () => {
             {/* Mobile Header - Outside scrollable container */}
             {isMobile && <AssessmentMobileHeader
                 showMobileNav={showMobileNav}
-                toggleMobileNav={toggleMobileNav}
+                setShowMobileNav={setShowMobileNav}
                 handleSubmitExam={handleSubmitExam}
                 clockColor="text-[#6F58C9]"
                 buttonGradient={{
