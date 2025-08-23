@@ -11,6 +11,7 @@ import AssessmentSidebar from "../../components/AssessmentPage/AssessmentSidebar
 import { useGetExamLiveQuery } from "@/gql/operations";
 import handleSidebarScroll from "../../components/AssessmentPage/utils/handleSidebarScroll";
 import { getQuestionStatusLive } from "../../components/AssessmentPage/utils/getQuestionStatus";
+import { colors } from "./colors.config";
 
 const LiveExamPage = () => {
 
@@ -191,20 +192,7 @@ const LiveExamPage = () => {
                     currentQuestion={currentQuestion}
                     setShowMobileNav={setShowMobileNav}
                     handleSubmitExam={handleSubmitExam}
-                    timerGradientFrom="from-emerald-500"
-                    timerGradientTo="to-teal-600"
-                    timerSubTextClass="text-emerald-100"
-                    buttonGradientFrom="from-emerald-500"
-                    buttonGradientTo="to-teal-600"
-                    navigatorColors={{
-                        primary: "emerald-600",
-                        primaryLight: "emerald-50",
-                        primaryHover: "emerald-300",
-                        answeredBg: "green-100",
-                        answeredBorder: "green-200",
-                        answeredText: "green-800",
-                        answeredHover: "green-200",
-                    }}
+                    colors={colors}
                     setCurrentQuestion={setCurrentQuestion}
                 />
 

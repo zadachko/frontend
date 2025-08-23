@@ -80,10 +80,6 @@ const ExamOverviewPage = () => {
         return acc;
     }, {} as { [key: number]: string });
 
-    const handleAnswerChange = () => {
-        // This is read-only, so we don't need to handle changes
-    };
-
 
     const toggleMobileNav = () => {
         setShowMobileNav(!showMobileNav);
@@ -172,7 +168,6 @@ const ExamOverviewPage = () => {
                                     <Question
                                         question={questionsForDisplay.find(q => q.id === question.id)!}
                                         answers={answers}
-                                        handleAnswerChange={handleAnswerChange}
                                         isReviewMode={true}
                                         correctAnswer={question.correctAnswer}
                                         userAnswer={question.userAnswer}
@@ -219,7 +214,7 @@ const ExamOverviewPage = () => {
                         </div>
                     </div>
 
-                    {/* Questions Navigator Grid - Centered */}
+                    {/* Questions Navigator Grid  */}
                     <div className={`${isMobile ? 'flex-1 overflow-y-auto' : 'flex-1'} flex items-start justify-center`}>
                         <QuestionsNavigatorGrid
                             answers={answers}
@@ -227,7 +222,7 @@ const ExamOverviewPage = () => {
                             getQuestionStatus={(questionNum) => getQuestionStatusOverview(questions, questionNum)}
                             currentQuestion={currentQuestion}
                             setShowMobileNav={setShowMobileNav}
-                            colors={navigatorColors}
+                            navigatorColors={navigatorColors}
                             reviewMode={true}
                             isMobile={isMobile}
                             isSmallMobile={isSmallMobile}

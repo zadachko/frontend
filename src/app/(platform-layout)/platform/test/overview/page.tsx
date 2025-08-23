@@ -342,10 +342,6 @@ const TestOverviewPage = () => {
         return acc;
     }, {} as { [key: number]: string });
 
-    const handleAnswerChange = () => {
-        // This is read-only, so we don't need to handle changes
-    };
-
 
     const toggleMobileNav = () => {
         setShowMobileNav(!showMobileNav);
@@ -400,7 +396,6 @@ const TestOverviewPage = () => {
                                     <Question
                                         question={questionsForDisplay.find(q => q.id === question.id)!}
                                         answers={answers}
-                                        handleAnswerChange={handleAnswerChange}
                                         isReviewMode={true}
                                         correctAnswer={question.correctAnswer}
                                         userAnswer={question.userAnswer}
@@ -449,7 +444,7 @@ const TestOverviewPage = () => {
                             getQuestionStatus={(questionNum) => getQuestionStatusOverview(questions, questionNum)}
                             currentQuestion={currentQuestion}
                             setShowMobileNav={setShowMobileNav}
-                            colors={navigatorColors}
+                            navigatorColors={navigatorColors}
                             reviewMode={true}
                             isMobile={isMobile}
                             isSmallMobile={isSmallMobile}

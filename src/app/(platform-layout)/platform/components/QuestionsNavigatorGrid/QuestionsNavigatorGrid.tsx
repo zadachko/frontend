@@ -7,7 +7,7 @@ interface QuestionsNavigatorGridProps {
     getQuestionStatus: (questionNum: number) => string;
     currentQuestion: number;
     setShowMobileNav: (show: boolean) => void;
-    colors: {
+    navigatorColors: {
         primary: string;
         primaryLight: string;
         primaryHover: string;
@@ -28,7 +28,7 @@ export const QuestionsNavigatorGrid = ({
     getQuestionStatus,
     currentQuestion,
     setShowMobileNav,
-    colors,
+    navigatorColors,
     reviewMode = false,
     isMobile = false,
     isSmallMobile = false,
@@ -57,7 +57,7 @@ export const QuestionsNavigatorGrid = ({
             {isMobile && (
                 <div className="flex items-center justify-between mb-4 pb-3 border-b border-gray-200">
                     <h3 className={`font-semibold text-gray-900 flex items-center gap-2 ${isSmallMobile ? 'text-sm' : ''}`}>
-                        <Flag className={`${isSmallMobile ? 'w-3 h-3' : 'w-4 h-4'} ${colors.primary.startsWith('[') ? `text-${colors.primary}` : `text-${colors.primary}-600`}`} />
+                        <Flag className={`${isSmallMobile ? 'w-3 h-3' : 'w-4 h-4'} ${navigatorColors.primary.startsWith('[') ? `text-${navigatorColors.primary}` : `text-${navigatorColors.primary}-600`}`} />
                         Въпроси
                     </h3>
                 </div>
@@ -67,7 +67,7 @@ export const QuestionsNavigatorGrid = ({
             {!isMobile && (
                 <div className="mb-6">
                     <h3 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                        <Flag className={`w-4 h-4 ${colors.primary.startsWith('[') ? `text-${colors.primary}` : `text-${colors.primary}-600`}`} />
+                        <Flag className={`w-4 h-4 ${navigatorColors.primary.startsWith('[') ? `text-${navigatorColors.primary}` : `text-${navigatorColors.primary}-600`}`} />
                         Въпроси
                     </h3>
                     <p className="text-sm text-gray-600">
@@ -100,14 +100,14 @@ export const QuestionsNavigatorGrid = ({
                             key={questionNum}
                             onClick={() => handleQuestionClick(questionNum)}
                             className={`${isSmallMobile ? 'w-12 h-12 text-xs' : isMobile ? 'w-12 h-12 text-xs' : 'w-12 h-12 text-sm'} rounded-lg font-semibold transition-all duration-200 border-2 ${isCurrent
-                                ? `border-${colors.primary} bg-${colors.primary} text-white shadow-md`
+                                ? `border-${navigatorColors.primary} bg-${navigatorColors.primary} text-white shadow-md`
                                 : status === "correct"
                                     ? `border-green-500 bg-green-100 text-green-800 hover:bg-green-200`
                                     : status === "incorrect"
                                         ? `border-red-500 bg-red-100 text-red-800 hover:bg-red-200`
                                         : status === "answered"
-                                            ? `border-${colors.answeredBorder} bg-${colors.answeredBg} text-${colors.answeredText} hover:bg-${colors.answeredHover}`
-                                            : `border-gray-200 bg-gray-50 text-gray-600 hover:border-${colors.primaryHover} hover:bg-${colors.primaryLight}`
+                                            ? `border-${navigatorColors.answeredBorder} bg-${navigatorColors.answeredBg} text-${navigatorColors.answeredText} hover:bg-${navigatorColors.answeredHover}`
+                                            : `border-gray-200 bg-gray-50 text-gray-600 hover:border-${navigatorColors.primaryHover} hover:bg-${navigatorColors.primaryLight}`
                                 }`}
                             aria-label={`Go to question ${questionNum}`}
                         >
@@ -121,13 +121,13 @@ export const QuestionsNavigatorGrid = ({
             <div className={`space-y-3 text-sm mb-6 ${isSmallMobile ? 'text-xs space-y-2' : isMobile ? 'text-xs' : ''}`}>
                 {!reviewMode && (
                     <div className="flex items-center gap-3">
-                        <div className={`${isSmallMobile ? 'w-3 h-3' : 'w-4 h-4'} rounded bg-${colors.primary}`}></div>
+                        <div className={`${isSmallMobile ? 'w-3 h-3' : 'w-4 h-4'} rounded bg-${navigatorColors.primary}`}></div>
                         <span className="text-gray-600">Текущ въпрос</span>
                     </div>
                 )}
                 {!reviewMode && (
                     <div className="flex items-center gap-3">
-                        <div className={`${isSmallMobile ? 'w-3 h-3' : 'w-4 h-4'} rounded bg-${colors.answeredBg} border-2 border-${colors.answeredBorder} text-${colors.answeredText}`}></div>
+                        <div className={`${isSmallMobile ? 'w-3 h-3' : 'w-4 h-4'} rounded bg-${navigatorColors.answeredBg} border-2 border-${navigatorColors.answeredBorder} text-${navigatorColors.answeredText}`}></div>
                         <span className="text-gray-600">Отговорен</span>
                     </div>
                 )}

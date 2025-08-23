@@ -13,6 +13,7 @@ import { AssessmentMobileHeader } from "../../components/AssessmentPage/Assessme
 import AssessmentSidebar from "../../components/AssessmentPage/AssessmentSidebar";
 import handleSidebarScroll from "../../components/AssessmentPage/utils/handleSidebarScroll";
 import { getQuestionStatusLive } from "../../components/AssessmentPage/utils/getQuestionStatus";
+import { colors } from "./colors.config";
 
 const sampleTriangleData: DiagramData = {
     points: {
@@ -329,20 +330,7 @@ const LiveExamPage = () => {
                     currentQuestion={currentQuestion}
                     setShowMobileNav={setShowMobileNav}
                     handleSubmitExam={handleSubmitExam}
-                    timerGradientFrom="from-[#6F58C9]"
-                    timerGradientTo="to-[#5A4BA3]"
-                    timerSubTextClass="text-purple-100"
-                    buttonGradientFrom="from-[#6F58C9]"
-                    buttonGradientTo="to-[#5A4BA3]"
-                    navigatorColors={{
-                        primary: "[#6F58C9]",
-                        primaryLight: "[#6F58C91A]",
-                        primaryHover: "[#6F58C94D]",
-                        answeredBg: "[#6F58C933]",
-                        answeredBorder: "[#6F58C966]",
-                        answeredText: "[#6F58C9]",
-                        answeredHover: "[#6F58C94D]",
-                    }}
+                    colors={colors}
                     setCurrentQuestion={setCurrentQuestion}
                 />
 

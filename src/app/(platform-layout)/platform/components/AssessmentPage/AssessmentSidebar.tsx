@@ -2,16 +2,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Clock } from "lucide-react";
 import { QuestionsNavigatorGrid } from "../QuestionsNavigatorGrid/QuestionsNavigatorGrid";
+import { colors } from "../../exam/live/colors.config";
 
-type NavigatorColors = {
-    primary: string;
-    primaryLight: string;
-    primaryHover: string;
-    answeredBg: string;
-    answeredBorder: string;
-    answeredText: string;
-    answeredHover: string;
-};
 
 interface AssessmentSidebarProps {
     // layout/behavior
@@ -36,13 +28,8 @@ interface AssessmentSidebarProps {
     handleSubmitExam: () => void;
 
     // theming (pass full Tailwind classes)
-    timerGradientFrom: string; // e.g. "from-emerald-500" or "from-[#6F58C9]"
-    timerGradientTo: string;   // e.g. "to-teal-600" or "to-[#5A4BA3]"
-    timerSubTextClass: string; // e.g. "text-emerald-100" or "text-purple-100"
-    buttonGradientFrom: string;
-    buttonGradientTo: string;
-    navigatorColors: NavigatorColors;
     setCurrentQuestion: (questionNum: number) => void;
+    colors: typeof colors;
 }
 
 export default function AssessmentSidebar({
@@ -58,13 +45,8 @@ export default function AssessmentSidebar({
     getQuestionStatus,
     currentQuestion,
     handleSubmitExam,
-    timerGradientFrom,
-    timerGradientTo,
-    timerSubTextClass,
-    buttonGradientFrom,
-    buttonGradientTo,
-    navigatorColors,
     setCurrentQuestion,
+    colors,
 }: AssessmentSidebarProps) {
 
 
@@ -81,7 +63,7 @@ export default function AssessmentSidebar({
             {/* Timer - Desktop only */}
             {!isMobile && (
                 <div className="p-6 border-b border-gray-200">
-                    <Card className={`bg-gradient-to-r ${timerGradientFrom} ${timerGradientTo} border-0 shadow-md`}>
+                    <Card className={`bg-gradient-to-r ${colors.timer.gradientFrom} ${colors.timer.gradientTo} border-0 shadow-md`}>
                         <CardContent className="p-0 text-center">
                             <div className="flex items-center justify-center gap-2 text-white">
                                 <Clock className="w-5 h-5" />
@@ -89,7 +71,7 @@ export default function AssessmentSidebar({
                                     {formatTime(timeLeft)}
                                 </span>
                             </div>
-                            <p className={`${timerSubTextClass} text-sm mt-1`}>Оставащо време</p>
+                            <p className={`${colors.timer.subTextClass} text-sm mt-1`}>Оставащо време</p>
                         </CardContent>
                     </Card>
                 </div>
@@ -103,7 +85,7 @@ export default function AssessmentSidebar({
                     getQuestionStatus={getQuestionStatus}
                     currentQuestion={currentQuestion}
                     setShowMobileNav={setShowMobileNav}
-                    colors={navigatorColors}
+                    navigatorColors={colors.navigator}
                     isMobile={isMobile}
                     isSmallMobile={isSmallMobile}
                     setCurrentQuestion={setCurrentQuestion}
@@ -114,7 +96,7 @@ export default function AssessmentSidebar({
             {!isMobile && (
                 <div className="p-6 border-t border-gray-200">
                     <Button
-                        className={`w-full bg-gradient-to-br ${buttonGradientFrom} ${buttonGradientTo} text-white font-semibold text-lg py-3 h-12`}
+                        className={`w-full bg-gradient-to-br ${colors.button.gradientFrom} ${colors.button.gradientTo} text-white font-semibold text-lg py-3 h-12`}
                         onClick={handleSubmitExam}
                     >
                         Изпрати

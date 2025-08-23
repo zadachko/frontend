@@ -6,7 +6,7 @@ type OpenAnswerProps = {
     answers: {
         [key: number]: string;
     };
-    handleAnswerChange: (questionId: number, value: string) => void;
+    handleAnswerChange?: (questionId: number, value: string) => void;
     questionNumber: number;
     // New props for review mode
     isReviewMode?: boolean;
@@ -68,7 +68,7 @@ const OpenAnswer = ({
             <Input
                 value={answers[questionNumber] || ''}
                 onChange={e =>
-                    handleAnswerChange(
+                    handleAnswerChange?.(
                         questionNumber,
                         e.target.value
                     )

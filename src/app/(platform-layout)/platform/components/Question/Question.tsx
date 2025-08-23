@@ -24,7 +24,7 @@ type QuestionProps = {
     answers: {
         [key: number]: string
     }
-    handleAnswerChange: (questionId: number, value: string) => void
+    handleAnswerChange?: (questionId: number, value: string) => void
     // New props for review mode
     isReviewMode?: boolean
     correctAnswer?: string
