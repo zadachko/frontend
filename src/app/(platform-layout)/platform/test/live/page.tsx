@@ -251,16 +251,6 @@ const LiveExamPage = () => {
         }))
     }
 
-    const goToQuestion = (questionId: number) => {
-        setCurrentQuestion(questionId)
-        // Close mobile nav when navigating to a question
-        if (isMobile) {
-            setShowMobileNav(false)
-        }
-    }
-
-
-
     const handleSubmitExam = () => {
         setShowSubmitDialog(true)
     }
@@ -337,7 +327,6 @@ const LiveExamPage = () => {
                     totalQuestions={totalQuestions}
                     getQuestionStatus={(questionId) => getQuestionStatusLive(answers, questionId)}
                     currentQuestion={currentQuestion}
-                    goToQuestion={goToQuestion}
                     setShowMobileNav={setShowMobileNav}
                     handleSubmitExam={handleSubmitExam}
                     timerGradientFrom="from-[#6F58C9]"

@@ -85,21 +85,6 @@ const ExamOverviewPage = () => {
     };
 
 
-
-    // Function to handle navigation to a specific question
-    const goToQuestion = (questionNum: number) => {
-        setCurrentQuestion(questionNum);
-        // Scroll to the question element
-        const questionElement = document.getElementById(`question-${questionNum}`);
-        if (questionElement) {
-            questionElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-        // Close mobile nav when navigating to a question
-        if (isMobile) {
-            setShowMobileNav(false);
-        }
-    };
-
     const toggleMobileNav = () => {
         setShowMobileNav(!showMobileNav);
     };
@@ -241,7 +226,6 @@ const ExamOverviewPage = () => {
                             totalQuestions={questions.length}
                             getQuestionStatus={(questionNum) => getQuestionStatusOverview(questions, questionNum)}
                             currentQuestion={currentQuestion}
-                            goToQuestion={goToQuestion}
                             setShowMobileNav={setShowMobileNav}
                             colors={navigatorColors}
                             reviewMode={true}

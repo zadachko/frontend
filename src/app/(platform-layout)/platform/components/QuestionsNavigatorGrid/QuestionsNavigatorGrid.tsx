@@ -6,7 +6,6 @@ interface QuestionsNavigatorGridProps {
     totalQuestions: number;
     getQuestionStatus: (questionNum: number) => string;
     currentQuestion: number;
-    goToQuestion: (questionNum: number) => void;
     setShowMobileNav: (show: boolean) => void;
     colors: {
         primary: string;
@@ -28,7 +27,6 @@ export const QuestionsNavigatorGrid = ({
     totalQuestions,
     getQuestionStatus,
     currentQuestion,
-    goToQuestion,
     setShowMobileNav,
     colors,
     reviewMode = false,
@@ -51,8 +49,6 @@ export const QuestionsNavigatorGrid = ({
         }
 
         setCurrentQuestion(questionNum)
-
-        goToQuestion(questionNum);
     };
 
     return (
