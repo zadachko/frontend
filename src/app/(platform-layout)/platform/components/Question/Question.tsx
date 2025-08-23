@@ -24,7 +24,7 @@ type QuestionProps = {
     answers: {
         [key: number]: string
     }
-    setAnswers: (answers: { [key: number]: string } | ((prev: { [key: number]: string }) => { [key: number]: string })) => void
+    setAnswers?: (answers: { [key: number]: string } | ((prev: { [key: number]: string }) => { [key: number]: string })) => void
     // New props for review mode
     isReviewMode?: boolean
     correctAnswer?: string
@@ -58,10 +58,12 @@ const Question = ({
     }
 
     const handleAnswerChange = (questionId: number, value: string) => {
-        setAnswers((prev) => ({
-            ...prev,
-            [questionId]: value,
-        }))
+        if (setAnswers) {
+            setAnswers((prev) => ({
+                ...prev,
+                [questionId]: value,
+            }))
+        }
     }
 
     function splitToSteps(htmlOrText: string): SolutionStep[] {

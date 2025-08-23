@@ -50,7 +50,6 @@ query GetExamOverview($getExamId: String!) {
 				}
 				statement
 				type
-				userAnswer
 			}
 		}
 	}

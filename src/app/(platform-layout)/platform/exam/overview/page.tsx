@@ -15,7 +15,7 @@ import AssessmentLoading from "../../components/LoadingScreens/AssessmentLoading
 
 const ExamOverviewPage = () => {
     const { data, loading, error } = useGetExamOverviewQuery({
-        variables: { getExamId: '4b0c1676-a275-4ed9-9853-52a7cfcdb231' },
+        variables: { getExamId: '943abe29-d104-4322-9239-f0afd8938541' },
     });
 
     const [currentQuestion, setCurrentQuestion] = useState(1);
@@ -33,7 +33,7 @@ const ExamOverviewPage = () => {
         type: examQuestion.question.type === 'MULTIPLE' ? 'multiple' : 'text',
         options: examQuestion.question.options || [],
         correctAnswer: examQuestion.question.correctAnswer || '12',
-        userAnswer: examQuestion.question.userAnswer || '11',
+        userAnswer: '11',
         points: examQuestion.question.points || 1,
         solutionSteps: examQuestion.question.solutionSteps?.map((step, stepIndex) => ({
             id: stepIndex + 1,
