@@ -214,6 +214,7 @@ const LiveExamPage = () => {
                         answeredText: "green-800",
                         answeredHover: "green-200",
                     }}
+                    setCurrentQuestion={setCurrentQuestion}
                 />
 
             </div>

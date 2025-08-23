@@ -354,6 +354,7 @@ const LiveExamPage = () => {
                         answeredText: "[#6F58C9]",
                         answeredHover: "[#6F58C94D]",
                     }}
+                    setCurrentQuestion={setCurrentQuestion}
                 />
 
             </div>

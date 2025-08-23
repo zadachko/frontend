@@ -20,6 +20,7 @@ interface QuestionsNavigatorGridProps {
     reviewMode?: boolean;
     isMobile?: boolean;
     isSmallMobile?: boolean;
+    setCurrentQuestion: (questionNum: number) => void;
 }
 
 export const QuestionsNavigatorGrid = ({
@@ -33,9 +34,10 @@ export const QuestionsNavigatorGrid = ({
     reviewMode = false,
     isMobile = false,
     isSmallMobile = false,
+    setCurrentQuestion,
 }: QuestionsNavigatorGridProps) => {
 
-    const scrollToQuestion = (questionNum: number) => {
+    const handleQuestionClick = (questionNum: number) => {
         const questionElement = document.getElementById(`question-${questionNum}`);
         if (questionElement) {
             questionElement.scrollIntoView({
@@ -47,12 +49,10 @@ export const QuestionsNavigatorGrid = ({
         if (isMobile) {
             setShowMobileNav(false);
         }
-    };
-    const handleQuestionClick = (questionNum: number) => {
+
+        setCurrentQuestion(questionNum)
+
         goToQuestion(questionNum);
-        if (scrollToQuestion) {
-            scrollToQuestion(questionNum);
-        }
     };
 
     return (

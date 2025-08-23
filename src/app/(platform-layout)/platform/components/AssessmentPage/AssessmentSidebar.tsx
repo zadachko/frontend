@@ -31,7 +31,7 @@ interface AssessmentSidebarProps {
     getQuestionStatus: (questionNum: number) => string;
     currentQuestion: number;
     goToQuestion: (index: number) => void;
-    // scrollToQuestion: (questionNum: number) => void;
+
 
     // actions
     handleSubmitExam: () => void;
@@ -43,6 +43,7 @@ interface AssessmentSidebarProps {
     buttonGradientFrom: string;
     buttonGradientTo: string;
     navigatorColors: NavigatorColors;
+    setCurrentQuestion: (questionNum: number) => void;
 }
 
 export default function AssessmentSidebar({
@@ -58,7 +59,6 @@ export default function AssessmentSidebar({
     getQuestionStatus,
     currentQuestion,
     goToQuestion,
-    // scrollToQuestion,
     handleSubmitExam,
     timerGradientFrom,
     timerGradientTo,
@@ -66,6 +66,7 @@ export default function AssessmentSidebar({
     buttonGradientFrom,
     buttonGradientTo,
     navigatorColors,
+    setCurrentQuestion,
 }: AssessmentSidebarProps) {
 
 
@@ -108,6 +109,7 @@ export default function AssessmentSidebar({
                     colors={navigatorColors}
                     isMobile={isMobile}
                     isSmallMobile={isSmallMobile}
+                    setCurrentQuestion={setCurrentQuestion}
                 />
             </div>
 

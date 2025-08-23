@@ -247,6 +247,7 @@ const ExamOverviewPage = () => {
                             reviewMode={true}
                             isMobile={isMobile}
                             isSmallMobile={isSmallMobile}
+                            setCurrentQuestion={setCurrentQuestion}
                         />
                     </div>
                 </div>
