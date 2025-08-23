@@ -8,7 +8,7 @@ import { useIsMobile, useIsSmallMobile } from "@/hooks/isMobile";
 import AssessmentOverviewSidebar from "../../components/AssessmentPage/AssessmentOverviewSidebar";
 import AssessmentOverviewMobileHeader from "../../components/AssessmentPage/AssessmentOverviewMobileHeader";
 import type { Question as QuestionType } from "@/types"
-
+import handleSidebarScroll from "../../components/AssessmentPage/utils/handleSidebarScroll";
 const baseDiagram: DiagramData = {
     points: {
         A: { x: 0, y: 0 },
@@ -66,7 +66,7 @@ const TestOverviewPage = () => {
     const isSmallMobile = useIsSmallMobile();
 
     // Add ref for main content container
-    const mainContentRef = useRef<HTMLDivElement>(null)
+    const mainContentRef = useRef<HTMLDivElement>(null!)
 
     // Mock test results - in a real app, this would come from the backend
     const testResults = {
@@ -371,16 +371,6 @@ const TestOverviewPage = () => {
         setShowMobileNav(!showMobileNav);
     };
 
-    // Add synchronized scrolling handler
-    const handleSidebarScroll = (event: React.WheelEvent) => {
-        if (mainContentRef.current) {
-            // Prevent the default scroll behavior on the sidebar
-            event.preventDefault()
-
-            // Apply the scroll delta to the main content
-            mainContentRef.current.scrollTop += event.deltaY
-        }
-    }
 
     // Colors for the navigator grid - using purple theme for tests
     const navigatorColors = {
@@ -448,7 +438,7 @@ const TestOverviewPage = () => {
                         ? `w-full fixed -mt-[7px] top-16 right-0 z-40 ${isSmallMobile ? 'w-full' : 'w-80'} bg-white border-l border-gray-200 transform transition-transform duration-300 ease-in-out ${showMobileNav ? 'translate-x-0' : 'translate-x-full'} flex flex-col h-[calc(100vh-64px)]`
                         : 'w-80 bg-white border-l border-gray-200 flex flex-col h-100vh'
                         }`}
-                    onWheel={handleSidebarScroll}
+                    onWheel={(event) => handleSidebarScroll(event, mainContentRef)}
                 >
                     {/* Overview Data */}
                     <AssessmentOverviewSidebar

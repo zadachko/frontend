@@ -8,12 +8,12 @@ import type { Question as QuestionType } from "@/types"
 import AssessmentSubmitDialog from "../../components/AssessmentPage/AssessmentSubmitDialog";
 import { AssessmentMobileHeader } from "../../components/AssessmentPage/AssessmentMobileHeader";
 import AssessmentSidebar from "../../components/AssessmentPage/AssessmentSidebar";
-import { useGetExamQuestionsQuery } from "@/gql/operations";
-
+import { useGetExamLiveQuery } from "@/gql/operations";
+import handleSidebarScroll from "../../components/AssessmentPage/utils/handleSidebarScroll";
 
 const LiveExamPage = () => {
 
-    const { data, loading, error } = useGetExamQuestionsQuery({
+    const { data, loading, error } = useGetExamLiveQuery({
         variables: { examId: '4b0c1676-a275-4ed9-9853-52a7cfcdb231' },
     });
 
@@ -37,7 +37,7 @@ const LiveExamPage = () => {
     const isSmallMobile = useIsSmallMobile()
 
     // Add ref for main content container
-    const mainContentRef = useRef<HTMLDivElement>(null)
+    const mainContentRef = useRef<HTMLDivElement>(null!)
 
 
     const totalQuestions = questions.length;
@@ -103,15 +103,7 @@ const LiveExamPage = () => {
     }
 
     // Add synchronized scrolling handler
-    const handleSidebarScroll = (event: React.WheelEvent) => {
-        if (mainContentRef.current) {
-            // Prevent the default scroll behavior on the sidebar
-            event.preventDefault()
 
-            // Apply the scroll delta to the main content
-            mainContentRef.current.scrollTop += event.deltaY
-        }
-    }
 
     const questionsAnswered = Object.keys(answers).length
 
@@ -203,7 +195,7 @@ const LiveExamPage = () => {
                     isMobile={isMobile}
                     isSmallMobile={isSmallMobile}
                     showMobileNav={showMobileNav}
-                    handleSidebarScroll={handleSidebarScroll}
+                    handleSidebarScroll={(event) => handleSidebarScroll(event, mainContentRef)}
                     timeLeft={timeLeft}
                     formatTime={formatTime}
                     answers={answers}

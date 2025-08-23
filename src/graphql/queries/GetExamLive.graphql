@@ -1,4 +1,4 @@
-query GetExamQuestions($examId: String!) {
+query GetExamLive($examId: String!) {
 	getExam(id: $examId) {
 		createdAt
 		examQuestions {
