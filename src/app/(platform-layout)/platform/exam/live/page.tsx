@@ -10,6 +10,7 @@ import { AssessmentMobileHeader } from "../../components/AssessmentPage/Assessme
 import AssessmentSidebar from "../../components/AssessmentPage/AssessmentSidebar";
 import { useGetExamLiveQuery } from "@/gql/operations";
 import handleSidebarScroll from "../../components/AssessmentPage/utils/handleSidebarScroll";
+import { getQuestionStatusLive } from "../../components/AssessmentPage/utils/getQuestionStatus";
 
 const LiveExamPage = () => {
 
@@ -77,12 +78,6 @@ const LiveExamPage = () => {
         if (isMobile) {
             setShowMobileNav(false)
         }
-    }
-
-
-    const getQuestionStatus = (questionId: number) => {
-        if (answers[questionId]) return "answered"
-        return "unanswered"
     }
 
     const handleSubmitExam = () => {
@@ -200,7 +195,7 @@ const LiveExamPage = () => {
                     formatTime={formatTime}
                     answers={answers}
                     totalQuestions={totalQuestions}
-                    getQuestionStatus={getQuestionStatus}
+                    getQuestionStatus={(questionId) => getQuestionStatusLive(answers, questionId)}
                     currentQuestion={currentQuestion}
                     goToQuestion={goToQuestion}
                     setShowMobileNav={setShowMobileNav}

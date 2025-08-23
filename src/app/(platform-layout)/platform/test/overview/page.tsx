@@ -9,6 +9,8 @@ import AssessmentOverviewSidebar from "../../components/AssessmentPage/Assessmen
 import AssessmentOverviewMobileHeader from "../../components/AssessmentPage/AssessmentOverviewMobileHeader";
 import type { Question as QuestionType } from "@/types"
 import handleSidebarScroll from "../../components/AssessmentPage/utils/handleSidebarScroll";
+import { getQuestionStatusOverview } from "../../components/AssessmentPage/utils/getQuestionStatus";
+
 const baseDiagram: DiagramData = {
     points: {
         A: { x: 0, y: 0 },
@@ -344,14 +346,6 @@ const TestOverviewPage = () => {
         // This is read-only, so we don't need to handle changes
     };
 
-    // Function to get question status for the navigator grid
-    const getQuestionStatus = (questionNum: number) => {
-        const question = questions.find(q => q.id === questionNum);
-        if (!question || !question.userAnswer) return "unanswered";
-
-        const isCorrect = question.userAnswer === question.correctAnswer;
-        return isCorrect ? "correct" : "incorrect";
-    };
 
     // Function to handle navigation to a specific question
     const goToQuestion = (questionNum: number) => {
@@ -466,7 +460,7 @@ const TestOverviewPage = () => {
                         <QuestionsNavigatorGrid
                             answers={answers}
                             totalQuestions={questions.length}
-                            getQuestionStatus={getQuestionStatus}
+                            getQuestionStatus={(questionNum) => getQuestionStatusOverview(questions, questionNum)}
                             currentQuestion={currentQuestion}
                             goToQuestion={goToQuestion}
                             setShowMobileNav={setShowMobileNav}

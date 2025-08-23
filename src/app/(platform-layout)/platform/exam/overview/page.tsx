@@ -10,6 +10,7 @@ import AssessmentOverviewMobileHeader from "../../components/AssessmentPage/Asse
 import { useGetExamOverviewQuery } from "@/gql/operations";
 import handleSidebarScroll from "../../components/AssessmentPage/utils/handleSidebarScroll";
 import type { Question as QuestionType } from "@/types"
+import { getQuestionStatusOverview } from "../../components/AssessmentPage/utils/getQuestionStatus";
 
 const ExamOverviewPage = () => {
     const { data, loading, error } = useGetExamOverviewQuery({
@@ -83,14 +84,7 @@ const ExamOverviewPage = () => {
         // This is read-only, so we don't need to handle changes
     };
 
-    // Function to get question status for the navigator grid
-    const getQuestionStatus = (questionNum: number) => {
-        const question = questions.find(q => q.id === questionNum);
-        if (!question || !question.userAnswer) return "unanswered";
 
-        const isCorrect = question.userAnswer === question.correctAnswer;
-        return isCorrect ? "correct" : "incorrect";
-    };
 
     // Function to handle navigation to a specific question
     const goToQuestion = (questionNum: number) => {
@@ -245,7 +239,7 @@ const ExamOverviewPage = () => {
                         <QuestionsNavigatorGrid
                             answers={answers}
                             totalQuestions={questions.length}
-                            getQuestionStatus={getQuestionStatus}
+                            getQuestionStatus={(questionNum) => getQuestionStatusOverview(questions, questionNum)}
                             currentQuestion={currentQuestion}
                             goToQuestion={goToQuestion}
                             setShowMobileNav={setShowMobileNav}

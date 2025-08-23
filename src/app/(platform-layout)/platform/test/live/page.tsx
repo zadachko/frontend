@@ -12,6 +12,7 @@ import AssessmentSubmitDialog from "../../components/AssessmentPage/AssessmentSu
 import { AssessmentMobileHeader } from "../../components/AssessmentPage/AssessmentMobileHeader";
 import AssessmentSidebar from "../../components/AssessmentPage/AssessmentSidebar";
 import handleSidebarScroll from "../../components/AssessmentPage/utils/handleSidebarScroll";
+import { getQuestionStatusLive } from "../../components/AssessmentPage/utils/getQuestionStatus";
 
 const sampleTriangleData: DiagramData = {
     points: {
@@ -258,10 +259,7 @@ const LiveExamPage = () => {
         }
     }
 
-    const getQuestionStatus = (questionId: number) => {
-        if (answers[questionId]) return "answered"
-        return "unanswered"
-    }
+
 
     const handleSubmitExam = () => {
         setShowSubmitDialog(true)
@@ -337,7 +335,7 @@ const LiveExamPage = () => {
                     formatTime={formatTime}
                     answers={answers}
                     totalQuestions={totalQuestions}
-                    getQuestionStatus={getQuestionStatus}
+                    getQuestionStatus={(questionId) => getQuestionStatusLive(answers, questionId)}
                     currentQuestion={currentQuestion}
                     goToQuestion={goToQuestion}
                     setShowMobileNav={setShowMobileNav}
