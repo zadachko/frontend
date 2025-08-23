@@ -251,6 +251,9 @@ export type Query = {
   getUserExams?: Maybe<Array<Exam>>;
   getUsers?: Maybe<Array<User>>;
   health: Scalars['String']['output'];
+  myExamScore: ExamScoreResponse;
+  myQuestionSubmissions: Array<UserQuestionSubmission>;
+  mySubmissionStats: SubmissionStatsResponse;
   question: Question;
   questions: Array<Question>;
   submissionStats: SubmissionStatsResponse;
@@ -282,6 +285,21 @@ export type QueryGetUserArgs = {
 
 export type QueryGetUserExamsArgs = {
   userId: Scalars['String']['input'];
+};
+
+
+export type QueryMyExamScoreArgs = {
+  examId: Scalars['ID']['input'];
+};
+
+
+export type QueryMyQuestionSubmissionsArgs = {
+  examId: Scalars['ID']['input'];
+};
+
+
+export type QueryMySubmissionStatsArgs = {
+  examId: Scalars['ID']['input'];
 };
 
 
