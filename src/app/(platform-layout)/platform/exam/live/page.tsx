@@ -52,17 +52,9 @@ const LiveExamPage = () => {
         }))
     }
 
-    const handleSubmitExam = () => {
-        setShowSubmitDialog(true)
-    }
-
     const confirmSubmit = () => {
         setShowSubmitDialog(false)
         router.push('/platform/exam/overview')
-    }
-
-    const cancelSubmit = () => {
-        setShowSubmitDialog(false)
     }
 
 
@@ -104,7 +96,7 @@ const LiveExamPage = () => {
                 <AssessmentMobileHeader
                     showMobileNav={showMobileNav}
                     setShowMobileNav={setShowMobileNav}
-                    handleSubmitExam={handleSubmitExam}
+                    setShowSubmitDialog={setShowSubmitDialog}
                     clockColor="text-emerald-600"
                     buttonGradient={{
                         from: "emerald-500",
@@ -153,7 +145,7 @@ const LiveExamPage = () => {
                     getQuestionStatus={(questionId) => getQuestionStatusLive(answers, questionId)}
                     currentQuestion={currentQuestion}
                     setShowMobileNav={setShowMobileNav}
-                    handleSubmitExam={handleSubmitExam}
+                    setShowSubmitDialog={setShowSubmitDialog}
                     colors={colors}
                     setCurrentQuestion={setCurrentQuestion}
                 />
@@ -166,7 +158,6 @@ const LiveExamPage = () => {
                 setShowSubmitDialog={setShowSubmitDialog}
                 questionsAnswered={questionsAnswered}
                 totalQuestions={totalQuestions}
-                cancelSubmit={cancelSubmit}
                 confirmSubmit={confirmSubmit}
                 colors={{
                     primary: "emerald-600",

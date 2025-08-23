@@ -228,17 +228,10 @@ const LiveExamPage = () => {
         }))
     }
 
-    const handleSubmitExam = () => {
-        setShowSubmitDialog(true)
-    }
 
     const confirmSubmit = () => {
         setShowSubmitDialog(false)
         router.push('/platform/test/overview')
-    }
-
-    const cancelSubmit = () => {
-        setShowSubmitDialog(false)
     }
 
 
@@ -250,7 +243,7 @@ const LiveExamPage = () => {
             {isMobile && <AssessmentMobileHeader
                 showMobileNav={showMobileNav}
                 setShowMobileNav={setShowMobileNav}
-                handleSubmitExam={handleSubmitExam}
+                setShowSubmitDialog={setShowSubmitDialog}
                 clockColor="text-[#6F58C9]"
                 buttonGradient={{
                     from: "[#6F58C9]",
@@ -297,7 +290,7 @@ const LiveExamPage = () => {
                     getQuestionStatus={(questionId) => getQuestionStatusLive(answers, questionId)}
                     currentQuestion={currentQuestion}
                     setShowMobileNav={setShowMobileNav}
-                    handleSubmitExam={handleSubmitExam}
+                    setShowSubmitDialog={setShowSubmitDialog}
                     colors={colors}
                     setCurrentQuestion={setCurrentQuestion}
                 />
@@ -310,7 +303,6 @@ const LiveExamPage = () => {
                 setShowSubmitDialog={setShowSubmitDialog}
                 questionsAnswered={questionsAnswered}
                 totalQuestions={totalQuestions}
-                cancelSubmit={cancelSubmit}
                 confirmSubmit={confirmSubmit}
                 colors={{
                     primary: "[#6F58C9]",

@@ -26,7 +26,7 @@ interface AssessmentSidebarProps {
 
 
     // actions
-    handleSubmitExam: () => void;
+    setShowSubmitDialog: (show: boolean) => void;
 
     // theming (pass full Tailwind classes)
     setCurrentQuestion: (questionNum: number) => void;
@@ -45,10 +45,14 @@ export default function AssessmentSidebar({
     totalQuestions,
     getQuestionStatus,
     currentQuestion,
-    handleSubmitExam,
+    setShowSubmitDialog,
     setCurrentQuestion,
     colors,
 }: AssessmentSidebarProps) {
+
+    const handleSubmitExam = () => {
+        setShowSubmitDialog(true)
+    }
 
     const [timeLeft, setTimeLeft] = useState(90 * 60) // 90 minutes in seconds
 
