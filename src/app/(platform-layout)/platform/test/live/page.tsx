@@ -218,15 +218,7 @@ const LiveExamPage = () => {
         },
     ]
 
-    const totalQuestions = 25
-
-
-    const handleAnswerChange = (questionId: number, value: string) => {
-        setAnswers((prev) => ({
-            ...prev,
-            [questionId]: value,
-        }))
-    }
+    const totalQuestions = questions.length;
 
 
     const confirmSubmit = () => {
@@ -272,7 +264,7 @@ const LiveExamPage = () => {
                         <div className="space-y-6">
                             {questions.map((question) => (
                                 <div key={question.id} id={`question-${question.id}`}>
-                                    <Question question={question} answers={answers} handleAnswerChange={handleAnswerChange} isReviewMode={false} />
+                                    <Question question={question} answers={answers} setAnswers={setAnswers} isReviewMode={false} />
                                 </div>
                             ))}
                         </div>

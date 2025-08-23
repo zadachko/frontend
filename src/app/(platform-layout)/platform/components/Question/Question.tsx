@@ -24,7 +24,7 @@ type QuestionProps = {
     answers: {
         [key: number]: string
     }
-    handleAnswerChange?: (questionId: number, value: string) => void
+    setAnswers: (answers: { [key: number]: string } | ((prev: { [key: number]: string }) => { [key: number]: string })) => void
     // New props for review mode
     isReviewMode?: boolean
     correctAnswer?: string
@@ -36,11 +36,11 @@ type QuestionProps = {
 const Question = ({
     question,
     answers,
-    handleAnswerChange,
     isReviewMode = false,
     correctAnswer,
     userAnswer,
     solution,
+    setAnswers,
 }: QuestionProps) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const isMobile = useIsMobile();
@@ -55,6 +55,13 @@ const Question = ({
 
     const handleCloseModal = () => {
         setIsModalOpen(false)
+    }
+
+    const handleAnswerChange = (questionId: number, value: string) => {
+        setAnswers((prev) => ({
+            ...prev,
+            [questionId]: value,
+        }))
     }
 
     function splitToSteps(htmlOrText: string): SolutionStep[] {
