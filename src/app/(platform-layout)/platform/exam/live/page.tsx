@@ -14,7 +14,7 @@ import { useGetExamQuestionsQuery } from "@/gql/operations";
 const LiveExamPage = () => {
 
     const { data, loading, error } = useGetExamQuestionsQuery({
-        variables: { examId: 2 },
+        variables: { examId: '4b0c1676-a275-4ed9-9853-52a7cfcdb231' },
     });
 
     // console.log(data?.getExam?.examQuestions);

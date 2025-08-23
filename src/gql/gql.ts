@@ -14,10 +14,10 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Learn more about it here: https://the-guild.dev/graphql/codegen/plugins/presets/preset-client#reducing-bundle-size
  */
 type Documents = {
-    "query GetExamQuestions($examId: Int!) {\n  getExam(id: $examId) {\n    createdAt\n    examQuestions {\n      question {\n        points\n        statement\n        options\n        type\n      }\n    }\n  }\n}": typeof types.GetExamQuestionsDocument,
+    "query GetExamQuestions($examId: String!) {\n  getExam(id: $examId) {\n    createdAt\n    examQuestions {\n      question {\n        points\n        statement\n        options\n        type\n      }\n    }\n  }\n}": typeof types.GetExamQuestionsDocument,
 };
 const documents: Documents = {
-    "query GetExamQuestions($examId: Int!) {\n  getExam(id: $examId) {\n    createdAt\n    examQuestions {\n      question {\n        points\n        statement\n        options\n        type\n      }\n    }\n  }\n}": types.GetExamQuestionsDocument,
+    "query GetExamQuestions($examId: String!) {\n  getExam(id: $examId) {\n    createdAt\n    examQuestions {\n      question {\n        points\n        statement\n        options\n        type\n      }\n    }\n  }\n}": types.GetExamQuestionsDocument,
 };
 
 /**
@@ -37,7 +37,7 @@ export function graphql(source: string): unknown;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "query GetExamQuestions($examId: Int!) {\n  getExam(id: $examId) {\n    createdAt\n    examQuestions {\n      question {\n        points\n        statement\n        options\n        type\n      }\n    }\n  }\n}"): (typeof documents)["query GetExamQuestions($examId: Int!) {\n  getExam(id: $examId) {\n    createdAt\n    examQuestions {\n      question {\n        points\n        statement\n        options\n        type\n      }\n    }\n  }\n}"];
+export function graphql(source: "query GetExamQuestions($examId: String!) {\n  getExam(id: $examId) {\n    createdAt\n    examQuestions {\n      question {\n        points\n        statement\n        options\n        type\n      }\n    }\n  }\n}"): (typeof documents)["query GetExamQuestions($examId: String!) {\n  getExam(id: $examId) {\n    createdAt\n    examQuestions {\n      question {\n        points\n        statement\n        options\n        type\n      }\n    }\n  }\n}"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

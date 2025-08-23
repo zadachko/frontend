@@ -44,7 +44,7 @@ const Page = () => {
             date: "15.12.2024",
             score: 85,
             totalQuestions: 25,
-            correctAnswers: 21,
+            correctQuestions: 21,
             timeSpent: "75 мин",
         },
         {
@@ -52,7 +52,7 @@ const Page = () => {
             date: "08.12.2024",
             score: 72,
             totalQuestions: 25,
-            correctAnswers: 18,
+            correctQuestions: 18,
             timeSpent: "82 мин",
         },
         {
@@ -60,7 +60,7 @@ const Page = () => {
             date: "01.12.2024",
             score: 68,
             totalQuestions: 25,
-            correctAnswers: 17,
+            correctQuestions: 17,
             timeSpent: "88 мин",
         }
     ];

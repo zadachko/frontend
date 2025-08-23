@@ -5,7 +5,7 @@ type PreviousResultProps = {
     result: {
         id: number;
         date: string;
-        correctAnswers: number;
+        correctQuestions: number;
         totalQuestions: number;
         timeSpent: string;
         score: number;
@@ -30,7 +30,7 @@ const PreviousResult = ({ result }: PreviousResultProps) => {
             <div className="flex items-center justify-between">
                 <div className="flex-1">
                     <div className="text-sm sm:text-base text-gray-700 mb-0.5 sm:mb-1">
-                        {result.correctAnswers}/{result.totalQuestions} правилни
+                        {result.correctQuestions}/{result.totalQuestions} правилни
                     </div>
                     <div className="text-xs sm:text-sm text-gray-500">
                         {result.timeSpent}
