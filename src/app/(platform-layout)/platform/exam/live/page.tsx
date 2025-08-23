@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import Question from "@/app/(platform-layout)/platform/components/Question/Question";
 import { useRouter } from "next/navigation";
 import { useIsMobile, useIsSmallMobile } from "@/hooks/isMobile";
@@ -30,7 +30,6 @@ const LiveExamPage = () => {
         points: examQuestion.question.points || 1,
     })) || [];
 
-    const [timeLeft, setTimeLeft] = useState(90 * 60) // 90 minutes in seconds
     const [answers, setAnswers] = useState<{ [key: number]: string }>({})
     const [currentQuestion, setCurrentQuestion] = useState(1)
     const [showSubmitDialog, setShowSubmitDialog] = useState(false)
@@ -45,27 +44,6 @@ const LiveExamPage = () => {
 
     const totalQuestions = questions.length;
 
-    // Timer effect
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setTimeLeft((prev) => {
-                if (prev <= 1) {
-                    clearInterval(timer)
-                    return 0
-                }
-                return prev - 1
-            })
-        }, 1000)
-
-        return () => clearInterval(timer)
-    }, [])
-
-    // Format time display
-    const formatTime = (seconds: number) => {
-        const minutes = Math.floor(seconds / 60)
-        const secs = seconds % 60
-        return `${minutes.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`
-    }
 
     const handleAnswerChange = (questionId: number, value: string) => {
         setAnswers((prev) => ({
@@ -130,8 +108,6 @@ const LiveExamPage = () => {
                 <AssessmentMobileHeader
                     showMobileNav={showMobileNav}
                     toggleMobileNav={toggleMobileNav}
-                    timeLeft={timeLeft}
-                    formatTime={formatTime}
                     handleSubmitExam={handleSubmitExam}
                     clockColor="text-emerald-600"
                     buttonGradient={{
@@ -176,8 +152,6 @@ const LiveExamPage = () => {
                     isSmallMobile={isSmallMobile}
                     showMobileNav={showMobileNav}
                     handleSidebarScroll={(event) => handleSidebarScroll(event, mainContentRef)}
-                    timeLeft={timeLeft}
-                    formatTime={formatTime}
                     answers={answers}
                     totalQuestions={totalQuestions}
                     getQuestionStatus={(questionId) => getQuestionStatusLive(answers, questionId)}

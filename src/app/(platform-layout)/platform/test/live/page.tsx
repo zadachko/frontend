@@ -1,8 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Clock } from "lucide-react";
+import { useState, useRef } from "react";
 import Question from "@/app/(platform-layout)/platform/components/Question/Question";
 import type { DiagramData } from "geometry-diagram-renderer";
 import { useRouter } from "next/navigation";
@@ -39,7 +37,6 @@ const sampleTriangleData: DiagramData = {
 };
 
 const LiveExamPage = () => {
-    const [timeLeft, setTimeLeft] = useState(90 * 60) // 90 minutes in seconds
     const [answers, setAnswers] = useState<{ [key: number]: string }>({})
     const [currentQuestion, setCurrentQuestion] = useState(1)
     const [showSubmitDialog, setShowSubmitDialog] = useState(false)
@@ -223,27 +220,6 @@ const LiveExamPage = () => {
 
     const totalQuestions = 25
 
-    // Timer effect
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setTimeLeft((prev) => {
-                if (prev <= 1) {
-                    clearInterval(timer)
-                    return 0
-                }
-                return prev - 1
-            })
-        }, 1000)
-
-        return () => clearInterval(timer)
-    }, [])
-
-    // Format time display
-    const formatTime = (seconds: number) => {
-        const minutes = Math.floor(seconds / 60)
-        const secs = seconds % 60
-        return `${minutes.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`
-    }
 
     const handleAnswerChange = (questionId: number, value: string) => {
         setAnswers((prev) => ({
@@ -278,8 +254,6 @@ const LiveExamPage = () => {
             {isMobile && <AssessmentMobileHeader
                 showMobileNav={showMobileNav}
                 toggleMobileNav={toggleMobileNav}
-                timeLeft={timeLeft}
-                formatTime={formatTime}
                 handleSubmitExam={handleSubmitExam}
                 clockColor="text-[#6F58C9]"
                 buttonGradient={{
@@ -322,8 +296,6 @@ const LiveExamPage = () => {
                     isSmallMobile={isSmallMobile}
                     showMobileNav={showMobileNav}
                     handleSidebarScroll={(event) => handleSidebarScroll(event, mainContentRef)}
-                    timeLeft={timeLeft}
-                    formatTime={formatTime}
                     answers={answers}
                     totalQuestions={totalQuestions}
                     getQuestionStatus={(questionId) => getQuestionStatusLive(answers, questionId)}
@@ -351,20 +323,6 @@ const LiveExamPage = () => {
                 isMobile={isMobile}
                 isSmallMobile={isSmallMobile}
             />
-
-            {/* Low Time Warning */}
-            {timeLeft < 600 && (
-                <div className={`fixed z-50 ${isMobile ? 'bottom-4 left-4 right-4' : 'bottom-4 left-4'}`}>
-                    <Card className="bg-red-50 border-red-200 shadow-lg">
-                        <CardContent className="p-4">
-                            <div className="flex items-center gap-2 text-red-800">
-                                <Clock className="w-4 h-4" />
-                                <span className="text-sm font-medium">По-малко от 10 минути останала!</span>
-                            </div>
-                        </CardContent>
-                    </Card>
-                </div>
-            )}
         </div>
     )
 }

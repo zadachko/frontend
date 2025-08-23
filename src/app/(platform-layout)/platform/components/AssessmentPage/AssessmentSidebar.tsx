@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Clock } from "lucide-react";
 import { QuestionsNavigatorGrid } from "../QuestionsNavigatorGrid/QuestionsNavigatorGrid";
 import { colors } from "../../exam/live/colors.config";
+import { useEffect, useState } from "react";
 
 
 interface AssessmentSidebarProps {
@@ -14,8 +15,8 @@ interface AssessmentSidebarProps {
     handleSidebarScroll: (e: React.WheelEvent<HTMLDivElement>) => void;
 
     // timer
-    timeLeft: number;
-    formatTime: (ms: number) => string;
+    // timeLeft: number;
+    // formatTime: (ms: number) => string;
 
     // navigator
     answers: Record<number, string>;
@@ -38,8 +39,8 @@ export default function AssessmentSidebar({
     showMobileNav,
     setShowMobileNav,
     handleSidebarScroll,
-    timeLeft,
-    formatTime,
+    // timeLeft,
+    // formatTime,
     answers,
     totalQuestions,
     getQuestionStatus,
@@ -49,6 +50,29 @@ export default function AssessmentSidebar({
     colors,
 }: AssessmentSidebarProps) {
 
+    const [timeLeft, setTimeLeft] = useState(90 * 60) // 90 minutes in seconds
+
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setTimeLeft((prev) => {
+                if (prev <= 1) {
+                    clearInterval(timer)
+                    return 0
+                }
+                return prev - 1
+            })
+        }, 1000)
+
+        return () => clearInterval(timer)
+    }, [])
+
+    // Format time display
+    const formatTime = (seconds: number) => {
+        const minutes = Math.floor(seconds / 60)
+        const secs = seconds % 60
+        return `${minutes.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`
+    }
 
     return (
         <div
