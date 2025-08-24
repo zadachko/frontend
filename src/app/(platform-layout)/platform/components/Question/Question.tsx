@@ -7,7 +7,7 @@ import OpenAnswer from './OpenAnswer';
 import type { DiagramData } from 'geometry-diagram-renderer';
 import MultipleChoiceAnswer from './MultipleChoiceAnswer';
 import { Badge } from '@/components/ui/badge';
-import QuestionSolutionModal, { SolutionStep } from './QuestionSolutionModal';
+import QuestionSolutionModal, { SolutionStep } from './QuestionSolutionModal/QuestionSolutionModal';
 import { useIsMobile, useIsSmallMobile } from '@/hooks/isMobile';
 import { StepAction } from 'geometry-diagram-renderer';
 

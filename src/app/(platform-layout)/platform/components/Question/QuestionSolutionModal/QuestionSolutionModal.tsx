@@ -2,12 +2,12 @@
 
 import { useEffect, useMemo, useState } from "react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
-import { ChevronLeft, ChevronRight } from "lucide-react"
-
+import Controls from "./StepControls"
 import "katex/dist/katex.min.css"
-import { BlockMath, InlineMath } from "react-katex"
 import { applyStepActions, type DiagramData, Renderer, type StepAction } from "geometry-diagram-renderer"
+import { renderWithMath } from "@/app/(platform-layout)/platform/common/utilities/renderWithMath"
+import QuestionStatement from "./QuestionStatement"
+import Header from "./Header"
 
 export type SolutionStep = {
     id: string | number
@@ -33,30 +33,6 @@ export type QuestionSolutionModalProps = {
     diagramSteps?: StepAction[][]
 }
 
-// render a string with $...$ (inline) and $$...$$ (block) math
-function renderWithMath(text: string, textClass = "text-md") {
-    return text.split(/(\$\$.*?\$\$|\$.*?\$)/g).map((part, idx) => {
-        if (part.startsWith("$$") && part.endsWith("$$")) {
-            return (
-                <span key={idx} className={textClass}>
-                    <BlockMath math={part.slice(2, -2)} />
-                </span>
-            )
-        }
-        if (part.startsWith("$") && part.endsWith("$")) {
-            return (
-                <span key={idx} className={textClass}>
-                    <InlineMath math={part.slice(1, -1)} />
-                </span>
-            )
-        }
-        return (
-            <span key={idx} className={textClass}>
-                {part}
-            </span>
-        )
-    })
-}
 
 // Bulgarian letters for choices
 const optionLetters = ["а", "б", "в", "г", "д", "е"]
@@ -229,11 +205,7 @@ export default function QuestionSolutionModal({
                                 </DialogTitle>
                             </DialogHeader>
 
-                            <div className="prose max-w-none text-gray-900">
-                                <div className="text-sm md:text-base leading-relaxed whitespace-pre-wrap">
-                                    {renderWithMath(statement, "text-sm md:text-[18px]")}
-                                </div>
-                            </div>
+                            <QuestionStatement statement={statement} />
 
                             {mergedDiagram ? (
                                 <>
@@ -250,7 +222,7 @@ export default function QuestionSolutionModal({
                                         <ol className="pl-0 space-y-2" style={{ listStyleType: "none", paddingLeft: 0, marginLeft: 0 }}>
                                             {visibleSteps.map((s) => (
                                                 <li key={s.id} className="text-base leading-relaxed">
-                                                    {renderWithMath(s.exerciseText, 'text-[18px]')}
+                                                    {renderWithMath(s.exerciseText, "text-[18px]")}
                                                 </li>
                                             ))}
                                         </ol>
@@ -263,12 +235,7 @@ export default function QuestionSolutionModal({
                     {/* Solution Section - Bottom on mobile, Right on desktop */}
                     <div className="w-full md:w-1/2 min-w-0 min-h-0 flex flex-col">
                         {/* Header */}
-                        <div className="px-4 md:px-8 pt-4 md:pt-8 pb-3 md:pb-4 border-b bg-white flex-shrink-0">
-                            <div className="flex items-center justify-between">
-                                <h3 className="text-lg md:text-xl font-bold text-gray-900">Решение – стъпки</h3>
-                                <span className="text-xs md:text-sm text-gray-500">Стъпка {stepCountLabel}</span>
-                            </div>
-                        </div>
+                        <Header stepCountLabel={stepCountLabel} />
 
                         {/* Answer review */}
                         <div className="px-4 md:px-8 pt-3 md:pt-4 flex-shrink-0">{renderAnswerReview()}</div>
@@ -360,38 +327,10 @@ export default function QuestionSolutionModal({
                         </div>
 
                         {/* Controls */}
-                        <div className="border-t bg-white p-3 md:p-4 flex-shrink-0">
-                            <div className="mx-2 md:mx-4 flex items-center justify-between gap-2 md:gap-4">
-                                <Button
-                                    variant="outline"
-                                    onClick={prev}
-                                    disabled={atStart}
-                                    className="gap-1 md:gap-2 text-xs md:text-sm px-2 md:px-4 py-1 md:py-2 bg-transparent"
-                                    size="sm"
-                                >
-                                    <ChevronLeft className="h-3 w-3 md:h-4 md:w-4" />
-                                    <span className="hidden sm:inline">Предишна</span>
-                                    <span className="sm:hidden">Пред.</span>
-                                </Button>
-                                <div className="text-xs text-gray-500 text-center">
-                                    <span className="hidden md:inline">Навигирай със стрелките ← →</span>
-                                    <span className="md:hidden">← →</span>
-                                </div>
-                                <Button
-                                    onClick={next}
-                                    disabled={atEnd}
-                                    className="gap-1 md:gap-2 text-xs md:text-sm px-2 md:px-4 py-1 md:py-2"
-                                    size="sm"
-                                >
-                                    <span className="hidden sm:inline">Следваща</span>
-                                    <span className="sm:hidden">След.</span>
-                                    <ChevronRight className="h-3 w-3 md:h-4 md:w-4" />
-                                </Button>
-                            </div>
-                        </div>
+                        <Controls atStart={atStart} atEnd={atEnd} prev={prev} next={next} />
                     </div>
                 </div>
             </DialogContent>
-        </Dialog>
+        </Dialog >
     )
 }

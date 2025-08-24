@@ -1,15 +1,31 @@
-import { InlineMath } from 'react-katex';
+import { BlockMath, InlineMath } from "react-katex";
 
-export const renderWithMath = (input: string, mathClass = 'text-lg') => {
-	const parts = input.split(/(\$[^$]*\$)/g);
-	return parts.map((part, index) => {
-		if (part.startsWith('$') && part.endsWith('$')) {
+/**
+ * Renders math in text.
+ * @param text - The text to render.
+ * @param textClass - The class to apply to the text.
+ * @returns The rendered text.
+ */
+export const renderWithMath = (text: string, textClass = "text-md") => {
+	return text.split(/(\$\$.*?\$\$|\$.*?\$)/g).map((part, idx) => {
+		if (part.startsWith("$$") && part.endsWith("$$")) {
 			return (
-				<span key={index} className={mathClass}>
+				<span key={idx} className={textClass}>
+					<BlockMath math={part.slice(2, -2)} />
+				</span>
+			)
+		}
+		if (part.startsWith("$") && part.endsWith("$")) {
+			return (
+				<span key={idx} className={textClass}>
 					<InlineMath math={part.slice(1, -1)} />
 				</span>
-			);
+			)
 		}
-		return <span className='leading-10' key={index} dangerouslySetInnerHTML={{ __html: part }} />;
-	});
-};
+		return (
+			<span key={idx} className={textClass}>
+				{part}
+			</span>
+		)
+	})
+}
