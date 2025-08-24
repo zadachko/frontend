@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import Question from "@/app/(platform-layout)/platform/components/Question/Question";
 import { useRouter } from "next/navigation";
 import { useIsMobile, useIsSmallMobile } from "@/hooks/isMobile";
@@ -8,13 +8,16 @@ import type { Question as QuestionType } from "@/types"
 import AssessmentSubmitDialog from "../../components/AssessmentPage/AssessmentSubmitDialog";
 import { AssessmentMobileHeader } from "../../components/AssessmentPage/AssessmentMobileHeader";
 import AssessmentSidebar from "../../components/AssessmentPage/AssessmentSidebar";
-import { useGetExamQuestionsQuery } from "@/gql/operations";
-
+import { useGetExamLiveQuery } from "@/gql/operations";
+import handleSidebarScroll from "../../components/AssessmentPage/utils/handleSidebarScroll";
+import { getQuestionStatusLive } from "../../components/AssessmentPage/utils/getQuestionStatus";
+import { colors } from "./colors.config";
+import AssessmentLoading from "../../components/LoadingScreens/AssessmentLoading";
 
 const LiveExamPage = () => {
 
-    const { data, loading, error } = useGetExamQuestionsQuery({
-        variables: { examId: 2 },
+    const { data, loading, error } = useGetExamLiveQuery({
+        variables: { examId: '7cc7462e-f307-4f0a-b418-fcfecd5dacfb' },
     });
 
     // console.log(data?.getExam?.examQuestions);
@@ -27,7 +30,6 @@ const LiveExamPage = () => {
         points: examQuestion.question.points || 1,
     })) || [];
 
-    const [timeLeft, setTimeLeft] = useState(90 * 60) // 90 minutes in seconds
     const [answers, setAnswers] = useState<{ [key: number]: string }>({})
     const [currentQuestion, setCurrentQuestion] = useState(1)
     const [showSubmitDialog, setShowSubmitDialog] = useState(false)
@@ -37,94 +39,22 @@ const LiveExamPage = () => {
     const isSmallMobile = useIsSmallMobile()
 
     // Add ref for main content container
-    const mainContentRef = useRef<HTMLDivElement>(null)
+    const mainContentRef = useRef<HTMLDivElement>(null!)
 
 
     const totalQuestions = questions.length;
 
-    // Timer effect
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setTimeLeft((prev) => {
-                if (prev <= 1) {
-                    clearInterval(timer)
-                    return 0
-                }
-                return prev - 1
-            })
-        }, 1000)
-
-        return () => clearInterval(timer)
-    }, [])
-
-    // Format time display
-    const formatTime = (seconds: number) => {
-        const minutes = Math.floor(seconds / 60)
-        const secs = seconds % 60
-        return `${minutes.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`
-    }
-
-    const handleAnswerChange = (questionId: number, value: string) => {
-        setAnswers((prev) => ({
-            ...prev,
-            [questionId]: value,
-        }))
-    }
-
-    const goToQuestion = (questionId: number) => {
-        setCurrentQuestion(questionId)
-        // Close mobile nav when navigating to a question
-        if (isMobile) {
-            setShowMobileNav(false)
-        }
-    }
-
-
-    const getQuestionStatus = (questionId: number) => {
-        if (answers[questionId]) return "answered"
-        return "unanswered"
-    }
-
-    const handleSubmitExam = () => {
-        setShowSubmitDialog(true)
-    }
 
     const confirmSubmit = () => {
         setShowSubmitDialog(false)
         router.push('/platform/exam/overview')
     }
 
-    const cancelSubmit = () => {
-        setShowSubmitDialog(false)
-    }
-
-    const toggleMobileNav = () => {
-        setShowMobileNav(!showMobileNav)
-    }
-
-    // Add synchronized scrolling handler
-    const handleSidebarScroll = (event: React.WheelEvent) => {
-        if (mainContentRef.current) {
-            // Prevent the default scroll behavior on the sidebar
-            event.preventDefault()
-
-            // Apply the scroll delta to the main content
-            mainContentRef.current.scrollTop += event.deltaY
-        }
-    }
-
     const questionsAnswered = Object.keys(answers).length
 
     // Handle loading state
     if (loading) {
-        return (
-            <div className="min-h-screen bg-gray-50 flex items-center justify-center w-screen">
-                <div className="text-center">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600 mx-auto mb-4"></div>
-                    <p className="text-gray-600">Зареждане на въпросите...</p>
-                </div>
-            </div>
-        );
+        return <AssessmentLoading text="Зареждане на въпросите..." />;
     }
 
     // Handle error state
@@ -157,10 +87,8 @@ const LiveExamPage = () => {
             {isMobile &&
                 <AssessmentMobileHeader
                     showMobileNav={showMobileNav}
-                    toggleMobileNav={toggleMobileNav}
-                    timeLeft={timeLeft}
-                    formatTime={formatTime}
-                    handleSubmitExam={handleSubmitExam}
+                    setShowMobileNav={setShowMobileNav}
+                    setShowSubmitDialog={setShowSubmitDialog}
                     clockColor="text-emerald-600"
                     buttonGradient={{
                         from: "emerald-500",
@@ -191,7 +119,7 @@ const LiveExamPage = () => {
                         <div className="space-y-6">
                             {questions.map((question) => (
                                 <div key={question.id} id={`question-${question.id}`}>
-                                    <Question question={question} answers={answers} handleAnswerChange={handleAnswerChange} isReviewMode={false} />
+                                    <Question question={question} answers={answers} setAnswers={setAnswers} isReviewMode={false} />
                                 </div>
                             ))}
                         </div>
@@ -203,30 +131,15 @@ const LiveExamPage = () => {
                     isMobile={isMobile}
                     isSmallMobile={isSmallMobile}
                     showMobileNav={showMobileNav}
-                    handleSidebarScroll={handleSidebarScroll}
-                    timeLeft={timeLeft}
-                    formatTime={formatTime}
+                    handleSidebarScroll={(event) => handleSidebarScroll(event, mainContentRef)}
                     answers={answers}
                     totalQuestions={totalQuestions}
-                    getQuestionStatus={getQuestionStatus}
+                    getQuestionStatus={(questionId) => getQuestionStatusLive(answers, questionId)}
                     currentQuestion={currentQuestion}
-                    goToQuestion={goToQuestion}
                     setShowMobileNav={setShowMobileNav}
-                    handleSubmitExam={handleSubmitExam}
-                    timerGradientFrom="from-emerald-500"
-                    timerGradientTo="to-teal-600"
-                    timerSubTextClass="text-emerald-100"
-                    buttonGradientFrom="from-emerald-500"
-                    buttonGradientTo="to-teal-600"
-                    navigatorColors={{
-                        primary: "emerald-600",
-                        primaryLight: "emerald-50",
-                        primaryHover: "emerald-300",
-                        answeredBg: "green-100",
-                        answeredBorder: "green-200",
-                        answeredText: "green-800",
-                        answeredHover: "green-200",
-                    }}
+                    setShowSubmitDialog={setShowSubmitDialog}
+                    colors={colors}
+                    setCurrentQuestion={setCurrentQuestion}
                 />
 
             </div>
@@ -237,7 +150,6 @@ const LiveExamPage = () => {
                 setShowSubmitDialog={setShowSubmitDialog}
                 questionsAnswered={questionsAnswered}
                 totalQuestions={totalQuestions}
-                cancelSubmit={cancelSubmit}
                 confirmSubmit={confirmSubmit}
                 colors={{
                     primary: "emerald-600",

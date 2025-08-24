@@ -10,7 +10,7 @@ interface PreviousResultsCardProps {
         date: string;
         score: number;
         totalQuestions: number;
-        correctAnswers: number;
+        correctQuestions: number;
         timeSpent: string;
     }[];
     color: string; // Hex or CSS color string used for outline button, text, and arrow

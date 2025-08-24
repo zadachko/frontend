@@ -1,8 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Clock } from "lucide-react";
+import { useState, useRef } from "react";
 import Question from "@/app/(platform-layout)/platform/components/Question/Question";
 import type { DiagramData } from "geometry-diagram-renderer";
 import { useRouter } from "next/navigation";
@@ -11,6 +9,9 @@ import type { Question as QuestionType } from "@/types"
 import AssessmentSubmitDialog from "../../components/AssessmentPage/AssessmentSubmitDialog";
 import { AssessmentMobileHeader } from "../../components/AssessmentPage/AssessmentMobileHeader";
 import AssessmentSidebar from "../../components/AssessmentPage/AssessmentSidebar";
+import handleSidebarScroll from "../../components/AssessmentPage/utils/handleSidebarScroll";
+import { getQuestionStatusLive } from "../../components/AssessmentPage/utils/getQuestionStatus";
+import { colors } from "./colors.config";
 
 const sampleTriangleData: DiagramData = {
     points: {
@@ -36,7 +37,6 @@ const sampleTriangleData: DiagramData = {
 };
 
 const LiveExamPage = () => {
-    const [timeLeft, setTimeLeft] = useState(90 * 60) // 90 minutes in seconds
     const [answers, setAnswers] = useState<{ [key: number]: string }>({})
     const [currentQuestion, setCurrentQuestion] = useState(1)
     const [showSubmitDialog, setShowSubmitDialog] = useState(false)
@@ -46,7 +46,7 @@ const LiveExamPage = () => {
     const isSmallMobile = useIsSmallMobile()
 
     // Add ref for main content container
-    const mainContentRef = useRef<HTMLDivElement>(null)
+    const mainContentRef = useRef<HTMLDivElement>(null!)
 
     // Sample questions data
     const questions: QuestionType[] = [
@@ -218,77 +218,14 @@ const LiveExamPage = () => {
         },
     ]
 
-    const totalQuestions = 25
+    const totalQuestions = questions.length;
 
-    // Timer effect
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setTimeLeft((prev) => {
-                if (prev <= 1) {
-                    clearInterval(timer)
-                    return 0
-                }
-                return prev - 1
-            })
-        }, 1000)
-
-        return () => clearInterval(timer)
-    }, [])
-
-    // Format time display
-    const formatTime = (seconds: number) => {
-        const minutes = Math.floor(seconds / 60)
-        const secs = seconds % 60
-        return `${minutes.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`
-    }
-
-    const handleAnswerChange = (questionId: number, value: string) => {
-        setAnswers((prev) => ({
-            ...prev,
-            [questionId]: value,
-        }))
-    }
-
-    const goToQuestion = (questionId: number) => {
-        setCurrentQuestion(questionId)
-        // Close mobile nav when navigating to a question
-        if (isMobile) {
-            setShowMobileNav(false)
-        }
-    }
-
-    const getQuestionStatus = (questionId: number) => {
-        if (answers[questionId]) return "answered"
-        return "unanswered"
-    }
-
-    const handleSubmitExam = () => {
-        setShowSubmitDialog(true)
-    }
 
     const confirmSubmit = () => {
         setShowSubmitDialog(false)
         router.push('/platform/test/overview')
     }
 
-    const cancelSubmit = () => {
-        setShowSubmitDialog(false)
-    }
-
-    const toggleMobileNav = () => {
-        setShowMobileNav(!showMobileNav)
-    }
-
-    // Add synchronized scrolling handler
-    const handleSidebarScroll = (event: React.WheelEvent) => {
-        if (mainContentRef.current) {
-            // Prevent the default scroll behavior on the sidebar
-            event.preventDefault()
-
-            // Apply the scroll delta to the main content
-            mainContentRef.current.scrollTop += event.deltaY
-        }
-    }
 
     const questionsAnswered = Object.keys(answers).length
 
@@ -297,10 +234,8 @@ const LiveExamPage = () => {
             {/* Mobile Header - Outside scrollable container */}
             {isMobile && <AssessmentMobileHeader
                 showMobileNav={showMobileNav}
-                toggleMobileNav={toggleMobileNav}
-                timeLeft={timeLeft}
-                formatTime={formatTime}
-                handleSubmitExam={handleSubmitExam}
+                setShowMobileNav={setShowMobileNav}
+                setShowSubmitDialog={setShowSubmitDialog}
                 clockColor="text-[#6F58C9]"
                 buttonGradient={{
                     from: "[#6F58C9]",
@@ -329,7 +264,7 @@ const LiveExamPage = () => {
                         <div className="space-y-6">
                             {questions.map((question) => (
                                 <div key={question.id} id={`question-${question.id}`}>
-                                    <Question question={question} answers={answers} handleAnswerChange={handleAnswerChange} isReviewMode={false} />
+                                    <Question question={question} answers={answers} setAnswers={setAnswers} isReviewMode={false} />
                                 </div>
                             ))}
                         </div>
@@ -341,30 +276,15 @@ const LiveExamPage = () => {
                     isMobile={isMobile}
                     isSmallMobile={isSmallMobile}
                     showMobileNav={showMobileNav}
-                    handleSidebarScroll={handleSidebarScroll}
-                    timeLeft={timeLeft}
-                    formatTime={formatTime}
+                    handleSidebarScroll={(event) => handleSidebarScroll(event, mainContentRef)}
                     answers={answers}
                     totalQuestions={totalQuestions}
-                    getQuestionStatus={getQuestionStatus}
+                    getQuestionStatus={(questionId) => getQuestionStatusLive(answers, questionId)}
                     currentQuestion={currentQuestion}
-                    goToQuestion={goToQuestion}
                     setShowMobileNav={setShowMobileNav}
-                    handleSubmitExam={handleSubmitExam}
-                    timerGradientFrom="from-[#6F58C9]"
-                    timerGradientTo="to-[#5A4BA3]"
-                    timerSubTextClass="text-purple-100"
-                    buttonGradientFrom="from-[#6F58C9]"
-                    buttonGradientTo="to-[#5A4BA3]"
-                    navigatorColors={{
-                        primary: "[#6F58C9]",
-                        primaryLight: "[#6F58C91A]",
-                        primaryHover: "[#6F58C94D]",
-                        answeredBg: "[#6F58C933]",
-                        answeredBorder: "[#6F58C966]",
-                        answeredText: "[#6F58C9]",
-                        answeredHover: "[#6F58C94D]",
-                    }}
+                    setShowSubmitDialog={setShowSubmitDialog}
+                    colors={colors}
+                    setCurrentQuestion={setCurrentQuestion}
                 />
 
             </div>
@@ -375,7 +295,6 @@ const LiveExamPage = () => {
                 setShowSubmitDialog={setShowSubmitDialog}
                 questionsAnswered={questionsAnswered}
                 totalQuestions={totalQuestions}
-                cancelSubmit={cancelSubmit}
                 confirmSubmit={confirmSubmit}
                 colors={{
                     primary: "[#6F58C9]",
@@ -384,20 +303,6 @@ const LiveExamPage = () => {
                 isMobile={isMobile}
                 isSmallMobile={isSmallMobile}
             />
-
-            {/* Low Time Warning */}
-            {timeLeft < 600 && (
-                <div className={`fixed z-50 ${isMobile ? 'bottom-4 left-4 right-4' : 'bottom-4 left-4'}`}>
-                    <Card className="bg-red-50 border-red-200 shadow-lg">
-                        <CardContent className="p-4">
-                            <div className="flex items-center gap-2 text-red-800">
-                                <Clock className="w-4 h-4" />
-                                <span className="text-sm font-medium">По-малко от 10 минути останала!</span>
-                            </div>
-                        </CardContent>
-                    </Card>
-                </div>
-            )}
         </div>
     )
 }

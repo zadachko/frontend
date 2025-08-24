@@ -8,6 +8,8 @@ import { useIsMobile, useIsSmallMobile } from "@/hooks/isMobile";
 import AssessmentOverviewSidebar from "../../components/AssessmentPage/AssessmentOverviewSidebar";
 import AssessmentOverviewMobileHeader from "../../components/AssessmentPage/AssessmentOverviewMobileHeader";
 import type { Question as QuestionType } from "@/types"
+import handleSidebarScroll from "../../components/AssessmentPage/utils/handleSidebarScroll";
+import { getQuestionStatusOverview } from "../../components/AssessmentPage/utils/getQuestionStatus";
 
 const baseDiagram: DiagramData = {
     points: {
@@ -66,7 +68,7 @@ const TestOverviewPage = () => {
     const isSmallMobile = useIsSmallMobile();
 
     // Add ref for main content container
-    const mainContentRef = useRef<HTMLDivElement>(null)
+    const mainContentRef = useRef<HTMLDivElement>(null!)
 
     // Mock test results - in a real app, this would come from the backend
     const testResults = {
@@ -340,47 +342,6 @@ const TestOverviewPage = () => {
         return acc;
     }, {} as { [key: number]: string });
 
-    const handleAnswerChange = () => {
-        // This is read-only, so we don't need to handle changes
-    };
-
-    // Function to get question status for the navigator grid
-    const getQuestionStatus = (questionNum: number) => {
-        const question = questions.find(q => q.id === questionNum);
-        if (!question || !question.userAnswer) return "unanswered";
-
-        const isCorrect = question.userAnswer === question.correctAnswer;
-        return isCorrect ? "correct" : "incorrect";
-    };
-
-    // Function to handle navigation to a specific question
-    const goToQuestion = (questionNum: number) => {
-        setCurrentQuestion(questionNum);
-        // Scroll to the question element
-        const questionElement = document.getElementById(`question-${questionNum}`);
-        if (questionElement) {
-            questionElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-        // Close mobile nav when navigating to a question
-        if (isMobile) {
-            setShowMobileNav(false);
-        }
-    };
-
-    const toggleMobileNav = () => {
-        setShowMobileNav(!showMobileNav);
-    };
-
-    // Add synchronized scrolling handler
-    const handleSidebarScroll = (event: React.WheelEvent) => {
-        if (mainContentRef.current) {
-            // Prevent the default scroll behavior on the sidebar
-            event.preventDefault()
-
-            // Apply the scroll delta to the main content
-            mainContentRef.current.scrollTop += event.deltaY
-        }
-    }
 
     // Colors for the navigator grid - using purple theme for tests
     const navigatorColors = {
@@ -400,7 +361,7 @@ const TestOverviewPage = () => {
             <AssessmentOverviewMobileHeader
                 isMobile={isMobile}
                 showMobileNav={showMobileNav}
-                toggleMobileNav={toggleMobileNav}
+                setShowMobileNav={setShowMobileNav}
                 Icon={BookOpen}
                 iconColor="text-[#6F58C9]"
                 correctAnswers={testResults.correctAnswers}
@@ -430,7 +391,6 @@ const TestOverviewPage = () => {
                                     <Question
                                         question={questionsForDisplay.find(q => q.id === question.id)!}
                                         answers={answers}
-                                        handleAnswerChange={handleAnswerChange}
                                         isReviewMode={true}
                                         correctAnswer={question.correctAnswer}
                                         userAnswer={question.userAnswer}
@@ -448,7 +408,7 @@ const TestOverviewPage = () => {
                         ? `w-full fixed -mt-[7px] top-16 right-0 z-40 ${isSmallMobile ? 'w-full' : 'w-80'} bg-white border-l border-gray-200 transform transition-transform duration-300 ease-in-out ${showMobileNav ? 'translate-x-0' : 'translate-x-full'} flex flex-col h-[calc(100vh-64px)]`
                         : 'w-80 bg-white border-l border-gray-200 flex flex-col h-100vh'
                         }`}
-                    onWheel={handleSidebarScroll}
+                    onWheel={(event) => handleSidebarScroll(event, mainContentRef)}
                 >
                     {/* Overview Data */}
                     <AssessmentOverviewSidebar
@@ -476,14 +436,14 @@ const TestOverviewPage = () => {
                         <QuestionsNavigatorGrid
                             answers={answers}
                             totalQuestions={questions.length}
-                            getQuestionStatus={getQuestionStatus}
+                            getQuestionStatus={(questionNum) => getQuestionStatusOverview(questions, questionNum)}
                             currentQuestion={currentQuestion}
-                            goToQuestion={goToQuestion}
                             setShowMobileNav={setShowMobileNav}
-                            colors={navigatorColors}
+                            navigatorColors={navigatorColors}
                             reviewMode={true}
                             isMobile={isMobile}
                             isSmallMobile={isSmallMobile}
+                            setCurrentQuestion={setCurrentQuestion}
                         />
                     </div>
                 </div>

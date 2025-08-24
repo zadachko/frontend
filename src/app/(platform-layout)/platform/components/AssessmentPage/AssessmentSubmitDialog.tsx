@@ -7,7 +7,6 @@ interface AssessmentSubmitDialogProps {
     setShowSubmitDialog: (show: boolean) => void;
     questionsAnswered: number;
     totalQuestions: number;
-    cancelSubmit: () => void;
     confirmSubmit: () => void;
     colors: {
         primary: string;
@@ -22,12 +21,15 @@ const AssessmentSubmitDialog = ({
     setShowSubmitDialog,
     questionsAnswered,
     totalQuestions,
-    cancelSubmit,
     confirmSubmit,
     colors,
     isMobile = false,
     isSmallMobile = false
 }: AssessmentSubmitDialogProps) => {
+
+    const handleCancelSubmit = () => {
+        setShowSubmitDialog(false)
+    }
     return (
         <Dialog open={showSubmitDialog} onOpenChange={setShowSubmitDialog}>
             <DialogContent className={`${isSmallMobile ? 'w-[98vw] max-w-none' : isMobile ? 'w-[95vw] max-w-none mx-4' : 'sm:max-w-md'}`}>
@@ -45,7 +47,7 @@ const AssessmentSubmitDialog = ({
                 <DialogFooter className={`flex gap-2 ${isMobile ? 'flex-col' : ''}`}>
                     <Button
                         variant="outline"
-                        onClick={cancelSubmit}
+                        onClick={handleCancelSubmit}
                         className={isMobile ? 'w-full' : ''}
                     >
                         Отказ

@@ -10,7 +10,7 @@ type MultipleChoiceAnswerProps = {
     answers: {
         [key: number]: string;
     };
-    handleAnswerChange: (questionId: number, value: string) => void;
+    handleAnswerChange?: (questionId: number, value: string) => void;
     // New props for review mode
     isReviewMode?: boolean;
     isCorrect?: boolean;
@@ -94,7 +94,7 @@ const MultipleChoiceAnswer = ({
                         <button
                             key={index}
                             onClick={() =>
-                                handleAnswerChange(
+                                handleAnswerChange?.(
                                     question.id,
                                     optionLetter
                                 )

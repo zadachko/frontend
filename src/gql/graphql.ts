@@ -31,6 +31,11 @@ export type AngleInput = {
   label?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type AssignExamInput = {
+  examId: Scalars['String']['input'];
+  userId: Scalars['String']['input'];
+};
+
 export type AuthResponse = {
   __typename?: 'AuthResponse';
   accessToken: Scalars['String']['output'];
@@ -39,7 +44,7 @@ export type AuthResponse = {
 };
 
 export type CreateExamInput = {
-  questionIds?: InputMaybe<Array<Scalars['Int']['input']>>;
+  questionIds?: InputMaybe<Array<Scalars['ID']['input']>>;
 };
 
 export type CreateQuestionInput = {
@@ -61,6 +66,15 @@ export type CreateUserInput = {
   role: Scalars['String']['input'];
 };
 
+export type CreateUserQuestionSubmissionInput = {
+  answer?: InputMaybe<Scalars['String']['input']>;
+  examId: Scalars['ID']['input'];
+  isCorrect?: InputMaybe<Scalars['Boolean']['input']>;
+  pointsEarned?: InputMaybe<Scalars['Float']['input']>;
+  questionId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
+};
+
 export type Edge = {
   __typename?: 'Edge';
   from: Scalars['String']['output'];
@@ -80,17 +94,26 @@ export type Exam = {
   __typename?: 'Exam';
   createdAt: Scalars['Date']['output'];
   examQuestions?: Maybe<Array<ExamQuestion>>;
-  id: Scalars['Int']['output'];
+  id: Scalars['ID']['output'];
+  questionSubmissions?: Maybe<Array<UserQuestionSubmission>>;
   updatedAt: Scalars['Date']['output'];
+  userExams?: Maybe<Array<UserExam>>;
 };
 
 export type ExamQuestion = {
   __typename?: 'ExamQuestion';
   exam: Exam;
-  examId: Scalars['Int']['output'];
+  examId: Scalars['ID']['output'];
   position: Scalars['Int']['output'];
   question: Question;
-  questionId: Scalars['Int']['output'];
+  questionId: Scalars['ID']['output'];
+};
+
+export type ExamScoreResponse = {
+  __typename?: 'ExamScoreResponse';
+  earnedPoints: Scalars['Int']['output'];
+  percentage: Scalars['Float']['output'];
+  totalPoints: Scalars['Int']['output'];
 };
 
 export type LoginInput = {
@@ -100,17 +123,27 @@ export type LoginInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  assignExamToUser: UserExam;
   createExam: Exam;
   createQuestion: Question;
   createUser: User;
+  createUserQuestionSubmission: UserQuestionSubmission;
   deleteExam: Scalars['Boolean']['output'];
   deleteUser: Scalars['Boolean']['output'];
   login: AuthResponse;
   refreshToken: AuthResponse;
+  removeExamFromUser: Scalars['Boolean']['output'];
   removeQuestion: Scalars['Boolean']['output'];
+  removeUserQuestionSubmission: Scalars['Boolean']['output'];
   updateExam: Exam;
   updateQuestion: Question;
   updateUser: User;
+  updateUserQuestionSubmission: UserQuestionSubmission;
+};
+
+
+export type MutationAssignExamToUserArgs = {
+  input: AssignExamInput;
 };
 
 
@@ -129,8 +162,13 @@ export type MutationCreateUserArgs = {
 };
 
 
+export type MutationCreateUserQuestionSubmissionArgs = {
+  createUserQuestionSubmissionInput: CreateUserQuestionSubmissionInput;
+};
+
+
 export type MutationDeleteExamArgs = {
-  id: Scalars['Int']['input'];
+  id: Scalars['String']['input'];
 };
 
 
@@ -149,19 +187,32 @@ export type MutationRefreshTokenArgs = {
 };
 
 
+export type MutationRemoveExamFromUserArgs = {
+  examId: Scalars['String']['input'];
+  userId: Scalars['String']['input'];
+};
+
+
 export type MutationRemoveQuestionArgs = {
-  id: Scalars['Int']['input'];
+  id: Scalars['String']['input'];
+};
+
+
+export type MutationRemoveUserQuestionSubmissionArgs = {
+  examId: Scalars['ID']['input'];
+  questionId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
 };
 
 
 export type MutationUpdateExamArgs = {
-  id: Scalars['Int']['input'];
+  id: Scalars['String']['input'];
   input: UpdateExamInput;
 };
 
 
 export type MutationUpdateQuestionArgs = {
-  id: Scalars['Int']['input'];
+  id: Scalars['String']['input'];
   updateQuestionInput: UpdateQuestionInput;
 };
 
@@ -169,6 +220,11 @@ export type MutationUpdateQuestionArgs = {
 export type MutationUpdateUserArgs = {
   id: Scalars['ID']['input'];
   input: UpdateUserInput;
+};
+
+
+export type MutationUpdateUserQuestionSubmissionArgs = {
+  updateUserQuestionSubmissionInput: UpdateUserQuestionSubmissionInput;
 };
 
 export type Point = {
@@ -186,18 +242,39 @@ export type PointInput = {
 
 export type Query = {
   __typename?: 'Query';
+  examScore: ExamScoreResponse;
+  examSubmissions: Array<UserQuestionSubmission>;
   getExam?: Maybe<Exam>;
   getExams?: Maybe<Array<Exam>>;
+  getMyExams?: Maybe<Array<Exam>>;
   getUser?: Maybe<User>;
+  getUserExams?: Maybe<Array<Exam>>;
   getUsers?: Maybe<Array<User>>;
   health: Scalars['String']['output'];
+  myExamScore: ExamScoreResponse;
+  myQuestionSubmissions: Array<UserQuestionSubmission>;
+  mySubmissionStats: SubmissionStatsResponse;
   question: Question;
   questions: Array<Question>;
+  submissionStats: SubmissionStatsResponse;
+  userQuestionSubmission: UserQuestionSubmission;
+  userQuestionSubmissions: Array<UserQuestionSubmission>;
+};
+
+
+export type QueryExamScoreArgs = {
+  examId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
+};
+
+
+export type QueryExamSubmissionsArgs = {
+  examId: Scalars['ID']['input'];
 };
 
 
 export type QueryGetExamArgs = {
-  id: Scalars['Int']['input'];
+  id: Scalars['String']['input'];
 };
 
 
@@ -206,8 +283,47 @@ export type QueryGetUserArgs = {
 };
 
 
+export type QueryGetUserExamsArgs = {
+  userId: Scalars['String']['input'];
+};
+
+
+export type QueryMyExamScoreArgs = {
+  examId: Scalars['ID']['input'];
+};
+
+
+export type QueryMyQuestionSubmissionsArgs = {
+  examId: Scalars['ID']['input'];
+};
+
+
+export type QueryMySubmissionStatsArgs = {
+  examId: Scalars['ID']['input'];
+};
+
+
 export type QueryQuestionArgs = {
-  id: Scalars['Int']['input'];
+  id: Scalars['String']['input'];
+};
+
+
+export type QuerySubmissionStatsArgs = {
+  examId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
+};
+
+
+export type QueryUserQuestionSubmissionArgs = {
+  examId: Scalars['ID']['input'];
+  questionId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
+};
+
+
+export type QueryUserQuestionSubmissionsArgs = {
+  examId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
 };
 
 export type Question = {
@@ -216,14 +332,13 @@ export type Question = {
   createdAt: Scalars['Date']['output'];
   diagramData?: Maybe<Array<Point>>;
   diagramSteps?: Maybe<Array<Array<StepAction>>>;
-  id: Scalars['Int']['output'];
+  id: Scalars['ID']['output'];
   options?: Maybe<Array<Scalars['String']['output']>>;
   points?: Maybe<Scalars['Int']['output']>;
   solutionSteps?: Maybe<Array<SolutionStep>>;
   statement: Scalars['String']['output'];
   type: QuestionType;
   updatedAt: Scalars['Date']['output'];
-  userAnswer?: Maybe<Scalars['String']['output']>;
 };
 
 export enum QuestionType {
@@ -302,8 +417,15 @@ export type StepActionInput = {
   type: Scalars['String']['input'];
 };
 
+export type SubmissionStatsResponse = {
+  __typename?: 'SubmissionStatsResponse';
+  answeredQuestions: Scalars['Int']['output'];
+  correctAnswers: Scalars['Int']['output'];
+  totalQuestions: Scalars['Int']['output'];
+};
+
 export type UpdateExamInput = {
-  questionIds?: InputMaybe<Array<Scalars['Int']['input']>>;
+  questionIds?: InputMaybe<Array<Scalars['ID']['input']>>;
 };
 
 export type UpdateQuestionInput = {
@@ -325,6 +447,15 @@ export type UpdateUserInput = {
   role?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type UpdateUserQuestionSubmissionInput = {
+  answer?: InputMaybe<Scalars['String']['input']>;
+  examId: Scalars['ID']['input'];
+  isCorrect?: InputMaybe<Scalars['Boolean']['input']>;
+  pointsEarned?: InputMaybe<Scalars['Float']['input']>;
+  questionId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
+};
+
 export type User = {
   __typename?: 'User';
   createdAt: Scalars['Date']['output'];
@@ -333,16 +464,52 @@ export type User = {
   id: Scalars['ID']['output'];
   lastLoginAt?: Maybe<Scalars['Date']['output']>;
   lastName: Scalars['String']['output'];
+  questionSubmissions?: Maybe<Array<UserQuestionSubmission>>;
   role: Role;
   updatedAt: Scalars['Date']['output'];
+  userExams?: Maybe<Array<UserExam>>;
 };
 
-export type GetExamQuestionsQueryVariables = Exact<{
-  examId: Scalars['Int']['input'];
+export type UserExam = {
+  __typename?: 'UserExam';
+  assignedAt: Scalars['Date']['output'];
+  completedAt?: Maybe<Scalars['Date']['output']>;
+  exam: Exam;
+  examId: Scalars['ID']['output'];
+  startedAt?: Maybe<Scalars['Date']['output']>;
+  user: User;
+  userId: Scalars['ID']['output'];
+};
+
+export type UserQuestionSubmission = {
+  __typename?: 'UserQuestionSubmission';
+  answer?: Maybe<Scalars['String']['output']>;
+  createdAt: Scalars['Date']['output'];
+  exam: Exam;
+  examId: Scalars['ID']['output'];
+  isCorrect?: Maybe<Scalars['Boolean']['output']>;
+  pointsEarned?: Maybe<Scalars['Int']['output']>;
+  question: Question;
+  questionId: Scalars['ID']['output'];
+  updatedAt: Scalars['Date']['output'];
+  user: User;
+  userId: Scalars['ID']['output'];
+};
+
+export type GetExamLiveQueryVariables = Exact<{
+  examId: Scalars['String']['input'];
 }>;
 
 
-export type GetExamQuestionsQuery = { __typename?: 'Query', getExam?: { __typename?: 'Exam', createdAt: any, examQuestions?: Array<{ __typename?: 'ExamQuestion', question: { __typename?: 'Question', points?: number | null, statement: string, options?: Array<string> | null, type: QuestionType } }> | null } | null };
+export type GetExamLiveQuery = { __typename?: 'Query', getExam?: { __typename?: 'Exam', createdAt: any, examQuestions?: Array<{ __typename?: 'ExamQuestion', question: { __typename?: 'Question', points?: number | null, statement: string, options?: Array<string> | null, type: QuestionType } }> | null } | null };
+
+export type GetExamOverviewQueryVariables = Exact<{
+  getExamId: Scalars['String']['input'];
+}>;
 
 
-export const GetExamQuestionsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetExamQuestions"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"examId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getExam"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"examId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"examQuestions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"question"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"points"}},{"kind":"Field","name":{"kind":"Name","value":"statement"}},{"kind":"Field","name":{"kind":"Name","value":"options"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetExamQuestionsQuery, GetExamQuestionsQueryVariables>;
+export type GetExamOverviewQuery = { __typename?: 'Query', getExam?: { __typename?: 'Exam', examQuestions?: Array<{ __typename?: 'ExamQuestion', question: { __typename?: 'Question', correctAnswer?: string | null, options?: Array<string> | null, points?: number | null, statement: string, type: QuestionType, diagramData?: Array<{ __typename?: 'Point', id: string, x: number, y: number }> | null, diagramSteps?: Array<Array<{ __typename?: 'StepAction', color?: string | null, elementType: string, id?: string | null, type: string, angleData?: { __typename?: 'Angle', degrees: number, id: string, label?: string | null } | null, edgeData?: { __typename?: 'Edge', from: string, label?: string | null, length?: number | null, to: string } | null, pointData?: { __typename?: 'Point', id: string, x: number, y: number } | null, removeId?: { __typename?: 'RemoveId', from: string, to: string } | null, sideData?: { __typename?: 'Side', id: string, label?: string | null, length: number } | null }>> | null, solutionSteps?: Array<{ __typename?: 'SolutionStep', action: string, explanation?: string | null, result: string, step: number, subSteps?: Array<string> | null }> | null } }> | null } | null };
+
+
+export const GetExamLiveDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetExamLive"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"examId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getExam"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"examId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"examQuestions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"question"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"points"}},{"kind":"Field","name":{"kind":"Name","value":"statement"}},{"kind":"Field","name":{"kind":"Name","value":"options"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetExamLiveQuery, GetExamLiveQueryVariables>;
+export const GetExamOverviewDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetExamOverview"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"getExamId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getExam"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"getExamId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"examQuestions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"question"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"correctAnswer"}},{"kind":"Field","name":{"kind":"Name","value":"diagramData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"x"}},{"kind":"Field","name":{"kind":"Name","value":"y"}}]}},{"kind":"Field","name":{"kind":"Name","value":"diagramSteps"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"angleData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"degrees"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"label"}}]}},{"kind":"Field","name":{"kind":"Name","value":"color"}},{"kind":"Field","name":{"kind":"Name","value":"edgeData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"from"}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"length"}},{"kind":"Field","name":{"kind":"Name","value":"to"}}]}},{"kind":"Field","name":{"kind":"Name","value":"elementType"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"pointData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"x"}},{"kind":"Field","name":{"kind":"Name","value":"y"}}]}},{"kind":"Field","name":{"kind":"Name","value":"removeId"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"from"}},{"kind":"Field","name":{"kind":"Name","value":"to"}}]}},{"kind":"Field","name":{"kind":"Name","value":"sideData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"length"}}]}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}},{"kind":"Field","name":{"kind":"Name","value":"options"}},{"kind":"Field","name":{"kind":"Name","value":"points"}},{"kind":"Field","name":{"kind":"Name","value":"solutionSteps"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"action"}},{"kind":"Field","name":{"kind":"Name","value":"explanation"}},{"kind":"Field","name":{"kind":"Name","value":"result"}},{"kind":"Field","name":{"kind":"Name","value":"step"}},{"kind":"Field","name":{"kind":"Name","value":"subSteps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"statement"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetExamOverviewQuery, GetExamOverviewQueryVariables>;

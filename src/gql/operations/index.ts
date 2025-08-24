@@ -31,6 +31,11 @@ export type AngleInput = {
   label?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type AssignExamInput = {
+  examId: Scalars['String']['input'];
+  userId: Scalars['String']['input'];
+};
+
 export type AuthResponse = {
   __typename?: 'AuthResponse';
   accessToken: Scalars['String']['output'];
@@ -39,7 +44,7 @@ export type AuthResponse = {
 };
 
 export type CreateExamInput = {
-  questionIds?: InputMaybe<Array<Scalars['Int']['input']>>;
+  questionIds?: InputMaybe<Array<Scalars['ID']['input']>>;
 };
 
 export type CreateQuestionInput = {
@@ -61,6 +66,15 @@ export type CreateUserInput = {
   role: Scalars['String']['input'];
 };
 
+export type CreateUserQuestionSubmissionInput = {
+  answer?: InputMaybe<Scalars['String']['input']>;
+  examId: Scalars['ID']['input'];
+  isCorrect?: InputMaybe<Scalars['Boolean']['input']>;
+  pointsEarned?: InputMaybe<Scalars['Float']['input']>;
+  questionId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
+};
+
 export type Edge = {
   __typename?: 'Edge';
   from: Scalars['String']['output'];
@@ -80,17 +94,26 @@ export type Exam = {
   __typename?: 'Exam';
   createdAt: Scalars['Date']['output'];
   examQuestions?: Maybe<Array<ExamQuestion>>;
-  id: Scalars['Int']['output'];
+  id: Scalars['ID']['output'];
+  questionSubmissions?: Maybe<Array<UserQuestionSubmission>>;
   updatedAt: Scalars['Date']['output'];
+  userExams?: Maybe<Array<UserExam>>;
 };
 
 export type ExamQuestion = {
   __typename?: 'ExamQuestion';
   exam: Exam;
-  examId: Scalars['Int']['output'];
+  examId: Scalars['ID']['output'];
   position: Scalars['Int']['output'];
   question: Question;
-  questionId: Scalars['Int']['output'];
+  questionId: Scalars['ID']['output'];
+};
+
+export type ExamScoreResponse = {
+  __typename?: 'ExamScoreResponse';
+  earnedPoints: Scalars['Int']['output'];
+  percentage: Scalars['Float']['output'];
+  totalPoints: Scalars['Int']['output'];
 };
 
 export type LoginInput = {
@@ -100,17 +123,27 @@ export type LoginInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  assignExamToUser: UserExam;
   createExam: Exam;
   createQuestion: Question;
   createUser: User;
+  createUserQuestionSubmission: UserQuestionSubmission;
   deleteExam: Scalars['Boolean']['output'];
   deleteUser: Scalars['Boolean']['output'];
   login: AuthResponse;
   refreshToken: AuthResponse;
+  removeExamFromUser: Scalars['Boolean']['output'];
   removeQuestion: Scalars['Boolean']['output'];
+  removeUserQuestionSubmission: Scalars['Boolean']['output'];
   updateExam: Exam;
   updateQuestion: Question;
   updateUser: User;
+  updateUserQuestionSubmission: UserQuestionSubmission;
+};
+
+
+export type MutationAssignExamToUserArgs = {
+  input: AssignExamInput;
 };
 
 
@@ -129,8 +162,13 @@ export type MutationCreateUserArgs = {
 };
 
 
+export type MutationCreateUserQuestionSubmissionArgs = {
+  createUserQuestionSubmissionInput: CreateUserQuestionSubmissionInput;
+};
+
+
 export type MutationDeleteExamArgs = {
-  id: Scalars['Int']['input'];
+  id: Scalars['String']['input'];
 };
 
 
@@ -149,19 +187,32 @@ export type MutationRefreshTokenArgs = {
 };
 
 
+export type MutationRemoveExamFromUserArgs = {
+  examId: Scalars['String']['input'];
+  userId: Scalars['String']['input'];
+};
+
+
 export type MutationRemoveQuestionArgs = {
-  id: Scalars['Int']['input'];
+  id: Scalars['String']['input'];
+};
+
+
+export type MutationRemoveUserQuestionSubmissionArgs = {
+  examId: Scalars['ID']['input'];
+  questionId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
 };
 
 
 export type MutationUpdateExamArgs = {
-  id: Scalars['Int']['input'];
+  id: Scalars['String']['input'];
   input: UpdateExamInput;
 };
 
 
 export type MutationUpdateQuestionArgs = {
-  id: Scalars['Int']['input'];
+  id: Scalars['String']['input'];
   updateQuestionInput: UpdateQuestionInput;
 };
 
@@ -169,6 +220,11 @@ export type MutationUpdateQuestionArgs = {
 export type MutationUpdateUserArgs = {
   id: Scalars['ID']['input'];
   input: UpdateUserInput;
+};
+
+
+export type MutationUpdateUserQuestionSubmissionArgs = {
+  updateUserQuestionSubmissionInput: UpdateUserQuestionSubmissionInput;
 };
 
 export type Point = {
@@ -186,18 +242,39 @@ export type PointInput = {
 
 export type Query = {
   __typename?: 'Query';
+  examScore: ExamScoreResponse;
+  examSubmissions: Array<UserQuestionSubmission>;
   getExam?: Maybe<Exam>;
   getExams?: Maybe<Array<Exam>>;
+  getMyExams?: Maybe<Array<Exam>>;
   getUser?: Maybe<User>;
+  getUserExams?: Maybe<Array<Exam>>;
   getUsers?: Maybe<Array<User>>;
   health: Scalars['String']['output'];
+  myExamScore: ExamScoreResponse;
+  myQuestionSubmissions: Array<UserQuestionSubmission>;
+  mySubmissionStats: SubmissionStatsResponse;
   question: Question;
   questions: Array<Question>;
+  submissionStats: SubmissionStatsResponse;
+  userQuestionSubmission: UserQuestionSubmission;
+  userQuestionSubmissions: Array<UserQuestionSubmission>;
+};
+
+
+export type QueryExamScoreArgs = {
+  examId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
+};
+
+
+export type QueryExamSubmissionsArgs = {
+  examId: Scalars['ID']['input'];
 };
 
 
 export type QueryGetExamArgs = {
-  id: Scalars['Int']['input'];
+  id: Scalars['String']['input'];
 };
 
 
@@ -206,8 +283,47 @@ export type QueryGetUserArgs = {
 };
 
 
+export type QueryGetUserExamsArgs = {
+  userId: Scalars['String']['input'];
+};
+
+
+export type QueryMyExamScoreArgs = {
+  examId: Scalars['ID']['input'];
+};
+
+
+export type QueryMyQuestionSubmissionsArgs = {
+  examId: Scalars['ID']['input'];
+};
+
+
+export type QueryMySubmissionStatsArgs = {
+  examId: Scalars['ID']['input'];
+};
+
+
 export type QueryQuestionArgs = {
-  id: Scalars['Int']['input'];
+  id: Scalars['String']['input'];
+};
+
+
+export type QuerySubmissionStatsArgs = {
+  examId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
+};
+
+
+export type QueryUserQuestionSubmissionArgs = {
+  examId: Scalars['ID']['input'];
+  questionId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
+};
+
+
+export type QueryUserQuestionSubmissionsArgs = {
+  examId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
 };
 
 export type Question = {
@@ -216,14 +332,13 @@ export type Question = {
   createdAt: Scalars['Date']['output'];
   diagramData?: Maybe<Array<Point>>;
   diagramSteps?: Maybe<Array<Array<StepAction>>>;
-  id: Scalars['Int']['output'];
+  id: Scalars['ID']['output'];
   options?: Maybe<Array<Scalars['String']['output']>>;
   points?: Maybe<Scalars['Int']['output']>;
   solutionSteps?: Maybe<Array<SolutionStep>>;
   statement: Scalars['String']['output'];
   type: QuestionType;
   updatedAt: Scalars['Date']['output'];
-  userAnswer?: Maybe<Scalars['String']['output']>;
 };
 
 export enum QuestionType {
@@ -302,8 +417,15 @@ export type StepActionInput = {
   type: Scalars['String']['input'];
 };
 
+export type SubmissionStatsResponse = {
+  __typename?: 'SubmissionStatsResponse';
+  answeredQuestions: Scalars['Int']['output'];
+  correctAnswers: Scalars['Int']['output'];
+  totalQuestions: Scalars['Int']['output'];
+};
+
 export type UpdateExamInput = {
-  questionIds?: InputMaybe<Array<Scalars['Int']['input']>>;
+  questionIds?: InputMaybe<Array<Scalars['ID']['input']>>;
 };
 
 export type UpdateQuestionInput = {
@@ -325,6 +447,15 @@ export type UpdateUserInput = {
   role?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type UpdateUserQuestionSubmissionInput = {
+  answer?: InputMaybe<Scalars['String']['input']>;
+  examId: Scalars['ID']['input'];
+  isCorrect?: InputMaybe<Scalars['Boolean']['input']>;
+  pointsEarned?: InputMaybe<Scalars['Float']['input']>;
+  questionId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
+};
+
 export type User = {
   __typename?: 'User';
   createdAt: Scalars['Date']['output'];
@@ -333,20 +464,55 @@ export type User = {
   id: Scalars['ID']['output'];
   lastLoginAt?: Maybe<Scalars['Date']['output']>;
   lastName: Scalars['String']['output'];
+  questionSubmissions?: Maybe<Array<UserQuestionSubmission>>;
   role: Role;
   updatedAt: Scalars['Date']['output'];
+  userExams?: Maybe<Array<UserExam>>;
 };
 
-export type GetExamQuestionsQueryVariables = Exact<{
-  examId: Scalars['Int']['input'];
+export type UserExam = {
+  __typename?: 'UserExam';
+  assignedAt: Scalars['Date']['output'];
+  completedAt?: Maybe<Scalars['Date']['output']>;
+  exam: Exam;
+  examId: Scalars['ID']['output'];
+  startedAt?: Maybe<Scalars['Date']['output']>;
+  user: User;
+  userId: Scalars['ID']['output'];
+};
+
+export type UserQuestionSubmission = {
+  __typename?: 'UserQuestionSubmission';
+  answer?: Maybe<Scalars['String']['output']>;
+  createdAt: Scalars['Date']['output'];
+  exam: Exam;
+  examId: Scalars['ID']['output'];
+  isCorrect?: Maybe<Scalars['Boolean']['output']>;
+  pointsEarned?: Maybe<Scalars['Int']['output']>;
+  question: Question;
+  questionId: Scalars['ID']['output'];
+  updatedAt: Scalars['Date']['output'];
+  user: User;
+  userId: Scalars['ID']['output'];
+};
+
+export type GetExamLiveQueryVariables = Exact<{
+  examId: Scalars['String']['input'];
 }>;
 
 
-export type GetExamQuestionsQuery = { __typename?: 'Query', getExam?: { __typename?: 'Exam', createdAt: any, examQuestions?: Array<{ __typename?: 'ExamQuestion', question: { __typename?: 'Question', points?: number | null, statement: string, options?: Array<string> | null, type: QuestionType } }> | null } | null };
+export type GetExamLiveQuery = { __typename?: 'Query', getExam?: { __typename?: 'Exam', createdAt: any, examQuestions?: Array<{ __typename?: 'ExamQuestion', question: { __typename?: 'Question', points?: number | null, statement: string, options?: Array<string> | null, type: QuestionType } }> | null } | null };
+
+export type GetExamOverviewQueryVariables = Exact<{
+  getExamId: Scalars['String']['input'];
+}>;
 
 
-export const GetExamQuestionsDocument = gql`
-    query GetExamQuestions($examId: Int!) {
+export type GetExamOverviewQuery = { __typename?: 'Query', getExam?: { __typename?: 'Exam', examQuestions?: Array<{ __typename?: 'ExamQuestion', question: { __typename?: 'Question', correctAnswer?: string | null, options?: Array<string> | null, points?: number | null, statement: string, type: QuestionType, diagramData?: Array<{ __typename?: 'Point', id: string, x: number, y: number }> | null, diagramSteps?: Array<Array<{ __typename?: 'StepAction', color?: string | null, elementType: string, id?: string | null, type: string, angleData?: { __typename?: 'Angle', degrees: number, id: string, label?: string | null } | null, edgeData?: { __typename?: 'Edge', from: string, label?: string | null, length?: number | null, to: string } | null, pointData?: { __typename?: 'Point', id: string, x: number, y: number } | null, removeId?: { __typename?: 'RemoveId', from: string, to: string } | null, sideData?: { __typename?: 'Side', id: string, label?: string | null, length: number } | null }>> | null, solutionSteps?: Array<{ __typename?: 'SolutionStep', action: string, explanation?: string | null, result: string, step: number, subSteps?: Array<string> | null }> | null } }> | null } | null };
+
+
+export const GetExamLiveDocument = gql`
+    query GetExamLive($examId: String!) {
   getExam(id: $examId) {
     createdAt
     examQuestions {
@@ -362,34 +528,125 @@ export const GetExamQuestionsDocument = gql`
     `;
 
 /**
- * __useGetExamQuestionsQuery__
+ * __useGetExamLiveQuery__
  *
- * To run a query within a React component, call `useGetExamQuestionsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetExamQuestionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetExamLiveQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetExamLiveQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetExamQuestionsQuery({
+ * const { data, loading, error } = useGetExamLiveQuery({
  *   variables: {
  *      examId: // value for 'examId'
  *   },
  * });
  */
-export function useGetExamQuestionsQuery(baseOptions: Apollo.QueryHookOptions<GetExamQuestionsQuery, GetExamQuestionsQueryVariables> & ({ variables: GetExamQuestionsQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+export function useGetExamLiveQuery(baseOptions: Apollo.QueryHookOptions<GetExamLiveQuery, GetExamLiveQueryVariables> & ({ variables: GetExamLiveQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetExamQuestionsQuery, GetExamQuestionsQueryVariables>(GetExamQuestionsDocument, options);
+        return Apollo.useQuery<GetExamLiveQuery, GetExamLiveQueryVariables>(GetExamLiveDocument, options);
       }
-export function useGetExamQuestionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetExamQuestionsQuery, GetExamQuestionsQueryVariables>) {
+export function useGetExamLiveLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetExamLiveQuery, GetExamLiveQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetExamQuestionsQuery, GetExamQuestionsQueryVariables>(GetExamQuestionsDocument, options);
+          return Apollo.useLazyQuery<GetExamLiveQuery, GetExamLiveQueryVariables>(GetExamLiveDocument, options);
         }
-export function useGetExamQuestionsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetExamQuestionsQuery, GetExamQuestionsQueryVariables>) {
+export function useGetExamLiveSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetExamLiveQuery, GetExamLiveQueryVariables>) {
           const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetExamQuestionsQuery, GetExamQuestionsQueryVariables>(GetExamQuestionsDocument, options);
+          return Apollo.useSuspenseQuery<GetExamLiveQuery, GetExamLiveQueryVariables>(GetExamLiveDocument, options);
         }
-export type GetExamQuestionsQueryHookResult = ReturnType<typeof useGetExamQuestionsQuery>;
-export type GetExamQuestionsLazyQueryHookResult = ReturnType<typeof useGetExamQuestionsLazyQuery>;
-export type GetExamQuestionsSuspenseQueryHookResult = ReturnType<typeof useGetExamQuestionsSuspenseQuery>;
-export type GetExamQuestionsQueryResult = Apollo.QueryResult<GetExamQuestionsQuery, GetExamQuestionsQueryVariables>;
+export type GetExamLiveQueryHookResult = ReturnType<typeof useGetExamLiveQuery>;
+export type GetExamLiveLazyQueryHookResult = ReturnType<typeof useGetExamLiveLazyQuery>;
+export type GetExamLiveSuspenseQueryHookResult = ReturnType<typeof useGetExamLiveSuspenseQuery>;
+export type GetExamLiveQueryResult = Apollo.QueryResult<GetExamLiveQuery, GetExamLiveQueryVariables>;
+export const GetExamOverviewDocument = gql`
+    query GetExamOverview($getExamId: String!) {
+  getExam(id: $getExamId) {
+    examQuestions {
+      question {
+        correctAnswer
+        diagramData {
+          id
+          x
+          y
+        }
+        diagramSteps {
+          angleData {
+            degrees
+            id
+            label
+          }
+          color
+          edgeData {
+            from
+            label
+            length
+            to
+          }
+          elementType
+          id
+          pointData {
+            id
+            x
+            y
+          }
+          removeId {
+            from
+            to
+          }
+          sideData {
+            id
+            label
+            length
+          }
+          type
+        }
+        options
+        points
+        solutionSteps {
+          action
+          explanation
+          result
+          step
+          subSteps
+        }
+        statement
+        type
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetExamOverviewQuery__
+ *
+ * To run a query within a React component, call `useGetExamOverviewQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetExamOverviewQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetExamOverviewQuery({
+ *   variables: {
+ *      getExamId: // value for 'getExamId'
+ *   },
+ * });
+ */
+export function useGetExamOverviewQuery(baseOptions: Apollo.QueryHookOptions<GetExamOverviewQuery, GetExamOverviewQueryVariables> & ({ variables: GetExamOverviewQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetExamOverviewQuery, GetExamOverviewQueryVariables>(GetExamOverviewDocument, options);
+      }
+export function useGetExamOverviewLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetExamOverviewQuery, GetExamOverviewQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetExamOverviewQuery, GetExamOverviewQueryVariables>(GetExamOverviewDocument, options);
+        }
+export function useGetExamOverviewSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetExamOverviewQuery, GetExamOverviewQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetExamOverviewQuery, GetExamOverviewQueryVariables>(GetExamOverviewDocument, options);
+        }
+export type GetExamOverviewQueryHookResult = ReturnType<typeof useGetExamOverviewQuery>;
+export type GetExamOverviewLazyQueryHookResult = ReturnType<typeof useGetExamOverviewLazyQuery>;
+export type GetExamOverviewSuspenseQueryHookResult = ReturnType<typeof useGetExamOverviewSuspenseQuery>;
+export type GetExamOverviewQueryResult = Apollo.QueryResult<GetExamOverviewQuery, GetExamOverviewQueryVariables>;

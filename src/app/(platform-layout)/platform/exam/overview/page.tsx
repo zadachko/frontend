@@ -2,311 +2,66 @@
 
 import { useState, useRef } from "react";
 import { GraduationCap } from "lucide-react";
-import { type DiagramData, type StepAction } from "geometry-diagram-renderer";
 import Question from "@/app/(platform-layout)/platform/components/Question/Question";
 import { QuestionsNavigatorGrid } from "@/app/(platform-layout)/platform/components/QuestionsNavigatorGrid/QuestionsNavigatorGrid";
 import { useIsMobile, useIsSmallMobile } from "@/hooks/isMobile";
 import AssessmentOverviewSidebar from "../../components/AssessmentPage/AssessmentOverviewSidebar";
 import AssessmentOverviewMobileHeader from "../../components/AssessmentPage/AssessmentOverviewMobileHeader";
-
+import { useGetExamOverviewQuery } from "@/gql/operations";
+import handleSidebarScroll from "../../components/AssessmentPage/utils/handleSidebarScroll";
 import type { Question as QuestionType } from "@/types"
-// StepAction is imported from the package above
-
-const baseDiagram: DiagramData = {
-    points: {
-        A: { x: 0, y: 0 },
-        B: { x: 4.46, y: 0 },
-        C: { x: 1.635, y: 2.83 },
-    },
-    edges: [
-        { from: "A", to: "B" },
-        { from: "B", to: "C" },
-        { from: "A", to: "C" },
-    ],
-    sides: [],
-    angles: []
-};
-const exampleSteps: StepAction[][] = [
-    [
-        { type: "add", elementType: "point", data: { id: "D", x: 1.635, y: 0 } },
-        { type: "add", elementType: "point", data: { id: "K", x: 1.117, y: 1.932 } },
-        { type: "add", elementType: "edge", data: { from: "C", to: "D", dashed: true } },
-        { type: "add", elementType: "edge", data: { from: "B", to: "K", dashed: true } },
-        { type: "add", elementType: "angle", data: { name: "BDC" } },
-        { type: "add", elementType: "angle", data: { name: "BKC" } },
-    ],
-    [
-        { type: "add", elementType: "point", data: { id: "M", x: 3.048, y: 1.415 } },
-        { type: "add", elementType: "side", data: { from: "B", to: "M" } },
-        { type: "add", elementType: "edge", data: { from: "B", to: "M", equalGroup: "G2" } },
-        { type: "add", elementType: "edge", data: { from: "M", to: "C", equalGroup: "G2" } },
-        { type: "add", elementType: "side", data: { from: "M", to: "C" } },
-        // { type: "remove", elementType: "edge", id: { from: "B", to: "C" } },
-    ],
-    [
-        { type: "remove", elementType: "angle", id: "BDC" },
-        { type: "remove", elementType: "angle", id: "BKC" },
-        { type: "add", elementType: "edge", data: { from: "D", to: "M", color: "blue" } },
-        { type: "add", elementType: "edge", data: { from: "M", to: "K", color: "blue" } },
-        { type: "add", elementType: "edge", data: { from: "K", to: "D", color: "blue" } },
-    ],
-    [
-        { type: "remove", elementType: "edge", id: { from: "B", to: "K" } },
-        { type: "add", elementType: "angle", data: { name: "DBM", showValue: true } },
-        { type: "add", elementType: "angle", data: { name: "BDM", showValue: true } },
-        { type: "add", elementType: "side", data: { from: "D", to: "M" } },
-        // { type: "highlight", elementType: "angle", id: "BDC" },
-    ],
-    [
-        { type: "highlight", elementType: "point", id: "A", color: "blue" },
-        { type: "highlight", elementType: "edge", id: { from: "A", to: "B" }, color: "orange" },
-    ]
-];
+import { getQuestionStatusOverview } from "../../components/AssessmentPage/utils/getQuestionStatus";
+import AssessmentLoading from "../../components/LoadingScreens/AssessmentLoading";
 
 const ExamOverviewPage = () => {
+    const { data, loading, error } = useGetExamOverviewQuery({
+        variables: { getExamId: '943abe29-d104-4322-9239-f0afd8938541' },
+    });
+
     const [currentQuestion, setCurrentQuestion] = useState(1);
     const [showMobileNav, setShowMobileNav] = useState(false);
     const isMobile = useIsMobile();
     const isSmallMobile = useIsSmallMobile();
 
     // Add ref for main content container
-    const mainContentRef = useRef<HTMLDivElement>(null)
+    const mainContentRef = useRef<HTMLDivElement>(null!)
 
-    // Mock exam results - in a real app, this would come from the backend
+    // Transform server data to match Question type
+    const questions: QuestionType[] = data?.getExam?.examQuestions?.map((examQuestion, index: number) => ({
+        id: index + 1,
+        statement: examQuestion.question.statement,
+        type: examQuestion.question.type === 'MULTIPLE' ? 'multiple' : 'text',
+        options: examQuestion.question.options || [],
+        correctAnswer: examQuestion.question.correctAnswer || '12',
+        userAnswer: '11',
+        points: examQuestion.question.points || 1,
+        solutionSteps: examQuestion.question.solutionSteps?.map((step, stepIndex) => ({
+            id: stepIndex + 1,
+            title: step.action,
+            exerciseText: step.explanation || '',
+            solutionText: step.result,
+        })) || [],
+        diagramData: examQuestion.question.diagramData ? {
+            points: examQuestion.question.diagramData.reduce((acc, point) => {
+                acc[point.id] = { x: point.x, y: point.y };
+                return acc;
+            }, {} as { [key: string]: { x: number; y: number } }),
+            edges: [],
+            sides: [],
+            angles: []
+        } : undefined,
+        diagramSteps: undefined, // TODO: Map diagramSteps properly if needed
+    })) || [];
+
+    // Calculate exam results from the data
     const examResults = {
-        totalQuestions: 25,
-        correctAnswers: 18,
-        incorrectAnswers: 7,
-        score: 72, // percentage
-        timeSpent: "85 minutes",
-        examDate: "15 декември 2024"
+        totalQuestions: questions.length,
+        correctAnswers: questions.filter(q => q.userAnswer === q.correctAnswer).length,
+        incorrectAnswers: questions.filter(q => q.userAnswer && q.userAnswer !== q.correctAnswer).length,
+        score: questions.length > 0 ? Math.round((questions.filter(q => q.userAnswer === q.correctAnswer).length / questions.length) * 100) : 0,
+        timeSpent: "85 минути", // This would come from the backend
+        examDate: "15 декември 2024" // This would come from the backend
     };
-
-    // Mock questions with results - in a real app, this would come from the backen
-    const questions: QuestionType[] = [
-        {
-            id: 1,
-            statement: "Решете: $\\displaystyle \\frac{2}{3} + \\frac{1}{6}$",
-            type: "multiple",
-            options: [
-                "$\\displaystyle \\frac{1}{2}$",
-                "$\\displaystyle \\frac{5}{6}$",
-                "$\\displaystyle 1$",
-                "$\\displaystyle \\frac{2}{3}$"
-            ],
-            correctAnswer: "$\\displaystyle \\frac{5}{6}$",
-            userAnswer: "$\\displaystyle \\frac{5}{6}$",
-            points: 1,
-            // NEW: multi-step version (you can remove the old `solution` if you want)
-            solutionSteps: [
-                {
-                    id: 1,
-                    title: "Намиране на общ знаменател",
-                    exerciseText: "Решете: $\\dfrac{2}{3} + \\dfrac{1}{6}$",
-                    solutionText:
-                        "Общ знаменател на 3 и 6 е 6. Преобразуваме: $\\dfrac{2}{3} = \\dfrac{4}{6}$.",
-                },
-                {
-                    id: 2,
-                    title: "Събиране на дробите",
-                    exerciseText: "Съберете дробите $\\dfrac{4}{6} + \\dfrac{1}{6}$",
-                    solutionText: "$\\dfrac{4}{6} + \\dfrac{1}{6} = \\dfrac{5}{6}$.",
-                },
-                {
-                    id: 3,
-                    title: "Окончателен отговор",
-                    exerciseText: "Краен резултат:",
-                    solutionText: "Получаваме $\\dfrac{5}{6}$.",
-                }
-            ]
-        },
-        {
-            id: 2,
-            statement: "В правоъгълник ABCD са построени точки K и M съгласно дадената конструкция. Докажете, че триъгълник DMK е равнобедрен и намерете мерките на ъглите му.",
-            type: "text",
-            correctAnswer: "40 cm²",
-            userAnswer: "35 cm²",
-            points: 1,
-            solutionSteps: [
-                { id: 1, title: "Добавяне на помощни елементи", exerciseText: "Построяваме точки D и K, свързваме ги с C и B чрез пунктирани линии и отбелязваме ъглите BDC и BKC.", solutionText: "Построяваме точки D и K, свързваме ги с C и B чрез пунктирани линии и отбелязваме ъглите BDC и BKC." },
-                { id: 2, title: "Създаване на равни отсечки", exerciseText: "Построяваме точка M по BC, така че BM = MC, и отбелязваме отсечките като равни.", solutionText: "Построяваме точка M по BC, така че BM = MC, и отбелязваме отсечките като равни." },
-                { id: 3, title: "Построяване на триъгълник", exerciseText: "Премахваме ъглите BDC и BKC и свързваме D, M и K с оцветени в синьо линии.", solutionText: "Премахваме ъглите BDC и BKC и свързваме D, M и K с оцветени в синьо линии." },
-                { id: 4, title: "Отбелязване на нови ъгли", exerciseText: "Премахваме линията BK, отбелязваме ъглите DBM и BDM и добавяме страната DM.", solutionText: "Премахваме линията BK, отбелязваме ъглите DBM и BDM и добавяме страната DM." },
-                { id: 5, title: "Подчертаване на важни елементи", exerciseText: "Маркираме точка A в синьо и страната AB в оранжево, за да акцентираме върху тях.", solutionText: "Маркираме точка A в синьо и страната AB в оранжево, за да акцентираме върху тях." }
-            ],
-            diagramData: baseDiagram,
-            diagramSteps: exampleSteps
-        },
-        {
-            id: 3,
-            statement: "Стойността на израза $x^3 \\cdot \\left( \\frac{x^3}{x^2} \\right)^{-6}$ при $x = -3$ е:",
-            type: "multiple",
-            options: [
-                "$\\displaystyle -9$",
-                "$\\displaystyle -\\frac{1}{27}$",
-                "$\\displaystyle \\frac{1}{27}$",
-                "$\\displaystyle 9$"
-            ],
-            correctAnswer: "$\\displaystyle -\\frac{1}{27}$",
-            userAnswer: "$\\displaystyle \\frac{1}{27}$",
-            points: 1,
-            solutionSteps: [
-                { id: 1, title: "Съкращаване на дробта", exerciseText: "$\\frac{x^3}{x^2} = x^{3-2} = x^1$.", solutionText: "$\\frac{x^3}{x^2} = x^{3-2} = x^1$." },
-                { id: 2, title: "Прилагане на степента", exerciseText: "$(x^1)^{-6} = x^{-6}$.", solutionText: "$(x^1)^{-6} = x^{-6}$." },
-                { id: 3, title: "Събиране на показателите", exerciseText: "$x^3 \\cdot x^{-6} = x^{3-6} = x^{-3}$.", solutionText: "$x^3 \\cdot x^{-6} = x^{3-6} = x^{-3}$." },
-                { id: 4, title: "Замяна на $x$", exerciseText: "$(-3)^{-3} = \\frac{1}{(-3)^3} = \\frac{1}{-27}$.", solutionText: "$(-3)^{-3} = \\frac{1}{(-3)^3} = \\frac{1}{-27}$." },
-                { id: 5, title: "Съкращаване на дробта", exerciseText: "$\\frac{x^3}{x^2} = x^{3-2} = x^1$.", solutionText: "$\\frac{x^3}{x^2} = x^{3-2} = x^1$." }
-            ]
-        },
-        {
-            id: 4,
-            statement: "Изчислете: 15 + 28 - 12 × 2",
-            type: "text",
-            correctAnswer: "19",
-            userAnswer: "12",
-            points: 1
-        },
-        {
-            id: 5,
-            statement: "Какъв е периметърът на квадрат с дължина на страната 6 cm?",
-            type: "multiple",
-            options: ["12 cm", "24 cm", "36 cm", "18 cm"],
-            correctAnswer: "24 cm",
-            userAnswer: "12 cm",
-            points: 1
-        },
-        {
-            id: 6,
-            statement: "Опростете: 2(x + 3) - 4",
-            type: "text",
-            correctAnswer: "2x + 2",
-            userAnswer: "2x + 2",
-            points: 1
-        },
-        {
-            id: 7,
-            statement: "Преобразувайте 0.6 в дроб в най-ниската форма.",
-            type: "text",
-            correctAnswer: "3/5",
-            userAnswer: "6/10",
-            points: 1
-        },
-        {
-            id: 8,
-            statement: "Кой ъгъл е по-голям от 90°, но по-малък от 180°?",
-            type: "multiple",
-            options: ["Acute angle", "Right angle", "Obtuse angle", "Straight angle"],
-            correctAnswer: "Obtuse angle",
-            userAnswer: "Obtuse angle",
-            points: 1
-        },
-        {
-            id: 9,
-            statement: "Намерете стойността на y: 2y - 5 = 11",
-            type: "text",
-            correctAnswer: "8",
-            userAnswer: "8",
-            points: 1
-        },
-        {
-            id: 10,
-            statement: "Колко е 25% от 80?",
-            type: "text",
-            correctAnswer: "20",
-            userAnswer: "20",
-            points: 1
-        },
-        {
-            id: 11,
-            statement: "Решете: $\\displaystyle \\frac{2}{3} + \\frac{1}{6}$",
-            type: "multiple",
-            options: [
-                "$\\displaystyle \\frac{1}{2}$",
-                "$\\displaystyle \\frac{5}{6}$",
-                "$\\displaystyle 1$",
-                "$\\displaystyle \\frac{2}{3}$"
-            ],
-            correctAnswer: "$\\displaystyle \\frac{5}{6}$",
-            userAnswer: "$\\displaystyle \\frac{5}{6}$",
-            points: 1,
-        },
-        {
-            id: 12,
-            statement: "Каква е площта на правоъгълник с дължина 8 cm и ширина 5 cm?",
-            type: "text",
-            diagramData: baseDiagram,
-            correctAnswer: "40 cm²",
-            userAnswer: "35 cm²",
-            points: 1,
-        },
-        {
-            id: 13,
-            statement: "Кое от следните е еквивалентно на 3/4?",
-            type: "multiple",
-            options: ["0.75", "0.34", "4/3", "7.5"],
-            correctAnswer: "0.75",
-            userAnswer: "0.75",
-            points: 1
-        },
-        {
-            id: 14,
-            statement: "Изчислете: 15 + 28 - 12 × 2",
-            type: "text",
-            correctAnswer: "19",
-            userAnswer: "12",
-            points: 1
-        },
-        {
-            id: 15,
-            statement: "Какъв е периметърът на квадрат с дължина на страната 6 cm?",
-            type: "multiple",
-            options: ["12 cm", "24 cm", "36 cm", "18 cm"],
-            correctAnswer: "24 cm",
-            userAnswer: "12 cm",
-            points: 1
-        },
-        {
-            id: 16,
-            statement: "Опростете: 2(x + 3) - 4",
-            type: "text",
-            correctAnswer: "2x + 2",
-            userAnswer: "2x + 2",
-            points: 1
-        },
-        {
-            id: 17,
-            statement: "Преобразувайте 0.6 в дроб в най-ниската форма.",
-            type: "text",
-            correctAnswer: "3/5",
-            userAnswer: "6/10",
-            points: 1
-        },
-        {
-            id: 18,
-            statement: "Кой ъгъл е по-голям от 90°, но по-малък от 180°?",
-            type: "multiple",
-            options: ["Acute angle", "Right angle", "Obtuse angle", "Straight angle"],
-            correctAnswer: "Obtuse angle",
-            userAnswer: "Obtuse angle",
-            points: 1
-        },
-        {
-            id: 19,
-            statement: "Намерете стойността на y: 2y - 5 = 11",
-            type: "text",
-            correctAnswer: "8",
-            userAnswer: "8",
-            points: 1
-        },
-        {
-            id: 20,
-            statement: "Колко е 25% от 80?",
-            type: "text",
-            correctAnswer: "20",
-            userAnswer: "20",
-            points: 1
-        }
-    ];
 
     // Convert questions to the format expected by the Question component
     const questionsForDisplay = questions.map(q => ({
@@ -326,48 +81,7 @@ const ExamOverviewPage = () => {
         return acc;
     }, {} as { [key: number]: string });
 
-    const handleAnswerChange = () => {
-        // This is read-only, so we don't need to handle changes
-    };
 
-    // Function to get question status for the navigator grid
-    const getQuestionStatus = (questionNum: number) => {
-        const question = questions.find(q => q.id === questionNum);
-        if (!question || !question.userAnswer) return "unanswered";
-
-        const isCorrect = question.userAnswer === question.correctAnswer;
-        return isCorrect ? "correct" : "incorrect";
-    };
-
-    // Function to handle navigation to a specific question
-    const goToQuestion = (questionNum: number) => {
-        setCurrentQuestion(questionNum);
-        // Scroll to the question element
-        const questionElement = document.getElementById(`question-${questionNum}`);
-        if (questionElement) {
-            questionElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-        // Close mobile nav when navigating to a question
-        if (isMobile) {
-            setShowMobileNav(false);
-        }
-    };
-
-
-    const toggleMobileNav = () => {
-        setShowMobileNav(!showMobileNav);
-    };
-
-    // Add synchronized scrolling handler
-    const handleSidebarScroll = (event: React.WheelEvent) => {
-        if (mainContentRef.current) {
-            // Prevent the default scroll behavior on the sidebar
-            event.preventDefault()
-
-            // Apply the scroll delta to the main content
-            mainContentRef.current.scrollTop += event.deltaY
-        }
-    }
 
     // Colors for the navigator grid
     const navigatorColors = {
@@ -380,6 +94,34 @@ const ExamOverviewPage = () => {
         answeredHover: "green-200"
     };
 
+    // Handle loading state
+    if (loading) {
+        return <AssessmentLoading text="Зареждане на резултатите..." />;
+    }
+
+    // Handle error state
+    if (error) {
+        return (
+            <div className="min-h-screen bg-gray-50 flex items-center justify-center w-screen">
+                <div className="text-center">
+                    <p className="text-red-600 mb-4">Грешка при зареждане на резултатите</p>
+                    <p className="text-gray-600">{error.message}</p>
+                </div>
+            </div>
+        );
+    }
+
+    // Handle empty questions
+    if (!questions.length) {
+        return (
+            <div className="min-h-screen bg-gray-50 flex items-center justify-center w-screen">
+                <div className="text-center">
+                    <p className="text-gray-600">Няма налични резултати за този изпит</p>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="min-h-screen bg-gray-50 mx-auto">
             {/* Mobile Header - Outside scrollable container */}
@@ -387,13 +129,12 @@ const ExamOverviewPage = () => {
             <AssessmentOverviewMobileHeader
                 isMobile={isMobile}
                 showMobileNav={showMobileNav}
-                toggleMobileNav={toggleMobileNav}
+                setShowMobileNav={setShowMobileNav}
                 Icon={GraduationCap}
                 iconColor="text-emerald-600"
                 correctAnswers={examResults.correctAnswers}
                 totalQuestions={examResults.totalQuestions}
             />
-
 
             <div className={`${isMobile ? 'flex flex-col' : 'flex'} ${isMobile ? 'h-[calc(100vh-64px)] -mt-[7px]' : 'h-screen'}`}>
                 {/* Left Column - Questions */}
@@ -417,7 +158,6 @@ const ExamOverviewPage = () => {
                                     <Question
                                         question={questionsForDisplay.find(q => q.id === question.id)!}
                                         answers={answers}
-                                        handleAnswerChange={handleAnswerChange}
                                         isReviewMode={true}
                                         correctAnswer={question.correctAnswer}
                                         userAnswer={question.userAnswer}
@@ -435,7 +175,7 @@ const ExamOverviewPage = () => {
                         ? `w-full fixed -mt-[7px] top-16 right-0 z-40 ${isSmallMobile ? 'w-full' : 'w-80'} bg-white border-l border-gray-200 transform transition-transform duration-300 ease-in-out ${showMobileNav ? 'translate-x-0' : 'translate-x-full'} flex flex-col h-[calc(100vh-64px)]`
                         : 'w-80 bg-white border-l border-gray-200 flex flex-col h-100vh'
                         }`}
-                    onWheel={handleSidebarScroll}
+                    onWheel={(event) => handleSidebarScroll(event, mainContentRef)}
                 >
                     {/* Overview Data */}
                     <div className="p-6 border-b border-gray-200">
@@ -461,23 +201,22 @@ const ExamOverviewPage = () => {
                                 timeTextColor="text-blue-700"
                             />
 
-
                         </div>
                     </div>
 
-                    {/* Questions Navigator Grid - Centered */}
+                    {/* Questions Navigator Grid  */}
                     <div className={`${isMobile ? 'flex-1 overflow-y-auto' : 'flex-1'} flex items-start justify-center`}>
                         <QuestionsNavigatorGrid
                             answers={answers}
                             totalQuestions={questions.length}
-                            getQuestionStatus={getQuestionStatus}
+                            getQuestionStatus={(questionNum) => getQuestionStatusOverview(questions, questionNum)}
                             currentQuestion={currentQuestion}
-                            goToQuestion={goToQuestion}
                             setShowMobileNav={setShowMobileNav}
-                            colors={navigatorColors}
+                            navigatorColors={navigatorColors}
                             reviewMode={true}
                             isMobile={isMobile}
                             isSmallMobile={isSmallMobile}
+                            setCurrentQuestion={setCurrentQuestion}
                         />
                     </div>
                 </div>
