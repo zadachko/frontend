@@ -28,7 +28,7 @@ const ExamOverviewPage = () => {
 
     // Transform server data to match Question type
     const questions: QuestionType[] = data?.getExam?.examQuestions?.map((examQuestion, index: number) => ({
-        id: index + 1,
+        position: index + 1,
         statement: examQuestion.question.statement,
         type: examQuestion.question.type === 'MULTIPLE' ? 'multiple' : 'text',
         options: examQuestion.question.options || [],
@@ -65,7 +65,7 @@ const ExamOverviewPage = () => {
 
     // Convert questions to the format expected by the Question component
     const questionsForDisplay = questions.map(q => ({
-        id: q.id,
+        position: q.position,
         statement: q.statement,
         type: q.type,
         options: q.options,
@@ -76,7 +76,7 @@ const ExamOverviewPage = () => {
     // Create answers object for the Question component
     const answers = questions.reduce((acc, q) => {
         if (q.userAnswer) {
-            acc[q.id] = q.userAnswer;
+            acc[q.position] = q.userAnswer;
         }
         return acc;
     }, {} as { [key: number]: string });
@@ -154,9 +154,9 @@ const ExamOverviewPage = () => {
                         {/* Questions Review */}
                         <div className="space-y-8">
                             {questions.map((question) => (
-                                <div key={question.id} id={`question-${question.id}`}>
+                                <div key={question.position} id={`question-${question.position}`}>
                                     <Question
-                                        question={questionsForDisplay.find(q => q.id === question.id)!}
+                                        question={questionsForDisplay.find(q => q.position === question.position)!}
                                         answers={answers}
                                         isReviewMode={true}
                                         correctAnswer={question.correctAnswer}

@@ -13,7 +13,7 @@ import { StepAction } from 'geometry-diagram-renderer';
 
 type QuestionProps = {
     question: {
-        id: number
+        position: number
         statement: string
         type: "text" | "multiple"
         options?: string[]
@@ -82,7 +82,7 @@ const Question = ({
 
     return (
         <>
-            <Card key={question.id} className="bg-white border-0 shadow-md transition-all duration-300 relative">
+            <Card key={question.position} className="bg-white border-0 shadow-md transition-all duration-300 relative">
                 {/* Result Badge for Review Mode */}
                 {isReviewMode && (
                     <div className="absolute top-4 right-4 z-10">
@@ -100,7 +100,7 @@ const Question = ({
                     <div className={`flex items-start justify-between mb-4 ${isMobile ? 'gap-3 items-center' : ''}`}>
                         <div className="flex items-start gap-4">
                             <QuestionBadge
-                                questionNumber={question.id}
+                                questionNumber={question.position}
                                 onCircleClick={handleCircleClick}
                                 isMobile={isMobile}
                                 isSmallMobile={isSmallMobile}
@@ -130,7 +130,7 @@ const Question = ({
                             <OpenAnswer
                                 answers={answers}
                                 handleAnswerChange={handleAnswerChange}
-                                questionNumber={question.id}
+                                questionNumber={question.position}
                                 isReviewMode={isReviewMode}
                                 correctAnswer={correctAnswer}
                                 userAnswer={userAnswer}
@@ -158,11 +158,8 @@ const Question = ({
             < QuestionSolutionModal
                 isOpen={isModalOpen}
                 onClose={handleCloseModal}
-                exercise={{
-                    id: question.id,
-                    text: question.statement,
-                    imageSrc: question.diagramData ? undefined : undefined,
-                }}
+                statement={question.statement}
+                position={question.position}
                 steps={
                     Array.isArray(solution)
                         ? solution.map((s, i) => ({ id: s.id ?? i + 1, title: s.title, exerciseText: s.exerciseText, solutionText: s.solutionText }))

@@ -23,7 +23,7 @@ const LiveExamPage = () => {
     // console.log(data?.getExam?.examQuestions);
 
     const questions: QuestionType[] = data?.getExam?.examQuestions?.map((examQuestion, index: number) => ({
-        id: index + 1,
+        position: index + 1,
         statement: examQuestion.question.statement,
         type: examQuestion.question.type === 'MULTIPLE' ? 'multiple' : 'text',
         options: examQuestion.question.options || [],
@@ -118,7 +118,7 @@ const LiveExamPage = () => {
                         {/* Questions List */}
                         <div className="space-y-6">
                             {questions.map((question) => (
-                                <div key={question.id} id={`question-${question.id}`}>
+                                <div key={question.position} id={`question-${question.position}`}>
                                     <Question question={question} answers={answers} setAnswers={setAnswers} isReviewMode={false} />
                                 </div>
                             ))}

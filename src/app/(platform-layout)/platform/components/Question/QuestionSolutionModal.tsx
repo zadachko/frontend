@@ -19,12 +19,8 @@ export type SolutionStep = {
 export type QuestionSolutionModalProps = {
     isOpen: boolean
     onClose: () => void
-    exercise: {
-        id: number | string
-        text: string // supports $...$ and $$...$$
-        imageSrc?: string
-        imageAlt?: string
-    }
+    statement: string // supports $...$ and $$...$$
+    position: number
     steps?: SolutionStep[]
     initialStepIndex?: number
 
@@ -70,7 +66,8 @@ const optionLetters = ["а", "б", "в", "г", "д", "е"]
 export default function QuestionSolutionModal({
     isOpen,
     onClose,
-    exercise,
+    statement,
+    position,
     steps,
     initialStepIndex = 0,
     questionType,
@@ -228,13 +225,13 @@ export default function QuestionSolutionModal({
                         <div className="h-full overflow-y-auto p-4 md:p-8">
                             <DialogHeader className="mb-4">
                                 <DialogTitle className="text-base md:text-lg font-semibold text-gray-900">
-                                    Задача #{exercise.id}
+                                    Задача #{position}
                                 </DialogTitle>
                             </DialogHeader>
 
                             <div className="prose max-w-none text-gray-900">
                                 <div className="text-sm md:text-base leading-relaxed whitespace-pre-wrap">
-                                    {renderWithMath(exercise.text, "text-sm md:text-[18px]")}
+                                    {renderWithMath(statement, "text-sm md:text-[18px]")}
                                 </div>
                             </div>
 

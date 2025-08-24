@@ -10,7 +10,7 @@ export const getQuestionStatusOverview = (
 	questions: QuestionType[],
 	questionNum: number
 ): 'unanswered' | 'correct' | 'incorrect' => {
-	const question = questions.find(q => q.id === questionNum);
+	const question = questions.find(q => q.position === questionNum);
 	if (!question || !question.userAnswer) return 'unanswered';
 
 	const isCorrect = question.userAnswer === question.correctAnswer;
