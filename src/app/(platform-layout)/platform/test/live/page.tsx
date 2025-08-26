@@ -1,15 +1,8 @@
 "use client"
 
-import { useState, useRef } from "react";
-import Question from "@/app/(platform-layout)/platform/components/Question/Question";
 import type { DiagramData } from "geometry-diagram-renderer";
-import { useIsMobile, useIsSmallMobile } from "@/hooks/isMobile";
-import type { Question as QuestionType } from "@/types"
-import AssessmentSubmitDialog from "../../components/AssessmentPage/AssessmentSubmitDialog";
-import { AssessmentMobileHeader } from "../../components/AssessmentPage/AssessmentMobileHeader";
-import AssessmentSidebar from "../../components/AssessmentPage/AssessmentSidebar";
-import handleSidebarScroll from "../../components/AssessmentPage/utils/handleSidebarScroll";
-import { getQuestionStatusLive } from "../../components/AssessmentPage/utils/getQuestionStatus";
+import type { Question as QuestionType } from "@/types";
+import AssessmentLive from "../../components/AssessmentPage/AssessmentLive";
 import { colors } from "../colors.config";
 
 const sampleTriangleData: DiagramData = {
@@ -36,16 +29,6 @@ const sampleTriangleData: DiagramData = {
 };
 
 const LiveExamPage = () => {
-    const [answers, setAnswers] = useState<{ [key: number]: string }>({})
-    const [currentQuestion, setCurrentQuestion] = useState(1)
-    const [showSubmitDialog, setShowSubmitDialog] = useState(false)
-    const [showMobileNav, setShowMobileNav] = useState(false)
-    const isMobile = useIsMobile()
-    const isSmallMobile = useIsSmallMobile()
-
-    // Add ref for main content container
-    const mainContentRef = useRef<HTMLDivElement>(null!)
-
     // Sample questions data
     const questions: QuestionType[] = [
         {
@@ -216,88 +199,21 @@ const LiveExamPage = () => {
         },
     ]
 
-    const totalQuestions = questions.length;
-
-
-
-    const questionsAnswered = Object.keys(answers).length
-
     return (
-        <div className="min-h-screen bg-gray-50 mx-auto">
-            {/* Mobile Header - Outside scrollable container */}
-            {isMobile && <AssessmentMobileHeader
-                showMobileNav={showMobileNav}
-                setShowMobileNav={setShowMobileNav}
-                setShowSubmitDialog={setShowSubmitDialog}
-                clockColor={colors.assessmentMobileHeader.clockColor}
-                buttonGradient={{
-                    from: colors.assessmentMobileHeader.buttonGradient.from,
-                    to: colors.assessmentMobileHeader.buttonGradient.to,
-                    hoverFrom: colors.assessmentMobileHeader.buttonGradient.hoverFrom,
-                    hoverTo: colors.assessmentMobileHeader.buttonGradient.hoverTo,
-                }}
-            />}
-
-            <div className={`${isMobile ? 'flex flex-col' : 'flex'} ${isMobile ? 'h-[calc(100vh-64px)]' : 'h-screen'}`}>
-                {/* Left Column - Questions */}
-                <div
-                    ref={mainContentRef}
-                    className={`${isMobile ? 'flex-1 overflow-y-auto' : 'flex-1 overflow-y-auto'}`}
-                >
-                    <div className={`${isMobile ? 'p-4' : 'p-6 max-w-4xl mx-auto'} ${isSmallMobile ? 'px-2' : ''}`}>
-                        {/* Header - Desktop only */}
-                        {!isMobile && (
-                            <div className="mb-6">
-                                <h1 className="text-2xl font-bold text-gray-900 mb-2">Тест</h1>
-                                <p className="text-gray-600">Отговорете на всички въпроси в рамките на 90 минути</p>
-                            </div>
-                        )}
-
-                        {/* Questions List */}
-                        <div className="space-y-6">
-                            {questions.map((question) => (
-                                <div key={question.position} id={`question-${question.position}`}>
-                                    <Question question={question} answers={answers} setAnswers={setAnswers} isReviewMode={false} />
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-
-                {/* Right Sidebar - Navigation */}
-                <AssessmentSidebar
-                    isMobile={isMobile}
-                    isSmallMobile={isSmallMobile}
-                    showMobileNav={showMobileNav}
-                    handleSidebarScroll={(event) => handleSidebarScroll(event, mainContentRef)}
-                    answers={answers}
-                    totalQuestions={totalQuestions}
-                    getQuestionStatus={(questionId) => getQuestionStatusLive(answers, questionId)}
-                    currentQuestion={currentQuestion}
-                    setShowMobileNav={setShowMobileNav}
-                    setShowSubmitDialog={setShowSubmitDialog}
-                    colors={colors}
-                    setCurrentQuestion={setCurrentQuestion}
-                />
-
-            </div>
-
-            {/* Submit Confirmation Dialog */}
-            <AssessmentSubmitDialog
-                showSubmitDialog={showSubmitDialog}
-                setShowSubmitDialog={setShowSubmitDialog}
-                questionsAnswered={questionsAnswered}
-                totalQuestions={totalQuestions}
-                overviewRedirectUrl="/platform/test/overview"
-                colors={{
+        <AssessmentLive
+            questions={questions}
+            title="Тест"
+            subtitle="Отговорете на всички въпроси в рамките на 90 минути"
+            overviewRedirectUrl="/platform/test/overview"
+            colors={{
+                ...colors,
+                submitDialog: {
                     primary: "[#6F58C9]",
                     primaryHover: "[#5A4BA3]"
-                }}
-                isMobile={isMobile}
-                isSmallMobile={isSmallMobile}
-            />
-        </div>
-    )
+                }
+            }}
+        />
+    );
 }
 
 export default LiveExamPage;
