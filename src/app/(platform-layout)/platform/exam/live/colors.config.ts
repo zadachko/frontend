@@ -17,4 +17,13 @@ export const colors = {
 		answeredText: 'green-800',
 		answeredHover: 'green-200',
 	},
+	assessmentMobileHeader: {
+		clockColor: 'text-emerald-600',
+		buttonGradient: {
+			from: 'emerald-500',
+			to: 'teal-600',
+			hoverFrom: 'emerald-600',
+			hoverTo: 'teal-700',
+		},
+	},
 };

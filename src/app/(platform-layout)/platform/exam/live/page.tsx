@@ -13,7 +13,6 @@ import handleSidebarScroll from "../../components/AssessmentPage/utils/handleSid
 import { getQuestionStatusLive } from "../../components/AssessmentPage/utils/getQuestionStatus";
 import { colors } from "./colors.config";
 import AssessmentLoading from "../../components/LoadingScreens/AssessmentLoading";
-
 const LiveExamPage = () => {
 
     const { data, loading, error } = useGetExamLiveQuery({
@@ -89,12 +88,12 @@ const LiveExamPage = () => {
                     showMobileNav={showMobileNav}
                     setShowMobileNav={setShowMobileNav}
                     setShowSubmitDialog={setShowSubmitDialog}
-                    clockColor="text-emerald-600"
+                    clockColor={colors.assessmentMobileHeader.clockColor}
                     buttonGradient={{
-                        from: "emerald-500",
-                        to: "teal-600",
-                        hoverFrom: "emerald-600",
-                        hoverTo: "teal-700",
+                        from: colors.assessmentMobileHeader.buttonGradient.from,
+                        to: colors.assessmentMobileHeader.buttonGradient.to,
+                        hoverFrom: colors.assessmentMobileHeader.buttonGradient.hoverFrom,
+                        hoverTo: colors.assessmentMobileHeader.buttonGradient.hoverTo,
                     }}
                 />
 

@@ -236,12 +236,12 @@ const LiveExamPage = () => {
                 showMobileNav={showMobileNav}
                 setShowMobileNav={setShowMobileNav}
                 setShowSubmitDialog={setShowSubmitDialog}
-                clockColor="text-[#6F58C9]"
+                clockColor={colors.assessmentMobileHeader.clockColor}
                 buttonGradient={{
-                    from: "[#6F58C9]",
-                    to: "[#5A4BA3]",
-                    hoverFrom: "[#5A4BA3]",
-                    hoverTo: "[#4A3B93]",
+                    from: colors.assessmentMobileHeader.buttonGradient.from,
+                    to: colors.assessmentMobileHeader.buttonGradient.to,
+                    hoverFrom: colors.assessmentMobileHeader.buttonGradient.hoverFrom,
+                    hoverTo: colors.assessmentMobileHeader.buttonGradient.hoverTo,
                 }}
             />}
 
