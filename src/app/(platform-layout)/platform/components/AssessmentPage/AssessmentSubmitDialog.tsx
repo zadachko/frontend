@@ -7,7 +7,7 @@ interface AssessmentSubmitDialogProps {
     setShowSubmitDialog: (show: boolean) => void;
     questionsAnswered: number;
     totalQuestions: number;
-    confirmSubmit: () => void;
+    overviewRedirectUrl: string;
     colors: {
         primary: string;
         primaryHover: string;
@@ -21,7 +21,7 @@ const AssessmentSubmitDialog = ({
     setShowSubmitDialog,
     questionsAnswered,
     totalQuestions,
-    confirmSubmit,
+    overviewRedirectUrl,
     colors,
     isMobile = false,
     isSmallMobile = false
@@ -30,6 +30,11 @@ const AssessmentSubmitDialog = ({
     const handleCancelSubmit = () => {
         setShowSubmitDialog(false)
     }
+
+    const handleConfirmSubmit = () => {
+        window.location.href = overviewRedirectUrl;
+    }
+
     return (
         <Dialog open={showSubmitDialog} onOpenChange={setShowSubmitDialog}>
             <DialogContent className={`${isSmallMobile ? 'w-[98vw] max-w-none' : isMobile ? 'w-[95vw] max-w-none mx-4' : 'sm:max-w-md'}`}>
@@ -53,7 +58,7 @@ const AssessmentSubmitDialog = ({
                         Отказ
                     </Button>
                     <Button
-                        onClick={confirmSubmit}
+                        onClick={handleConfirmSubmit}
                         className={`${isMobile ? 'w-full' : ''} bg-${colors.primary} hover:bg-${colors.primaryHover}`}
                     >
                         Изпрати изпита

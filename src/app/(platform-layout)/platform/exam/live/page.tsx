@@ -2,7 +2,6 @@
 
 import { useState, useRef } from "react";
 import Question from "@/app/(platform-layout)/platform/components/Question/Question";
-import { useRouter } from "next/navigation";
 import { useIsMobile, useIsSmallMobile } from "@/hooks/isMobile";
 import type { Question as QuestionType } from "@/types"
 import AssessmentSubmitDialog from "../../components/AssessmentPage/AssessmentSubmitDialog";
@@ -34,7 +33,6 @@ const LiveExamPage = () => {
     const [currentQuestion, setCurrentQuestion] = useState(1)
     const [showSubmitDialog, setShowSubmitDialog] = useState(false)
     const [showMobileNav, setShowMobileNav] = useState(false)
-    const router = useRouter()
     const isMobile = useIsMobile()
     const isSmallMobile = useIsSmallMobile()
 
@@ -44,11 +42,6 @@ const LiveExamPage = () => {
 
     const totalQuestions = questions.length;
 
-
-    const confirmSubmit = () => {
-        setShowSubmitDialog(false)
-        router.push('/platform/exam/overview')
-    }
 
     const questionsAnswered = Object.keys(answers).length
 
@@ -143,7 +136,7 @@ const LiveExamPage = () => {
                 setShowSubmitDialog={setShowSubmitDialog}
                 questionsAnswered={questionsAnswered}
                 totalQuestions={totalQuestions}
-                confirmSubmit={confirmSubmit}
+                overviewRedirectUrl="/platform/exam/overview"
                 colors={{
                     primary: "emerald-600",
                     primaryHover: "emerald-700"

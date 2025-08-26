@@ -3,7 +3,6 @@
 import { useState, useRef } from "react";
 import Question from "@/app/(platform-layout)/platform/components/Question/Question";
 import type { DiagramData } from "geometry-diagram-renderer";
-import { useRouter } from "next/navigation";
 import { useIsMobile, useIsSmallMobile } from "@/hooks/isMobile";
 import type { Question as QuestionType } from "@/types"
 import AssessmentSubmitDialog from "../../components/AssessmentPage/AssessmentSubmitDialog";
@@ -41,7 +40,6 @@ const LiveExamPage = () => {
     const [currentQuestion, setCurrentQuestion] = useState(1)
     const [showSubmitDialog, setShowSubmitDialog] = useState(false)
     const [showMobileNav, setShowMobileNav] = useState(false)
-    const router = useRouter()
     const isMobile = useIsMobile()
     const isSmallMobile = useIsSmallMobile()
 
@@ -221,11 +219,6 @@ const LiveExamPage = () => {
     const totalQuestions = questions.length;
 
 
-    const confirmSubmit = () => {
-        setShowSubmitDialog(false)
-        router.push('/platform/test/overview')
-    }
-
 
     const questionsAnswered = Object.keys(answers).length
 
@@ -295,7 +288,7 @@ const LiveExamPage = () => {
                 setShowSubmitDialog={setShowSubmitDialog}
                 questionsAnswered={questionsAnswered}
                 totalQuestions={totalQuestions}
-                confirmSubmit={confirmSubmit}
+                overviewRedirectUrl="/platform/test/overview"
                 colors={{
                     primary: "[#6F58C9]",
                     primaryHover: "[#5A4BA3]"
