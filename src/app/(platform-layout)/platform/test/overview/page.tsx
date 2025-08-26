@@ -1,15 +1,8 @@
 'use client';
-import { useState, useRef } from "react";
 import { BookOpen } from "lucide-react";
 import { type DiagramData, type StepAction } from "geometry-diagram-renderer";
-import Question from "@/app/(platform-layout)/platform/components/Question/Question";
-import { QuestionsNavigatorGrid } from "@/app/(platform-layout)/platform/components/QuestionsNavigatorGrid/QuestionsNavigatorGrid";
-import { useIsMobile, useIsSmallMobile } from "@/hooks/isMobile";
-import AssessmentOverviewSidebar from "../../components/AssessmentPage/AssessmentOverviewSidebar";
-import AssessmentOverviewMobileHeader from "../../components/AssessmentPage/AssessmentOverviewMobileHeader";
-import type { Question as QuestionType } from "@/types"
-import handleSidebarScroll from "../../components/AssessmentPage/utils/handleSidebarScroll";
-import { getQuestionStatusOverview } from "../../components/AssessmentPage/utils/getQuestionStatus";
+import type { Question as QuestionType } from "@/types";
+import AssessmentOverview, { type AssessmentResults } from "../../components/AssessmentPage/AssessmentOverview";
 import { colors } from "../colors.config";
 
 const baseDiagram: DiagramData = {
@@ -63,16 +56,8 @@ const exampleSteps: StepAction[][] = [
 ];
 
 const TestOverviewPage = () => {
-    const [currentQuestion, setCurrentQuestion] = useState(1);
-    const [showMobileNav, setShowMobileNav] = useState(false);
-    const isMobile = useIsMobile();
-    const isSmallMobile = useIsSmallMobile();
-
-    // Add ref for main content container
-    const mainContentRef = useRef<HTMLDivElement>(null!)
-
     // Mock test results - in a real app, this would come from the backend
-    const testResults = {
+    const testResults: AssessmentResults = {
         totalQuestions: 25,
         correctAnswers: 20,
         incorrectAnswers: 5,
@@ -325,121 +310,26 @@ const TestOverviewPage = () => {
         }
     ];
 
-    // Convert questions to the format expected by the Question component
-    const questionsForDisplay = questions.map(q => ({
-        position: q.position,
-        statement: q.statement,
-        type: q.type,
-        options: q.options,
-        diagramData: q.diagramData,
-        diagramSteps: q.diagramSteps,
-    }));
-
-    // Create answers object for the Question component
-    const answers = questions.reduce((acc, q) => {
-        if (q.userAnswer) {
-            acc[q.position] = q.userAnswer;
-        }
-        return acc;
-    }, {} as { [key: number]: string });
-
 
 
     return (
-        <div className="min-h-screen bg-gray-50 mx-auto">
-            {/* Mobile Header - Outside scrollable container */}
-
-            <AssessmentOverviewMobileHeader
-                isMobile={isMobile}
-                showMobileNav={showMobileNav}
-                setShowMobileNav={setShowMobileNav}
-                Icon={BookOpen}
-                iconColor="text-[#6F58C9]"
-                correctAnswers={testResults.correctAnswers}
-                totalQuestions={testResults.totalQuestions}
-            />
-
-
-            <div className={`${isMobile ? 'flex flex-col' : 'flex'} ${isMobile ? 'h-[calc(100vh-64px)] -mt-[7px]' : 'h-screen'}`}>
-                {/* Left Column - Questions */}
-                <div
-                    ref={mainContentRef}
-                    className={`${isMobile ? 'flex-1 overflow-y-auto' : 'flex-1 overflow-y-auto'}`}
-                >
-                    <div className={`${isMobile ? 'p-4' : 'p-6 max-w-4xl mx-auto'} ${isSmallMobile ? 'px-2' : ''}`}>
-                        {/* Header - Desktop only */}
-                        {!isMobile && (
-                            <div className="mb-6">
-                                <h1 className="text-2xl font-bold text-gray-900 mb-2">Преглед на теста</h1>
-                                <p className="text-gray-600">Прегледайте вашите отговори и резултати</p>
-                            </div>
-                        )}
-
-                        {/* Questions Review */}
-                        <div className="space-y-8">
-                            {questions.map((question) => (
-                                <div key={question.position} id={`question-${question.position}`}>
-                                    <Question
-                                        question={questionsForDisplay.find(q => q.position === question.position)!}
-                                        answers={answers}
-                                        isReviewMode={true}
-                                        correctAnswer={question.correctAnswer}
-                                        userAnswer={question.userAnswer}
-                                        solution={(question as QuestionType).solutionSteps}
-                                    />
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-
-                {/* Right Sidebar - Navigation */}
-                <div
-                    className={`${isMobile
-                        ? `w-full fixed -mt-[7px] top-16 right-0 z-40 ${isSmallMobile ? 'w-full' : 'w-80'} bg-white border-l border-gray-200 transform transition-transform duration-300 ease-in-out ${showMobileNav ? 'translate-x-0' : 'translate-x-full'} flex flex-col h-[calc(100vh-64px)]`
-                        : 'w-80 bg-white border-l border-gray-200 flex flex-col h-100vh'
-                        }`}
-                    onWheel={(event) => handleSidebarScroll(event, mainContentRef)}
-                >
-                    {/* Overview Data */}
-                    <AssessmentOverviewSidebar
-                        title="Резултати от теста"
-                        badge={{
-                            icon: <BookOpen className="h-3.5 w-3.5" />,
-                            label: "Тест",
-                            bgColor: "bg-purple-100",
-                            textColor: "text-purple-800",
-                        }}
-                        results={{
-                            date: testResults.testDate,
-                            timeSpent: testResults.timeSpent,
-                            correctAnswers: testResults.correctAnswers,
-                            totalQuestions: testResults.totalQuestions,
-                            score: testResults.score,
-                        }}
-                        timeColor="text-purple-500"
-                        timeTextColor="text-purple-700"
-                    />
-
-
-                    {/* Questions Navigator Grid - Centered */}
-                    <div className={`${isMobile ? 'flex-1 overflow-y-auto' : 'flex-1'} flex items-start justify-center`}>
-                        <QuestionsNavigatorGrid
-                            answers={answers}
-                            totalQuestions={questions.length}
-                            getQuestionStatus={(questionNum) => getQuestionStatusOverview(questions, questionNum)}
-                            currentQuestion={currentQuestion}
-                            setShowMobileNav={setShowMobileNav}
-                            navigatorColors={colors.navigator}
-                            reviewMode={true}
-                            isMobile={isMobile}
-                            isSmallMobile={isSmallMobile}
-                            setCurrentQuestion={setCurrentQuestion}
-                        />
-                    </div>
-                </div>
-            </div>
-        </div>
+        <AssessmentOverview
+            questions={questions}
+            results={testResults}
+            title="Преглед на теста"
+            subtitle="Прегледайте вашите отговори и резултати"
+            Icon={BookOpen}
+            iconColor="text-[#6F58C9]"
+            badge={{
+                icon: <BookOpen className="h-3.5 w-3.5" />,
+                label: "Тест",
+                bgColor: "bg-purple-100",
+                textColor: "text-purple-800",
+            }}
+            timeColor="text-purple-500"
+            timeTextColor="text-purple-700"
+            navigatorColors={colors.navigator}
+        />
     );
 };
 

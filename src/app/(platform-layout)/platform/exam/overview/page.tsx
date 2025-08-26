@@ -1,16 +1,9 @@
 "use client"
 
-import { useState, useRef } from "react";
 import { GraduationCap } from "lucide-react";
-import Question from "@/app/(platform-layout)/platform/components/Question/Question";
-import { QuestionsNavigatorGrid } from "@/app/(platform-layout)/platform/components/QuestionsNavigatorGrid/QuestionsNavigatorGrid";
-import { useIsMobile, useIsSmallMobile } from "@/hooks/isMobile";
-import AssessmentOverviewSidebar from "../../components/AssessmentPage/AssessmentOverviewSidebar";
-import AssessmentOverviewMobileHeader from "../../components/AssessmentPage/AssessmentOverviewMobileHeader";
 import { useGetExamOverviewQuery } from "@/gql/operations";
-import handleSidebarScroll from "../../components/AssessmentPage/utils/handleSidebarScroll";
-import type { Question as QuestionType } from "@/types"
-import { getQuestionStatusOverview } from "../../components/AssessmentPage/utils/getQuestionStatus";
+import type { Question as QuestionType } from "@/types";
+import AssessmentOverview, { type AssessmentResults } from "../../components/AssessmentPage/AssessmentOverview";
 import AssessmentLoading from "../../components/LoadingScreens/AssessmentLoading";
 import AssessmentError from "../../components/ErrorScreens/AssessmentError";
 import { colors } from "../colors.config";
@@ -18,14 +11,6 @@ const ExamOverviewPage = () => {
     const { data, loading, error } = useGetExamOverviewQuery({
         variables: { getExamId: '943abe29-d104-4322-9239-f0afd8938541' },
     });
-
-    const [currentQuestion, setCurrentQuestion] = useState(1);
-    const [showMobileNav, setShowMobileNav] = useState(false);
-    const isMobile = useIsMobile();
-    const isSmallMobile = useIsSmallMobile();
-
-    // Add ref for main content container
-    const mainContentRef = useRef<HTMLDivElement>(null!)
 
     // Transform server data to match Question type
     const questions: QuestionType[] = data?.getExam?.examQuestions?.map((examQuestion, index: number) => ({
@@ -55,7 +40,7 @@ const ExamOverviewPage = () => {
     })) || [];
 
     // Calculate exam results from the data
-    const examResults = {
+    const examResults: AssessmentResults = {
         totalQuestions: questions.length,
         correctAnswers: questions.filter(q => q.userAnswer === q.correctAnswer).length,
         incorrectAnswers: questions.filter(q => q.userAnswer && q.userAnswer !== q.correctAnswer).length,
@@ -63,37 +48,6 @@ const ExamOverviewPage = () => {
         timeSpent: "85 минути", // This would come from the backend
         examDate: "15 декември 2024" // This would come from the backend
     };
-
-    // Convert questions to the format expected by the Question component
-    const questionsForDisplay = questions.map(q => ({
-        position: q.position,
-        statement: q.statement,
-        type: q.type,
-        options: q.options,
-        diagramData: q.diagramData,
-        diagramSteps: q.diagramSteps,
-    }));
-
-    // Create answers object for the Question component
-    const answers = questions.reduce((acc, q) => {
-        if (q.userAnswer) {
-            acc[q.position] = q.userAnswer;
-        }
-        return acc;
-    }, {} as { [key: number]: string });
-
-
-
-    // Colors for the navigator grid
-    // const navigatorColors = {
-    //     primary: "emerald",
-    //     primaryLight: "emerald-50",
-    //     primaryHover: "emerald-400",
-    //     answeredBg: "green-100",
-    //     answeredBorder: "green-500",
-    //     answeredText: "green-800",
-    //     answeredHover: "green-200"
-    // };
 
     // Handle loading state
     if (loading) {
@@ -117,105 +71,27 @@ const ExamOverviewPage = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 mx-auto">
-            {/* Mobile Header - Outside scrollable container */}
-
-            <AssessmentOverviewMobileHeader
-                isMobile={isMobile}
-                showMobileNav={showMobileNav}
-                setShowMobileNav={setShowMobileNav}
-                Icon={GraduationCap}
-                iconColor="text-emerald-600"
-                correctAnswers={examResults.correctAnswers}
-                totalQuestions={examResults.totalQuestions}
-            />
-
-            <div className={`${isMobile ? 'flex flex-col' : 'flex'} ${isMobile ? 'h-[calc(100vh-64px)] -mt-[7px]' : 'h-screen'}`}>
-                {/* Left Column - Questions */}
-                <div
-                    ref={mainContentRef}
-                    className={`${isMobile ? 'flex-1 overflow-y-auto' : 'flex-1 overflow-y-auto'}`}
-                >
-                    <div className={`${isMobile ? 'p-4' : 'p-6 max-w-4xl mx-auto'} ${isSmallMobile ? 'px-2' : ''}`}>
-                        {/* Header - Desktop only */}
-                        {!isMobile && (
-                            <div className="mb-6">
-                                <h1 className="text-2xl font-bold text-gray-900 mb-2">Преглед на изпита</h1>
-                                <p className="text-gray-600">Прегледайте вашите отговори и резултати</p>
-                            </div>
-                        )}
-
-                        {/* Questions Review */}
-                        <div className="space-y-8">
-                            {questions.map((question) => (
-                                <div key={question.position} id={`question-${question.position}`}>
-                                    <Question
-                                        question={questionsForDisplay.find(q => q.position === question.position)!}
-                                        answers={answers}
-                                        isReviewMode={true}
-                                        correctAnswer={question.correctAnswer}
-                                        userAnswer={question.userAnswer}
-                                        solution={(question as QuestionType).solutionSteps}
-                                    />
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-
-                {/* Right Sidebar - Navigation */}
-                <div
-                    className={`${isMobile
-                        ? `w-full fixed -mt-[7px] top-16 right-0 z-40 ${isSmallMobile ? 'w-full' : 'w-80'} bg-white border-l border-gray-200 transform transition-transform duration-300 ease-in-out ${showMobileNav ? 'translate-x-0' : 'translate-x-full'} flex flex-col h-[calc(100vh-64px)]`
-                        : 'w-80 bg-white border-l border-gray-200 flex flex-col h-100vh'
-                        }`}
-                    onWheel={(event) => handleSidebarScroll(event, mainContentRef)}
-                >
-                    {/* Overview Data */}
-                    <div className="p-6 border-b border-gray-200">
-                        <div className="space-y-4">
-                            {/* Main Score Card - Similar to ResultRow */}
-
-                            <AssessmentOverviewSidebar
-                                title="Резултати от изпита"
-                                badge={{
-                                    icon: <GraduationCap className="h-3.5 w-3.5" />,
-                                    label: "Матура",
-                                    bgColor: "bg-emerald-100",
-                                    textColor: "text-emerald-800",
-                                }}
-                                results={{
-                                    date: examResults.examDate,
-                                    timeSpent: examResults.timeSpent,
-                                    correctAnswers: examResults.correctAnswers,
-                                    totalQuestions: examResults.totalQuestions,
-                                    score: examResults.score,
-                                }}
-                                timeColor="text-blue-500"
-                                timeTextColor="text-blue-700"
-                            />
-
-                        </div>
-                    </div>
-
-                    {/* Questions Navigator Grid  */}
-                    <div className={`${isMobile ? 'flex-1 overflow-y-auto' : 'flex-1'} flex items-start justify-center`}>
-                        <QuestionsNavigatorGrid
-                            answers={answers}
-                            totalQuestions={questions.length}
-                            getQuestionStatus={(questionNum) => getQuestionStatusOverview(questions, questionNum)}
-                            currentQuestion={currentQuestion}
-                            setShowMobileNav={setShowMobileNav}
-                            navigatorColors={colors.navigator} // TODO: This should be checked if the colors are correct 
-                            reviewMode={true}
-                            isMobile={isMobile}
-                            isSmallMobile={isSmallMobile}
-                            setCurrentQuestion={setCurrentQuestion}
-                        />
-                    </div>
-                </div>
-            </div>
-        </div>
+        <AssessmentOverview
+            questions={questions}
+            results={examResults}
+            title="Преглед на изпита"
+            subtitle="Прегледайте вашите отговори и резултати"
+            Icon={GraduationCap}
+            iconColor="text-emerald-600"
+            badge={{
+                icon: <GraduationCap className="h-3.5 w-3.5" />,
+                label: "Матура",
+                bgColor: "bg-emerald-100",
+                textColor: "text-emerald-800",
+            }}
+            timeColor="text-blue-500"
+            timeTextColor="text-blue-700"
+            navigatorColors={colors.navigator}
+            loading={loading}
+            error={error}
+            LoadingComponent={AssessmentLoading}
+            ErrorComponent={AssessmentError}
+        />
     );
 };
 

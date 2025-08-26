@@ -10,7 +10,7 @@ import { AssessmentMobileHeader } from "../../components/AssessmentPage/Assessme
 import AssessmentSidebar from "../../components/AssessmentPage/AssessmentSidebar";
 import handleSidebarScroll from "../../components/AssessmentPage/utils/handleSidebarScroll";
 import { getQuestionStatusLive } from "../../components/AssessmentPage/utils/getQuestionStatus";
-import { colors } from "./colors.config";
+import { colors } from "../colors.config";
 
 const sampleTriangleData: DiagramData = {
     points: {
