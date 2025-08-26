@@ -2,7 +2,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Clock } from "lucide-react";
 import { QuestionsNavigatorGrid } from "../QuestionsNavigatorGrid/QuestionsNavigatorGrid";
-import { colors } from "../../exam/live/colors.config";
+import { colors } from "../../exam/colors.config";
 import { useEffect, useState } from "react";
 
 

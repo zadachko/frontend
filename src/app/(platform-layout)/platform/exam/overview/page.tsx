@@ -13,6 +13,7 @@ import type { Question as QuestionType } from "@/types"
 import { getQuestionStatusOverview } from "../../components/AssessmentPage/utils/getQuestionStatus";
 import AssessmentLoading from "../../components/LoadingScreens/AssessmentLoading";
 import AssessmentError from "../../components/ErrorScreens/AssessmentError";
+import { colors } from "../colors.config";
 const ExamOverviewPage = () => {
     const { data, loading, error } = useGetExamOverviewQuery({
         variables: { getExamId: '943abe29-d104-4322-9239-f0afd8938541' },
@@ -84,15 +85,15 @@ const ExamOverviewPage = () => {
 
 
     // Colors for the navigator grid
-    const navigatorColors = {
-        primary: "emerald",
-        primaryLight: "emerald-50",
-        primaryHover: "emerald-400",
-        answeredBg: "green-100",
-        answeredBorder: "green-500",
-        answeredText: "green-800",
-        answeredHover: "green-200"
-    };
+    // const navigatorColors = {
+    //     primary: "emerald",
+    //     primaryLight: "emerald-50",
+    //     primaryHover: "emerald-400",
+    //     answeredBg: "green-100",
+    //     answeredBorder: "green-500",
+    //     answeredText: "green-800",
+    //     answeredHover: "green-200"
+    // };
 
     // Handle loading state
     if (loading) {
@@ -205,7 +206,7 @@ const ExamOverviewPage = () => {
                             getQuestionStatus={(questionNum) => getQuestionStatusOverview(questions, questionNum)}
                             currentQuestion={currentQuestion}
                             setShowMobileNav={setShowMobileNav}
-                            navigatorColors={navigatorColors}
+                            navigatorColors={colors.navigator} // TODO: This should be checked if the colors are correct 
                             reviewMode={true}
                             isMobile={isMobile}
                             isSmallMobile={isSmallMobile}

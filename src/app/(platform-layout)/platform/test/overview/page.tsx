@@ -10,6 +10,7 @@ import AssessmentOverviewMobileHeader from "../../components/AssessmentPage/Asse
 import type { Question as QuestionType } from "@/types"
 import handleSidebarScroll from "../../components/AssessmentPage/utils/handleSidebarScroll";
 import { getQuestionStatusOverview } from "../../components/AssessmentPage/utils/getQuestionStatus";
+import { colors } from "../colors.config";
 
 const baseDiagram: DiagramData = {
     points: {
@@ -343,16 +344,6 @@ const TestOverviewPage = () => {
     }, {} as { [key: number]: string });
 
 
-    // Colors for the navigator grid - using purple theme for tests
-    const navigatorColors = {
-        primary: "[#6F58C9]",
-        primaryLight: "[#6F58C91A]",
-        primaryHover: "[#6F58C94D]",
-        answeredBg: "[#6F58C933]",
-        answeredBorder: "[#6F58C966]",
-        answeredText: "[#6F58C9]",
-        answeredHover: "[#6F58C94D]"
-    };
 
     return (
         <div className="min-h-screen bg-gray-50 mx-auto">
@@ -439,7 +430,7 @@ const TestOverviewPage = () => {
                             getQuestionStatus={(questionNum) => getQuestionStatusOverview(questions, questionNum)}
                             currentQuestion={currentQuestion}
                             setShowMobileNav={setShowMobileNav}
-                            navigatorColors={navigatorColors}
+                            navigatorColors={colors.navigator}
                             reviewMode={true}
                             isMobile={isMobile}
                             isSmallMobile={isSmallMobile}

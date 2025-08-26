@@ -10,7 +10,7 @@ import AssessmentSidebar from "../../components/AssessmentPage/AssessmentSidebar
 import { useGetExamLiveQuery } from "@/gql/operations";
 import handleSidebarScroll from "../../components/AssessmentPage/utils/handleSidebarScroll";
 import { getQuestionStatusLive } from "../../components/AssessmentPage/utils/getQuestionStatus";
-import { colors } from "./colors.config";
+import { colors } from "../colors.config";
 import AssessmentLoading from "../../components/LoadingScreens/AssessmentLoading";
 import AssessmentError from "../../components/ErrorScreens/AssessmentError";
 const LiveExamPage = () => {
