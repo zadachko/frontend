@@ -12,7 +12,7 @@ import handleSidebarScroll from "../../components/AssessmentPage/utils/handleSid
 import type { Question as QuestionType } from "@/types"
 import { getQuestionStatusOverview } from "../../components/AssessmentPage/utils/getQuestionStatus";
 import AssessmentLoading from "../../components/LoadingScreens/AssessmentLoading";
-
+import AssessmentError from "../../components/ErrorScreens/AssessmentError";
 const ExamOverviewPage = () => {
     const { data, loading, error } = useGetExamOverviewQuery({
         variables: { getExamId: '943abe29-d104-4322-9239-f0afd8938541' },
@@ -101,14 +101,7 @@ const ExamOverviewPage = () => {
 
     // Handle error state
     if (error) {
-        return (
-            <div className="min-h-screen bg-gray-50 flex items-center justify-center w-screen">
-                <div className="text-center">
-                    <p className="text-red-600 mb-4">Грешка при зареждане на резултатите</p>
-                    <p className="text-gray-600">{error.message}</p>
-                </div>
-            </div>
-        );
+        return <AssessmentError error={error} />;
     }
 
     // Handle empty questions

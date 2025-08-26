@@ -13,6 +13,7 @@ import handleSidebarScroll from "../../components/AssessmentPage/utils/handleSid
 import { getQuestionStatusLive } from "../../components/AssessmentPage/utils/getQuestionStatus";
 import { colors } from "./colors.config";
 import AssessmentLoading from "../../components/LoadingScreens/AssessmentLoading";
+import AssessmentError from "../../components/ErrorScreens/AssessmentError";
 const LiveExamPage = () => {
 
     const { data, loading, error } = useGetExamLiveQuery({
@@ -58,14 +59,7 @@ const LiveExamPage = () => {
 
     // Handle error state
     if (error) {
-        return (
-            <div className="min-h-screen bg-gray-50 flex items-center justify-center w-screen">
-                <div className="text-center">
-                    <p className="text-red-600 mb-4">Грешка при зареждане на въпросите</p>
-                    <p className="text-gray-600">{error.message}</p>
-                </div>
-            </div>
-        );
+        return <AssessmentError error={error} />;
     }
 
     // Handle empty questions
