@@ -1,27 +1,27 @@
-import { SolutionStep } from "@/app/(platform-layout)/platform/components/Question/QuestionSolutionModal"
-import type { DiagramData, StepAction } from "geometry-diagram-renderer"
+import { SolutionStep } from '@/app/(platform-layout)/platform/components/Question/QuestionSolutionModal/QuestionSolutionModal';
+import type { DiagramData, StepAction } from 'geometry-diagram-renderer';
 
 export interface TestResult {
-    id: string
-    type: "test" | "exam"
-    title: string
-    date: string
-    correctAnswers: number
-    totalQuestions: number
-    percentage: number
-    duration?: string
-    category?: string
+	id: string;
+	type: 'test' | 'exam';
+	title: string;
+	date: string;
+	correctAnswers: number;
+	totalQuestions: number;
+	percentage: number;
+	duration?: string;
+	category?: string;
 }
 
 export interface Question {
-    id: number
-    statement: string
-    type: "text" | "multiple"
-    options?: string[]
-    diagramData?: DiagramData
-    diagramSteps?: StepAction[][]
-    correctAnswer?: string
-    userAnswer?: string
-    points?: number
-    solutionSteps?: SolutionStep[]
+	position: number;
+	statement: string;
+	type: 'text' | 'multiple';
+	options?: string[];
+	diagramData?: DiagramData;
+	diagramSteps?: StepAction[][];
+	correctAnswer?: string;
+	userAnswer?: string;
+	points?: number;
+	solutionSteps?: SolutionStep[];
 }

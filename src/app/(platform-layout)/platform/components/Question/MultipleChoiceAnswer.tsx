@@ -4,7 +4,7 @@ import { renderWithMath } from '@/app/(platform-layout)/platform/common/utilitie
 
 type MultipleChoiceAnswerProps = {
     question: {
-        id: number;
+        position: number;
         options: string[];
     };
     answers: {
@@ -89,13 +89,13 @@ const MultipleChoiceAnswer = ({
                 (option: string, index: number) => {
                     const optionLetter = optionLetters[index];
                     const isSelected =
-                        answers[question.id] === optionLetter;
+                        answers[question.position] === optionLetter;
                     return (
                         <button
                             key={index}
                             onClick={() =>
                                 handleAnswerChange?.(
-                                    question.id,
+                                    question.position,
                                     optionLetter
                                 )
                             }

@@ -1,15 +1,9 @@
 'use client';
-import { useState, useRef } from "react";
 import { BookOpen } from "lucide-react";
 import { type DiagramData, type StepAction } from "geometry-diagram-renderer";
-import Question from "@/app/(platform-layout)/platform/components/Question/Question";
-import { QuestionsNavigatorGrid } from "@/app/(platform-layout)/platform/components/QuestionsNavigatorGrid/QuestionsNavigatorGrid";
-import { useIsMobile, useIsSmallMobile } from "@/hooks/isMobile";
-import AssessmentOverviewSidebar from "../../components/AssessmentPage/AssessmentOverviewSidebar";
-import AssessmentOverviewMobileHeader from "../../components/AssessmentPage/AssessmentOverviewMobileHeader";
-import type { Question as QuestionType } from "@/types"
-import handleSidebarScroll from "../../components/AssessmentPage/utils/handleSidebarScroll";
-import { getQuestionStatusOverview } from "../../components/AssessmentPage/utils/getQuestionStatus";
+import type { Question as QuestionType } from "@/types";
+import AssessmentOverview, { type AssessmentResults } from "../../components/AssessmentPage/AssessmentOverview";
+import { colors } from "../colors.config";
 
 const baseDiagram: DiagramData = {
     points: {
@@ -62,16 +56,8 @@ const exampleSteps: StepAction[][] = [
 ];
 
 const TestOverviewPage = () => {
-    const [currentQuestion, setCurrentQuestion] = useState(1);
-    const [showMobileNav, setShowMobileNav] = useState(false);
-    const isMobile = useIsMobile();
-    const isSmallMobile = useIsSmallMobile();
-
-    // Add ref for main content container
-    const mainContentRef = useRef<HTMLDivElement>(null!)
-
     // Mock test results - in a real app, this would come from the backend
-    const testResults = {
+    const testResults: AssessmentResults = {
         totalQuestions: 25,
         correctAnswers: 20,
         incorrectAnswers: 5,
@@ -83,7 +69,7 @@ const TestOverviewPage = () => {
     // Mock questions with results - in a real app, this would come from the backend
     const questions: QuestionType[] = [
         {
-            id: 1,
+            position: 1,
             statement: "Решете: $\\displaystyle \\frac{2}{3} + \\frac{1}{6}$",
             type: "multiple",
             options: [
@@ -103,7 +89,7 @@ const TestOverviewPage = () => {
             ]
         },
         {
-            id: 2,
+            position: 2,
             statement: "В правоъгълник ABCD са построени точки K и M съгласно дадената конструкция. Докажете, че триъгълник DMK е равнобедрен и намерете мерките на ъглите му.",
             type: "text",
             correctAnswer: "Триъгълникът DMK е равнобедрен с ъгли 60°, 60°, 60°",
@@ -120,7 +106,7 @@ const TestOverviewPage = () => {
             diagramSteps: exampleSteps
         },
         {
-            id: 3,
+            position: 3,
             statement: "Стойността на израза $x^3 \\cdot \\left( \\frac{x^3}{x^2} \\right)^{-6}$ при $x = -3$ е:",
             type: "multiple",
             options: [
@@ -140,7 +126,7 @@ const TestOverviewPage = () => {
             ]
         },
         {
-            id: 4,
+            position: 4,
             statement: "Изчислете: 15 + 28 - 12 × 2",
             type: "text",
             correctAnswer: "19",
@@ -148,7 +134,7 @@ const TestOverviewPage = () => {
             points: 1
         },
         {
-            id: 5,
+            position: 5,
             statement: "Какъв е периметърът на квадрат с дължина на страната 6 cm?",
             type: "multiple",
             options: ["12 cm", "24 cm", "36 cm", "18 cm"],
@@ -157,7 +143,7 @@ const TestOverviewPage = () => {
             points: 1
         },
         {
-            id: 6,
+            position: 6,
             statement: "Опростете: 2(x + 3) - 4",
             type: "text",
             correctAnswer: "2x + 2",
@@ -165,7 +151,7 @@ const TestOverviewPage = () => {
             points: 1
         },
         {
-            id: 7,
+            position: 7,
             statement: "Преобразувайте 0.6 в дроб в най-ниската форма.",
             type: "text",
             correctAnswer: "3/5",
@@ -173,7 +159,7 @@ const TestOverviewPage = () => {
             points: 1
         },
         {
-            id: 8,
+            position: 8,
             statement: "Кой ъгъл е по-голям от 90°, но по-малък от 180°?",
             type: "multiple",
             options: ["Acute angle", "Right angle", "Obtuse angle", "Straight angle"],
@@ -182,7 +168,7 @@ const TestOverviewPage = () => {
             points: 1
         },
         {
-            id: 9,
+            position: 9,
             statement: "Намерете стойността на y: 2y - 5 = 11",
             type: "text",
             correctAnswer: "8",
@@ -190,7 +176,7 @@ const TestOverviewPage = () => {
             points: 1
         },
         {
-            id: 10,
+            position: 10,
             statement: "Колко е 25% от 80?",
             type: "text",
             correctAnswer: "20",
@@ -198,7 +184,7 @@ const TestOverviewPage = () => {
             points: 1
         },
         {
-            id: 11,
+            position: 11,
             statement: "Колко е стойността на π (пи) с точност до две десетични места?",
             type: "text",
             correctAnswer: "3.14",
@@ -206,7 +192,7 @@ const TestOverviewPage = () => {
             points: 1
         },
         {
-            id: 12,
+            position: 12,
             statement: "Кое от следните е просто число?",
             type: "multiple",
             options: ["15", "21", "23", "27"],
@@ -215,7 +201,7 @@ const TestOverviewPage = () => {
             points: 1
         },
         {
-            id: 13,
+            position: 13,
             statement: "Изчислете площта на кръг с радиус 4 cm.",
             type: "text",
             correctAnswer: "50.24 cm²",
@@ -223,7 +209,7 @@ const TestOverviewPage = () => {
             points: 1
         },
         {
-            id: 14,
+            position: 14,
             statement: "Колко е наклона на линията y = 2x + 3?",
             type: "text",
             correctAnswer: "2",
@@ -231,7 +217,7 @@ const TestOverviewPage = () => {
             points: 1
         },
         {
-            id: 15,
+            position: 15,
             statement: "Кое от следните е еквивалентно на 2/3?",
             type: "multiple",
             options: ["4/6", "6/9", "8/12", "All of the above"],
@@ -240,7 +226,7 @@ const TestOverviewPage = () => {
             points: 1
         },
         {
-            id: 16,
+            position: 16,
             statement: "Решете уравнението: 2x + 5 = 13",
             type: "text",
             correctAnswer: "4",
@@ -248,7 +234,7 @@ const TestOverviewPage = () => {
             points: 1
         },
         {
-            id: 17,
+            position: 17,
             statement: "Какъв е периметърът на правоъгълник с дължина 10 cm и ширина 6 cm?",
             type: "text",
             correctAnswer: "32 cm",
@@ -256,7 +242,7 @@ const TestOverviewPage = () => {
             points: 1
         },
         {
-            id: 18,
+            position: 18,
             statement: "Кое от следните е делител на 24?",
             type: "multiple",
             options: ["5", "7", "8", "9"],
@@ -265,7 +251,7 @@ const TestOverviewPage = () => {
             points: 1
         },
         {
-            id: 19,
+            position: 19,
             statement: "Преобразувайте 3/5 в десетична дроб.",
             type: "text",
             correctAnswer: "0.6",
@@ -273,7 +259,7 @@ const TestOverviewPage = () => {
             points: 1
         },
         {
-            id: 20,
+            position: 20,
             statement: "Колко е стойността на x в уравнението: 3x - 7 = 8",
             type: "text",
             correctAnswer: "5",
@@ -281,7 +267,7 @@ const TestOverviewPage = () => {
             points: 1
         },
         {
-            id: 21,
+            position: 21,
             statement: "Кой от следните ъгли измерва 90 градуса?",
             type: "multiple",
             options: ["Acute angle", "Right angle", "Obtuse angle", "Straight angle"],
@@ -290,7 +276,7 @@ const TestOverviewPage = () => {
             points: 1
         },
         {
-            id: 22,
+            position: 22,
             statement: "Изчислете: 15 × 4 ÷ 2 + 7",
             type: "text",
             correctAnswer: "37",
@@ -298,7 +284,7 @@ const TestOverviewPage = () => {
             points: 1
         },
         {
-            id: 23,
+            position: 23,
             statement: "Колко е 20% от 150?",
             type: "text",
             correctAnswer: "30",
@@ -306,7 +292,7 @@ const TestOverviewPage = () => {
             points: 1
         },
         {
-            id: 24,
+            position: 24,
             statement: "Кое от следните е кратно на 6?",
             type: "multiple",
             options: ["14", "18", "22", "26"],
@@ -315,7 +301,7 @@ const TestOverviewPage = () => {
             points: 1
         },
         {
-            id: 25,
+            position: 25,
             statement: "Опростете израза: 2(x + 4) - 3x",
             type: "text",
             correctAnswer: "-x + 8",
@@ -324,131 +310,26 @@ const TestOverviewPage = () => {
         }
     ];
 
-    // Convert questions to the format expected by the Question component
-    const questionsForDisplay = questions.map(q => ({
-        id: q.id,
-        statement: q.statement,
-        type: q.type,
-        options: q.options,
-        diagramData: q.diagramData,
-        diagramSteps: q.diagramSteps,
-    }));
 
-    // Create answers object for the Question component
-    const answers = questions.reduce((acc, q) => {
-        if (q.userAnswer) {
-            acc[q.id] = q.userAnswer;
-        }
-        return acc;
-    }, {} as { [key: number]: string });
-
-
-    // Colors for the navigator grid - using purple theme for tests
-    const navigatorColors = {
-        primary: "[#6F58C9]",
-        primaryLight: "[#6F58C91A]",
-        primaryHover: "[#6F58C94D]",
-        answeredBg: "[#6F58C933]",
-        answeredBorder: "[#6F58C966]",
-        answeredText: "[#6F58C9]",
-        answeredHover: "[#6F58C94D]"
-    };
 
     return (
-        <div className="min-h-screen bg-gray-50 mx-auto">
-            {/* Mobile Header - Outside scrollable container */}
-
-            <AssessmentOverviewMobileHeader
-                isMobile={isMobile}
-                showMobileNav={showMobileNav}
-                setShowMobileNav={setShowMobileNav}
-                Icon={BookOpen}
-                iconColor="text-[#6F58C9]"
-                correctAnswers={testResults.correctAnswers}
-                totalQuestions={testResults.totalQuestions}
-            />
-
-
-            <div className={`${isMobile ? 'flex flex-col' : 'flex'} ${isMobile ? 'h-[calc(100vh-64px)] -mt-[7px]' : 'h-screen'}`}>
-                {/* Left Column - Questions */}
-                <div
-                    ref={mainContentRef}
-                    className={`${isMobile ? 'flex-1 overflow-y-auto' : 'flex-1 overflow-y-auto'}`}
-                >
-                    <div className={`${isMobile ? 'p-4' : 'p-6 max-w-4xl mx-auto'} ${isSmallMobile ? 'px-2' : ''}`}>
-                        {/* Header - Desktop only */}
-                        {!isMobile && (
-                            <div className="mb-6">
-                                <h1 className="text-2xl font-bold text-gray-900 mb-2">Преглед на теста</h1>
-                                <p className="text-gray-600">Прегледайте вашите отговори и резултати</p>
-                            </div>
-                        )}
-
-                        {/* Questions Review */}
-                        <div className="space-y-8">
-                            {questions.map((question) => (
-                                <div key={question.id} id={`question-${question.id}`}>
-                                    <Question
-                                        question={questionsForDisplay.find(q => q.id === question.id)!}
-                                        answers={answers}
-                                        isReviewMode={true}
-                                        correctAnswer={question.correctAnswer}
-                                        userAnswer={question.userAnswer}
-                                        solution={(question as QuestionType).solutionSteps}
-                                    />
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-
-                {/* Right Sidebar - Navigation */}
-                <div
-                    className={`${isMobile
-                        ? `w-full fixed -mt-[7px] top-16 right-0 z-40 ${isSmallMobile ? 'w-full' : 'w-80'} bg-white border-l border-gray-200 transform transition-transform duration-300 ease-in-out ${showMobileNav ? 'translate-x-0' : 'translate-x-full'} flex flex-col h-[calc(100vh-64px)]`
-                        : 'w-80 bg-white border-l border-gray-200 flex flex-col h-100vh'
-                        }`}
-                    onWheel={(event) => handleSidebarScroll(event, mainContentRef)}
-                >
-                    {/* Overview Data */}
-                    <AssessmentOverviewSidebar
-                        title="Резултати от теста"
-                        badge={{
-                            icon: <BookOpen className="h-3.5 w-3.5" />,
-                            label: "Тест",
-                            bgColor: "bg-purple-100",
-                            textColor: "text-purple-800",
-                        }}
-                        results={{
-                            date: testResults.testDate,
-                            timeSpent: testResults.timeSpent,
-                            correctAnswers: testResults.correctAnswers,
-                            totalQuestions: testResults.totalQuestions,
-                            score: testResults.score,
-                        }}
-                        timeColor="text-purple-500"
-                        timeTextColor="text-purple-700"
-                    />
-
-
-                    {/* Questions Navigator Grid - Centered */}
-                    <div className={`${isMobile ? 'flex-1 overflow-y-auto' : 'flex-1'} flex items-start justify-center`}>
-                        <QuestionsNavigatorGrid
-                            answers={answers}
-                            totalQuestions={questions.length}
-                            getQuestionStatus={(questionNum) => getQuestionStatusOverview(questions, questionNum)}
-                            currentQuestion={currentQuestion}
-                            setShowMobileNav={setShowMobileNav}
-                            navigatorColors={navigatorColors}
-                            reviewMode={true}
-                            isMobile={isMobile}
-                            isSmallMobile={isSmallMobile}
-                            setCurrentQuestion={setCurrentQuestion}
-                        />
-                    </div>
-                </div>
-            </div>
-        </div>
+        <AssessmentOverview
+            questions={questions}
+            results={testResults}
+            title="Преглед на теста"
+            subtitle="Прегледайте вашите отговори и резултати"
+            Icon={BookOpen}
+            iconColor="text-[#6F58C9]"
+            badge={{
+                icon: <BookOpen className="h-3.5 w-3.5" />,
+                label: "Тест",
+                bgColor: "bg-purple-100",
+                textColor: "text-purple-800",
+            }}
+            timeColor="text-purple-500"
+            timeTextColor="text-purple-700"
+            navigatorColors={colors.navigator}
+        />
     );
 };
 
