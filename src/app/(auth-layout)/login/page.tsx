@@ -1,13 +1,110 @@
-import React from 'react'
-import Link from 'next/link'
-import {
-    Mail,
-    Lock,
-    Eye,
-    ArrowRight
-} from 'lucide-react'
+'use client';
 
-const Page = () => {
+import React, { useCallback, useMemo, useState } from 'react';
+import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { Mail, Lock, Eye, EyeOff, ArrowRight } from 'lucide-react';
+
+// ⬇️ Adjust these imports to whatever your Codegen output file is
+// If you rename the operation to `Login`, replace with: `useLoginMutation`
+import { useMutationMutation } from '@/gql/operations';
+
+type FormState = {
+    email: string;
+    password: string;
+    remember: boolean;
+};
+
+const Page: React.FC = () => {
+    const router = useRouter();
+    const searchParams = useSearchParams();
+
+    const [showPassword, setShowPassword] = useState(false);
+    const [form, setForm] = useState<FormState>({
+        email: '',
+        password: '',
+        remember: true,
+    });
+    const [formError, setFormError] = useState<string | null>(null);
+
+    const redirectTo = useMemo(
+        () => searchParams.get('redirect') || '/',
+        [searchParams]
+    );
+
+    const [login, { loading }] = useMutationMutation();
+
+    const onChange =
+        (key: keyof FormState) =>
+            (e: React.ChangeEvent<HTMLInputElement>) => {
+                const value =
+                    key === 'remember' ? (e.target as HTMLInputElement).checked : e.target.value;
+                setForm((s) => ({ ...s, [key]: value as string }));
+            };
+
+    const handleSubmit = useCallback(
+        async (e: React.FormEvent<HTMLFormElement>) => {
+            e.preventDefault();
+            setFormError(null);
+
+            const email = form.email.trim();
+            const password = form.password;
+
+            // tiny client-side guardrails
+            if (!email || !password) {
+                setFormError('Моля, въведете имейл и парола.');
+                return;
+            }
+
+            try {
+                const { data } = await login({
+                    variables: {
+                        input: { email, password },
+                    },
+                });
+
+                const accessToken = data?.login?.accessToken ?? '';
+                const refreshToken = data?.login?.refreshToken ?? '';
+
+                if (!accessToken || !refreshToken) {
+                    setFormError('Невалиден отговор от сървъра. Опитайте отново.');
+                    return;
+                }
+
+                // Store tokens (client-side). For production, prefer setting HttpOnly cookies server-side.
+                if (form.remember) {
+                    localStorage.setItem('accessToken', accessToken);
+                    localStorage.setItem('refreshToken', refreshToken);
+                    sessionStorage.removeItem('accessToken');
+                    sessionStorage.removeItem('refreshToken');
+                } else {
+                    sessionStorage.setItem('accessToken', accessToken);
+                    sessionStorage.setItem('refreshToken', refreshToken);
+                    localStorage.removeItem('accessToken');
+                    localStorage.removeItem('refreshToken');
+                }
+
+                router.push(redirectTo);
+            } catch (err: unknown) {
+                // ApolloError has `message`
+                const getErrorMessage = (error: unknown): string => {
+                    if (error && typeof error === 'object' && 'graphQLErrors' in error) {
+                        const apolloError = error as { graphQLErrors?: Array<{ message?: string }> };
+                        return apolloError.graphQLErrors?.[0]?.message || 'GraphQL error';
+                    }
+                    if (error instanceof Error) {
+                        return error.message;
+                    }
+                    return 'Възникна грешка при вход. Опитайте отново.';
+                };
+
+                const message = getErrorMessage(err);
+                setFormError(message);
+            }
+        },
+        [form, login, redirectTo, router]
+    );
+
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-md w-full space-y-8">
@@ -18,7 +115,7 @@ const Page = () => {
                 </div>
 
                 {/* Login Form */}
-                <form className="mt-8 space-y-6">
+                <form className="mt-8 space-y-6" onSubmit={handleSubmit} noValidate>
                     <div className="space-y-4">
                         {/* Email */}
                         <div>
@@ -35,6 +132,8 @@ const Page = () => {
                                     type="email"
                                     autoComplete="email"
                                     required
+                                    value={form.email}
+                                    onChange={onChange('email')}
                                     className="appearance-none block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6F58C9]/20 focus:border-[#6F58C9] sm:text-sm"
                                     placeholder="name@example.com"
                                 />
@@ -53,15 +152,22 @@ const Page = () => {
                                 <input
                                     id="password"
                                     name="password"
-                                    type="password"
+                                    type={showPassword ? 'text' : 'password'}
                                     autoComplete="current-password"
                                     required
+                                    value={form.password}
+                                    onChange={onChange('password')}
                                     className="appearance-none block w-full pl-10 pr-10 py-2 border border-gray-300 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6F58C9]/20 focus:border-[#6F58C9] sm:text-sm"
                                     placeholder="••••••••"
                                 />
                                 <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
-                                    <button type="button" className="text-gray-400 hover:text-gray-500">
-                                        <Eye className="h-5 w-5" />
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowPassword((s) => !s)}
+                                        aria-label={showPassword ? 'Скрий паролата' : 'Покажи паролата'}
+                                        className="text-gray-400 hover:text-gray-500"
+                                    >
+                                        {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                                     </button>
                                 </div>
                             </div>
@@ -75,9 +181,14 @@ const Page = () => {
                                         id="remember-me"
                                         name="remember-me"
                                         type="checkbox"
+                                        checked={form.remember}
+                                        onChange={onChange('remember')}
                                         className="h-4 w-4 text-[#6F58C9] focus:ring-[#6F58C9] border-gray-300 rounded cursor-pointer transition-colors hover:border-[#6F58C9]"
                                     />
-                                    <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700 cursor-pointer select-none hover:text-[#6F58C9] transition-colors">
+                                    <label
+                                        htmlFor="remember-me"
+                                        className="ml-2 block text-sm text-gray-700 cursor-pointer select-none hover:text-[#6F58C9] transition-colors"
+                                    >
                                         Запомни ме
                                     </label>
                                 </div>
@@ -86,14 +197,25 @@ const Page = () => {
                                 Забравена парола?
                             </Link>
                         </div>
+
+                        {/* Error */}
+                        {formError && (
+                            <div
+                                role="alert"
+                                className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700"
+                            >
+                                {formError}
+                            </div>
+                        )}
                     </div>
 
                     {/* Submit Button */}
                     <button
                         type="submit"
-                        className="w-full flex items-center justify-center gap-2 px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[#6F58C9] hover:bg-[#6F58C9]/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#6F58C9] transition-colors"
+                        disabled={loading}
+                        className="w-full flex items-center justify-center gap-2 px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[#6F58C9] hover:bg-[#6F58C9]/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#6F58C9] transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
                     >
-                        <span>Вход</span>
+                        <span>{loading ? 'Влизане…' : 'Вход'}</span>
                         <ArrowRight className="w-4 h-4" />
                     </button>
                 </form>
@@ -107,7 +229,7 @@ const Page = () => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default Page
+export default Page;

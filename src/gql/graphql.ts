@@ -25,15 +25,20 @@ export type Angle = {
   label?: Maybe<Scalars['String']['output']>;
 };
 
-export type AngleInput = {
-  degrees: Scalars['Float']['input'];
-  id: Scalars['String']['input'];
-  label?: InputMaybe<Scalars['String']['input']>;
+export type Assessment = {
+  __typename?: 'Assessment';
+  createdAt: Scalars['Date']['output'];
+  id: Scalars['ID']['output'];
+  questions: Array<AssessmentQuestion>;
+  title: Scalars['String']['output'];
+  type: Scalars['String']['output'];
+  updatedAt: Scalars['Date']['output'];
 };
 
-export type AssignExamInput = {
-  examId: Scalars['String']['input'];
-  userId: Scalars['String']['input'];
+export type AssessmentQuestion = {
+  __typename?: 'AssessmentQuestion';
+  position: Scalars['Int']['output'];
+  question: Question;
 };
 
 export type AuthResponse = {
@@ -41,38 +46,6 @@ export type AuthResponse = {
   accessToken: Scalars['String']['output'];
   refreshToken: Scalars['String']['output'];
   user: User;
-};
-
-export type CreateExamInput = {
-  questionIds?: InputMaybe<Array<Scalars['ID']['input']>>;
-};
-
-export type CreateQuestionInput = {
-  correctAnswer?: InputMaybe<Scalars['String']['input']>;
-  diagramData?: InputMaybe<Array<PointInput>>;
-  diagramSteps?: InputMaybe<Array<Array<StepActionInput>>>;
-  options?: InputMaybe<Array<Scalars['String']['input']>>;
-  points?: InputMaybe<Scalars['Int']['input']>;
-  solutionSteps?: InputMaybe<Array<SolutionStepInput>>;
-  statement: Scalars['String']['input'];
-  type: QuestionType;
-  userAnswer?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type CreateUserInput = {
-  email: Scalars['String']['input'];
-  firstName: Scalars['String']['input'];
-  lastName: Scalars['String']['input'];
-  role: Scalars['String']['input'];
-};
-
-export type CreateUserQuestionSubmissionInput = {
-  answer?: InputMaybe<Scalars['String']['input']>;
-  examId: Scalars['ID']['input'];
-  isCorrect?: InputMaybe<Scalars['Boolean']['input']>;
-  pointsEarned?: InputMaybe<Scalars['Float']['input']>;
-  questionId: Scalars['ID']['input'];
-  userId: Scalars['ID']['input'];
 };
 
 export type Edge = {
@@ -83,39 +56,6 @@ export type Edge = {
   to: Scalars['String']['output'];
 };
 
-export type EdgeInput = {
-  from: Scalars['String']['input'];
-  label?: InputMaybe<Scalars['String']['input']>;
-  length?: InputMaybe<Scalars['Float']['input']>;
-  to: Scalars['String']['input'];
-};
-
-export type Exam = {
-  __typename?: 'Exam';
-  createdAt: Scalars['Date']['output'];
-  examQuestions?: Maybe<Array<ExamQuestion>>;
-  id: Scalars['ID']['output'];
-  questionSubmissions?: Maybe<Array<UserQuestionSubmission>>;
-  updatedAt: Scalars['Date']['output'];
-  userExams?: Maybe<Array<UserExam>>;
-};
-
-export type ExamQuestion = {
-  __typename?: 'ExamQuestion';
-  exam: Exam;
-  examId: Scalars['ID']['output'];
-  position: Scalars['Int']['output'];
-  question: Question;
-  questionId: Scalars['ID']['output'];
-};
-
-export type ExamScoreResponse = {
-  __typename?: 'ExamScoreResponse';
-  earnedPoints: Scalars['Int']['output'];
-  percentage: Scalars['Float']['output'];
-  totalPoints: Scalars['Int']['output'];
-};
-
 export type LoginInput = {
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
@@ -123,57 +63,8 @@ export type LoginInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  assignExamToUser: UserExam;
-  createExam: Exam;
-  createQuestion: Question;
-  createUser: User;
-  createUserQuestionSubmission: UserQuestionSubmission;
-  deleteExam: Scalars['Boolean']['output'];
-  deleteUser: Scalars['Boolean']['output'];
   login: AuthResponse;
   refreshToken: AuthResponse;
-  removeExamFromUser: Scalars['Boolean']['output'];
-  removeQuestion: Scalars['Boolean']['output'];
-  removeUserQuestionSubmission: Scalars['Boolean']['output'];
-  updateExam: Exam;
-  updateQuestion: Question;
-  updateUser: User;
-  updateUserQuestionSubmission: UserQuestionSubmission;
-};
-
-
-export type MutationAssignExamToUserArgs = {
-  input: AssignExamInput;
-};
-
-
-export type MutationCreateExamArgs = {
-  input: CreateExamInput;
-};
-
-
-export type MutationCreateQuestionArgs = {
-  createQuestionInput: CreateQuestionInput;
-};
-
-
-export type MutationCreateUserArgs = {
-  input: CreateUserInput;
-};
-
-
-export type MutationCreateUserQuestionSubmissionArgs = {
-  createUserQuestionSubmissionInput: CreateUserQuestionSubmissionInput;
-};
-
-
-export type MutationDeleteExamArgs = {
-  id: Scalars['String']['input'];
-};
-
-
-export type MutationDeleteUserArgs = {
-  id: Scalars['ID']['input'];
 };
 
 
@@ -186,47 +77,6 @@ export type MutationRefreshTokenArgs = {
   refreshToken: Scalars['String']['input'];
 };
 
-
-export type MutationRemoveExamFromUserArgs = {
-  examId: Scalars['String']['input'];
-  userId: Scalars['String']['input'];
-};
-
-
-export type MutationRemoveQuestionArgs = {
-  id: Scalars['String']['input'];
-};
-
-
-export type MutationRemoveUserQuestionSubmissionArgs = {
-  examId: Scalars['ID']['input'];
-  questionId: Scalars['ID']['input'];
-  userId: Scalars['ID']['input'];
-};
-
-
-export type MutationUpdateExamArgs = {
-  id: Scalars['String']['input'];
-  input: UpdateExamInput;
-};
-
-
-export type MutationUpdateQuestionArgs = {
-  id: Scalars['String']['input'];
-  updateQuestionInput: UpdateQuestionInput;
-};
-
-
-export type MutationUpdateUserArgs = {
-  id: Scalars['ID']['input'];
-  input: UpdateUserInput;
-};
-
-
-export type MutationUpdateUserQuestionSubmissionArgs = {
-  updateUserQuestionSubmissionInput: UpdateUserQuestionSubmissionInput;
-};
-
 export type Point = {
   __typename?: 'Point';
   id: Scalars['String']['output'];
@@ -234,107 +84,28 @@ export type Point = {
   y: Scalars['Float']['output'];
 };
 
-export type PointInput = {
-  id: Scalars['String']['input'];
-  x: Scalars['Float']['input'];
-  y: Scalars['Float']['input'];
-};
-
 export type Query = {
   __typename?: 'Query';
-  examScore: ExamScoreResponse;
-  examSubmissions: Array<UserQuestionSubmission>;
-  getExam?: Maybe<Exam>;
-  getExams?: Maybe<Array<Exam>>;
-  getMyExams?: Maybe<Array<Exam>>;
-  getUser?: Maybe<User>;
-  getUserExams?: Maybe<Array<Exam>>;
-  getUsers?: Maybe<Array<User>>;
+  getMyAssessment: Assessment;
+  getMyLastThreeAssessments: Array<UserAssessmentSubmission>;
   health: Scalars['String']['output'];
-  myExamScore: ExamScoreResponse;
-  myQuestionSubmissions: Array<UserQuestionSubmission>;
-  mySubmissionStats: SubmissionStatsResponse;
-  question: Question;
-  questions: Array<Question>;
-  submissionStats: SubmissionStatsResponse;
-  userQuestionSubmission: UserQuestionSubmission;
-  userQuestionSubmissions: Array<UserQuestionSubmission>;
 };
 
 
-export type QueryExamScoreArgs = {
-  examId: Scalars['ID']['input'];
-  userId: Scalars['ID']['input'];
-};
-
-
-export type QueryExamSubmissionsArgs = {
-  examId: Scalars['ID']['input'];
-};
-
-
-export type QueryGetExamArgs = {
-  id: Scalars['String']['input'];
-};
-
-
-export type QueryGetUserArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type QueryGetUserExamsArgs = {
-  userId: Scalars['String']['input'];
-};
-
-
-export type QueryMyExamScoreArgs = {
-  examId: Scalars['ID']['input'];
-};
-
-
-export type QueryMyQuestionSubmissionsArgs = {
-  examId: Scalars['ID']['input'];
-};
-
-
-export type QueryMySubmissionStatsArgs = {
-  examId: Scalars['ID']['input'];
-};
-
-
-export type QueryQuestionArgs = {
-  id: Scalars['String']['input'];
-};
-
-
-export type QuerySubmissionStatsArgs = {
-  examId: Scalars['ID']['input'];
-  userId: Scalars['ID']['input'];
-};
-
-
-export type QueryUserQuestionSubmissionArgs = {
-  examId: Scalars['ID']['input'];
-  questionId: Scalars['ID']['input'];
-  userId: Scalars['ID']['input'];
-};
-
-
-export type QueryUserQuestionSubmissionsArgs = {
-  examId: Scalars['ID']['input'];
-  userId: Scalars['ID']['input'];
+export type QueryGetMyAssessmentArgs = {
+  assessmentId: Scalars['String']['input'];
 };
 
 export type Question = {
   __typename?: 'Question';
-  correctAnswer?: Maybe<Scalars['String']['output']>;
+  assessments: Array<AssessmentQuestion>;
+  correctAnswer: Scalars['String']['output'];
   createdAt: Scalars['Date']['output'];
   diagramData?: Maybe<Array<Point>>;
   diagramSteps?: Maybe<Array<Array<StepAction>>>;
   id: Scalars['ID']['output'];
   options?: Maybe<Array<Scalars['String']['output']>>;
-  points?: Maybe<Scalars['Int']['output']>;
+  points: Scalars['Int']['output'];
   solutionSteps?: Maybe<Array<SolutionStep>>;
   statement: Scalars['String']['output'];
   type: QuestionType;
@@ -352,11 +123,6 @@ export type RemoveId = {
   to: Scalars['String']['output'];
 };
 
-export type RemoveIdInput = {
-  from: Scalars['String']['input'];
-  to: Scalars['String']['input'];
-};
-
 export type Role = {
   __typename?: 'Role';
   name: Scalars['String']['output'];
@@ -369,12 +135,6 @@ export type Side = {
   length: Scalars['Float']['output'];
 };
 
-export type SideInput = {
-  id: Scalars['String']['input'];
-  label?: InputMaybe<Scalars['String']['input']>;
-  length: Scalars['Float']['input'];
-};
-
 export type SolutionStep = {
   __typename?: 'SolutionStep';
   action: Scalars['String']['output'];
@@ -382,14 +142,6 @@ export type SolutionStep = {
   result: Scalars['String']['output'];
   step: Scalars['Int']['output'];
   subSteps?: Maybe<Array<Scalars['String']['output']>>;
-};
-
-export type SolutionStepInput = {
-  action: Scalars['String']['input'];
-  explanation?: InputMaybe<Scalars['String']['input']>;
-  result: Scalars['String']['input'];
-  step: Scalars['Int']['input'];
-  subSteps?: InputMaybe<Array<Scalars['String']['input']>>;
 };
 
 export type StepAction = {
@@ -405,111 +157,38 @@ export type StepAction = {
   type: Scalars['String']['output'];
 };
 
-export type StepActionInput = {
-  angleData?: InputMaybe<AngleInput>;
-  color?: InputMaybe<Scalars['String']['input']>;
-  edgeData?: InputMaybe<EdgeInput>;
-  elementType: Scalars['String']['input'];
-  id?: InputMaybe<Scalars['String']['input']>;
-  pointData?: InputMaybe<PointInput>;
-  removeId?: InputMaybe<RemoveIdInput>;
-  sideData?: InputMaybe<SideInput>;
-  type: Scalars['String']['input'];
-};
-
-export type SubmissionStatsResponse = {
-  __typename?: 'SubmissionStatsResponse';
-  answeredQuestions: Scalars['Int']['output'];
-  correctAnswers: Scalars['Int']['output'];
-  totalQuestions: Scalars['Int']['output'];
-};
-
-export type UpdateExamInput = {
-  questionIds?: InputMaybe<Array<Scalars['ID']['input']>>;
-};
-
-export type UpdateQuestionInput = {
-  correctAnswer?: InputMaybe<Scalars['String']['input']>;
-  diagramData?: InputMaybe<Array<PointInput>>;
-  diagramSteps?: InputMaybe<Array<Array<StepActionInput>>>;
-  options?: InputMaybe<Array<Scalars['String']['input']>>;
-  points?: InputMaybe<Scalars['Int']['input']>;
-  solutionSteps?: InputMaybe<Array<SolutionStepInput>>;
-  statement?: InputMaybe<Scalars['String']['input']>;
-  type?: InputMaybe<QuestionType>;
-  userAnswer?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type UpdateUserInput = {
-  email?: InputMaybe<Scalars['String']['input']>;
-  firstName?: InputMaybe<Scalars['String']['input']>;
-  lastName?: InputMaybe<Scalars['String']['input']>;
-  role?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type UpdateUserQuestionSubmissionInput = {
-  answer?: InputMaybe<Scalars['String']['input']>;
-  examId: Scalars['ID']['input'];
-  isCorrect?: InputMaybe<Scalars['Boolean']['input']>;
-  pointsEarned?: InputMaybe<Scalars['Float']['input']>;
-  questionId: Scalars['ID']['input'];
-  userId: Scalars['ID']['input'];
-};
-
 export type User = {
   __typename?: 'User';
   createdAt: Scalars['Date']['output'];
   email: Scalars['String']['output'];
   firstName: Scalars['String']['output'];
   id: Scalars['ID']['output'];
-  lastLoginAt?: Maybe<Scalars['Date']['output']>;
+  lastLoginAt: Scalars['Date']['output'];
   lastName: Scalars['String']['output'];
-  questionSubmissions?: Maybe<Array<UserQuestionSubmission>>;
   role: Role;
   updatedAt: Scalars['Date']['output'];
-  userExams?: Maybe<Array<UserExam>>;
 };
 
-export type UserExam = {
-  __typename?: 'UserExam';
-  assignedAt: Scalars['Date']['output'];
-  completedAt?: Maybe<Scalars['Date']['output']>;
-  exam: Exam;
-  examId: Scalars['ID']['output'];
-  startedAt?: Maybe<Scalars['Date']['output']>;
-  user: User;
-  userId: Scalars['ID']['output'];
+export type UserAssessmentSubmission = {
+  __typename?: 'UserAssessmentSubmission';
+  assessment: Assessment;
+  finishedAt: Scalars['Date']['output'];
+  score: Scalars['Int']['output'];
+  startedAt: Scalars['Date']['output'];
 };
 
-export type UserQuestionSubmission = {
-  __typename?: 'UserQuestionSubmission';
-  answer?: Maybe<Scalars['String']['output']>;
-  createdAt: Scalars['Date']['output'];
-  exam: Exam;
-  examId: Scalars['ID']['output'];
-  isCorrect?: Maybe<Scalars['Boolean']['output']>;
-  pointsEarned?: Maybe<Scalars['Int']['output']>;
-  question: Question;
-  questionId: Scalars['ID']['output'];
-  updatedAt: Scalars['Date']['output'];
-  user: User;
-  userId: Scalars['ID']['output'];
-};
-
-export type GetExamLiveQueryVariables = Exact<{
-  examId: Scalars['String']['input'];
+export type MutationMutationVariables = Exact<{
+  input: LoginInput;
 }>;
 
 
-export type GetExamLiveQuery = { __typename?: 'Query', getExam?: { __typename?: 'Exam', createdAt: any, examQuestions?: Array<{ __typename?: 'ExamQuestion', question: { __typename?: 'Question', points?: number | null, statement: string, options?: Array<string> | null, type: QuestionType } }> | null } | null };
+export type MutationMutation = { __typename?: 'Mutation', login: { __typename?: 'AuthResponse', accessToken: string, refreshToken: string } };
 
-export type GetExamOverviewQueryVariables = Exact<{
-  getExamId: Scalars['String']['input'];
-}>;
+export type GetMyLastThreeAssessmentsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetExamOverviewQuery = { __typename?: 'Query', getExam?: { __typename?: 'Exam', examQuestions?: Array<{ __typename?: 'ExamQuestion', question: { __typename?: 'Question', correctAnswer?: string | null, options?: Array<string> | null, points?: number | null, statement: string, type: QuestionType, diagramData?: Array<{ __typename?: 'Point', id: string, x: number, y: number }> | null, diagramSteps?: Array<Array<{ __typename?: 'StepAction', color?: string | null, elementType: string, id?: string | null, type: string, angleData?: { __typename?: 'Angle', degrees: number, id: string, label?: string | null } | null, edgeData?: { __typename?: 'Edge', from: string, label?: string | null, length?: number | null, to: string } | null, pointData?: { __typename?: 'Point', id: string, x: number, y: number } | null, removeId?: { __typename?: 'RemoveId', from: string, to: string } | null, sideData?: { __typename?: 'Side', id: string, label?: string | null, length: number } | null }>> | null, solutionSteps?: Array<{ __typename?: 'SolutionStep', action: string, explanation?: string | null, result: string, step: number, subSteps?: Array<string> | null }> | null } }> | null } | null };
+export type GetMyLastThreeAssessmentsQuery = { __typename?: 'Query', getMyLastThreeAssessments: Array<{ __typename?: 'UserAssessmentSubmission', score: number, finishedAt: any, assessment: { __typename?: 'Assessment', type: string, title: string } }> };
 
 
-export const GetExamLiveDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetExamLive"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"examId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getExam"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"examId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"examQuestions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"question"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"points"}},{"kind":"Field","name":{"kind":"Name","value":"statement"}},{"kind":"Field","name":{"kind":"Name","value":"options"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetExamLiveQuery, GetExamLiveQueryVariables>;
-export const GetExamOverviewDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetExamOverview"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"getExamId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getExam"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"getExamId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"examQuestions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"question"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"correctAnswer"}},{"kind":"Field","name":{"kind":"Name","value":"diagramData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"x"}},{"kind":"Field","name":{"kind":"Name","value":"y"}}]}},{"kind":"Field","name":{"kind":"Name","value":"diagramSteps"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"angleData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"degrees"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"label"}}]}},{"kind":"Field","name":{"kind":"Name","value":"color"}},{"kind":"Field","name":{"kind":"Name","value":"edgeData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"from"}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"length"}},{"kind":"Field","name":{"kind":"Name","value":"to"}}]}},{"kind":"Field","name":{"kind":"Name","value":"elementType"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"pointData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"x"}},{"kind":"Field","name":{"kind":"Name","value":"y"}}]}},{"kind":"Field","name":{"kind":"Name","value":"removeId"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"from"}},{"kind":"Field","name":{"kind":"Name","value":"to"}}]}},{"kind":"Field","name":{"kind":"Name","value":"sideData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"length"}}]}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}},{"kind":"Field","name":{"kind":"Name","value":"options"}},{"kind":"Field","name":{"kind":"Name","value":"points"}},{"kind":"Field","name":{"kind":"Name","value":"solutionSteps"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"action"}},{"kind":"Field","name":{"kind":"Name","value":"explanation"}},{"kind":"Field","name":{"kind":"Name","value":"result"}},{"kind":"Field","name":{"kind":"Name","value":"step"}},{"kind":"Field","name":{"kind":"Name","value":"subSteps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"statement"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetExamOverviewQuery, GetExamOverviewQueryVariables>;
+export const MutationDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"Mutation"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"LoginInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"login"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"accessToken"}},{"kind":"Field","name":{"kind":"Name","value":"refreshToken"}}]}}]}}]} as unknown as DocumentNode<MutationMutation, MutationMutationVariables>;
+export const GetMyLastThreeAssessmentsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetMyLastThreeAssessments"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getMyLastThreeAssessments"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"assessment"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"title"}}]}},{"kind":"Field","name":{"kind":"Name","value":"score"}},{"kind":"Field","name":{"kind":"Name","value":"finishedAt"}}]}}]}}]} as unknown as DocumentNode<GetMyLastThreeAssessmentsQuery, GetMyLastThreeAssessmentsQueryVariables>;

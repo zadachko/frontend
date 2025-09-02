@@ -7,8 +7,16 @@ import WeakTopicMissingCard from "./components/WeakTopicMissingCard"
 import Link from "next/link"
 import Sidebar from "@/components/Sidebar/Sidebar"
 import { ResultRow } from "./results/ResultRow"
-import type { Category, TestResult } from "@/types"
-const page = () => {
+import type { Category, TestResult } from "@/types";
+import ApolloClientRSC from "@/lib/apollo-rsc";
+import { GetMyLastThreeAssessmentsDocument, GetMyLastThreeAssessmentsQuery } from "@/gql/operations";
+
+const Page = async () => {
+    const { data } = await ApolloClientRSC.getClient().query<GetMyLastThreeAssessmentsQuery>({
+        query: GetMyLastThreeAssessmentsDocument,
+    });
+
+    console.log(data);
     const recentActivities: TestResult[] = [
         {
             id: "1",
@@ -270,4 +278,4 @@ const page = () => {
     )
 }
 
-export default page
+export default Page;
