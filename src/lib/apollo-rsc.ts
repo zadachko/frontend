@@ -2,7 +2,7 @@ import { registerApolloClient } from '@apollo/client-integration-nextjs';
 import { HttpLink } from '@apollo/client';
 import { ApolloClient, InMemoryCache } from '@apollo/client-integration-nextjs';
 
-export const { getClient } = registerApolloClient(() => {
+const ApolloClientRSC = registerApolloClient(() => {
 	return new ApolloClient({
 		cache: new InMemoryCache(),
 		link: new HttpLink({
@@ -16,3 +16,4 @@ export const { getClient } = registerApolloClient(() => {
 		}),
 	});
 });
+export default ApolloClientRSC;

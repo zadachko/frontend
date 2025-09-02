@@ -1,0 +1,10 @@
+query GetMyLastThreeAssessments {
+	getMyLastThreeAssessments {
+		assessment {
+			type
+			title
+		}
+		score
+		finishedAt
+	}
+}
