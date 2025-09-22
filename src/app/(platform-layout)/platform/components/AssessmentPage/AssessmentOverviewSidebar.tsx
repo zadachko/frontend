@@ -34,7 +34,7 @@ export default function AssessmentOverviewSidebar({
             <CardContent className="p-4 pt-0">
                 {/* Title */}
                 <div className="flex justify-center mb-4">
-                    <h3 className="font-semibold text-gray-900 text-md">{title}</h3>
+                    <h3 className="font-semibold text-gray-900 text-base">{title}</h3>
                 </div>
 
                 <div className="flex items-center justify-between">

@@ -43,7 +43,7 @@ const Navbar = () => {
                                 key={item.name}
                                 href={item.href}
                                 className={cn(
-                                    "text-md font-medium transition-colors hover:text-primary",
+                                    "text-base font-medium transition-colors hover:text-primary",
                                     pathname === item.href ? "text-primary" : "text-gray-700",
                                 )}
                             >

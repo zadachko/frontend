@@ -238,7 +238,7 @@ const page = () => {
                             <Target className="w-6 h-6 text-[#6F58C9]" />
                             Практика по слаби теми
                         </h2>
-                        <p className="text-gray-600 text-md mb-2">Фокусирайте се върху темите, които имат най-голям потенциал за подобрение. Всеки напредък е победа!</p>
+                        <p className="text-gray-600 text-base mb-2">Фокусирайте се върху темите, които имат най-голям потенциал за подобрение. Всеки напредък е победа!</p>
                         <Card className="bg-white border-0 shadow-md rounded-2xl">
                             <CardContent className="p-6">
                                 <div className="space-y-4">

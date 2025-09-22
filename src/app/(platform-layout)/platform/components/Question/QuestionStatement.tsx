@@ -14,7 +14,7 @@ const QuestionStatement = ({ statement, diagramData, isMobile = false, isSmallMo
     return (
         <div className="flex-1">
             <h3 className={`${isSmallMobile ? 'text-xs' : isMobile ? 'text-sm' : 'text-base'} font-semibold text-gray-900 leading-relaxed mb-3`}>
-                {renderWithMath(statement, isSmallMobile ? 'text-xs' : isMobile ? 'text-sm' : 'text-md')}
+                {renderWithMath(statement, isSmallMobile ? 'text-xs' : isMobile ? 'text-sm' : 'text-base')}
             </h3>
             {diagramData && (
                 <div className="rounded-lg">

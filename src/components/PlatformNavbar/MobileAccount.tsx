@@ -46,16 +46,16 @@ export function MobileAccount({ openMobileMenu, setOpenMobileMenu }: MobileAccou
                                     </div>
                                 </div>
                                 <div className="flex-1">
-                                    <h3 className="font-bold text-2xl text-gray-900">{userData.name}</h3>
-                                    <p className="text-lg text-gray-500 mt-1">{userData.email}</p>
+                                    <h3 className="font-bold text-xl text-gray-900">{userData.name}</h3>
+                                    <p className="text-base text-gray-500 mt-1">{userData.email}</p>
                                     <div className="flex items-center gap-6 mt-3">
                                         <div className="flex items-center gap-2">
                                             <BarChart3 className="w-5 h-5 text-[#755bc5]" />
-                                            <span className="text-lg font-medium text-gray-600">Ниво {userData.level}</span>
+                                            <span className="text-base font-medium text-gray-600">Ниво {userData.level}</span>
                                         </div>
                                         <div className="flex items-center gap-2">
                                             <Star className="w-5 h-5 text-yellow-500" />
-                                            <span className="text-lg font-medium text-gray-600">
+                                            <span className="text-base font-medium text-gray-600">
                                                 {userData.currentXP.toLocaleString()} XP
                                             </span>
                                         </div>
@@ -83,7 +83,7 @@ export function MobileAccount({ openMobileMenu, setOpenMobileMenu }: MobileAccou
                                 onClick={() => setOpenMobileMenu(null)}
                             >
                                 <User className="w-6 h-6 text-[#755bc5]" />
-                                <span className="font-medium text-lg">Профил</span>
+                                <span className="font-medium text-base">Профил</span>
                             </Link>
                             <Link
                                 href="/platform/settings"
@@ -91,7 +91,7 @@ export function MobileAccount({ openMobileMenu, setOpenMobileMenu }: MobileAccou
                                 onClick={() => setOpenMobileMenu(null)}
                             >
                                 <Settings className="w-6 h-6 text-[#755bc5]" />
-                                <span className="font-medium text-lg">Настройки</span>
+                                <span className="font-medium text-base">Настройки</span>
                             </Link>
                             <Link
                                 href="/platform/subscription"
@@ -99,11 +99,11 @@ export function MobileAccount({ openMobileMenu, setOpenMobileMenu }: MobileAccou
                                 onClick={() => setOpenMobileMenu(null)}
                             >
                                 <CreditCard className="w-6 h-6 text-[#755bc5]" />
-                                <span className="font-medium text-lg">Абонамент</span>
+                                <span className="font-medium text-base">Абонамент</span>
                             </Link>
                             <button className="flex items-center gap-4 p-4 text-red-600 hover:text-red-700 hover:bg-red-50 cursor-pointer transition-colors rounded-xl border border-red-200 w-full text-left">
                                 <LogOut className="w-6 h-6" />
-                                <span className="font-medium text-lg">Изход</span>
+                                <span className="font-medium text-base">Изход</span>
                             </button>
                         </div>
                     </div>

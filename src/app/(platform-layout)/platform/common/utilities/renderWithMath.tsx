@@ -6,7 +6,7 @@ import { BlockMath, InlineMath } from "react-katex";
  * @param textClass - The class to apply to the text.
  * @returns The rendered text.
  */
-export const renderWithMath = (text: string, textClass = "text-md") => {
+export const renderWithMath = (text: string, textClass = "text-base") => {
 	return text.split(/(\$\$.*?\$\$|\$.*?\$)/g).map((part, idx) => {
 		if (part.startsWith("$$") && part.endsWith("$$")) {
 			return (

@@ -28,15 +28,15 @@ export function MobileStreak({ openMobileMenu, setOpenMobileMenu }: MobileStreak
                                 <Flame className="w-8 h-8 text-orange-500" />
                             </div>
                             <div>
-                                <h3 className="font-bold text-2xl text-gray-900">Текуща серия</h3>
-                                <p className="text-4xl font-bold text-orange-500">{streakData.current} дни</p>
+                                <h3 className="font-bold text-xl text-gray-900">Текуща серия</h3>
+                                <p className="text-2xl font-bold text-orange-500">{streakData.current} дни</p>
                             </div>
                         </div>
-                        <p className="text-lg text-gray-600 mb-8">Продължавай да решаваш задачи всеки ден!</p>
+                        <p className="text-base text-gray-600 mb-8">Продължавай да решаваш задачи всеки ден!</p>
 
                         {/* This Week */}
                         <div className="mb-8">
-                            <h4 className="font-bold text-xl text-gray-900 mb-4 flex items-center gap-2">
+                            <h4 className="font-bold text-lg text-gray-900 mb-4 flex items-center gap-2">
                                 <Calendar className="w-5 h-5 text-[#755bc5]" />
                                 Тази седмица
                             </h4>
@@ -44,7 +44,7 @@ export function MobileStreak({ openMobileMenu, setOpenMobileMenu }: MobileStreak
                                 {weekDays.map((day, index) => (
                                     <div key={index} className="flex flex-col items-center gap-2">
                                         <div
-                                            className={`w-12 h-12 rounded-full flex items-center justify-center text-sm font-medium ${streakData.thisWeek[index] ? "bg-[#755bc5] text-white shadow-lg" : "bg-gray-100 text-gray-400"
+                                            className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium ${streakData.thisWeek[index] ? "bg-[#755bc5] text-white shadow-lg" : "bg-gray-100 text-gray-400"
                                                 }`}
                                         >
                                             {day}
@@ -55,29 +55,24 @@ export function MobileStreak({ openMobileMenu, setOpenMobileMenu }: MobileStreak
                         </div>
 
                         {/* Stats */}
-                        <div className="grid grid-cols-1 gap-4">
-                            <div className="p-6 rounded-xl bg-[#f0eeff]/50 text-center">
-                                <div className="flex items-center justify-center gap-2 mb-2">
-                                    <Trophy className="w-6 h-6 text-yellow-500" />
-                                </div>
-                                <p className="text-3xl font-bold text-gray-900">{streakData.longest}</p>
-                                <p className="text-lg text-gray-500">Най-дълга серия</p>
-                            </div>
-                            <div className="p-6 rounded-xl bg-[#f0eeff]/50 text-center">
-                                <div className="flex items-center justify-center gap-2 mb-2">
-                                    <Calendar className="w-6 h-6 text-[#755bc5]" />
-                                </div>
-                                <p className="text-3xl font-bold text-gray-900">{streakData.thisMonth}</p>
-                                <p className="text-lg text-gray-500">Дни този месец</p>
-                            </div>
-                            <div className="p-6 rounded-xl bg-[#f0eeff]/50 text-center">
-                                <div className="flex items-center justify-center gap-2 mb-2">
-                                    <Target className="w-6 h-6 text-green-500" />
-                                </div>
-                                <p className="text-3xl font-bold text-gray-900">{streakData.total}</p>
-                                <p className="text-lg text-gray-500">Общо дни</p>
-                            </div>
+                        <div className="grid grid-cols-3 gap-3">
+                            <StatCard
+                                icon={<Trophy className="w-5 h-5 text-yellow-500" />}
+                                value={streakData.longest}
+                                label="Най-дълга серия"
+                            />
+                            <StatCard
+                                icon={<Calendar className="w-5 h-5 text-[#755bc5]" />}
+                                value={streakData.thisMonth}
+                                label="Дни този месец"
+                            />
+                            <StatCard
+                                icon={<Target className="w-5 h-5 text-green-500" />}
+                                value={streakData.total}
+                                label="Общо дни"
+                            />
                         </div>
+
 
                         <div className="mt-8 p-6 bg-gradient-to-r from-[#f0eeff] to-white border border-[#755bc5]/20 rounded-xl">
                             <p className="text-lg text-center text-gray-600">
@@ -90,4 +85,20 @@ export function MobileStreak({ openMobileMenu, setOpenMobileMenu }: MobileStreak
             )}
         </div>
     )
+}
+
+type StatCardProps = {
+    icon: React.ReactNode;
+    value: number;
+    label: string;
+};
+
+export function StatCard({ icon, value, label }: StatCardProps) {
+    return (
+        <div className="rounded-xl bg-[#f9f8ff] p-3 text-center flex flex-col items-center justify-center">
+            <div className="mb-1">{icon}</div>
+            <p className="text-xl font-bold text-gray-900">{value}</p>
+            <p className="text-sm text-gray-500">{label}</p>
+        </div>
+    );
 }
