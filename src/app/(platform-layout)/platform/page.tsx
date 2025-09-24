@@ -8,40 +8,80 @@ import Link from "next/link"
 import Sidebar from "@/components/Sidebar/Sidebar"
 import { ResultRow } from "./results/ResultRow"
 import type { Category, TestResult } from "@/types"
-const page = () => {
-    const recentActivities: TestResult[] = [
-        {
-            id: "1",
+
+import { getClient } from "@/lib/apollo-rsc"
+import { GetMyLastThreeAssessmentsDocument } from "@/gql/graphql"
+
+/**
+ * Formats a Date to a Bulgarian locale date string.
+ * Returns an empty string for invalid or missing dates.
+ */
+function formatBgDate(date: Date | undefined): string {
+    if (!date || isNaN(date.getTime())) return ""
+    return date.toLocaleDateString("bg-BG")
+}
+
+/**
+ * Parses a score string like "17/20" to derive percentage and raw counts.
+ * The first number is correct answers, the second is total questions.
+ */
+function deriveScoreFields(scoreText: string): { percentage: number; correctAnswers: number; totalQuestions: number } {
+    const match = /^\s*(\d+)\s*\/\s*(\d+)\s*$/.exec(scoreText)
+    const correctAnswers = match ? parseInt(match[1], 10) : 0
+    const totalQuestions = match ? parseInt(match[2], 10) || 0 : 0
+    const percentage = totalQuestions > 0 ? Math.round((correctAnswers / totalQuestions) * 100) : 0
+    return { percentage, correctAnswers, totalQuestions }
+}
+
+/**
+ * Attempts to coerce unknown GraphQL Date scalar outputs into a valid Date.
+ * Accepts Date, ISO string, or millisecond timestamp.
+ */
+function toDate(value: unknown): Date | undefined {
+    if (!value) return undefined
+    if (value instanceof Date) return isNaN(value.getTime()) ? undefined : value
+    if (typeof value === "string" || typeof value === "number") {
+        const date = new Date(value)
+        return isNaN(date.getTime()) ? undefined : date
+    }
+    return undefined
+}
+
+const Page = async () => {
+    // Server-side fetch: last three assessment submissions for the current user
+    const { data } = await getClient().query({
+        query: GetMyLastThreeAssessmentsDocument,
+    })
+
+    // Transform API submissions into the UI-friendly TestResult[] structure
+    const submissions = data?.getMyLastThreeAssessments ?? []
+    const recentActivities: TestResult[] = submissions.slice(0, 3).map((submission, index) => {
+        const started = toDate(submission.startedAt)
+        const finished = toDate(submission.finishedAt)
+        const dateToShow = finished ?? started
+
+        // Compute duration in minutes (Bulgarian label) when both dates are present
+        let duration: string | undefined
+        if (started && finished) {
+            const ms = finished.getTime() - started.getTime()
+            if (!Number.isNaN(ms) && ms > 0) {
+                duration = `${Math.round(ms / 60000)} мин`
+            }
+        }
+
+        const { percentage, correctAnswers, totalQuestions } = deriveScoreFields(submission.score)
+
+        return {
+            id: String(index + 1),
             type: "test",
-            title: "Тест: Геометрия — Триъгълници",
-            percentage: 45,
-            date: "24.07.2025",
-            correctAnswers: 9,
-            totalQuestions: 20,
-            category: "Геометрия",
-        },
-        {
-            id: "2",
-            type: "test",
-            title: "Алгебра — Практика №12",
-            percentage: 85,
-            date: "23.07.2025",
-            correctAnswers: 17,
-            totalQuestions: 20,
-            category: "Алгебра",
-        },
-        {
-            id: "3",
-            type: "exam",
-            title: "Тест: Дроби и десетични числа",
-            percentage: 60,
-            date: "22.06.2025",
-            duration: "32 мин",
-            correctAnswers: 12,
-            totalQuestions: 20,
-            category: "Аритметика",
-        },
-    ]
+            title: submission.assessment.title,
+            date: formatBgDate(dateToShow),
+            duration,
+            correctAnswers,
+            totalQuestions,
+            percentage,
+        }
+    })
 
     const weakTopics = [
         {
@@ -270,4 +310,4 @@ const page = () => {
     )
 }
 
-export default page
+export default Page
