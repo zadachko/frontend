@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { motion, useAnimation, useInView } from "framer-motion"
@@ -84,8 +84,6 @@ const FloatingElement = ({
     mobileHidden?: boolean
     mobilePosition?: { x: string; y: string }
 }) => {
-    const [isHovered, setIsHovered] = useState(false)
-    const [position, setPosition] = useState({ x: 0, y: 0 })
     const isMobile = false;
 
     // Don't render if this element should be hidden on mobile
@@ -111,7 +109,7 @@ const FloatingElement = ({
 
     return (
         <motion.div
-            className="absolute pointer-events-auto"
+            className="absolute pointer-events-none"
             style={{
                 top: elementY,
                 left: elementX,
@@ -124,8 +122,8 @@ const FloatingElement = ({
             animate={{
                 opacity: isMobile ? 0.7 : 1, // Reduce opacity on mobile
                 scale: 1,
-                x: isHovered ? position.x * factor * 2 : floatX,
-                y: isHovered ? position.y * factor * 2 : floatY,
+                x: floatX * (factor ?? 1),
+                y: floatY * (factor ?? 1),
             }}
             transition={{
                 opacity: { delay, duration: 0.8 },
@@ -133,17 +131,6 @@ const FloatingElement = ({
                 x: { duration, repeat: Number.POSITIVE_INFINITY, repeatType: "reverse", ease: "easeInOut" },
                 y: { duration: duration * 1.2, repeat: Number.POSITIVE_INFINITY, repeatType: "reverse", ease: "easeInOut" },
             }}
-            onMouseMove={(e) => {
-                const rect = e.currentTarget.getBoundingClientRect()
-                setPosition({
-                    x: (e.clientX - rect.left - rect.width / 2) / 5,
-                    y: (e.clientY - rect.top - rect.height / 2) / 5,
-                })
-            }}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            whileHover={{ scale: 1.2, rotate: [0, -5, 5, 0], transition: { rotate: { duration: 0.5 } } }}
-            whileTap={{ scale: 0.9 }}
         >
             <div
                 className={`${color} ${mobileSize} rounded-2xl flex items-center justify-center shadow-lg`}
@@ -225,27 +212,36 @@ const HeroSection = () => {
                 <div className="mx-auto max-w-3xl text-center">
                     <motion.h1
                         className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-primary-700 relative z-10"
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, ease: "easeOut" }}
+                        initial="hidden"
+                        animate="visible"
+                        variants={{
+                            hidden: { opacity: 0, y: 40 },
+                            visible: {
+                                opacity: 1,
+                                y: 0,
+                                transition: { staggerChildren: 0.05, delayChildren: 0.2 }
+                            }
+                        }}
                     >
-                        <motion.span
-                            initial={{ display: "inline-block" }}
-                            animate={{ rotate: [0, -2, 2, 0] }}
-                            transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, repeatType: "reverse", ease: "easeInOut" }}
-                        >
-                            Подготви
-                        </motion.span>{" "}
-                        се за НВО по математика със{" "}
-                        <motion.span
-                            className="text-primary-500 inline-block"
-                            initial={{ scale: 1 }}
-                            animate={{ scale: [1, 1.05, 1] }}
-                            transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
-                        >
-                            Задачко
-                        </motion.span>
+                        {"Подготви се за НВО по математика със Задачко".split(" ").map((word, i) => {
+                            const animateWord = (word === "Задачко");
+                            return (
+                                <motion.span
+                                    key={i}
+                                    className={`inline-block mr-2 ${animateWord ? "animated-gradient-text" : ""}`}
+                                    variants={{
+                                        hidden: { opacity: 0, y: 20 },
+                                        visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 80 } }
+                                    }}
+                                >
+                                    {word}
+                                </motion.span>
+                            );
+                        })}
                     </motion.h1>
+
+
+
 
                     {/* Add a semi-transparent background to improve text readability on mobile */}
                     <motion.div
@@ -273,7 +269,7 @@ const HeroSection = () => {
                     {/* Animated stats section with improved mobile layout */}
                     <motion.div
                         ref={statsRef}
-                        className="mt-12 sm:mt-12 grid grid-cols-2 sm:grid-cols-3 gap-5 max-w-lg mx-auto"
+                        className="mt-12 sm:mt-12 grid grid-cols-1 sm:grid-cols-3 gap-5 max-w-lg mx-auto"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: 1.0 }}
@@ -290,7 +286,7 @@ const HeroSection = () => {
                             </div>
                             <div className="text-xs sm:text-sm text-gray-600">Ученици</div>
                         </div>
-                        <div className="col-span-2 sm:col-span-1 bg-white/90 backdrop-blur-sm rounded-lg p-4 shadow-sm">
+                        <div className="bg-white/90 backdrop-blur-sm rounded-lg p-4 shadow-sm">
                             <div className="text-2xl sm:text-3xl font-bold text-primary-500">
                                 {isStatsInView && <PercentageCounter value={98} duration={1.5} />}
                             </div>
@@ -301,7 +297,7 @@ const HeroSection = () => {
             </div>
 
             {/* Repositioned floating math elements for mobile */}
-            <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute inset-0 pointer-events-none hidden sm:block">
                 <div className="relative w-full h-full">
                     <FloatingElement
                         x="10%"
