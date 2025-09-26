@@ -73,7 +73,7 @@ const Page = async () => {
 
         return {
             id: String(index + 1),
-            type: "test",
+            type: submission.assessment.type,
             title: submission.assessment.title,
             date: formatBgDate(dateToShow),
             duration,
@@ -163,18 +163,23 @@ const Page = async () => {
                 <div className="max-w-7xl mx-auto space-y-8">
                     {/* Recent Activity Section */}
                     <section className="space-y-4">
-                        <div className="flex items-center justify-between">
-                            <h2 className="text-2xl font-semibold text-gray-900 flex items-center gap-2">
-                                <Clock className="w-6 h-6 text-[#6F58C9]" />
-                                Последни задачи и тестове
-                            </h2>
-                            <Link href="/platform/results">
-                                <Button variant="default" className="bg-[#6F58C9] hover:bg-[#5A4BA3] text-white">
-                                    <BarChart3 className="w-4 h-4 mr-2" />
+                        <section className="space-y-4">
+                            <div className="flex items-start justify-between">
+                                <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 flex items-center gap-2 leading-tight">
+                                    <Clock className="w-5 h-5 sm:w-6 sm:h-6 text-[#6F58C9]" />
+                                    <span>Последни резултати</span>
+                                </h2>
+
+                                <Link
+                                    href="/platform/results"
+                                    className="ml-3 shrink-0 text-[#6F58C9] hover:text-[#5A4BA3] hover:underline text-sm sm:text-base inline-flex items-center gap-1 group"
+                                >
                                     Виж всички резултати
-                                </Button>
-                            </Link>
-                        </div>
+                                    <ChevronRight className="w-4 h-4 transition-transform duration-200 ease-out group-hover:translate-x-1" />
+                                </Link>
+                            </div>
+                        </section>
+
                         {recentActivities.length > 0 ? (
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                 {recentActivities.map((activity) => (
@@ -245,7 +250,7 @@ const Page = async () => {
                         {/* Exam Simulation Section */}
                         <section className="space-y-4">
                             <h2 className="text-2xl font-semibold text-gray-900 flex items-center gap-2">
-                                <GraduationCap className="w-6 h-6 text-[#6F58C9]" />
+                                <GraduationCap className="w-6 h-6 text-teal-600" />
                                 Пробна матура
                             </h2>
                             <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 bg-gradient-to-br from-emerald-500 to-teal-600 border-0 cursor-pointer">

@@ -3,7 +3,7 @@ import type { DiagramData, StepAction } from 'geometry-diagram-renderer';
 
 export interface TestResult {
 	id: string;
-	type: 'test' | 'exam';
+	type: string; // "test" | "exam"
 	title: string;
 	date: string;
 	correctAnswers: number;

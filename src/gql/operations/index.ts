@@ -188,12 +188,70 @@ export type UserAssessmentSubmission = {
   startedAt: Scalars['Date']['output'];
 };
 
+export type GetMyAssessmentQueryVariables = Exact<{
+  assessmentId: Scalars['String']['input'];
+}>;
+
+
+export type GetMyAssessmentQuery = { __typename?: 'Query', getMyAssessment: { __typename?: 'Assessment', id: string, title: string, questions: Array<{ __typename?: 'AssessmentQuestion', position: number, question: { __typename?: 'Question', id: string, statement: string, type: QuestionType, points: number, options?: Array<string> | null } }> } };
+
 export type GetMyLastThreeAssessmentsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetMyLastThreeAssessmentsQuery = { __typename?: 'Query', getMyLastThreeAssessments: Array<{ __typename?: 'UserAssessmentSubmission', startedAt: any, finishedAt: any, score: string, assessment: { __typename?: 'Assessment', id: string, title: string, type: string } }> };
 
 
+export const GetMyAssessmentDocument = gql`
+    query GetMyAssessment($assessmentId: String!) {
+  getMyAssessment(assessmentId: $assessmentId) {
+    id
+    title
+    questions {
+      position
+      question {
+        id
+        statement
+        type
+        points
+        options
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetMyAssessmentQuery__
+ *
+ * To run a query within a React component, call `useGetMyAssessmentQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMyAssessmentQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMyAssessmentQuery({
+ *   variables: {
+ *      assessmentId: // value for 'assessmentId'
+ *   },
+ * });
+ */
+export function useGetMyAssessmentQuery(baseOptions: Apollo.QueryHookOptions<GetMyAssessmentQuery, GetMyAssessmentQueryVariables> & ({ variables: GetMyAssessmentQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetMyAssessmentQuery, GetMyAssessmentQueryVariables>(GetMyAssessmentDocument, options);
+      }
+export function useGetMyAssessmentLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMyAssessmentQuery, GetMyAssessmentQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetMyAssessmentQuery, GetMyAssessmentQueryVariables>(GetMyAssessmentDocument, options);
+        }
+export function useGetMyAssessmentSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetMyAssessmentQuery, GetMyAssessmentQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetMyAssessmentQuery, GetMyAssessmentQueryVariables>(GetMyAssessmentDocument, options);
+        }
+export type GetMyAssessmentQueryHookResult = ReturnType<typeof useGetMyAssessmentQuery>;
+export type GetMyAssessmentLazyQueryHookResult = ReturnType<typeof useGetMyAssessmentLazyQuery>;
+export type GetMyAssessmentSuspenseQueryHookResult = ReturnType<typeof useGetMyAssessmentSuspenseQuery>;
+export type GetMyAssessmentQueryResult = Apollo.QueryResult<GetMyAssessmentQuery, GetMyAssessmentQueryVariables>;
 export const GetMyLastThreeAssessmentsDocument = gql`
     query GetMyLastThreeAssessments {
   getMyLastThreeAssessments {
