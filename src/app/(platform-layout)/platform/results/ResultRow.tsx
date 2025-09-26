@@ -13,7 +13,7 @@ interface ResultRowProps {
 
 export const ResultRow = ({ result, onClick }: ResultRowProps) => {
     const router = useRouter()
-    const isExam = result.type === "exam"
+    const isExam = result.type.toLowerCase() === "exam"
 
     const getProgressColor = (score: number) => {
         if (score >= 80) return "#10b981"
@@ -51,109 +51,48 @@ export const ResultRow = ({ result, onClick }: ResultRowProps) => {
 
     return (
         <Card
-            className="hover:shadow-lg hover:scale-[1.02] transition-all duration-200 bg-white border border-gray-200 cursor-pointer py-4 lg:py-6"
+            className="hover:shadow-lg hover:scale-[1.02] transition-all duration-200 bg-white border border-gray-200 cursor-pointer py-3 lg:py-4"
             onClick={handleClick}
         >
             <CardContent className="p-3 sm:px-6 sm:py-4">
-                {/* Mobile */}
-                <div className="sm:hidden">
-                    <div className="flex items-center justify-between gap-3">
-                        <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-2.5">
-                                <TypeChip />
-                                <h3 className="font-semibold text-gray-900 text-[15px] leading-5 truncate">
-                                    {result.title}
-                                </h3>
-                            </div>
-
-                            {/* Meta row */}
-                            <div className="mt-1 flex items-center flex-wrap gap-x-2 gap-y-1 text-[12px] text-gray-600">
-                                <span className="inline-flex items-center gap-1.5">
-                                    <CalendarDays className="w-3.5 h-3.5 text-gray-500" />
-                                    {result.date}
-                                </span>
-
-                                {result.duration && (
-                                    <>
-                                        <Dot className="w-4 h-4 -mx-1 text-gray-300" />
-                                        <span className="inline-flex items-center gap-1.5">
-                                            <Clock className="w-3.5 h-3.5" />
-                                            <span className="text-gray-700">{result.duration}</span>
-                                        </span>
-                                    </>
-                                )}
-
-                                <>
-                                    <Dot className="w-4 h-4 -mx-1 text-gray-300" />
-                                    <span className="inline-flex items-center gap-1.5">
-                                        <CheckCircle2 className="w-3.5 h-3.5" />
-                                        <span className="text-gray-700 font-medium">
-                                            {result.correctAnswers}/{result.totalQuestions}
-                                        </span>
-                                    </span>
-                                </>
-                            </div>
-                        </div>
-
-                        {/* Progress ring */}
-                        <div className="relative w-12 h-12 shrink-0">
-                            <svg className="w-12 h-12" viewBox="0 0 36 36">
-                                <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#e5e7eb" strokeWidth="2" />
-                                <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke={getProgressColor(result.percentage)} strokeWidth="2" strokeDasharray={`${result.percentage}, 100`} strokeLinecap="round" className="transition-all duration-500 origin-center" />
-                            </svg>
-                            <div className="absolute inset-0 grid place-items-center">
-                                <span className="text-xs font-semibold text-gray-900">{getGrade(result.percentage)}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Desktop */}
-                <div className="hidden sm:flex sm:items-center justify-between gap-6">
+                <div className="flex items-center justify-between gap-3 sm:gap-6">
                     <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-3 mb-1.5">
+                        <div className="flex items-center gap-2.5 sm:gap-3 mb-0 sm:mb-1.5">
                             <TypeChip />
-                            <h3 className="font-semibold text-gray-900 text-[17px] leading-6 truncate">
+                            <h3 className="font-semibold text-gray-900 text-[15px] sm:text-[17px] leading-5 sm:leading-6 truncate">
                                 {result.title}
                             </h3>
                         </div>
 
-                        <div className="flex items-center flex-wrap gap-x-1 gap-y-1 text-sm text-gray-600">
+                        <div className="mt-2 flex items-center flex-wrap gap-x-1.5 sm:gap-x-1 gap-y-1 text-[12px] sm:text-sm text-gray-600">
                             <span className="inline-flex items-center gap-1.5">
-                                <CalendarDays className="w-4 h-4 text-gray-500" />
+                                <CalendarDays className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-500" />
                                 {result.date}
                             </span>
 
-                            {result.duration && (
-                                <>
-                                    <Dot className="w-5 h-5 -mx-1 text-gray-300" />
-                                    <span className="inline-flex items-center gap-1.5">
-                                        <Clock className="w-4 h-4" />
-                                        <span className="text-gray-700">{result.duration}</span>
-                                    </span>
-                                </>
-                            )}
+                            <Dot className="w-4 h-4 sm:w-5 sm:h-5 -mx-1 text-gray-300" />
+                            <span className="inline-flex items-center gap-1.5">
+                                <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                                <span className="text-gray-700">{result.duration}</span>
+                            </span>
 
-                            <>
-                                <Dot className="w-5 h-5 -mx-1 text-gray-300" />
-                                <span className="inline-flex items-center gap-1.5">
-                                    <CheckCircle2 className="w-4 h-4" />
-                                    <span className="text-gray-700 font-medium">
-                                        {result.correctAnswers}/{result.totalQuestions}
-                                    </span>
+                            <Dot className="w-4 h-4 sm:w-5 sm:h-5 -mx-1 text-gray-300" />
+                            <span className="inline-flex items-center gap-1.5">
+                                <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                                <span className="text-gray-700 font-medium">
+                                    {result.correctAnswers}/{result.totalQuestions}
                                 </span>
-                            </>
+                            </span>
                         </div>
                     </div>
 
-                    {/* Right: progress ring unchanged */}
-                    <div className="relative w-16 h-16 shrink-0">
-                        <svg className="w-16 h-16" viewBox="0 0 36 36">
+                    <div className="relative w-14 h-14 sm:w-16 sm:h-16 shrink-0">
+                        <svg className="w-full h-full" viewBox="0 0 36 36">
                             <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#e5e7eb" strokeWidth="2" />
                             <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke={getProgressColor(result.percentage)} strokeWidth="2" strokeDasharray={`${result.percentage}, 100`} strokeLinecap="round" className="transition-all duration-500 origin-center" />
                         </svg>
                         <div className="absolute inset-0 grid place-items-center">
-                            <span className="text-[15px] font-semibold text-gray-900">{getGrade(result.percentage)}</span>
+                            <span className="text-xs sm:text-[15px] font-semibold text-gray-900">{getGrade(result.percentage)}</span>
                         </div>
                     </div>
                 </div>
