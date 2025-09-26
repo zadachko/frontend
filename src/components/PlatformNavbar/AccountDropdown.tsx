@@ -10,11 +10,17 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { userData } from "./mock-data"
 import { useState } from "react"
+import { useAuth } from "@/contexts/AuthContext"
 
 export function AccountDropdown() {
     const [isOpen, setIsOpen] = useState(false)
+    const { user, logout } = useAuth()
 
     const xpProgress = (userData.currentXP / (userData.currentXP + userData.xpToNextLevel)) * 100
+
+    const handleLogout = () => {
+        logout()
+    }
 
     return (
         <DropdownMenu onOpenChange={(open) => setIsOpen(open)}>
@@ -43,7 +49,9 @@ export function AccountDropdown() {
                             </div>
                         </div>
                         <div className="flex-1">
-                            <h3 className="font-bold text-lg text-gray-900">{userData.name}</h3>
+                            <h3 className="font-bold text-lg text-gray-900">
+                                {user ? `${user.firstName} ${user.lastName}` : userData.name}
+                            </h3>
                             <div className="flex items-center gap-4 mt-1">
                                 <div className="flex items-center gap-1">
                                     <BarChart3 className="w-4 h-4 text-[#755bc5]" />
@@ -99,7 +107,10 @@ export function AccountDropdown() {
                         </Link>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator className="my-2" />
-                    <DropdownMenuItem className="flex items-center gap-3 p-3 text-red-600 hover:text-red-700 hover:bg-red-50 cursor-pointer transition-colors rounded-lg">
+                    <DropdownMenuItem 
+                        onClick={handleLogout}
+                        className="flex items-center gap-3 p-3 text-red-600 hover:text-red-700 hover:bg-red-50 cursor-pointer transition-colors rounded-lg"
+                    >
                         <LogOut className="w-5 h-5 text-red-600" />
                         <span className="font-medium text-red-600">Изход</span>
                     </DropdownMenuItem>
