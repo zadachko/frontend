@@ -14,9 +14,11 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Learn more about it here: https://the-guild.dev/graphql/codegen/plugins/presets/preset-client#reducing-bundle-size
  */
 type Documents = {
+    "query GetMyAssessment($assessmentId: String!) {\n  getMyAssessment(assessmentId: $assessmentId) {\n    id\n    title\n    questions {\n      position\n      question {\n        id\n        statement\n        type\n        points\n        options\n      }\n    }\n  }\n}": typeof types.GetMyAssessmentDocument,
     "query GetMyLastThreeAssessments {\n  getMyLastThreeAssessments {\n    startedAt\n    finishedAt\n    score\n    assessment {\n      id\n      title\n      type\n    }\n  }\n}": typeof types.GetMyLastThreeAssessmentsDocument,
 };
 const documents: Documents = {
+    "query GetMyAssessment($assessmentId: String!) {\n  getMyAssessment(assessmentId: $assessmentId) {\n    id\n    title\n    questions {\n      position\n      question {\n        id\n        statement\n        type\n        points\n        options\n      }\n    }\n  }\n}": types.GetMyAssessmentDocument,
     "query GetMyLastThreeAssessments {\n  getMyLastThreeAssessments {\n    startedAt\n    finishedAt\n    score\n    assessment {\n      id\n      title\n      type\n    }\n  }\n}": types.GetMyLastThreeAssessmentsDocument,
 };
 
@@ -34,6 +36,10 @@ const documents: Documents = {
  */
 export function graphql(source: string): unknown;
 
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "query GetMyAssessment($assessmentId: String!) {\n  getMyAssessment(assessmentId: $assessmentId) {\n    id\n    title\n    questions {\n      position\n      question {\n        id\n        statement\n        type\n        points\n        options\n      }\n    }\n  }\n}"): (typeof documents)["query GetMyAssessment($assessmentId: String!) {\n  getMyAssessment(assessmentId: $assessmentId) {\n    id\n    title\n    questions {\n      position\n      question {\n        id\n        statement\n        type\n        points\n        options\n      }\n    }\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

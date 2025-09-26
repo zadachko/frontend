@@ -1,29 +1,60 @@
-'use client';
-
 import type { Question as QuestionType } from "@/types";
-import { useGetExamLiveQuery } from "@/gql/operations";
 import AssessmentLive from "../../components/AssessmentPage/AssessmentLive";
-import AssessmentLoading from "../../components/LoadingScreens/AssessmentLoading";
 import AssessmentError from "../../components/ErrorScreens/AssessmentError";
 import { colors } from "../colors.config";
-const LiveExamPage = () => {
-    const { data, loading, error } = useGetExamLiveQuery({
-        variables: { examId: '7cc7462e-f307-4f0a-b418-fcfecd5dacfb' },
-    });
+import { getClient } from "@/lib/apollo-rsc";
+import { GetMyAssessmentDocument } from "@/gql/graphql";
 
-    // Transform server data to match Question type
-    const questions: QuestionType[] = data?.getExam?.examQuestions?.map((examQuestion, index: number) => ({
-        position: index + 1,
-        statement: examQuestion.question.statement,
-        type: examQuestion.question.type === 'MULTIPLE' ? 'multiple' : 'text',
-        options: examQuestion.question.options || [],
-        points: examQuestion.question.points || 1,
-    })) || [];
+// Server Component: fetches assessment data on the server via Apollo getClient()
+const LiveExamPage = async () => {
+    const assessmentId = process.env.NEXT_PUBLIC_ASSESSMENT_ID as string | undefined;
+
+    let title = "Изпит";
+    let questions: QuestionType[] = [];
+    let derivedError: Error | null = null;
+
+    if (!assessmentId) {
+        derivedError = new Error("Missing NEXT_PUBLIC_ASSESSMENT_ID");
+    } else {
+        try {
+            const { data } = await getClient().query({
+                query: GetMyAssessmentDocument,
+                variables: { assessmentId },
+                fetchPolicy: "no-cache",
+            });
+
+            title = data?.getMyAssessment?.title ?? title;
+            const items = data?.getMyAssessment?.questions ?? [];
+            // Transform API response to the UI-friendly QuestionType expected by AssessmentLive
+            questions = items.map((q: {
+                position: number;
+                question: {
+                    statement: string;
+                    type: 'MULTIPLE' | 'TEXT';
+                    points?: number | null;
+                    options?: string[] | null;
+                };
+            }) => ({
+                position: q.position,
+                statement: q.question.statement,
+                type: q.question.type === 'MULTIPLE' ? 'multiple' : 'text',
+                options: q.question.options ?? undefined,
+                points: q.question.points ?? undefined,
+            }));
+        } catch (e) {
+            derivedError = e as Error;
+        }
+    }
+
+    // Render error UI on the server to avoid passing components/functions across the RSC boundary
+    if (derivedError) {
+        return <AssessmentError error={derivedError} />;
+    }
 
     return (
         <AssessmentLive
             questions={questions}
-            title="Изпит"
+            title={title}
             subtitle="Отговорете на всички въпроси в рамките на 90 минути"
             overviewRedirectUrl="/platform/exam/overview"
             colors={{
@@ -33,10 +64,7 @@ const LiveExamPage = () => {
                     primaryHover: "emerald-700"
                 }
             }}
-            loading={loading}
-            error={error}
-            LoadingComponent={AssessmentLoading}
-            ErrorComponent={AssessmentError}
+            loading={false}
         />
     );
 };
