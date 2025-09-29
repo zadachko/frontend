@@ -1,6 +1,5 @@
 'use client';
 import { useState, useRef } from "react";
-import { LucideIcon } from "lucide-react";
 import Question from "@/app/(platform-layout)/platform/components/Question/Question";
 import { useIsMobile, useIsSmallMobile } from "@/hooks/isMobile";
 import AssessmentSubmitDialog from "./AssessmentSubmitDialog";
@@ -16,6 +15,24 @@ export interface AssessmentLiveProps {
     subtitle: string;
     overviewRedirectUrl: string;
     colors: {
+        timer: {
+            gradientFrom: string;
+            gradientTo: string;
+            subTextClass: string;
+        };
+        button: {
+            gradientFrom: string;
+            gradientTo: string;
+        };
+        navigator: {
+            primary: string;
+            primaryLight: string;
+            primaryHover: string;
+            answeredBg: string;
+            answeredBorder: string;
+            answeredText: string;
+            answeredHover: string;
+        };
         assessmentMobileHeader: {
             clockColor: string;
             buttonGradient: {
@@ -29,7 +46,6 @@ export interface AssessmentLiveProps {
             primary: string;
             primaryHover: string;
         };
-        [key: string]: any;
     };
     loading?: boolean;
     error?: Error | null;

@@ -28,6 +28,9 @@ const config: CodegenConfig = {
 				withHooks: true,
 				reactApolloVersion: 3,
 				dedupeFragments: true,
+				scalars: {
+					Date: 'Date',
+				},
 			},
 		},
 	},

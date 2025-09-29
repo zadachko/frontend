@@ -15,7 +15,7 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
-  Date: { input: any; output: any; }
+  Date: { input: Date; output: Date; }
 };
 
 export type Angle = {
@@ -194,19 +194,19 @@ export type LoginMutationVariables = Exact<{
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'AuthResponse', accessToken: string, refreshToken: string, user: { __typename?: 'User', id: string, email: string, firstName: string, lastName: string, createdAt: any, lastLoginAt: any, updatedAt: any, role: { __typename?: 'Role', name: string } } } };
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'AuthResponse', accessToken: string, refreshToken: string, user: { __typename?: 'User', id: string, email: string, firstName: string, lastName: string, createdAt: Date, lastLoginAt: Date, updatedAt: Date, role: { __typename?: 'Role', name: string } } } };
 
 export type RefreshTokenMutationVariables = Exact<{
   refreshToken: Scalars['String']['input'];
 }>;
 
 
-export type RefreshTokenMutation = { __typename?: 'Mutation', refreshToken: { __typename?: 'AuthResponse', accessToken: string, refreshToken: string, user: { __typename?: 'User', id: string, email: string, firstName: string, lastName: string, createdAt: any, lastLoginAt: any, updatedAt: any, role: { __typename?: 'Role', name: string } } } };
+export type RefreshTokenMutation = { __typename?: 'Mutation', refreshToken: { __typename?: 'AuthResponse', accessToken: string, refreshToken: string, user: { __typename?: 'User', id: string, email: string, firstName: string, lastName: string, createdAt: Date, lastLoginAt: Date, updatedAt: Date, role: { __typename?: 'Role', name: string } } } };
 
 export type GetCurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetCurrentUserQuery = { __typename?: 'Query', me: { __typename?: 'User', id: string, email: string, firstName: string, lastName: string, createdAt: any, lastLoginAt: any } };
+export type GetCurrentUserQuery = { __typename?: 'Query', me: { __typename?: 'User', id: string, email: string, firstName: string, lastName: string, createdAt: Date, lastLoginAt: Date } };
 
 export type GetMyAssessmentQueryVariables = Exact<{
   assessmentId: Scalars['String']['input'];
@@ -218,7 +218,7 @@ export type GetMyAssessmentQuery = { __typename?: 'Query', getMyAssessment: { __
 export type GetMyLastThreeAssessmentsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetMyLastThreeAssessmentsQuery = { __typename?: 'Query', getMyLastThreeAssessments: Array<{ __typename?: 'UserAssessmentSubmission', startedAt: any, finishedAt: any, score: string, assessment: { __typename?: 'Assessment', id: string, title: string, type: string } }> };
+export type GetMyLastThreeAssessmentsQuery = { __typename?: 'Query', getMyLastThreeAssessments: Array<{ __typename?: 'UserAssessmentSubmission', startedAt: Date, finishedAt: Date, score: string, assessment: { __typename?: 'Assessment', id: string, title: string, type: string } }> };
 
 
 export const LoginDocument = gql`

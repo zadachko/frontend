@@ -1,42 +1,29 @@
 "use client"
 
 import { GraduationCap } from "lucide-react";
-import { useGetExamOverviewQuery } from "@/gql/operations";
+import { useGetMyAssessmentQuery } from "@/gql/operations";
 import type { Question as QuestionType } from "@/types";
 import AssessmentOverview, { type AssessmentResults } from "../../components/AssessmentPage/AssessmentOverview";
 import AssessmentLoading from "../../components/LoadingScreens/AssessmentLoading";
 import AssessmentError from "../../components/ErrorScreens/AssessmentError";
 import { colors } from "../colors.config";
 const ExamOverviewPage = () => {
-    const { data, loading, error } = useGetExamOverviewQuery({
-        variables: { getExamId: '943abe29-d104-4322-9239-f0afd8938541' },
+    const { data, loading, error } = useGetMyAssessmentQuery({
+        variables: { assessmentId: '943abe29-d104-4322-9239-f0afd8938541' },
     });
 
     // Transform server data to match Question type
-    const questions: QuestionType[] = data?.getExam?.examQuestions?.map((examQuestion, index: number) => ({
-        position: index + 1,
-        statement: examQuestion.question.statement,
-        type: examQuestion.question.type === 'MULTIPLE' ? 'multiple' : 'text',
-        options: examQuestion.question.options || [],
-        correctAnswer: examQuestion.question.correctAnswer || '12',
-        userAnswer: '11',
-        points: examQuestion.question.points || 1,
-        solutionSteps: examQuestion.question.solutionSteps?.map((step, stepIndex) => ({
-            id: stepIndex + 1,
-            title: step.action,
-            exerciseText: step.explanation || '',
-            solutionText: step.result,
-        })) || [],
-        diagramData: examQuestion.question.diagramData ? {
-            points: examQuestion.question.diagramData.reduce((acc, point) => {
-                acc[point.id] = { x: point.x, y: point.y };
-                return acc;
-            }, {} as { [key: string]: { x: number; y: number } }),
-            edges: [],
-            sides: [],
-            angles: []
-        } : undefined,
-        diagramSteps: undefined, // TODO: Map diagramSteps properly if needed
+    const questions: QuestionType[] = data?.getMyAssessment?.questions?.map((assessmentQuestion) => ({
+        position: assessmentQuestion.position,
+        statement: assessmentQuestion.question.statement,
+        type: assessmentQuestion.question.type === 'MULTIPLE' ? 'multiple' : 'text',
+        options: assessmentQuestion.question.options || [],
+        correctAnswer: '12', // This would come from the backend
+        userAnswer: '11', // This would come from user's submission
+        points: assessmentQuestion.question.points || 1,
+        solutionSteps: [], // This would come from the backend
+        diagramData: undefined, // This would come from the backend
+        diagramSteps: undefined, // This would come from the backend
     })) || [];
 
     // Calculate exam results from the data
