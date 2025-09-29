@@ -38,19 +38,31 @@ export function middleware(request: NextRequest) {
     pathname === route || pathname.startsWith(route + '/')
   )
   
-  // Check for refresh token in cookies (since access token is in memory)
+  // Check for both user and refresh token in cookies
   const refreshToken = request.cookies.get('refreshToken')?.value
+  const userCookie = request.cookies.get('user')?.value
   const hasRefreshToken = !!refreshToken
+  const hasUser = !!userCookie
   
-  // If it's a protected route and no refresh token, redirect to login
-  if (isProtectedRoute && !hasRefreshToken) {
+  // Debug logging
+  console.log('🔍 Middleware check:', {
+    pathname,
+    hasRefreshToken,
+    hasUser,
+    isProtectedRoute,
+    isPublicRoute
+  })
+  
+  // If it's a protected route and missing either token or user, redirect to login
+  if (isProtectedRoute && (!hasRefreshToken || !hasUser)) {
     const loginUrl = new URL('/login', request.url)
     loginUrl.searchParams.set('redirect', pathname)
     return NextResponse.redirect(loginUrl)
   }
   
-  // If user has refresh token and trying to access auth pages, redirect to platform
-  if (hasRefreshToken && (pathname === '/login' || pathname === '/register')) {
+  // If user has both refresh token and user data and trying to access auth pages, redirect to platform
+  if (hasRefreshToken && hasUser && (pathname === '/login' || pathname === '/register')) {
+    console.log('🔄 Redirecting authenticated user away from auth page')
     const redirectUrl = request.nextUrl.searchParams.get('redirect')
     return NextResponse.redirect(new URL(redirectUrl || '/platform', request.url))
   }

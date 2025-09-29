@@ -12,12 +12,15 @@ export const getAuthToken = (): string | null => {
 
 export const getRefreshToken = (): string | null => {
   if (typeof window === 'undefined') return null;
-  return getCookie('refreshToken');
+  const token = getCookie('refreshToken');
+  console.log('🔍 Getting refresh token from cookie:', token ? 'found' : 'not found');
+  return token;
 };
 
 export const getUser = (): any | null => { // eslint-disable-line @typescript-eslint/no-explicit-any
   if (typeof window === 'undefined') return null;
   const userCookie = getCookie('user');
+  console.log('🔍 Getting user from cookie:', userCookie ? 'found' : 'not found');
   return userCookie ? JSON.parse(userCookie) : null;
 };
 
@@ -27,12 +30,20 @@ export const setAuthToken = (token: string): void => {
 
 export const setRefreshToken = (token: string): void => {
   if (typeof window === 'undefined') return;
-  document.cookie = `refreshToken=${token}; path=/; max-age=${30 * 24 * 60 * 60}; secure; samesite=strict; httponly`;
+
+  document.cookie = `refreshToken=${token}; path=/; max-age=${30 * 24 * 60 * 60}; secure; samesite=strict`;
 };
 
 export const setUser = (user: any): void => { // eslint-disable-line @typescript-eslint/no-explicit-any
+
   if (typeof window === 'undefined') return;
-  document.cookie = `user=${JSON.stringify(user)}; path=/; max-age=${7 * 24 * 60 * 60}; secure; samesite=strict`;
+
+  try {
+    const userJson = JSON.stringify(user);
+    document.cookie = `user=${userJson}; path=/; max-age=${7 * 24 * 60 * 60}; secure; samesite=strict`;
+  } catch (error) {
+    console.error('❌ Error setting user cookie:', error);
+  }
 };
 
 export const clearAuthTokens = (): void => {

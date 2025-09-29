@@ -4,7 +4,7 @@ import React, { createContext, useContext, useEffect, useState, ReactNode, useCa
 import { useRouter } from 'next/navigation';
 import { useApolloClient } from '@apollo/client';
 import type { User, AuthResponse } from '@/gql/graphql';
-import { setAuthToken, setRefreshToken, clearAuthTokens, getUser, getRefreshToken } from '@/lib/auth';
+import { setAuthToken, setRefreshToken, clearAuthTokens, getUser, getRefreshToken, setUser as setUserCookie } from '@/lib/auth';
 import { LoginDocument, RefreshTokenDocument } from '@/gql/operations';
 interface AuthContextType {
   user: User | null;
@@ -43,7 +43,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       try {
         const storedUser = getUser();
         const storedRefreshToken = getRefreshToken();
-
+        
         if (storedUser && storedRefreshToken) {
           setUser(storedUser);
           
@@ -51,12 +51,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           try {
             await refreshToken();
           } catch (error) {
-            console.error('Token refresh failed:', error);
+            console.error('❌ Token refresh failed:', error);
             logout();
           }
+        } else {
         }
       } catch (error) {
-        console.error('Auth initialization failed:', error);
+        console.error('❌ Auth initialization failed:', error);
         logout();
       } finally {
         setIsLoading(false);
@@ -80,18 +81,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         const { user, accessToken, refreshToken } = data.login;
         
         // Store auth data in cookies only
-        setUser(user);
+        setUserCookie(user);
         setAuthToken(accessToken);
         setRefreshToken(refreshToken);
-        
-        setUser(user);
         
         return data.login;
       }
       
       throw new Error('Login failed');
     } catch (error) {
-      console.error('Login error:', error);
+      console.error('❌ Login error:', error);
       throw error;
     } finally {
       setIsLoading(false);
@@ -124,14 +123,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         const { user, accessToken, refreshToken: newRefreshToken } = data.refreshToken;
         
         // Update stored tokens in cookies
-        setUser(user);
+        setUserCookie(user);
         setAuthToken(accessToken);
         setRefreshToken(newRefreshToken);
         
-        setUser(user);
+      } else {
+        throw new Error('No data returned from refresh token mutation');
       }
     } catch (error) {
-      console.error('Token refresh failed:', error);
       logout();
       throw error;
     }
