@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { BookOpen, TestTube, GraduationCap, Clock, ChevronRight, Play, Target, BarChart3, Calculator, Ruler, Hash, FileText, Sigma } from "lucide-react"
@@ -8,9 +10,9 @@ import Link from "next/link"
 import Sidebar from "@/components/Sidebar/Sidebar"
 import { ResultRow } from "./results/ResultRow"
 import type { Category, TestResult } from "@/types"
-
-import { getClient } from "@/lib/apollo-rsc"
+import { useQuery } from "@apollo/client"
 import { GetMyLastThreeAssessmentsDocument } from "@/gql/graphql"
+import { useAuth } from "@/contexts/AuthContext"
 
 /**
  * Formats a Date to a Bulgarian locale date string.
@@ -47,11 +49,48 @@ function toDate(value: unknown): Date | undefined {
     return undefined
 }
 
-const Page = async () => {
-    // Server-side fetch: last three assessment submissions for the current user
-    const { data } = await getClient().query({
-        query: GetMyLastThreeAssessmentsDocument,
+const Page = () => {
+    const { isAuthenticated, isLoading: authLoading } = useAuth()
+    
+    // Client-side fetch: last three assessment submissions for the current user
+    const { data, loading, error } = useQuery(GetMyLastThreeAssessmentsDocument, {
+        skip: !isAuthenticated, // Only run query when authenticated
     })
+
+    // Show loading state while authenticating or fetching data
+    if (authLoading || loading) {
+        return (
+            <div className="flex flex-1 h-full w-full overflow-hidden">
+                <div className="hidden md:block h-full w-64 lg:w-72 xl:w-80 flex-shrink-0">
+                    <Sidebar />
+                </div>
+                <div className="flex-1 overflow-y-auto bg-gray-50 p-4 md:p-6 lg:p-8">
+                    <div className="min-h-screen flex items-center justify-center">
+                        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-[#6F58C9]"></div>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
+    // Show error state if query failed
+    if (error) {
+        return (
+            <div className="flex flex-1 h-full w-full overflow-hidden">
+                <div className="hidden md:block h-full w-64 lg:w-72 xl:w-80 flex-shrink-0">
+                    <Sidebar />
+                </div>
+                <div className="flex-1 overflow-y-auto bg-gray-50 p-4 md:p-6 lg:p-8">
+                    <div className="min-h-screen flex items-center justify-center">
+                        <div className="text-center">
+                            <h2 className="text-2xl font-semibold text-gray-900 mb-2">Грешка при зареждане</h2>
+                            <p className="text-gray-600">{error.message}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    }
 
     // Transform API submissions into the UI-friendly TestResult[] structure
     const submissions = data?.getMyLastThreeAssessments ?? []
