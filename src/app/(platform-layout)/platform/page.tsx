@@ -12,7 +12,6 @@ import { ResultRow } from "./results/ResultRow"
 import type { Category, TestResult } from "@/types"
 import { useQuery } from "@apollo/client"
 import { GetMyLastThreeAssessmentsDocument } from "@/gql/graphql"
-import { useAuth } from "@/contexts/AuthContext"
 
 /**
  * Formats a Date to a Bulgarian locale date string.
@@ -50,15 +49,13 @@ function toDate(value: unknown): Date | undefined {
 }
 
 const Page = () => {
-    const { isAuthenticated, isLoading: authLoading } = useAuth()
-    
+
     // Client-side fetch: last three assessment submissions for the current user
     const { data, loading, error } = useQuery(GetMyLastThreeAssessmentsDocument, {
-        skip: !isAuthenticated, // Only run query when authenticated
     })
 
     // Show loading state while authenticating or fetching data
-    if (authLoading || loading) {
+    if (loading) {
         return (
             <div className="flex flex-1 h-full w-full overflow-hidden">
                 <div className="hidden md:block h-full w-64 lg:w-72 xl:w-80 flex-shrink-0">

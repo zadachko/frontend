@@ -2,7 +2,7 @@ import { HttpLink, NormalizedCacheObject } from '@apollo/client';
 import { ApolloClient, InMemoryCache } from '@apollo/client-integration-nextjs';
 import { createAuthLink } from './auth';
 
-export const makeClient = (refreshTokenCallback?: () => Promise<void>): ApolloClient<NormalizedCacheObject> => {
+export const makeClient = (): ApolloClient<NormalizedCacheObject> => {
 	const httpLink = new HttpLink({
 		uri: process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT!,
 		fetchOptions: { cache: 'no-store' },
@@ -14,7 +14,7 @@ export const makeClient = (refreshTokenCallback?: () => Promise<void>): ApolloCl
 			: undefined,
 	});
 
-	const authLink = createAuthLink(refreshTokenCallback);
+	const authLink = createAuthLink();
 
 	return new ApolloClient({
 		cache: new InMemoryCache(),

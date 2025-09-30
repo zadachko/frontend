@@ -10,11 +10,11 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { userData } from "./mock-data"
 import { useState } from "react"
-import { useAuth } from "@/contexts/AuthContext"
+import { useAuthContext } from "@/contexts/AuthContext"
 
 export function AccountDropdown() {
     const [isOpen, setIsOpen] = useState(false)
-    const { user, logout } = useAuth()
+    const { user, logout } = useAuthContext()
 
     const xpProgress = (userData.currentXP / (userData.currentXP + userData.xpToNextLevel)) * 100
 
@@ -107,7 +107,7 @@ export function AccountDropdown() {
                         </Link>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator className="my-2" />
-                    <DropdownMenuItem 
+                    <DropdownMenuItem
                         onClick={handleLogout}
                         className="flex items-center gap-3 p-3 text-red-600 hover:text-red-700 hover:bg-red-50 cursor-pointer transition-colors rounded-lg"
                     >

@@ -1,26 +1,23 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState, ReactNode, useCallback } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { useApolloClient } from '@apollo/client';
-import type { User, AuthResponse } from '@/gql/graphql';
-import { setAuthToken, setRefreshToken, clearAuthTokens, getUser, getRefreshToken, setUser as setUserCookie } from '@/lib/auth';
-import { LoginDocument, RefreshTokenDocument } from '@/gql/operations';
+import type { User } from '@/gql/graphql';
+import { loginAction, logoutAction } from '@/lib/auth-actions';
+
 interface AuthContextType {
   user: User | null;
-  isAuthenticated: boolean;
   isLoading: boolean;
-  login: (email: string, password: string) => Promise<AuthResponse>;
+  login: (email: string, password: string) => Promise<void>;
   logout: () => void;
-  refreshToken: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const useAuth = () => {
+export const useAuthContext = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error('useAuthContext must be used within an AuthProvider');
   }
   return context;
 };
@@ -30,65 +27,19 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
-  const client = useApolloClient();
 
-  const isAuthenticated = !!user;
 
-  // Initialize auth state from cookies
-  useEffect(() => {
-    const initializeAuth = async () => {
-      try {
-        const storedUser = getUser();
-        const storedRefreshToken = getRefreshToken();
-        
-        if (storedUser && storedRefreshToken) {
-          setUser(storedUser);
-          
-          // Try to refresh token to get a fresh access token
-          try {
-            await refreshToken();
-          } catch (error) {
-            console.error('❌ Token refresh failed:', error);
-            logout();
-          }
-        } else {
-        }
-      } catch (error) {
-        console.error('❌ Auth initialization failed:', error);
-        logout();
-      } finally {
-        setIsLoading(false);
-      }
-    };
 
-    initializeAuth();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-  const login = async (email: string, password: string): Promise<AuthResponse> => {
+  const login = async (email: string, password: string): Promise<void> => {
     try {
       setIsLoading(true);
-      const { data } = await client.mutate({
-        mutation: LoginDocument,
-        variables: {
-          input: { email, password }
-        }
-      });
 
-      if (data?.login) {
-        const { user, accessToken, refreshToken } = data.login;
-        
-        // Store auth data in cookies only
-        setUserCookie(user);
-        setAuthToken(accessToken);
-        setRefreshToken(refreshToken);
-        
-        return data.login;
-      }
-      
-      throw new Error('Login failed');
+      await loginAction(email, password);
+
+
     } catch (error) {
       console.error('❌ Login error:', error);
       throw error;
@@ -97,52 +48,20 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  const logout = useCallback(() => {
-    // Clear all auth data from cookies
-    clearAuthTokens();
-    
-    setUser(null);
+  const logout = useCallback(async () => {
+
+    await logoutAction();
     router.push('/login');
+
   }, [router]);
 
-  const refreshToken = useCallback(async () => {
-    try {
-      const storedRefreshToken = getRefreshToken();
-      if (!storedRefreshToken) {
-        throw new Error('No refresh token available');
-      }
 
-      const { data } = await client.mutate({
-        mutation: RefreshTokenDocument,
-        variables: {
-          refreshToken: storedRefreshToken
-        }
-      });
-
-      if (data?.refreshToken) {
-        const { user, accessToken, refreshToken: newRefreshToken } = data.refreshToken;
-        
-        // Update stored tokens in cookies
-        setUserCookie(user);
-        setAuthToken(accessToken);
-        setRefreshToken(newRefreshToken);
-        
-      } else {
-        throw new Error('No data returned from refresh token mutation');
-      }
-    } catch (error) {
-      logout();
-      throw error;
-    }
-  }, [logout, client]);
 
   const value: AuthContextType = {
     user,
-    isAuthenticated,
     isLoading,
     login,
     logout,
-    refreshToken,
   };
 
   return (

@@ -2,7 +2,7 @@
 
 import React, { useState, Suspense } from 'react'
 import Link from 'next/link'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import {
     Mail,
     Lock,
@@ -11,7 +11,7 @@ import {
     ArrowRight,
     Loader2
 } from 'lucide-react'
-import { useAuth } from '@/contexts/AuthContext'
+import { useAuthContext } from '@/contexts/AuthContext'
 
 const LoginForm = () => {
     const [email, setEmail] = useState('')
@@ -20,24 +20,23 @@ const LoginForm = () => {
     const [rememberMe, setRememberMe] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState('')
-    
-    const { login } = useAuth()
-    const router = useRouter()
-    const searchParams = useSearchParams()
-    const redirectTo = searchParams.get('redirect') || '/platform'
+
+    const { login } = useAuthContext()
+    const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         setIsLoading(true)
         setError('')
-
         try {
+
             await login(email, password)
-            router.push(redirectTo)
+            router.push('/platform');
+
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Възникна грешка при влизане')
         } finally {
-            setIsLoading(false)
+            setIsLoading(false);
         }
     }
 
@@ -104,8 +103,8 @@ const LoginForm = () => {
                                     placeholder="••••••••"
                                 />
                                 <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
-                                    <button 
-                                        type="button" 
+                                    <button
+                                        type="button"
                                         onClick={() => setShowPassword(!showPassword)}
                                         className="text-gray-400 hover:text-gray-500"
                                     >
