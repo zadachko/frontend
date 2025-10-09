@@ -9,12 +9,18 @@ export async function loginAction(email: string, password: string) {
 		email,
 		password,
 	});
-	console.log(error);
 	if (error) {
-		return { error: 'Invalid email or password' };
+		if (error.code === 'invalid_credentials') {
+			return {
+				error: {
+					message: 'Invalid credentials provided',
+					code: error.code,
+				},
+			};
+		}
 	}
 
-	return { success: true };
+	return { success: true, error: null };
 }
 export async function logoutAction() {
 	const supabase = await createClient();

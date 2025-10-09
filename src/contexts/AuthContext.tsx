@@ -36,8 +36,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const login = async (email: string, password: string): Promise<void> => {
     try {
       setIsLoading(true);
+      const { error } = await loginAction(email, password);
 
-      await loginAction(email, password);
+
+      if (error) {
+        if (error.code === 'invalid_credentials') {
+          console.log("Mde a toast", error.message);
+
+        } else {
+          console.error('An unexpected error occurred:', error);
+        }
+      }
 
 
     } catch (error) {
