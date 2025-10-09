@@ -13,8 +13,9 @@ export async function loginAction(email: string, password: string) {
 		if (error.code === 'invalid_credentials') {
 			return {
 				error: {
-					message: 'Invalid credentials provided',
-					code: error.code,
+					name: 'INVALID_CREDENTIALS' as const,
+					message: 'Invalid credentials provided' as const,
+					cause: error,
 				},
 			};
 		}
