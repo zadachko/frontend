@@ -7,10 +7,57 @@ import AssessmentOverview, { type AssessmentResults } from "../../components/Ass
 import AssessmentLoading from "../../components/LoadingScreens/AssessmentLoading";
 import AssessmentError from "../../components/ErrorScreens/AssessmentError";
 import { colors } from "../colors.config";
+import { useSearchParams } from "next/navigation";
+
+
+const isAssessmentIdProvided = (assessmentId: string | null): assessmentId is string => {
+    return typeof assessmentId === 'string' && assessmentId !== '';
+}
+const noAssessmentView = () => {
+    return (
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center w-screen">
+            <div className="text-center">
+                <GraduationCap className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+                <h1 className="text-2xl font-semibold text-gray-900 mb-2">
+                    Изпит не е намерен
+                </h1>
+                <p className="text-gray-600 mb-6">
+                    Не можем да намерим изпита, който търсите. Моля, проверете връзката или се върнете към списъка с изпити.
+                </p>
+                <button
+                    onClick={() => window.history.back()}
+                    className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                    Назад
+                </button>
+            </div>
+        </div>
+    );
+}
 const ExamOverviewPage = () => {
+
+    const searchParams = useSearchParams();
+    const assessmentId = searchParams.get('assessmentId');
+
+    const validAssessmentId = isAssessmentIdProvided(assessmentId);
+
     const { data, loading, error } = useGetMyAssessmentQuery({
-        variables: { assessmentId: '943abe29-d104-4322-9239-f0afd8938541' },
+        variables: validAssessmentId ? { assessmentId } : undefined,
+        skip: !validAssessmentId,
     });
+
+    if (!validAssessmentId) return noAssessmentView();
+
+
+    if (loading) {
+        return <AssessmentLoading text="Зареждане на резултатите..." />;
+    }
+
+    // Handle error state
+    if (error) {
+        return <AssessmentError error={error} />;
+    }
+
 
     // Transform server data to match Question type
     const questions: QuestionType[] = data?.getMyAssessment?.questions?.map((assessmentQuestion) => ({
@@ -36,15 +83,6 @@ const ExamOverviewPage = () => {
         examDate: "15 декември 2024" // This would come from the backend
     };
 
-    // Handle loading state
-    if (loading) {
-        return <AssessmentLoading text="Зареждане на резултатите..." />;
-    }
-
-    // Handle error state
-    if (error) {
-        return <AssessmentError error={error} />;
-    }
 
     // Handle empty questions
     if (!questions.length) {

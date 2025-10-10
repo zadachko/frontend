@@ -46,7 +46,7 @@ export const ResultRow = ({ result, onClick }: ResultRowProps) => {
             onClick()
             return
         }
-        router.push("/platform/exam/overview")
+        router.push(`/platform/exam/overview?assessmentId=${result.id}`)
     }
 
     return (
