@@ -45,9 +45,6 @@ export interface AssessmentOverviewProps {
         answeredHover: string;
     };
     loading?: boolean;
-    error?: Error | null;
-    LoadingComponent?: React.ComponentType<{ text: string }>;
-    ErrorComponent?: React.ComponentType<{ error: Error }>;
 }
 
 const AssessmentOverview = ({
@@ -61,10 +58,6 @@ const AssessmentOverview = ({
     timeColor,
     timeTextColor,
     navigatorColors,
-    loading = false,
-    error = null,
-    LoadingComponent,
-    ErrorComponent
 }: AssessmentOverviewProps) => {
     const [currentQuestion, setCurrentQuestion] = useState(1);
     const [showMobileNav, setShowMobileNav] = useState(false);
@@ -91,16 +84,6 @@ const AssessmentOverview = ({
         }
         return acc;
     }, {} as { [key: number]: string });
-
-    // Handle loading state
-    if (loading && LoadingComponent) {
-        return <LoadingComponent text="Зареждане на резултатите..." />;
-    }
-
-    // Handle error state
-    if (error && ErrorComponent) {
-        return <ErrorComponent error={error} />;
-    }
 
     // Handle empty questions
     if (!questions.length) {

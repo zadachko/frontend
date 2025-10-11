@@ -1,6 +1,5 @@
 import React from 'react';
 import { useSearchParams } from 'next/navigation';
-import AssessmentError from '../ErrorScreens/AssessmentError';
 import AssessmentLoading from '../LoadingScreens/AssessmentLoading';
 import { useGetMyAssessmentQuery } from '@/gql/operations';
 import { GraduationCap } from 'lucide-react';
@@ -58,7 +57,7 @@ const AssessmentIdProvider = ({ colors }: { colors: AssessmentColors }) => {
 
     // Handle error state
     if (error) {
-        return <AssessmentError error={error} />;
+        return noAssessmentView();
     }
 
 
@@ -115,10 +114,6 @@ const AssessmentIdProvider = ({ colors }: { colors: AssessmentColors }) => {
             timeColor="text-blue-500"
             timeTextColor="text-blue-700"
             navigatorColors={colors.navigator}
-            loading={loading}
-            error={error}
-            LoadingComponent={AssessmentLoading}
-            ErrorComponent={AssessmentError}
         />
     )
 }
