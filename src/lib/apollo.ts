@@ -19,5 +19,15 @@ export const makeClient = (): ApolloClient<NormalizedCacheObject> => {
 	return new ApolloClient({
 		cache: new InMemoryCache(),
 		link: authLink.concat(httpLink),
+		defaultOptions: {
+			watchQuery: {
+				fetchPolicy: 'no-cache',
+				errorPolicy: 'all',
+			},
+			query: {
+				fetchPolicy: 'no-cache',
+				errorPolicy: 'all',
+			},
+		},
 	});
 };

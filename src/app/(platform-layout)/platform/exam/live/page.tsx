@@ -1,9 +1,8 @@
 import type { Question as QuestionType } from "@/types";
-import AssessmentLive from "../../components/AssessmentPage/AssessmentLive";
-import AssessmentError from "../../components/ErrorScreens/AssessmentError";
+import AssessmentLive from "@/features/assessments/live/components/AssessmentLive";
 import { colors } from "../colors.config";
 import { getClient } from "@/lib/apollo-rsc";
-import { GetMyAssessmentDocument } from "@/gql/graphql";
+import { GetMyAssessmentDocument } from "@/services/gql/graphql";
 
 // Server Component: fetches assessment data on the server via Apollo getClient()
 const LiveExamPage = async () => {
@@ -45,11 +44,7 @@ const LiveExamPage = async () => {
             derivedError = e as Error;
         }
     }
-
-    // Render error UI on the server to avoid passing components/functions across the RSC boundary
-    if (derivedError) {
-        return <AssessmentError error={derivedError} />;
-    }
+    console.error(derivedError);
 
     return (
         <AssessmentLive

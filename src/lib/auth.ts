@@ -7,7 +7,6 @@ export const createAuthLink = () => {
 		const token = getCookie(
 			`sb-${process.env.NEXT_PUBLIC_SUPABASE_PROJECT_ID}-auth-token`
 		);
-		console.log('token', token);
 		return {
 			headers: {
 				...headers,

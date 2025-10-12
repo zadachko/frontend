@@ -30,7 +30,10 @@ const LoginForm = () => {
         setError('')
         try {
 
-            await login(email, password)
+            const { error } = await login(email, password)
+            if (error) {
+                setError(error.message)
+            }
             router.push('/platform');
 
         } catch (err) {
@@ -42,7 +45,7 @@ const LoginForm = () => {
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-md w-full space-y-8">
+            <div className="max-w-md w-full space-y-8  ">
                 {/* Header */}
                 <div className="text-center">
                     <h1 className="text-3xl font-bold text-gray-900">Добре дошли</h1>
@@ -141,7 +144,7 @@ const LoginForm = () => {
                     <button
                         type="submit"
                         disabled={isLoading}
-                        className="w-full flex items-center justify-center gap-2 px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[#6F58C9] hover:bg-[#6F58C9]/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#6F58C9] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full flex items-center justify-center gap-2 px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[#6F58C9] hover:bg-[#6F58C9]/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#6F58C9] transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                     >
                         {isLoading ? (
                             <>

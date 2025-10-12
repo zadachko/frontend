@@ -1,4 +1,4 @@
-import { SolutionStep } from '@/app/(platform-layout)/platform/components/Question/QuestionSolutionModal/QuestionSolutionModal';
+import { SolutionStep } from '@/features/question/solution/components/QuestionSolutionModal';
 import type { DiagramData, StepAction } from 'geometry-diagram-renderer';
 
 export interface TestResult {

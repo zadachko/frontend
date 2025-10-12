@@ -16,8 +16,8 @@ const config: CodegenConfig = {
 	schema: [{ [endpoint]: { headers } }],
 	documents: 'src/**/*.{ts,tsx,graphql,gql}',
 	generates: {
-		'src/gql/': { preset: 'client', plugins: [] }, // typed `graphql()` helper
-		'src/gql/operations/index.ts': {
+		'src/services/gql/': { preset: 'client', plugins: [] }, // typed `graphql()` helper
+		'src/services/gql/operations/index.ts': {
 			// <<— file, not folder
 			plugins: [
 				'typescript',

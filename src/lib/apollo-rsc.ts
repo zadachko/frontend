@@ -10,9 +10,19 @@ export const { getClient } = registerApolloClient(() => {
 			fetchOptions: { cache: 'no-store' },
 			headers: process.env.GRAPHQL_SERVER_TOKEN
 				? {
-						Authorization: `Bearer ${process.env.GRAPHQL_SERVER_TOKEN}`,
-				  }
+					Authorization: `Bearer ${process.env.GRAPHQL_SERVER_TOKEN}`,
+				}
 				: undefined,
 		}),
+		defaultOptions: {
+			watchQuery: {
+				fetchPolicy: 'no-cache',
+				errorPolicy: 'all',
+			},
+			query: {
+				fetchPolicy: 'no-cache',
+				errorPolicy: 'all',
+			},
+		},
 	});
 });

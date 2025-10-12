@@ -3,15 +3,16 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { BookOpen, TestTube, GraduationCap, Clock, ChevronRight, Play, Target, BarChart3, Calculator, Ruler, Hash, FileText, Sigma } from "lucide-react"
-import WeakTopicCard from "./components/WeakTopicCard"
-import ProblemsCategory from "./components/ProblemsCategory"
-import WeakTopicMissingCard from "./components/WeakTopicMissingCard"
+import WeakTopicCard from "../../../components/common/WeakTopicCard"
+import ProblemsCategory from "../../../components/common/ProblemsCategory"
+import WeakTopicMissingCard from "../../../components/common/WeakTopicMissingCard"
+import RecentResourceMissingCard from "../../../components/common/RecentResourceMissingCard"
 import Link from "next/link"
 import Sidebar from "@/components/Sidebar/Sidebar"
-import { ResultRow } from "./results/ResultRow"
+import { ResultRow } from "../../../features/results/ResultRow"
 import type { Category, TestResult } from "@/types"
-import { useQuery } from "@apollo/client"
-import { GetMyLastThreeAssessmentsDocument } from "@/gql/graphql"
+// import { useQuery } from "@apollo/client"
+import { useGetMyLastThreeAssessmentsQuery } from "@/services/gql/operations"
 
 /**
  * Formats a Date to a Bulgarian locale date string.
@@ -51,8 +52,7 @@ function toDate(value: unknown): Date | undefined {
 const Page = () => {
 
     // Client-side fetch: last three assessment submissions for the current user
-    const { data, loading, error } = useQuery(GetMyLastThreeAssessmentsDocument, {
-    })
+    const { data, loading, error } = useGetMyLastThreeAssessmentsQuery()
 
     // Show loading state while authenticating or fetching data
     if (loading) {
@@ -91,7 +91,7 @@ const Page = () => {
 
     // Transform API submissions into the UI-friendly TestResult[] structure
     const submissions = data?.getMyLastThreeAssessments ?? []
-    const recentActivities: TestResult[] = submissions.slice(0, 3).map((submission, index) => {
+    const recentActivities: TestResult[] = submissions.slice(0, 3).map((submission) => {
         const started = toDate(submission.startedAt)
         const finished = toDate(submission.finishedAt)
         const dateToShow = finished ?? started
@@ -108,7 +108,7 @@ const Page = () => {
         const { percentage, correctAnswers, totalQuestions } = deriveScoreFields(submission.score)
 
         return {
-            id: String(index + 1),
+            id: submission.assessment.id,
             type: submission.assessment.type,
             title: submission.assessment.title,
             date: formatBgDate(dateToShow),
@@ -223,33 +223,7 @@ const Page = () => {
                                 ))}
                             </div>
                         ) : (
-                            <Card className="bg-white border-0 shadow-md">
-                                <CardContent className="p-12 text-center">
-                                    <div className="mb-6">
-                                        <div className="inline-flex p-4 rounded-full bg-gray-100 mb-4">
-                                            <Clock className="w-12 h-12 text-gray-400" />
-                                        </div>
-                                        <h3 className="text-xl font-semibold text-gray-900 mb-2">Нямате скорошни задачи и тестове</h3>
-                                        <p className="text-gray-600 mb-6 max-w-md mx-auto">
-                                            Нямате скорошни задачи или тестове. Започнете своето обучение, като създадете първия си тест или
-                                            разгледайте категориите съз задачите по-долу!
-                                        </p>
-                                    </div>
-                                    <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                                        <Button className="bg-[#6F58C9] hover:bg-[#5A4BA3] text-white">
-                                            <TestTube className="w-4 h-4 mr-2" />
-                                            Започни първия си тест
-                                        </Button>
-                                        <Button
-                                            variant="outline"
-                                            className="border-[#6F58C9] text-[#6F58C9] hover:bg-[#6F58C9] hover:text-white bg-transparent"
-                                        >
-                                            <BookOpen className="w-4 h-4 mr-2" />
-                                            Разгледай категориите със задачи
-                                        </Button>
-                                    </div>
-                                </CardContent>
-                            </Card>
+                            <RecentResourceMissingCard />
                         )}
                     </section>
 

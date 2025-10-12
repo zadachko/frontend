@@ -103,7 +103,7 @@ export default async function ExercisesPage({ params }: ExercisesPageProps) {
             timeEstimate: '25 мин'
         },
         {
-            id: '1',
+            id: '1d',
             number: 1,
             title: 'Реши уравнението 2x + 5 = 13',
             description: 'Намери стойността на x в даденото уравнение',
@@ -113,7 +113,7 @@ export default async function ExercisesPage({ params }: ExercisesPageProps) {
             timeEstimate: '5 мин'
         },
         {
-            id: '2',
+            id: '2aaa',
             number: 2,
             title: 'Изчисли лицето на правоъгълник',
             description: 'Даден е правоъгълник със страни 8 см и 12 см. Намери лицето му.',
@@ -123,7 +123,7 @@ export default async function ExercisesPage({ params }: ExercisesPageProps) {
             timeEstimate: '8 мин'
         },
         {
-            id: '3',
+            id: '3assaa',
             number: 3,
             title: 'Система от уравнения',
             description: 'Реши системата: x + y = 10, 2x - y = 4',
@@ -133,7 +133,7 @@ export default async function ExercisesPage({ params }: ExercisesPageProps) {
             timeEstimate: '15 мин'
         },
         {
-            id: '4',
+            id: 'sadsads',
             number: 4,
             title: 'Пифагорова теорема',
             description: 'В правоъгълен триъгълник катетите са 6 см и 8 см. Намери хипотенузата.',
@@ -143,7 +143,7 @@ export default async function ExercisesPage({ params }: ExercisesPageProps) {
             timeEstimate: '12 мин'
         },
         {
-            id: '5',
+            id: 'sadsds',
             number: 5,
             title: 'Квадратно уравнение',
             description: 'Реши уравнението x² - 5x + 6 = 0',
@@ -153,7 +153,7 @@ export default async function ExercisesPage({ params }: ExercisesPageProps) {
             timeEstimate: '20 мин'
         },
         {
-            id: '6',
+            id: 'sadsadsas',
             number: 6,
             title: 'Геометрична прогресия',
             description: 'Намери първия член на геометрична прогресия, ако a₃ = 8 и q = 2',

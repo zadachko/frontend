@@ -2,14 +2,15 @@
 
 import React, { createContext, useContext, useState, ReactNode, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import type { User } from '@/gql/graphql';
-import { loginAction, logoutAction } from '@/lib/auth-actions';
+import type { User } from '@/services/gql/graphql';
+import { loginAction, logoutAction } from '@/features/auth/auth-actions';
+import { AuthError } from '@supabase/supabase-js';
 
 interface AuthContextType {
   user: User | null;
   isLoading: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  logout: () => void;
+  login: (email: string, password: string) => Promise<{ success: true, error: null } | { success: false, error: { name: "INVALID_CREDENTIALS", message: "Invalid credentials provided", cause: AuthError } }>;
+  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -33,11 +34,27 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
 
 
-  const login = async (email: string, password: string): Promise<void> => {
+  const login = async (email: string, password: string): Promise<{ success: true, error: null } | { success: false, error: { name: "INVALID_CREDENTIALS", message: "Invalid credentials provided", cause: AuthError } }> => {
     try {
       setIsLoading(true);
+      const { error } = await loginAction(email, password);
 
-      await loginAction(email, password);
+
+      if (error) {
+        if (error.name === 'INVALID_CREDENTIALS') {
+          return {
+            success: false as const,
+            error: error,
+          }
+        } else {
+          console.error('An unexpected error occurred:', error);
+          return {
+            success: false as const,
+            error: error,
+          }
+        }
+      }
+      return { success: true as const, error: null }
 
 
     } catch (error) {
