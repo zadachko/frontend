@@ -2,7 +2,7 @@
 
 import type { DiagramData } from "geometry-diagram-renderer";
 import type { Question as QuestionType } from "@/types";
-import AssessmentLive from "../../components/AssessmentPage/AssessmentLive";
+import AssessmentLive from "@/features/assessments/live/components/AssessmentLive";
 import { colors } from "../colors.config";
 
 const sampleTriangleData: DiagramData = {

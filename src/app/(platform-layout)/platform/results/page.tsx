@@ -1,10 +1,11 @@
 "use client"
 
-import { useState } from "react"
-import { BarChart3 } from "lucide-react"
-import Sidebar from "@/components/Sidebar/Sidebar"
-import { StatsCards } from "./StatsCards"
-import { ResultsTabs } from "./ResultsTabs"
+import { useState } from "react";
+import { BarChart3 } from "lucide-react";
+import Sidebar from "@/components/Sidebar/Sidebar";
+import { StatsCards } from "@/features/results/StatsCards";
+import { ResultsTabs } from "@/features/results/ResultsTabs";
+
 import type { TestResult } from "@/types"
 
 const Page = () => {

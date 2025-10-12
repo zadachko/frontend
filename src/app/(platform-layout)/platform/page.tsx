@@ -3,16 +3,16 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { BookOpen, TestTube, GraduationCap, Clock, ChevronRight, Play, Target, BarChart3, Calculator, Ruler, Hash, FileText, Sigma } from "lucide-react"
-import WeakTopicCard from "./components/WeakTopicCard"
-import ProblemsCategory from "./components/ProblemsCategory"
-import WeakTopicMissingCard from "./components/WeakTopicMissingCard"
-import RecentResourceMissingCard from "./components/RecentResourceMissingCard"
+import WeakTopicCard from "../../../components/common/WeakTopicCard"
+import ProblemsCategory from "../../../components/common/ProblemsCategory"
+import WeakTopicMissingCard from "../../../components/common/WeakTopicMissingCard"
+import RecentResourceMissingCard from "../../../components/common/RecentResourceMissingCard"
 import Link from "next/link"
 import Sidebar from "@/components/Sidebar/Sidebar"
-import { ResultRow } from "./results/ResultRow"
+import { ResultRow } from "../../../features/results/ResultRow"
 import type { Category, TestResult } from "@/types"
 // import { useQuery } from "@apollo/client"
-import { useGetMyLastThreeAssessmentsQuery } from "@/gql/operations"
+import { useGetMyLastThreeAssessmentsQuery } from "@/services/gql/operations"
 
 /**
  * Formats a Date to a Bulgarian locale date string.

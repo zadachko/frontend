@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, ReactNode, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import type { User } from '@/gql/graphql';
+import type { User } from '@/services/gql/graphql';
 import { loginAction, logoutAction } from '@/lib/auth-actions';
 import { AuthError } from '@supabase/supabase-js';
 

@@ -1,12 +1,11 @@
 "use client"
 
-
-import AssessmentIdProvider from "../../components/AssessmentPage/AssessmentIdProvider";
+import ResultsLoader from "@/features/assessments/overview/components/ResultsLoader";
 import { colors } from "../colors.config";
 const ExamOverviewPage = () => {
 
 
-    return <AssessmentIdProvider colors={colors} />
+    return <ResultsLoader colors={colors} />
     // return (
     // <AssessmentOverview
     //     questions={questions}

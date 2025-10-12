@@ -9,8 +9,8 @@ export const makeClient = (): ApolloClient<NormalizedCacheObject> => {
 		// credentials: "include",
 		headers: process.env.NEXT_PUBLIC_GRAPHQL_TOKEN
 			? {
-				Authorization: `Bearer ${process.env.NEXT_PUBLIC_GRAPHQL_TOKEN}`,
-			}
+					Authorization: `Bearer ${process.env.NEXT_PUBLIC_GRAPHQL_TOKEN}`,
+			  }
 			: undefined,
 	});
 

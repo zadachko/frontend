@@ -17,11 +17,12 @@ export async function loginAction(email: string, password: string) {
 					message: 'Invalid credentials provided' as const,
 					cause: error,
 				},
+				success: false as const,
 			};
 		}
 	}
 
-	return { success: true, error: null };
+	return { success: true as const, error: null };
 }
 export async function logoutAction() {
 	const supabase = await createClient();
@@ -30,5 +31,5 @@ export async function logoutAction() {
 		throw error;
 		// return { error: 'Failed to logout' };
 	}
-	return { success: true };
+	return { success: true as const, error: null };
 }

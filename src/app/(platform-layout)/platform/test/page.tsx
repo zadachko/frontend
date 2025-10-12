@@ -3,8 +3,9 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { TestTube, Calculator, Ruler, Hash, BarChart3, FileText, Sigma, Target, TrendingUp, BookOpen, Zap, Brain } from "lucide-react";
 import { useState } from "react";
-import PreviousResultsCard from "../components/AssessmentPage/PreviousResultsCard";
-import AssessmentStartFlow from "../components/AssessmentPage/AssessmentStartFlow";
+import PreviousResultsCard from "@/features/assessments/resource-choice/components/PreviousResultsCard";
+import AssessmentStartFlow from "@/features/assessments/resource-choice/components/AssessmentStartFlow";
+
 
 const Page = () => {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
