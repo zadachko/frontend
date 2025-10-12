@@ -2,10 +2,11 @@
 
 import ResultsLoader from "@/features/assessments/overview/components/ResultsLoader";
 import { colors } from "../colors.config";
+import { Suspense } from "react";
 const ExamOverviewPage = () => {
 
 
-    return <ResultsLoader colors={colors} />
+    return <Suspense fallback={<div className="p-6">Зареждане...</div>}><ResultsLoader colors={colors} /></Suspense>
     // return (
     // <AssessmentOverview
     //     questions={questions}
