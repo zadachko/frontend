@@ -6,5 +6,9 @@ query GetCurrentUser {
         lastName
         createdAt
         lastLoginAt
+        role {
+            name
+        }
+        updatedAt
     }
 }

@@ -15,7 +15,6 @@ import { useAuthContext } from '@/contexts/AuthContext';
 export function AccountDropdown() {
     const [isOpen, setIsOpen] = useState(false);
     const { user, logout } = useAuthContext();
-
     const xpProgress = (userData.currentXP / (userData.currentXP + userData.xpToNextLevel)) * 100;
 
     const handleLogout = () => {

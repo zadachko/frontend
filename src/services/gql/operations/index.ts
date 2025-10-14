@@ -206,7 +206,7 @@ export type RefreshTokenMutation = { __typename?: 'Mutation', refreshToken: { __
 export type GetCurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetCurrentUserQuery = { __typename?: 'Query', me: { __typename?: 'User', id: string, email: string, firstName: string, lastName: string, createdAt: Date, lastLoginAt: Date } };
+export type GetCurrentUserQuery = { __typename?: 'Query', me: { __typename?: 'User', id: string, email: string, firstName: string, lastName: string, createdAt: Date, lastLoginAt: Date, updatedAt: Date, role: { __typename?: 'Role', name: string } } };
 
 export type GetMyAssessmentQueryVariables = Exact<{
   assessmentId: Scalars['String']['input'];
@@ -322,6 +322,10 @@ export const GetCurrentUserDocument = gql`
     lastName
     createdAt
     lastLoginAt
+    role {
+      name
+    }
+    updatedAt
   }
 }
     `;

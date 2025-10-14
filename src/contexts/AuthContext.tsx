@@ -2,24 +2,34 @@
 
 import React, { createContext, useContext, useState, ReactNode, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import type { User } from '@/services/gql/graphql';
 import { loginAction, logoutAction } from '@/features/auth/auth-actions';
 import { AuthError } from '@supabase/supabase-js';
+import { useGetCurrentUserQuery } from '@/services/gql/operations';
 
-interface AuthContextType {
-    user: User | null;
-    isLoading: boolean;
+type AuthContextUser = {
+    id: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    role: {
+        name: string;
+    }
+}
+
+type AuthContextType = {
+    user: AuthContextUser | null;
     login: (
         email: string,
         password: string
     ) => Promise<
         | { success: true; error: null }
         | {
-              success: false;
-              error: { name: 'INVALID_CREDENTIALS'; message: 'Invalid credentials provided'; cause: AuthError };
-          }
+            success: false;
+            error: { name: 'INVALID_CREDENTIALS'; message: 'Invalid credentials provided'; cause: AuthError };
+        }
     >;
     logout: () => Promise<void>;
+    getUser: () => Promise<AuthContextUser | null>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -32,14 +42,58 @@ export const useAuthContext = () => {
     return context;
 };
 
-interface AuthProviderProps {
+type AuthProviderProps = {
     children: ReactNode;
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-    const [user] = useState<User | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
+    const [user, setUser] = useState<AuthContextUser | null>(null);
     const router = useRouter();
+
+    // GraphQL query to get current user
+    const { data: userData, refetch: refetchUser } = useGetCurrentUserQuery();
+
+    // Update user state when data changes
+    React.useEffect(() => {
+        if (userData?.me) {
+            const authContextUser = {
+                id: userData.me.id,
+                email: userData.me.email,
+                firstName: userData.me.firstName,
+                lastName: userData.me.lastName,
+                role: userData.me.role,
+            }
+            setUser(authContextUser);
+        }
+    }, [userData]);
+
+    const getUser = useCallback(async (): Promise<AuthContextUser | null> => {
+        // If we already have a user in context, return it
+        if (user) {
+            return user;
+        }
+
+        // Otherwise, refetch from backend
+        try {
+
+            const { data: userData } = await refetchUser();
+            if (userData?.me) {
+                const authContextUser = {
+                    id: userData.me.id,
+                    email: userData.me.email,
+                    firstName: userData.me.firstName,
+                    lastName: userData.me.lastName,
+                    role: userData.me.role,
+                }
+                setUser(authContextUser);
+                return authContextUser;
+            }
+            return null;
+        } catch (error) {
+            console.error('Failed to fetch user:', error);
+            return null;
+        }
+    }, [user, refetchUser]);
 
     const login = async (
         email: string,
@@ -47,12 +101,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     ): Promise<
         | { success: true; error: null }
         | {
-              success: false;
-              error: { name: 'INVALID_CREDENTIALS'; message: 'Invalid credentials provided'; cause: AuthError };
-          }
+            success: false;
+            error: { name: 'INVALID_CREDENTIALS'; message: 'Invalid credentials provided'; cause: AuthError };
+        }
     > => {
         try {
-            setIsLoading(true);
             const { error } = await loginAction(email, password);
 
             if (error) {
@@ -69,25 +122,27 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                     };
                 }
             }
+
+            // After successful login, fetch the user
+            await getUser();
             return { success: true as const, error: null };
         } catch (error) {
             console.error('❌ Login error:', error);
             throw error;
-        } finally {
-            setIsLoading(false);
         }
     };
 
     const logout = useCallback(async () => {
         await logoutAction();
+        setUser(null); // Clear user from context
         router.push('/login');
     }, [router]);
 
     const value: AuthContextType = {
         user,
-        isLoading,
         login,
         logout,
+        getUser,
     };
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
