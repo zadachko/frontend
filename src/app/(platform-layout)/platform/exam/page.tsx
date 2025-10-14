@@ -6,9 +6,11 @@ import ExamRule from '@/components/common/ExamRule';
 import { useState } from 'react';
 import PreviousResultsCard from '@/features/assessments/resource-choice/components/PreviousResultsCard';
 import AssessmentStartFlow from '@/features/assessments/resource-choice/components/AssessmentStartFlow';
+import { useCreateAssessmentMutation } from '@/services/gql/operations';
 
 const Page = () => {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [createAssessment, { data: createAssessmentData, loading: createAssessmentLoading, error: createAssessmentError }] = useCreateAssessmentMutation();
 
     // Green color scheme for exam page
     const greenColors = {
@@ -69,10 +71,31 @@ const Page = () => {
         setIsDialogOpen(true);
     };
 
-    const handleConfirmExam = () => {
+    const HandleConfirmExam = async () => {
+
+
+        await createAssessment({
+            variables: {
+                input: {
+                    title: 'Пробен Изпит',
+                    type: 'TESTING',
+                },
+            },
+        });
+
+        if (createAssessmentError) {
+            throw new Error('Create assessment error: ' + createAssessmentError.message);
+
+        }
+        if (!createAssessmentData) {
+            throw new Error('The server did not return a valid assessment response');
+        }
+
+
+        console.log('Create assessment data: ' + createAssessmentData.createAssessment.id);
         setIsDialogOpen(false);
-        // Navigate to the exam page
-        window.location.href = '/platform/exam/live';
+        window.location.href = '/platform/exam/live?assessmentId=' + createAssessmentData.createAssessment.id;
+
     };
 
     return (
@@ -112,8 +135,9 @@ const Page = () => {
                                     isDialogOpen={isDialogOpen}
                                     setIsDialogOpen={setIsDialogOpen}
                                     handleStartExam={handleStartExam}
-                                    handleConfirmExam={handleConfirmExam}
+                                    handleConfirmExam={HandleConfirmExam}
                                     colors={greenColors}
+                                    loading={createAssessmentLoading}
                                 />
                             </CardContent>
                         </Card>

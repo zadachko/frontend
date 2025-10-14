@@ -16,6 +16,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
 type Documents = {
     "mutation Login($input: LoginInput!) {\n  login(input: $input) {\n    accessToken\n    refreshToken\n    user {\n      id\n      email\n      firstName\n      lastName\n      createdAt\n      lastLoginAt\n      role {\n        name\n      }\n      updatedAt\n    }\n  }\n}": typeof types.LoginDocument,
     "mutation RefreshToken($refreshToken: String!) {\n  refreshToken(refreshToken: $refreshToken) {\n    accessToken\n    refreshToken\n    user {\n      id\n      email\n      firstName\n      lastName\n      createdAt\n      lastLoginAt\n      role {\n        name\n      }\n      updatedAt\n    }\n  }\n}": typeof types.RefreshTokenDocument,
+    "mutation CreateAssessment($input: CreateAssessmentInput!) {\n  createAssessment(input: $input) {\n    id\n    questions {\n      position\n      question {\n        statement\n      }\n    }\n  }\n}": typeof types.CreateAssessmentDocument,
     "query GetCurrentUser {\n  me {\n    id\n    email\n    firstName\n    lastName\n    createdAt\n    lastLoginAt\n    role {\n      name\n    }\n    updatedAt\n  }\n}": typeof types.GetCurrentUserDocument,
     "query GetMyAssessment($assessmentId: String!) {\n  getMyAssessment(assessmentId: $assessmentId) {\n    title\n    questions {\n      position\n      question {\n        statement\n        type\n        points\n        options\n      }\n    }\n  }\n}": typeof types.GetMyAssessmentDocument,
     "query GetMyLastThreeAssessments {\n  getMyLastThreeAssessments {\n    startedAt\n    finishedAt\n    score\n    assessment {\n      id\n      title\n      type\n    }\n  }\n}": typeof types.GetMyLastThreeAssessmentsDocument,
@@ -23,6 +24,7 @@ type Documents = {
 const documents: Documents = {
     "mutation Login($input: LoginInput!) {\n  login(input: $input) {\n    accessToken\n    refreshToken\n    user {\n      id\n      email\n      firstName\n      lastName\n      createdAt\n      lastLoginAt\n      role {\n        name\n      }\n      updatedAt\n    }\n  }\n}": types.LoginDocument,
     "mutation RefreshToken($refreshToken: String!) {\n  refreshToken(refreshToken: $refreshToken) {\n    accessToken\n    refreshToken\n    user {\n      id\n      email\n      firstName\n      lastName\n      createdAt\n      lastLoginAt\n      role {\n        name\n      }\n      updatedAt\n    }\n  }\n}": types.RefreshTokenDocument,
+    "mutation CreateAssessment($input: CreateAssessmentInput!) {\n  createAssessment(input: $input) {\n    id\n    questions {\n      position\n      question {\n        statement\n      }\n    }\n  }\n}": types.CreateAssessmentDocument,
     "query GetCurrentUser {\n  me {\n    id\n    email\n    firstName\n    lastName\n    createdAt\n    lastLoginAt\n    role {\n      name\n    }\n    updatedAt\n  }\n}": types.GetCurrentUserDocument,
     "query GetMyAssessment($assessmentId: String!) {\n  getMyAssessment(assessmentId: $assessmentId) {\n    title\n    questions {\n      position\n      question {\n        statement\n        type\n        points\n        options\n      }\n    }\n  }\n}": types.GetMyAssessmentDocument,
     "query GetMyLastThreeAssessments {\n  getMyLastThreeAssessments {\n    startedAt\n    finishedAt\n    score\n    assessment {\n      id\n      title\n      type\n    }\n  }\n}": types.GetMyLastThreeAssessmentsDocument,
@@ -50,6 +52,10 @@ export function graphql(source: "mutation Login($input: LoginInput!) {\n  login(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "mutation RefreshToken($refreshToken: String!) {\n  refreshToken(refreshToken: $refreshToken) {\n    accessToken\n    refreshToken\n    user {\n      id\n      email\n      firstName\n      lastName\n      createdAt\n      lastLoginAt\n      role {\n        name\n      }\n      updatedAt\n    }\n  }\n}"): (typeof documents)["mutation RefreshToken($refreshToken: String!) {\n  refreshToken(refreshToken: $refreshToken) {\n    accessToken\n    refreshToken\n    user {\n      id\n      email\n      firstName\n      lastName\n      createdAt\n      lastLoginAt\n      role {\n        name\n      }\n      updatedAt\n    }\n  }\n}"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "mutation CreateAssessment($input: CreateAssessmentInput!) {\n  createAssessment(input: $input) {\n    id\n    questions {\n      position\n      question {\n        statement\n      }\n    }\n  }\n}"): (typeof documents)["mutation CreateAssessment($input: CreateAssessmentInput!) {\n  createAssessment(input: $input) {\n    id\n    questions {\n      position\n      question {\n        statement\n      }\n    }\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

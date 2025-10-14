@@ -21,6 +21,7 @@ interface AssessmentStartFlowProps {
         iconBg: string;
         iconColor: string;
     };
+    loading: boolean;
 }
 
 const AssessmentStartFlow = ({
@@ -29,6 +30,7 @@ const AssessmentStartFlow = ({
     handleStartExam,
     handleConfirmExam,
     colors,
+    loading,
 }: AssessmentStartFlowProps) => {
     return (
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -37,6 +39,7 @@ const AssessmentStartFlow = ({
                     size="lg"
                     className={`bg-gradient-to-r ${colors.buttonGradient} ${colors.buttonHoverGradient} text-white font-semibold px-4 sm:px-6 lg:px-8 py-2 sm:py-3 h-10 sm:h-12 text-sm sm:text-base lg:text-lg transition-all duration-300 shadow-sm w-full sm:w-auto`}
                     onClick={handleStartExam}
+                    disabled={loading}
                 >
                     <Play className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
                     Започни Пробен Изпит
@@ -76,7 +79,7 @@ const AssessmentStartFlow = ({
                         className={`bg-gradient-to-r ${colors.buttonGradient} ${colors.buttonHoverGradient} text-white w-full sm:w-auto`}
                     >
                         <Play className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
-                        Започни Изпита
+                        {loading ? 'Зареждане на изпита...' : 'Започни Изпита'}
                     </Button>
                 </DialogFooter>
             </DialogContent>
