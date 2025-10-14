@@ -3,7 +3,7 @@ import { useState, useRef } from 'react';
 import Question from '@/features/question/components/Question';
 import { useIsMobile, useIsSmallMobile } from '@/hooks/isMobile';
 import AssessmentSubmitDialog from './AssessmentSubmitDialog';
-import { AssessmentMobileHeader } from './AssessmentMobileHeader';
+import AssessmentMobileHeader from '../../shared/components/AssessmentMobileHeader';
 import AssessmentSidebar from './AssessmentSidebar';
 import type { Question as QuestionType } from '@/types';
 import handleSidebarScroll from '../../shared/utils/handleSidebarScroll';
@@ -103,17 +103,17 @@ const AssessmentLive = ({
             {/* Mobile Header - Outside scrollable container */}
             {isMobile && (
                 <AssessmentMobileHeader
+                    assessmentModeType="live"
                     showMobileNav={showMobileNav}
                     setShowMobileNav={setShowMobileNav}
                     setShowSubmitDialog={setShowSubmitDialog}
                     clockColor={colors.assessmentMobileHeader.clockColor}
-                    buttonGradient={{
-                        from: colors.assessmentMobileHeader.buttonGradient.from,
-                        to: colors.assessmentMobileHeader.buttonGradient.to,
-                        hoverFrom: colors.assessmentMobileHeader.buttonGradient.hoverFrom,
-                        hoverTo: colors.assessmentMobileHeader.buttonGradient.hoverTo,
+                    submitBtnClasses={{
+                        base: `bg-gradient-to-r from-${colors.assessmentMobileHeader.buttonGradient.from} to-${colors.assessmentMobileHeader.buttonGradient.to} text-white`,
+                        hover: `hover:from-${colors.assessmentMobileHeader.buttonGradient.hoverFrom} hover:to-${colors.assessmentMobileHeader.buttonGradient.hoverTo}`,
                     }}
                 />
+
             )}
 
             <div

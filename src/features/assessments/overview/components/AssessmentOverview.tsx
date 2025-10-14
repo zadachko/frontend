@@ -5,7 +5,7 @@ import Question from '@/features/question/components/Question';
 import { QuestionsNavigatorGrid } from '@/features/assessments/shared/components/QuestionsNavigatorGrid';
 import { useIsMobile, useIsSmallMobile } from '@/hooks/isMobile';
 import AssessmentOverviewSidebar from './AssessmentOverviewSidebar';
-import AssessmentOverviewMobileHeader from './AssessmentOverviewMobileHeader';
+import AssessmentMobileHeader from '../../shared/components/AssessmentMobileHeader';
 import type { Question as QuestionType } from '@/types';
 import handleSidebarScroll from '../../shared/utils/handleSidebarScroll';
 // import { getQuestionStatusOverview } from "./utils/getQuestionStatus";
@@ -103,7 +103,8 @@ const AssessmentOverview = ({
     return (
         <div className="min-h-screen bg-gray-50 mx-auto">
             {isMobile && (
-                <AssessmentOverviewMobileHeader
+                <AssessmentMobileHeader
+                    assessmentModeType="overview"
                     showMobileNav={showMobileNav}
                     setShowMobileNav={setShowMobileNav}
                     Icon={Icon}
@@ -150,11 +151,10 @@ const AssessmentOverview = ({
 
                 {/* Right Sidebar - Navigation */}
                 <div
-                    className={`${
-                        isMobile
-                            ? `w-full fixed -mt-[7px] top-16 right-0 z-40 ${isSmallMobile ? 'w-full' : 'w-80'} bg-white border-l border-gray-200 transform transition-transform duration-300 ease-in-out ${showMobileNav ? 'translate-x-0' : 'translate-x-full'} flex flex-col h-[calc(100vh-64px)]`
-                            : 'w-80 bg-white border-l border-gray-200 flex flex-col h-100vh'
-                    }`}
+                    className={`${isMobile
+                        ? `w-full fixed -mt-[7px] top-16 right-0 z-40 ${isSmallMobile ? 'w-full' : 'w-80'} bg-white border-l border-gray-200 transform transition-transform duration-300 ease-in-out ${showMobileNav ? 'translate-x-0' : 'translate-x-full'} flex flex-col h-[calc(100vh-64px)]`
+                        : 'w-80 bg-white border-l border-gray-200 flex flex-col h-100vh'
+                        }`}
                     onWheel={(event) => handleSidebarScroll(event, mainContentRef)}
                 >
                     {/* Overview Data */}

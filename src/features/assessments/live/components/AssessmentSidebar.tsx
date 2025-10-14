@@ -2,7 +2,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { QuestionsNavigatorGrid } from '../../shared/components/QuestionsNavigatorGrid';
 import { colors } from '../../../../app/(platform-layout)/platform/exam/colors.config';
-import { Clock } from './Clocks';
+import { Clock } from '../../shared/components/Clock';
 
 interface AssessmentSidebarProps {
     // layout/behavior
@@ -52,15 +52,12 @@ export default function AssessmentSidebar({
 
     return (
         <div
-            className={`${
-                isMobile
-                    ? `w-full fixed -mt-[7px] top-16 right-0 z-40 ${
-                          isSmallMobile ? 'w-full' : 'w-80'
-                      } bg-white border-l border-gray-200 transform transition-transform duration-300 ease-in-out ${
-                          showMobileNav ? 'translate-x-0' : 'translate-x-full'
-                      } flex flex-col h-[calc(100vh-64px)]`
-                    : 'w-80 bg-white border-l border-gray-200 flex flex-col h-100vh'
-            }`}
+            className={`${isMobile
+                ? `w-full fixed -mt-[7px] top-16 right-0 z-40 ${isSmallMobile ? 'w-full' : 'w-80'
+                } bg-white border-l border-gray-200 transform transition-transform duration-300 ease-in-out ${showMobileNav ? 'translate-x-0' : 'translate-x-full'
+                } flex flex-col h-[calc(100vh-64px)]`
+                : 'w-80 bg-white border-l border-gray-200 flex flex-col h-100vh'
+                }`}
             onWheel={handleSidebarScroll}
         >
             {/* Timer - Desktop only */}
