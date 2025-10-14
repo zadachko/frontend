@@ -1,0 +1,11 @@
+mutation CreateAssessment($input: CreateAssessmentInput!) {
+    createAssessment(input: $input) {
+        id
+        questions {
+            position
+            question {
+                statement
+            }
+        }
+    }
+}
