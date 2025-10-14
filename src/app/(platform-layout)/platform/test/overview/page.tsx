@@ -1,13 +1,18 @@
 'use client';
 
-import { colors } from "../colors.config";
-import ResultsLoader from "@/features/assessments/overview/components/ResultsLoader";
-import { Suspense } from "react";
+import { colors } from '../colors.config';
+import ResultsLoader from '@/features/assessments/overview/components/ResultsLoader';
+import { Suspense } from 'react';
 
 const TestOverviewPage = () => {
-    return <Suspense fallback={<div className="p-6">Зареждане...</div>}><ResultsLoader colors={colors} /></Suspense>
+    return (
+        <Suspense fallback={<div className="p-6">Зареждане...</div>}>
+            <ResultsLoader colors={colors} />
+        </Suspense>
+    );
 };
-{/* <AssessmentOverview
+{
+    /* <AssessmentOverview
     questions={questions}
     results={testResults}
     title="Преглед на теста"
@@ -23,6 +28,7 @@ const TestOverviewPage = () => {
     timeColor="text-purple-500"
     timeTextColor="text-purple-700"
     navigatorColors={colors.navigator}
-/> */}
+/> */
+}
 
 export default TestOverviewPage;

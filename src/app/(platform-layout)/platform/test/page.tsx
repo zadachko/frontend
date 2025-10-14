@@ -1,11 +1,23 @@
-"use client";
+'use client';
 
-import { Card, CardContent } from "@/components/ui/card";
-import { TestTube, Calculator, Ruler, Hash, BarChart3, FileText, Sigma, Target, TrendingUp, BookOpen, Zap, Brain } from "lucide-react";
-import { useState } from "react";
-import PreviousResultsCard from "@/features/assessments/resource-choice/components/PreviousResultsCard";
-import AssessmentStartFlow from "@/features/assessments/resource-choice/components/AssessmentStartFlow";
-
+import { Card, CardContent } from '@/components/ui/card';
+import {
+    TestTube,
+    Calculator,
+    Ruler,
+    Hash,
+    BarChart3,
+    FileText,
+    Sigma,
+    Target,
+    TrendingUp,
+    BookOpen,
+    Zap,
+    Brain,
+} from 'lucide-react';
+import { useState } from 'react';
+import PreviousResultsCard from '@/features/assessments/resource-choice/components/PreviousResultsCard';
+import AssessmentStartFlow from '@/features/assessments/resource-choice/components/AssessmentStartFlow';
 
 const Page = () => {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -14,126 +26,126 @@ const Page = () => {
 
     // Purple color scheme matching the main platform page
     const purpleColors = {
-        buttonGradient: "from-[#6F58C9] to-[#5A4BA3]",
-        buttonHoverGradient: "hover:from-[#5A4BA3] hover:to-[#6F58C9]",
-        iconBg: "bg-amber-50",
-        iconColor: "text-amber-600"
+        buttonGradient: 'from-[#6F58C9] to-[#5A4BA3]',
+        buttonHoverGradient: 'hover:from-[#5A4BA3] hover:to-[#6F58C9]',
+        iconBg: 'bg-amber-50',
+        iconColor: 'text-amber-600',
     };
 
     // Categories with mock subcategories and enhanced styling
     const categories = [
         {
-            name: "Алгебра",
+            name: 'Алгебра',
             icon: Calculator,
             problems: 324,
-            bgColor: "bg-purple-100",
-            iconColor: "text-purple-600",
+            bgColor: 'bg-purple-100',
+            iconColor: 'text-purple-600',
             subcategories: [
-                { name: "Линейни уравнения", icon: Target, problems: 45 },
-                { name: "Квадратни уравнения", icon: TrendingUp, problems: 38 },
-                { name: "Системи уравнения", icon: Zap, problems: 52 },
-                { name: "Алгебрични изрази", icon: BookOpen, problems: 67 },
-                { name: "Факторизация", icon: Brain, problems: 41 }
-            ]
+                { name: 'Линейни уравнения', icon: Target, problems: 45 },
+                { name: 'Квадратни уравнения', icon: TrendingUp, problems: 38 },
+                { name: 'Системи уравнения', icon: Zap, problems: 52 },
+                { name: 'Алгебрични изрази', icon: BookOpen, problems: 67 },
+                { name: 'Факторизация', icon: Brain, problems: 41 },
+            ],
         },
         {
-            name: "Геометрия",
+            name: 'Геометрия',
             icon: Ruler,
             problems: 267,
-            bgColor: "bg-blue-100",
-            iconColor: "text-blue-600",
+            bgColor: 'bg-blue-100',
+            iconColor: 'text-blue-600',
             subcategories: [
-                { name: "Площ и периметър", icon: Target, problems: 58 },
-                { name: "Обем и повърхнина", icon: TrendingUp, problems: 43 },
-                { name: "Питагорова теорема", icon: Zap, problems: 39 },
-                { name: "Подобни триъгълници", icon: BookOpen, problems: 47 },
-                { name: "Окръжности и кръгове", icon: Brain, problems: 35 }
-            ]
+                { name: 'Площ и периметър', icon: Target, problems: 58 },
+                { name: 'Обем и повърхнина', icon: TrendingUp, problems: 43 },
+                { name: 'Питагорова теорема', icon: Zap, problems: 39 },
+                { name: 'Подобни триъгълници', icon: BookOpen, problems: 47 },
+                { name: 'Окръжности и кръгове', icon: Brain, problems: 35 },
+            ],
         },
         {
-            name: "Дроби",
+            name: 'Дроби',
             icon: Hash,
             problems: 198,
-            bgColor: "bg-green-100",
-            iconColor: "text-green-600",
+            bgColor: 'bg-green-100',
+            iconColor: 'text-green-600',
             subcategories: [
-                { name: "Събиране и изваждане", icon: Target, problems: 42 },
-                { name: "Умножение и деление", icon: TrendingUp, problems: 38 },
-                { name: "Смесени числа", icon: Zap, problems: 31 },
-                { name: "Десятични дроби", icon: BookOpen, problems: 45 },
-                { name: "Проценти", icon: Brain, problems: 28 }
-            ]
+                { name: 'Събиране и изваждане', icon: Target, problems: 42 },
+                { name: 'Умножение и деление', icon: TrendingUp, problems: 38 },
+                { name: 'Смесени числа', icon: Zap, problems: 31 },
+                { name: 'Десятични дроби', icon: BookOpen, problems: 45 },
+                { name: 'Проценти', icon: Brain, problems: 28 },
+            ],
         },
         {
-            name: "Статистика",
+            name: 'Статистика',
             icon: BarChart3,
             problems: 145,
-            bgColor: "bg-orange-100",
-            iconColor: "text-orange-600",
+            bgColor: 'bg-orange-100',
+            iconColor: 'text-orange-600',
             subcategories: [
-                { name: "Средна стойност", icon: Target, problems: 32 },
-                { name: "Медиана и мода", icon: TrendingUp, problems: 28 },
-                { name: "Графики и диаграми", icon: Zap, problems: 35 },
-                { name: "Вероятности", icon: BookOpen, problems: 25 },
-                { name: "Данни и интерпретация", icon: Brain, problems: 22 }
-            ]
+                { name: 'Средна стойност', icon: Target, problems: 32 },
+                { name: 'Медиана и мода', icon: TrendingUp, problems: 28 },
+                { name: 'Графики и диаграми', icon: Zap, problems: 35 },
+                { name: 'Вероятности', icon: BookOpen, problems: 25 },
+                { name: 'Данни и интерпретация', icon: Brain, problems: 22 },
+            ],
         },
         {
-            name: "Текстови задачи",
+            name: 'Текстови задачи',
             icon: FileText,
             problems: 289,
-            bgColor: "bg-pink-100",
-            iconColor: "text-pink-600",
+            bgColor: 'bg-pink-100',
+            iconColor: 'text-pink-600',
             subcategories: [
-                { name: "Движение и време", icon: Target, problems: 55 },
-                { name: "Работа и производителност", icon: TrendingUp, problems: 48 },
-                { name: "Процентни задачи", icon: Zap, problems: 42 },
-                { name: "Геометрични задачи", icon: BookOpen, problems: 51 },
-                { name: "Алгебрични задачи", icon: Brain, problems: 45 }
-            ]
+                { name: 'Движение и време', icon: Target, problems: 55 },
+                { name: 'Работа и производителност', icon: TrendingUp, problems: 48 },
+                { name: 'Процентни задачи', icon: Zap, problems: 42 },
+                { name: 'Геометрични задачи', icon: BookOpen, problems: 51 },
+                { name: 'Алгебрични задачи', icon: Brain, problems: 45 },
+            ],
         },
         {
-            name: "Пре-алгебра",
+            name: 'Пре-алгебра',
             icon: Sigma,
             problems: 176,
-            bgColor: "bg-teal-100",
-            iconColor: "text-teal-600",
+            bgColor: 'bg-teal-100',
+            iconColor: 'text-teal-600',
             subcategories: [
-                { name: "Цели числа", icon: Target, problems: 38 },
-                { name: "Рационални числа", icon: TrendingUp, problems: 32 },
-                { name: "Степенуване", icon: Zap, problems: 29 },
-                { name: "Коренуване", icon: BookOpen, problems: 35 },
-                { name: "Алгебрични изрази", icon: Brain, problems: 27 }
-            ]
-        }
+                { name: 'Цели числа', icon: Target, problems: 38 },
+                { name: 'Рационални числа', icon: TrendingUp, problems: 32 },
+                { name: 'Степенуване', icon: Zap, problems: 29 },
+                { name: 'Коренуване', icon: BookOpen, problems: 35 },
+                { name: 'Алгебрични изрази', icon: Brain, problems: 27 },
+            ],
+        },
     ];
 
     // Mock previous exam results
     const previousResults = [
         {
             id: 1,
-            date: "15.12.2024",
+            date: '15.12.2024',
             score: 85,
             totalQuestions: 25,
             correctQuestions: 21,
-            timeSpent: "75 мин",
+            timeSpent: '75 мин',
         },
         {
             id: 2,
-            date: "08.12.2024",
+            date: '08.12.2024',
             score: 72,
             totalQuestions: 25,
             correctQuestions: 18,
-            timeSpent: "82 мин",
+            timeSpent: '82 мин',
         },
         {
             id: 3,
-            date: "01.12.2024",
+            date: '01.12.2024',
             score: 68,
             totalQuestions: 25,
             correctQuestions: 17,
-            timeSpent: "88 мин",
-        }
+            timeSpent: '88 мин',
+        },
     ];
 
     const handleStartExam = () => {
@@ -143,7 +155,7 @@ const Page = () => {
     const handleConfirmExam = () => {
         setIsDialogOpen(false);
         // Navigate to the exam page
-        window.location.href = "/platform/test/live";
+        window.location.href = '/platform/test/live';
     };
 
     const handleCategorySelect = (categoryName: string) => {
@@ -155,10 +167,9 @@ const Page = () => {
         setSelectedSubcategory(subcategoryName);
     };
 
-    const selectedCategoryData = categories.find(cat => cat.name === selectedCategory);
+    const selectedCategoryData = categories.find((cat) => cat.name === selectedCategory);
 
     return (
-
         <div className="min-h-screen bg-gray-50 w-screen flex items-center justify-center p-4 mx-auto">
             <div className="w-full max-w-7xl">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -171,7 +182,9 @@ const Page = () => {
                                         <TestTube className="w-8 h-8 text-[#6F58C9]" />
                                     </div>
                                     <h1 className="text-3xl font-semibold text-gray-900 mb-3">Пробен Изпит</h1>
-                                    <p className="text-gray-600 text-lg mb-6">Тествай знанията си по математика за 7-ми клас</p>
+                                    <p className="text-gray-600 text-lg mb-6">
+                                        Тествай знанията си по математика за 7-ми клас
+                                    </p>
                                 </div>
 
                                 {/* Category Selection */}
@@ -179,56 +192,66 @@ const Page = () => {
                                     <h3 className="text-lg font-medium text-gray-900 mb-4">
                                         {selectedCategory
                                             ? `Избери подкатегория от ${selectedCategory}:`
-                                            : "Избери категория:"
-                                        }
+                                            : 'Избери категория:'}
                                     </h3>
                                     <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                                        {!selectedCategory ? (
-                                            // Show categories when no category is selected
-                                            categories.map((category) => (
-                                                <button
-                                                    key={category.name}
-                                                    onClick={() => handleCategorySelect(category.name)}
-                                                    className={`p-4 rounded-lg border-2 transition-all duration-300 transform hover:scale-105 cursor-pointer ${selectedCategory === category.name
-                                                        ? 'border-[#6F58C9] bg-[#6F58C9]/5 shadow-md'
-                                                        : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50 hover:shadow-sm'
-                                                        }`}
-                                                >
-                                                    <div className={`inline-flex p-2 rounded-lg mb-2 ${category.bgColor} transition-transform duration-200`}>
-                                                        <category.icon className={`w-5 h-5 ${category.iconColor}`} />
-                                                    </div>
-                                                    <div className="text-sm font-medium text-gray-900">{category.name}</div>
-                                                    <div className="text-xs text-gray-500">{category.problems} задачи</div>
-                                                </button>
-                                            ))
-                                        ) : (
-                                            // Show subcategories when a category is selected
-                                            selectedCategoryData?.subcategories.map((subcategory, index) => (
-                                                <button
-                                                    key={subcategory.name}
-                                                    onClick={() => handleSubcategorySelect(subcategory.name)}
-                                                    className={`p-4 rounded-lg border-2 transition-all duration-300 transform hover:scale-105 cursor-pointer ${selectedSubcategory === subcategory.name
-                                                        ? 'border-[#6F58C9] bg-gradient-to-r from-[#6F58C9]/5 to-[#5A4BA3]/5 shadow-md'
-                                                        : 'border-gray-200 hover:border-[#6F58C9]/30 hover:bg-gray-50 hover:shadow-sm'
-                                                        }`}
-                                                    style={{ animationDelay: `${index * 100}ms` }}
-                                                >
-                                                    <div className="flex items-start justify-between mb-2">
-                                                        <div className={`inline-flex p-2 rounded-lg ${selectedCategoryData.bgColor} transition-transform duration-200`}>
-                                                            <subcategory.icon className={`w-4 h-4 ${selectedCategoryData.iconColor}`} />
-                                                        </div>
-
-                                                    </div>
-                                                    <div className="text-left">
-                                                        <div className="text-sm font-medium text-gray-900 mb-1">{subcategory.name}</div>
-                                                        <div className="text-xs text-gray-500 flex items-center gap-1">
-                                                            <Target className="w-3 h-3" />
-                                                            {subcategory.problems} задачи
-                                                        </div>
-                                                    </div>
-                                                </button>
-                                            ))
-                                        )}
+                                        {!selectedCategory
+                                            ? // Show categories when no category is selected
+                                              categories.map((category) => (
+                                                  <button
+                                                      key={category.name}
+                                                      onClick={() => handleCategorySelect(category.name)}
+                                                      className={`p-4 rounded-lg border-2 transition-all duration-300 transform hover:scale-105 cursor-pointer ${
+                                                          selectedCategory === category.name
+                                                              ? 'border-[#6F58C9] bg-[#6F58C9]/5 shadow-md'
+                                                              : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50 hover:shadow-sm'
+                                                      }`}
+                                                  >
+                                                      <div
+                                                          className={`inline-flex p-2 rounded-lg mb-2 ${category.bgColor} transition-transform duration-200`}
+                                                      >
+                                                          <category.icon className={`w-5 h-5 ${category.iconColor}`} />
+                                                      </div>
+                                                      <div className="text-sm font-medium text-gray-900">
+                                                          {category.name}
+                                                      </div>
+                                                      <div className="text-xs text-gray-500">
+                                                          {category.problems} задачи
+                                                      </div>
+                                                  </button>
+                                              ))
+                                            : // Show subcategories when a category is selected
+                                              selectedCategoryData?.subcategories.map((subcategory, index) => (
+                                                  <button
+                                                      key={subcategory.name}
+                                                      onClick={() => handleSubcategorySelect(subcategory.name)}
+                                                      className={`p-4 rounded-lg border-2 transition-all duration-300 transform hover:scale-105 cursor-pointer ${
+                                                          selectedSubcategory === subcategory.name
+                                                              ? 'border-[#6F58C9] bg-gradient-to-r from-[#6F58C9]/5 to-[#5A4BA3]/5 shadow-md'
+                                                              : 'border-gray-200 hover:border-[#6F58C9]/30 hover:bg-gray-50 hover:shadow-sm'
+                                                      }`}
+                                                      style={{ animationDelay: `${index * 100}ms` }}
+                                                  >
+                                                      <div className="flex items-start justify-between mb-2">
+                                                          <div
+                                                              className={`inline-flex p-2 rounded-lg ${selectedCategoryData.bgColor} transition-transform duration-200`}
+                                                          >
+                                                              <subcategory.icon
+                                                                  className={`w-4 h-4 ${selectedCategoryData.iconColor}`}
+                                                              />
+                                                          </div>
+                                                      </div>
+                                                      <div className="text-left">
+                                                          <div className="text-sm font-medium text-gray-900 mb-1">
+                                                              {subcategory.name}
+                                                          </div>
+                                                          <div className="text-xs text-gray-500 flex items-center gap-1">
+                                                              <Target className="w-3 h-3" />
+                                                              {subcategory.problems} задачи
+                                                          </div>
+                                                      </div>
+                                                  </button>
+                                              ))}
                                     </div>
 
                                     {/* Back button when subcategories are shown */}
@@ -264,14 +287,11 @@ const Page = () => {
                     </div>
 
                     {/* Previous Results Sidebar */}
-                    <PreviousResultsCard
-                        previousResults={previousResults}
-                        color="#6F58C9"
-                    />
+                    <PreviousResultsCard previousResults={previousResults} color="#6F58C9" />
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default Page;

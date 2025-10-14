@@ -1,16 +1,16 @@
-"use client"
+'use client';
 
-import type React from "react"
+import type React from 'react';
 
-import { useEffect, useRef } from "react"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { motion, useAnimation, useInView } from "framer-motion"
-import { PercentageCounter, PlusCounter } from "@/components/ui/animated-counter"
+import { useEffect, useRef } from 'react';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { motion, useAnimation, useInView } from 'framer-motion';
+import { PercentageCounter, PlusCounter } from '@/components/ui/animated-counter';
 
 // Math SVG components
 const MathSymbols = {
-    Pi: ({ className = "" }) => (
+    Pi: ({ className = '' }) => (
         <svg className={className} viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
                 d="M20 30H80M35 30V70M65 30V70"
@@ -21,24 +21,36 @@ const MathSymbols = {
             />
         </svg>
     ),
-    Sigma: ({ className = "" }) => (
+    Sigma: ({ className = '' }) => (
         <svg className={className} viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M25 25H75L25 75H75" stroke="currentColor" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round" />
+            <path
+                d="M25 25H75L25 75H75"
+                stroke="currentColor"
+                strokeWidth="8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
         </svg>
     ),
-    Sqrt: ({ className = "" }) => (
+    Sqrt: ({ className = '' }) => (
         <svg className={className} viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M20 50L35 70L80 20" stroke="currentColor" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round" />
+            <path
+                d="M20 50L35 70L80 20"
+                stroke="currentColor"
+                strokeWidth="8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
         </svg>
     ),
-    Divide: ({ className = "" }) => (
+    Divide: ({ className = '' }) => (
         <svg className={className} viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="50" cy="30" r="8" fill="currentColor" />
             <circle cx="50" cy="70" r="8" fill="currentColor" />
             <line x1="20" y1="50" x2="80" y2="50" stroke="currentColor" strokeWidth="8" strokeLinecap="round" />
         </svg>
     ),
-    Function: ({ className = "" }) => (
+    Function: ({ className = '' }) => (
         <svg className={className} viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
                 d="M30 20C30 20 30 50 30 50C30 65 45 65 50 65C55 65 70 65 70 50C70 50 70 20 70 20M30 80C30 80 30 50 30 50M70 80C70 80 70 50 70 50"
@@ -49,7 +61,7 @@ const MathSymbols = {
             />
         </svg>
     ),
-    Triangle: ({ className = "" }) => (
+    Triangle: ({ className = '' }) => (
         <svg className={className} viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
                 d="M50 20L80 80H20L50 20Z"
@@ -60,7 +72,7 @@ const MathSymbols = {
             />
         </svg>
     ),
-}
+};
 
 // Floating element with enhanced interactivity
 const FloatingElement = ({
@@ -74,38 +86,38 @@ const FloatingElement = ({
     mobileHidden = false,
     mobilePosition,
 }: {
-    children: React.ReactNode
-    x: string
-    y: string
-    size: string
-    color: string
-    delay?: number
-    factor?: number
-    mobileHidden?: boolean
-    mobilePosition?: { x: string; y: string }
+    children: React.ReactNode;
+    x: string;
+    y: string;
+    size: string;
+    color: string;
+    delay?: number;
+    factor?: number;
+    mobileHidden?: boolean;
+    mobilePosition?: { x: string; y: string };
 }) => {
     const isMobile = false;
 
     // Don't render if this element should be hidden on mobile
     if (isMobile && mobileHidden) {
-        return null
+        return null;
     }
 
     // Random floating animation parameters
-    const floatX = Math.random() * 10 - 5
-    const floatY = Math.random() * 10 - 5
-    const duration = 3 + Math.random() * 2
+    const floatX = Math.random() * 10 - 5;
+    const floatY = Math.random() * 10 - 5;
+    const duration = 3 + Math.random() * 2;
 
     // Adjust size for mobile
     const mobileSize = isMobile
         ? size
-            .replace(/w-(\d+)/, (_, num) => `w-${Math.max(8, Number.parseInt(num) * 0.7)}`)
-            .replace(/h-(\d+)/, (_, num) => `h-${Math.max(8, Number.parseInt(num) * 0.7)}`)
-        : size
+              .replace(/w-(\d+)/, (_, num) => `w-${Math.max(8, Number.parseInt(num) * 0.7)}`)
+              .replace(/h-(\d+)/, (_, num) => `h-${Math.max(8, Number.parseInt(num) * 0.7)}`)
+        : size;
 
     // Use mobile-specific position if provided and on mobile
-    const elementX = isMobile && mobilePosition ? mobilePosition.x : x
-    const elementY = isMobile && mobilePosition ? mobilePosition.y : y
+    const elementX = isMobile && mobilePosition ? mobilePosition.x : x;
+    const elementY = isMobile && mobilePosition ? mobilePosition.y : y;
 
     return (
         <motion.div
@@ -114,8 +126,8 @@ const FloatingElement = ({
                 top: elementY,
                 left: elementX,
                 // Ensure elements don't go off-screen on mobile
-                maxWidth: isMobile ? "20%" : "auto",
-                maxHeight: isMobile ? "20%" : "auto",
+                maxWidth: isMobile ? '20%' : 'auto',
+                maxHeight: isMobile ? '20%' : 'auto',
                 zIndex: isMobile ? 0 : 5, // Lower z-index on mobile to prevent overlapping with text
             }}
             initial={{ opacity: 0, scale: 0 }}
@@ -127,35 +139,39 @@ const FloatingElement = ({
             }}
             transition={{
                 opacity: { delay, duration: 0.8 },
-                scale: { delay, duration: 0.8, type: "spring" },
-                x: { duration, repeat: Number.POSITIVE_INFINITY, repeatType: "reverse", ease: "easeInOut" },
-                y: { duration: duration * 1.2, repeat: Number.POSITIVE_INFINITY, repeatType: "reverse", ease: "easeInOut" },
+                scale: { delay, duration: 0.8, type: 'spring' },
+                x: { duration, repeat: Number.POSITIVE_INFINITY, repeatType: 'reverse', ease: 'easeInOut' },
+                y: {
+                    duration: duration * 1.2,
+                    repeat: Number.POSITIVE_INFINITY,
+                    repeatType: 'reverse',
+                    ease: 'easeInOut',
+                },
             }}
         >
             <div
                 className={`${color} ${mobileSize} rounded-2xl flex items-center justify-center shadow-lg`}
-                style={{ transition: "box-shadow 0.3s ease" }}
+                style={{ transition: 'box-shadow 0.3s ease' }}
             >
                 {children}
             </div>
         </motion.div>
-    )
-}
-
+    );
+};
 
 // Enhanced CTA button with animations
 const AnimatedButton = ({
-    variant = "default",
+    variant = 'default',
     children,
     href,
     delay = 0,
-    className = "",
+    className = '',
 }: {
-    variant?: "default" | "outline"
-    children: React.ReactNode
-    href: string
-    delay?: number
-    className?: string
+    variant?: 'default' | 'outline';
+    children: React.ReactNode;
+    href: string;
+    delay?: number;
+    className?: string;
 }) => {
     const isMobile = false;
 
@@ -171,42 +187,42 @@ const AnimatedButton = ({
             <Link href={href} className="w-full block">
                 <Button
                     variant={variant}
-                    size={isMobile ? "default" : "lg"}
-                    className={`w-full sm:w-auto px-6 sm:px-8 py-4 sm:py-6 text-base sm:text-lg rounded-xl sm:rounded-2xl relative overflow-hidden group ${variant === "default" ? "bg-primary-500" : "border-2 border-primary-500"
-                        }`}
+                    size={isMobile ? 'default' : 'lg'}
+                    className={`w-full sm:w-auto px-6 sm:px-8 py-4 sm:py-6 text-base sm:text-lg rounded-xl sm:rounded-2xl relative overflow-hidden group ${
+                        variant === 'default' ? 'bg-primary-500' : 'border-2 border-primary-500'
+                    }`}
                 >
                     <span className="relative z-10">{children}</span>
                     <span
-                        className={`absolute inset-0 ${variant === "default" ? "bg-primary-600" : "bg-primary-100"
-                            } transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300`}
+                        className={`absolute inset-0 ${
+                            variant === 'default' ? 'bg-primary-600' : 'bg-primary-100'
+                        } transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300`}
                     />
                     <span className="absolute top-0 right-0 h-full w-1/4 bg-white/20 skew-x-[25deg] transform -translate-x-48 group-hover:translate-x-full transition-transform duration-700" />
                 </Button>
             </Link>
         </motion.div>
-    )
-}
+    );
+};
 
 const HeroSection = () => {
-    const containerRef = useRef<HTMLDivElement>(null)
-    const statsRef = useRef<HTMLDivElement>(null)
-    const isInView = useInView(containerRef, { once: true, margin: "-100px" })
-    const isStatsInView = useInView(statsRef, { once: true, amount: 0.5 })
+    const containerRef = useRef<HTMLDivElement>(null);
+    const statsRef = useRef<HTMLDivElement>(null);
+    const isInView = useInView(containerRef, { once: true, margin: '-100px' });
+    const isStatsInView = useInView(statsRef, { once: true, amount: 0.5 });
     const controls = useAnimation();
 
     useEffect(() => {
         if (isInView) {
-            controls.start("visible")
+            controls.start('visible');
         }
-    }, [controls, isInView])
-
+    }, [controls, isInView]);
 
     return (
         <section
             ref={containerRef}
             className="relative overflow-hidden bg-gradient-to-b from-primary-50 to-white py-16 md:py-20 lg:py-32"
         >
-
             {/* Main content with improved mobile spacing */}
             <div className="container relative z-10 px-5 sm:px-6">
                 <div className="mx-auto max-w-3xl text-center">
@@ -219,19 +235,19 @@ const HeroSection = () => {
                             visible: {
                                 opacity: 1,
                                 y: 0,
-                                transition: { staggerChildren: 0.05, delayChildren: 0.2 }
-                            }
+                                transition: { staggerChildren: 0.05, delayChildren: 0.2 },
+                            },
                         }}
                     >
-                        {"Подготви се за НВО по математика със Задачко".split(" ").map((word, i) => {
-                            const animateWord = (word === "Задачко");
+                        {'Подготви се за НВО по математика със Задачко'.split(' ').map((word, i) => {
+                            const animateWord = word === 'Задачко';
                             return (
                                 <motion.span
                                     key={i}
-                                    className={`inline-block mr-2 ${animateWord ? "animated-gradient-text" : ""}`}
+                                    className={`inline-block mr-2 ${animateWord ? 'animated-gradient-text' : ''}`}
                                     variants={{
                                         hidden: { opacity: 0, y: 20 },
-                                        visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 80 } }
+                                        visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 80 } },
                                     }}
                                 >
                                     {word}
@@ -239,9 +255,6 @@ const HeroSection = () => {
                             );
                         })}
                     </motion.h1>
-
-
-
 
                     {/* Add a semi-transparent background to improve text readability on mobile */}
                     <motion.div
@@ -251,8 +264,8 @@ const HeroSection = () => {
                         transition={{ duration: 0.5, delay: 0.3 }}
                     >
                         <p className="text-base sm:text-lg text-gray-700 sm:text-gray-600">
-                            Интерактивна платформа с хиляди задачи, тестове и игри, които ще направят подготовката ти за изпита
-                            забавна и ефективна.
+                            Интерактивна платформа с хиляди задачи, тестове и игри, които ще направят подготовката ти за
+                            изпита забавна и ефективна.
                         </p>
                     </motion.div>
 
@@ -306,7 +319,7 @@ const HeroSection = () => {
                         color="bg-primary-200/80 text-primary-700"
                         delay={0.2}
                         factor={1.5}
-                        mobilePosition={{ x: "5%", y: "5%" }}
+                        mobilePosition={{ x: '5%', y: '5%' }}
                     >
                         <MathSymbols.Pi className="w-10 h-10" />
                     </FloatingElement>
@@ -318,7 +331,7 @@ const HeroSection = () => {
                         color="bg-green-200/80 text-green-700"
                         delay={0.4}
                         factor={1.2}
-                        mobilePosition={{ x: "2%", y: "85%" }}
+                        mobilePosition={{ x: '2%', y: '85%' }}
                     >
                         <MathSymbols.Divide className="w-12 h-12" />
                     </FloatingElement>
@@ -330,7 +343,7 @@ const HeroSection = () => {
                         color="bg-primary-100/80 text-primary-700"
                         delay={0.6}
                         factor={1.8}
-                        mobilePosition={{ x: "85%", y: "10%" }}
+                        mobilePosition={{ x: '85%', y: '10%' }}
                     >
                         <MathSymbols.Sqrt className="w-14 h-14" />
                     </FloatingElement>
@@ -342,7 +355,7 @@ const HeroSection = () => {
                         color="bg-yellow-200/80 text-yellow-700"
                         delay={0.8}
                         factor={1.3}
-                        mobilePosition={{ x: "85%", y: "85%" }}
+                        mobilePosition={{ x: '85%', y: '85%' }}
                     >
                         <MathSymbols.Sigma className="w-10 h-10" />
                     </FloatingElement>
@@ -384,9 +397,8 @@ const HeroSection = () => {
                     </FloatingElement>
                 </div>
             </div>
-
         </section>
-    )
-}
+    );
+};
 
-export default HeroSection
+export default HeroSection;

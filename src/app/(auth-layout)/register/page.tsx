@@ -1,60 +1,52 @@
-"use client";
+'use client';
 
-import React, { useState } from 'react'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import {
-    Mail,
-    Lock,
-    Eye,
-    EyeOff,
-    User,
-    ArrowRight,
-    Loader2
-} from 'lucide-react'
+import React, { useState } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { Mail, Lock, Eye, EyeOff, User, ArrowRight, Loader2 } from 'lucide-react';
 
 const Page = () => {
-    const [firstName, setFirstName] = useState('')
-    const [lastName, setLastName] = useState('')
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [confirmPassword, setConfirmPassword] = useState('')
-    const [showPassword, setShowPassword] = useState(false)
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-    const [termsAccepted, setTermsAccepted] = useState(false)
-    const [isLoading, setIsLoading] = useState(false)
-    const [error, setError] = useState('')
-    
-    const router = useRouter()
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [termsAccepted, setTermsAccepted] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState('');
+
+    const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault()
-        setIsLoading(true)
-        setError('')
+        e.preventDefault();
+        setIsLoading(true);
+        setError('');
 
         // Basic validation
         if (password !== confirmPassword) {
-            setError('Паролите не съвпадат')
-            setIsLoading(false)
-            return
+            setError('Паролите не съвпадат');
+            setIsLoading(false);
+            return;
         }
 
         if (!termsAccepted) {
-            setError('Трябва да приемете общите условия')
-            setIsLoading(false)
-            return
+            setError('Трябва да приемете общите условия');
+            setIsLoading(false);
+            return;
         }
 
         try {
             // TODO: Implement actual registration with your backend
             // For now, redirect to login
-            router.push('/login?message=registration-successful')
+            router.push('/login?message=registration-successful');
         } catch (err) {
-            setError(err instanceof Error ? err.message : 'Възникна грешка при регистрация')
+            setError(err instanceof Error ? err.message : 'Възникна грешка при регистрация');
         } finally {
-            setIsLoading(false)
+            setIsLoading(false);
         }
-    }
+    };
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -67,9 +59,7 @@ const Page = () => {
 
                 {/* Error Message */}
                 {error && (
-                    <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
-                        {error}
-                    </div>
+                    <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">{error}</div>
                 )}
 
                 {/* Registration Form */}
@@ -156,7 +146,7 @@ const Page = () => {
                                 <input
                                     id="password"
                                     name="password"
-                                    type={showPassword ? "text" : "password"}
+                                    type={showPassword ? 'text' : 'password'}
                                     autoComplete="new-password"
                                     required
                                     value={password}
@@ -165,8 +155,8 @@ const Page = () => {
                                     placeholder="••••••••"
                                 />
                                 <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
-                                    <button 
-                                        type="button" 
+                                    <button
+                                        type="button"
                                         onClick={() => setShowPassword(!showPassword)}
                                         className="text-gray-400 hover:text-gray-500"
                                     >
@@ -188,7 +178,7 @@ const Page = () => {
                                 <input
                                     id="confirm-password"
                                     name="confirm-password"
-                                    type={showConfirmPassword ? "text" : "password"}
+                                    type={showConfirmPassword ? 'text' : 'password'}
                                     autoComplete="new-password"
                                     required
                                     value={confirmPassword}
@@ -197,12 +187,16 @@ const Page = () => {
                                     placeholder="••••••••"
                                 />
                                 <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
-                                    <button 
-                                        type="button" 
+                                    <button
+                                        type="button"
                                         onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                                         className="text-gray-400 hover:text-gray-500"
                                     >
-                                        {showConfirmPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                                        {showConfirmPassword ? (
+                                            <EyeOff className="h-5 w-5" />
+                                        ) : (
+                                            <Eye className="h-5 w-5" />
+                                        )}
                                     </button>
                                 </div>
                             </div>
@@ -220,8 +214,18 @@ const Page = () => {
                                     onChange={(e) => setTermsAccepted(e.target.checked)}
                                     className="h-4 w-4 text-[#6F58C9] focus:ring-[#6F58C9] border-gray-300 rounded cursor-pointer transition-colors hover:border-[#6F58C9]"
                                 />
-                                <label htmlFor="terms" className="ml-2 block text-sm text-gray-700 cursor-pointer select-none hover:text-[#6F58C9] transition-colors">
-                                    Съгласен съм с <Link href="/terms" className="text-[#6F58C9] hover:text-[#6F58C9]/80">Общите условия</Link> и <Link href="/privacy" className="text-[#6F58C9] hover:text-[#6F58C9]/80">Политиката за поверителност</Link>
+                                <label
+                                    htmlFor="terms"
+                                    className="ml-2 block text-sm text-gray-700 cursor-pointer select-none hover:text-[#6F58C9] transition-colors"
+                                >
+                                    Съгласен съм с{' '}
+                                    <Link href="/terms" className="text-[#6F58C9] hover:text-[#6F58C9]/80">
+                                        Общите условия
+                                    </Link>{' '}
+                                    и{' '}
+                                    <Link href="/privacy" className="text-[#6F58C9] hover:text-[#6F58C9]/80">
+                                        Политиката за поверителност
+                                    </Link>
                                 </label>
                             </div>
                         </div>
@@ -256,7 +260,7 @@ const Page = () => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default Page
+export default Page;

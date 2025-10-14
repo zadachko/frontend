@@ -1,20 +1,20 @@
-"use client"
+'use client';
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { BarChart3, TestTube, GraduationCap } from "lucide-react"
-import type { TestResult } from "@/types"
-import { ResultRow } from "./ResultRow"
-import { EmptyState } from "./EmptyState"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { BarChart3, TestTube, GraduationCap } from 'lucide-react';
+import type { TestResult } from '@/types';
+import { ResultRow } from './ResultRow';
+import { EmptyState } from './EmptyState';
 
 interface ResultsTabsProps {
-    results: TestResult[]
-    activeTab: string
-    onTabChange: (value: string) => void
+    results: TestResult[];
+    activeTab: string;
+    onTabChange: (value: string) => void;
 }
 
 interface ResultsTabPanelProps {
-    value: string
-    results: TestResult[]
+    value: string;
+    results: TestResult[];
 }
 
 const ResultsTabPanel = ({ value, results }: ResultsTabPanelProps) => (
@@ -29,15 +29,15 @@ const ResultsTabPanel = ({ value, results }: ResultsTabPanelProps) => (
             <EmptyState type="all" />
         )}
     </TabsContent>
-)
+);
 
 export const ResultsTabs = ({ results, activeTab, onTabChange }: ResultsTabsProps) => {
     const filteredResults = results.filter((result) => {
-        if (activeTab === "all") return true
-        if (activeTab === "tests") return result.type === "test"
-        if (activeTab === "exams") return result.type === "exam"
-        return true
-    })
+        if (activeTab === 'all') return true;
+        if (activeTab === 'tests') return result.type === 'test';
+        if (activeTab === 'exams') return result.type === 'exam';
+        return true;
+    });
 
     return (
         <Tabs value={activeTab} onValueChange={onTabChange} className="w-full">
@@ -48,11 +48,11 @@ export const ResultsTabs = ({ results, activeTab, onTabChange }: ResultsTabsProp
                 </TabsTrigger>
                 <TabsTrigger value="tests" className="flex items-center gap-2">
                     <TestTube className="w-4 h-4" />
-                    Тестове ({results.filter((r) => r.type === "test").length})
+                    Тестове ({results.filter((r) => r.type === 'test').length})
                 </TabsTrigger>
                 <TabsTrigger value="exams" className="flex items-center gap-2">
                     <GraduationCap className="w-4 h-4" />
-                    Матури ({results.filter((r) => r.type === "exam").length})
+                    Матури ({results.filter((r) => r.type === 'exam').length})
                 </TabsTrigger>
             </TabsList>
 
@@ -62,5 +62,5 @@ export const ResultsTabs = ({ results, activeTab, onTabChange }: ResultsTabsProp
                 <ResultsTabPanel value="exams" results={filteredResults} />
             </div>
         </Tabs>
-    )
-}
+    );
+};

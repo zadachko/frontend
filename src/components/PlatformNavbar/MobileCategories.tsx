@@ -1,46 +1,44 @@
-"use client"
+'use client';
 
-import Link from "next/link"
-import { problemCategories } from "./mock-data"
-import type { MobileMenuType } from "./navbar-types"
+import Link from 'next/link';
+import { problemCategories } from './mock-data';
+import type { MobileMenuType } from './navbar-types';
 
 interface MobileCategoriesProps {
-    openMobileMenu: MobileMenuType
-    setOpenMobileMenu: (menu: MobileMenuType) => void
+    openMobileMenu: MobileMenuType;
+    setOpenMobileMenu: (menu: MobileMenuType) => void;
 }
 
 export function MobileCategories({ openMobileMenu, setOpenMobileMenu }: MobileCategoriesProps) {
     return (
         <div className="relative md:hidden">
             <button
-                onClick={() =>
-                    setOpenMobileMenu(openMobileMenu === "categories" ? null : "categories")
-                }
+                onClick={() => setOpenMobileMenu(openMobileMenu === 'categories' ? null : 'categories')}
                 className="relative w-7 h-7 flex items-center justify-center group focus:outline-none"
-                aria-label={openMobileMenu === "categories" ? "Close menu" : "Open menu"}
+                aria-label={openMobileMenu === 'categories' ? 'Close menu' : 'Open menu'}
             >
-                <span className="sr-only">{openMobileMenu === "categories" ? "Close menu" : "Open menu"}</span>
+                <span className="sr-only">{openMobileMenu === 'categories' ? 'Close menu' : 'Open menu'}</span>
 
                 {/* Top bar */}
                 <span
                     className={`absolute w-7 h-0.5 bg-white rounded transition-all duration-300 ease-in-out
-      ${openMobileMenu === "categories" ? 'rotate-45 translate-y-0' : '-translate-y-[8px]'}`}
+      ${openMobileMenu === 'categories' ? 'rotate-45 translate-y-0' : '-translate-y-[8px]'}`}
                 />
 
                 {/* Middle bar */}
                 <span
                     className={`absolute w-7 h-0.5 bg-white rounded transition-all duration-300 ease-in-out
-      ${openMobileMenu === "categories" ? 'opacity-0' : 'opacity-100'}`}
+      ${openMobileMenu === 'categories' ? 'opacity-0' : 'opacity-100'}`}
                 />
 
                 {/* Bottom bar */}
                 <span
                     className={`absolute w-7 h-0.5 bg-white rounded transition-all duration-300 ease-in-out
-      ${openMobileMenu === "categories" ? '-rotate-45 translate-y-0' : 'translate-y-[8px]'}`}
+      ${openMobileMenu === 'categories' ? '-rotate-45 translate-y-0' : 'translate-y-[8px]'}`}
                 />
             </button>
 
-            {openMobileMenu === "categories" && (
+            {openMobileMenu === 'categories' && (
                 <div className="fixed top-[64px] bottom-0 left-0 right-0 z-40 bg-white overflow-y-auto shadow-2xl border-t border-gray-200 animate-slide-in">
                     <div className="flex-1 overflow-y-auto p-4">
                         <div className="space-y-2">
@@ -74,5 +72,5 @@ export function MobileCategories({ openMobileMenu, setOpenMobileMenu }: MobileCa
                 </div>
             )}
         </div>
-    )
+    );
 }

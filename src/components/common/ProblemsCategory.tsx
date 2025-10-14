@@ -4,8 +4,8 @@ import { Progress } from '@/components/ui/progress';
 import { ChevronRight } from 'lucide-react';
 import React from 'react';
 
-import type { Category } from "@/types"
-const ProblemsCategory = ({ category, index }: { category: Category, index: number }) => {
+import type { Category } from '@/types';
+const ProblemsCategory = ({ category, index }: { category: Category; index: number }) => {
     return (
         <Card
             key={index}
@@ -36,7 +36,7 @@ const ProblemsCategory = ({ category, index }: { category: Category, index: numb
                 </Button>
             </CardContent>
         </Card>
-    )
-}
+    );
+};
 
-export default ProblemsCategory
+export default ProblemsCategory;

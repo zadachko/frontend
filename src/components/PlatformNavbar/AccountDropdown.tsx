@@ -1,26 +1,26 @@
-import Link from "next/link"
-import Image from "next/image"
-import { User, ChevronDown, BarChart3, Star, Settings, CreditCard, LogOut } from "lucide-react"
+import Link from 'next/link';
+import Image from 'next/image';
+import { User, ChevronDown, BarChart3, Star, Settings, CreditCard, LogOut } from 'lucide-react';
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
     DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu"
-import { userData } from "./mock-data"
-import { useState } from "react"
-import { useAuthContext } from "@/contexts/AuthContext"
+} from '@/components/ui/dropdown-menu';
+import { userData } from './mock-data';
+import { useState } from 'react';
+import { useAuthContext } from '@/contexts/AuthContext';
 
 export function AccountDropdown() {
-    const [isOpen, setIsOpen] = useState(false)
-    const { user, logout } = useAuthContext()
+    const [isOpen, setIsOpen] = useState(false);
+    const { user, logout } = useAuthContext();
 
-    const xpProgress = (userData.currentXP / (userData.currentXP + userData.xpToNextLevel)) * 100
+    const xpProgress = (userData.currentXP / (userData.currentXP + userData.xpToNextLevel)) * 100;
 
     const handleLogout = () => {
-        logout()
-    }
+        logout();
+    };
 
     return (
         <DropdownMenu onOpenChange={(open) => setIsOpen(open)}>
@@ -28,7 +28,7 @@ export function AccountDropdown() {
                 <div className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/30">
                     <User className="w-5 h-5 text-white" />
                 </div>
-                <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`} />
+                <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-80 p-0 bg-white border border-[#755bc5]/20 shadow-xl" align="end">
                 {/* User Profile Header */}
@@ -37,7 +37,7 @@ export function AccountDropdown() {
                         <div className="relative">
                             <div className="w-16 h-16 rounded-full border-3 border-white overflow-hidden bg-gray-100 shadow-md">
                                 <Image
-                                    src={userData.avatar || "/placeholder.svg?height=64&width=64"}
+                                    src={userData.avatar || '/placeholder.svg?height=64&width=64'}
                                     alt={userData.name}
                                     className="w-full h-full object-cover"
                                     width={64}
@@ -59,7 +59,9 @@ export function AccountDropdown() {
                                 </div>
                                 <div className="flex items-center gap-1">
                                     <Star className="w-4 h-4 text-yellow-500" />
-                                    <span className="text-sm font-medium text-gray-600">{userData.currentXP.toLocaleString()} XP</span>
+                                    <span className="text-sm font-medium text-gray-600">
+                                        {userData.currentXP.toLocaleString()} XP
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -117,5 +119,5 @@ export function AccountDropdown() {
                 </div>
             </DropdownMenuContent>
         </DropdownMenu>
-    )
+    );
 }

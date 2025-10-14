@@ -1,18 +1,18 @@
 mutation Login($input: LoginInput!) {
-  login(input: $input) {
-    accessToken
-    refreshToken
-    user {
-      id
-      email
-      firstName
-      lastName
-      createdAt
-      lastLoginAt
-      role {
-        name
-      }
-      updatedAt
+    login(input: $input) {
+        accessToken
+        refreshToken
+        user {
+            id
+            email
+            firstName
+            lastName
+            createdAt
+            lastLoginAt
+            role {
+                name
+            }
+            updatedAt
+        }
     }
-  }
 }

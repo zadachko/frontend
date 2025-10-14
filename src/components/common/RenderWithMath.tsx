@@ -1,4 +1,4 @@
-import { BlockMath, InlineMath } from "react-katex";
+import { BlockMath, InlineMath } from 'react-katex';
 
 /**
  * Renders math in text.
@@ -7,26 +7,26 @@ import { BlockMath, InlineMath } from "react-katex";
  * @returns The rendered text.
  */
 
-export const RenderWithMath = (text: string, textClass = "text-base") => {
+export const RenderWithMath = (text: string, textClass = 'text-base') => {
     return text.split(/(\$\$.*?\$\$|\$.*?\$)/g).map((part, idx) => {
-        if (part.startsWith("$$") && part.endsWith("$$")) {
+        if (part.startsWith('$$') && part.endsWith('$$')) {
             return (
                 <span key={idx} className={textClass}>
                     <BlockMath math={part.slice(2, -2)} />
                 </span>
-            )
+            );
         }
-        if (part.startsWith("$") && part.endsWith("$")) {
+        if (part.startsWith('$') && part.endsWith('$')) {
             return (
                 <span key={idx} className={textClass}>
                     <InlineMath math={part.slice(1, -1)} />
                 </span>
-            )
+            );
         }
         return (
             <span key={idx} className={textClass}>
                 {part}
             </span>
-        )
-    })
-}
+        );
+    });
+};

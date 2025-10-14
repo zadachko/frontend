@@ -1,5 +1,5 @@
-import Link from "next/link"
-import { Calculator, Facebook, Instagram, Twitter } from "lucide-react"
+import Link from 'next/link';
+import { Calculator, Facebook, Instagram, Twitter } from 'lucide-react';
 
 const Footer = () => {
     return (
@@ -106,7 +106,7 @@ const Footer = () => {
                 </div>
             </div>
         </footer>
-    )
-}
+    );
+};
 
-export default Footer
+export default Footer;

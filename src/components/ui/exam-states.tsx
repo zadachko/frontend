@@ -1,12 +1,12 @@
-import { Loader2, AlertCircle } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Loader2, AlertCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 
 interface LoadingStateProps {
     message?: string;
 }
 
-export const LoadingState = ({ message = "Зареждане..." }: LoadingStateProps) => (
+export const LoadingState = ({ message = 'Зареждане...' }: LoadingStateProps) => (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
             <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4 text-emerald-600" />
@@ -22,9 +22,9 @@ interface ErrorStateProps {
 }
 
 export const ErrorState = ({
-    title = "Грешка",
-    message = "Възникна грешка. Моля, опитайте отново.",
-    onRetry
+    title = 'Грешка',
+    message = 'Възникна грешка. Моля, опитайте отново.',
+    onRetry,
 }: ErrorStateProps) => (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
         <div className="max-w-md w-full">
@@ -36,11 +36,7 @@ export const ErrorState = ({
                     </div>
                     <p className="text-red-700 mb-4">{message}</p>
                     {onRetry && (
-                        <Button
-                            onClick={onRetry}
-                            className="w-full"
-                            variant="outline"
-                        >
+                        <Button onClick={onRetry} className="w-full" variant="outline">
                             Опитай отново
                         </Button>
                     )}
@@ -57,13 +53,11 @@ interface EmptyStateProps {
 
 export const EmptyState = ({
     icon = <AlertCircle className="h-8 w-8" />,
-    message = "Няма налични данни."
+    message = 'Няма налични данни.',
 }: EmptyStateProps) => (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
         <div className="text-center">
-            <div className="mx-auto mb-4 text-gray-400">
-                {icon}
-            </div>
+            <div className="mx-auto mb-4 text-gray-400">{icon}</div>
             <p className="text-gray-600">{message}</p>
         </div>
     </div>

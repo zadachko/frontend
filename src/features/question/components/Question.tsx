@@ -13,25 +13,27 @@ import { StepAction } from 'geometry-diagram-renderer';
 
 type QuestionProps = {
     question: {
-        position: number
-        statement: string
-        type: "text" | "multiple"
-        options?: string[]
-        diagramData?: DiagramData
-        diagramSteps?: StepAction[][]
-        points?: number
-    }
+        position: number;
+        statement: string;
+        type: 'text' | 'multiple';
+        options?: string[];
+        diagramData?: DiagramData;
+        diagramSteps?: StepAction[][];
+        points?: number;
+    };
     answers: {
-        [key: number]: string
-    }
-    setAnswers?: (answers: { [key: number]: string } | ((prev: { [key: number]: string }) => { [key: number]: string })) => void
+        [key: number]: string;
+    };
+    setAnswers?: (
+        answers: { [key: number]: string } | ((prev: { [key: number]: string }) => { [key: number]: string })
+    ) => void;
     // New props for review mode
-    isReviewMode?: boolean
-    correctAnswer?: string
-    userAnswer?: string
+    isReviewMode?: boolean;
+    correctAnswer?: string;
+    userAnswer?: string;
     // New prop for solution
-    solution?: string | SolutionStep[]
-}
+    solution?: string | SolutionStep[];
+};
 
 const Question = ({
     question,
@@ -46,38 +48,38 @@ const Question = ({
     const isMobile = useIsMobile();
     const isSmallMobile = useIsSmallMobile();
 
-    let isCorrect = false
-    if (userAnswer && correctAnswer) isCorrect = userAnswer === correctAnswer
+    let isCorrect = false;
+    if (userAnswer && correctAnswer) isCorrect = userAnswer === correctAnswer;
 
     const handleCircleClick = () => {
-        setIsModalOpen(true)
-    }
+        setIsModalOpen(true);
+    };
 
     const handleCloseModal = () => {
-        setIsModalOpen(false)
-    }
+        setIsModalOpen(false);
+    };
 
     const handleAnswerChange = (questionId: number, value: string) => {
         if (setAnswers) {
             setAnswers((prev) => ({
                 ...prev,
                 [questionId]: value,
-            }))
+            }));
         }
-    }
+    };
 
     function splitToSteps(htmlOrText: string): SolutionStep[] {
         const cleaned = htmlOrText
-            .replace(/<\/?p[^>]*>/g, "\n") // turn <p> into newlines
-            .replace(/<\/?strong[^>]*>/g, "") // drop <strong>
-            .replace(/<[^>]+>/g, "") // drop any other tags
-            .trim()
+            .replace(/<\/?p[^>]*>/g, '\n') // turn <p> into newlines
+            .replace(/<\/?strong[^>]*>/g, '') // drop <strong>
+            .replace(/<[^>]+>/g, '') // drop any other tags
+            .trim();
 
         return cleaned
             .split(/\n+/) // split by blank lines / paragraph ends
             .map((s) => s.trim())
             .filter(Boolean)
-            .map((content, i) => ({ id: i + 1, exerciseText: content, solutionText: content }))
+            .map((content, i) => ({ id: i + 1, exerciseText: content, solutionText: content }));
     }
 
     return (
@@ -87,10 +89,10 @@ const Question = ({
                 {isReviewMode && (
                     <div className="absolute top-4 right-4 z-10">
                         <Badge
-                            variant={isCorrect ? "default" : "destructive"}
-                            className={isCorrect ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}
+                            variant={isCorrect ? 'default' : 'destructive'}
+                            className={isCorrect ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}
                         >
-                            {isCorrect ? "Правилно" : "Грешно"}
+                            {isCorrect ? 'Правилно' : 'Грешно'}
                         </Badge>
                     </div>
                 )}
@@ -115,10 +117,7 @@ const Question = ({
                         </div>
 
                         {question.points && (
-                            <Badge
-                                variant="secondary"
-                                className="bg-blue-100 text-blue-800 font-semibold"
-                            >
+                            <Badge variant="secondary" className="bg-blue-100 text-blue-800 font-semibold">
                                 {question.points}т.
                             </Badge>
                         )}
@@ -151,21 +150,26 @@ const Question = ({
                             />
                         )}
                     </div>
-                </CardContent >
-            </Card >
+                </CardContent>
+            </Card>
 
             {/* Question Solution Modal */}
-            < QuestionSolutionModal
+            <QuestionSolutionModal
                 isOpen={isModalOpen}
                 onClose={handleCloseModal}
                 statement={question.statement}
                 position={question.position}
                 steps={
                     Array.isArray(solution)
-                        ? solution.map((s, i) => ({ id: s.id ?? i + 1, title: s.title, exerciseText: s.exerciseText, solutionText: s.solutionText }))
-                        : typeof solution === "string" && solution.trim()
-                            ? splitToSteps(solution)
-                            : []
+                        ? solution.map((s, i) => ({
+                              id: s.id ?? i + 1,
+                              title: s.title,
+                              exerciseText: s.exerciseText,
+                              solutionText: s.solutionText,
+                          }))
+                        : typeof solution === 'string' && solution.trim()
+                          ? splitToSteps(solution)
+                          : []
                 }
                 questionType={question.type}
                 userAnswer={userAnswer}
@@ -175,7 +179,7 @@ const Question = ({
                 diagramSteps={question.diagramSteps}
             />
         </>
-    )
-}
+    );
+};
 
-export default Question
+export default Question;

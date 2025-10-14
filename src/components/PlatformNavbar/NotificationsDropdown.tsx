@@ -1,11 +1,11 @@
-import Link from "next/link"
-import { Bell } from "lucide-react"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Badge } from "@/components/ui/badge"
-import { mockNotifications } from "./mock-data"
+import Link from 'next/link';
+import { Bell } from 'lucide-react';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Badge } from '@/components/ui/badge';
+import { mockNotifications } from './mock-data';
 
 interface NotificationsDropdownProps {
-    notificationCount: number
+    notificationCount: number;
 }
 
 export function NotificationsDropdown({ notificationCount }: NotificationsDropdownProps) {
@@ -25,7 +25,10 @@ export function NotificationsDropdown({ notificationCount }: NotificationsDropdo
                 </div>
                 <div className="max-h-96 overflow-y-auto">
                     {mockNotifications.map((notification) => (
-                        <div key={notification.id} className="p-4 hover:bg-[#f0eeff]/30 border-b border-gray-50 transition-colors">
+                        <div
+                            key={notification.id}
+                            className="p-4 hover:bg-[#f0eeff]/30 border-b border-gray-50 transition-colors"
+                        >
                             <div className="flex items-start gap-3">
                                 <div className={`w-2 h-2 ${notification.color} rounded-full mt-2 flex-shrink-0`}></div>
                                 <div>
@@ -47,5 +50,5 @@ export function NotificationsDropdown({ notificationCount }: NotificationsDropdo
                 </div>
             </DropdownMenuContent>
         </DropdownMenu>
-    )
+    );
 }

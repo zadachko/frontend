@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 const AssessmentLoading = ({ text }: { text: string }) => {
     return (
@@ -8,7 +8,7 @@ const AssessmentLoading = ({ text }: { text: string }) => {
                 <p className="text-gray-600">{text}</p>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default AssessmentLoading;

@@ -1,13 +1,13 @@
-import { Card, CardContent } from "@/components/ui/card"
-import { ChevronRight, Home, BookOpen } from 'lucide-react'
-import Link from "next/link"
-import { getCategoryById } from "@/lib/categories-data"
-import { notFound } from "next/navigation"
+import { Card, CardContent } from '@/components/ui/card';
+import { ChevronRight, Home, BookOpen } from 'lucide-react';
+import Link from 'next/link';
+import { getCategoryById } from '@/lib/categories-data';
+import { notFound } from 'next/navigation';
 
 interface CategoryPageProps {
     params: Promise<{
-        category: string
-    }>
+        category: string;
+    }>;
 }
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
@@ -15,17 +15,20 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     const category = getCategoryById(categoryParam);
 
     if (!category) {
-        notFound()
+        notFound();
     }
 
-    const IconComponent = category.icon
+    const IconComponent = category.icon;
 
     return (
         <div className="flex-1 overflow-y-auto bg-gray-50 p-4 md:p-6 lg:p-8">
             <div className="max-w-7xl mx-auto space-y-8">
                 {/* Breadcrumbs */}
                 <nav className="flex items-center space-x-2 text-sm text-gray-600">
-                    <Link href="/platform/categories" className="hover:text-[#6F58C9] transition-colors flex items-center">
+                    <Link
+                        href="/platform/categories"
+                        className="hover:text-[#6F58C9] transition-colors flex items-center"
+                    >
                         <Home className="w-4 h-4 mr-1" />
                         Категории
                     </Link>
@@ -39,9 +42,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                         <IconComponent className={`w-16 h-16 ${category.iconColor}`} />
                     </div>
                     <h1 className="text-4xl font-bold text-gray-900">{category.name}</h1>
-                    <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                        {category.description}
-                    </p>
+                    <p className="text-xl text-gray-600 max-w-3xl mx-auto">{category.description}</p>
                 </section>
 
                 {/* Subcategories Grid */}
@@ -53,13 +54,15 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {category.subcategories.map((subcategory) => {
-                            const SubIconComponent = subcategory.icon
+                            const SubIconComponent = subcategory.icon;
                             return (
                                 <Link key={subcategory.id} href={`/platform/exercises/${subcategory.id}`}>
                                     <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer border-0 h-full">
                                         <CardContent className="p-6">
                                             <div className="flex items-start space-x-4">
-                                                <div className={`p-3 rounded-lg ${subcategory.bgColor} group-hover:scale-110 transition-transform duration-300`}>
+                                                <div
+                                                    className={`p-3 rounded-lg ${subcategory.bgColor} group-hover:scale-110 transition-transform duration-300`}
+                                                >
                                                     <SubIconComponent className={`w-6 h-6 ${subcategory.iconColor}`} />
                                                 </div>
                                                 <div className="flex-1">
@@ -80,11 +83,11 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                                         </CardContent>
                                     </Card>
                                 </Link>
-                            )
+                            );
                         })}
                     </div>
                 </section>
             </div>
         </div>
-    )
+    );
 }

@@ -14,8 +14,8 @@ const RecentResourceMissingCard = () => {
                     </div>
                     <h3 className="text-xl font-semibold text-gray-900 mb-2">Нямате скорошни задачи и тестове</h3>
                     <p className="text-gray-600 mb-6 max-w-md mx-auto">
-                        Нямате скорошни задачи или тестове. Започнете своето обучение, като създадете първия си тест
-                        или разгледайте категориите съз задачите по-долу!
+                        Нямате скорошни задачи или тестове. Започнете своето обучение, като създадете първия си тест или
+                        разгледайте категориите съз задачите по-долу!
                     </p>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -33,7 +33,7 @@ const RecentResourceMissingCard = () => {
                 </div>
             </CardContent>
         </Card>
-    )
-}
+    );
+};
 
-export default RecentResourceMissingCard
+export default RecentResourceMissingCard;

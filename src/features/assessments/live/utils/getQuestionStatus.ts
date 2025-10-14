@@ -5,9 +5,9 @@
  * @returns The status of the question.
  */
 export const getQuestionStatus = (
-	answers: { [key: number]: string },
-	questionId: number
+    answers: { [key: number]: string },
+    questionId: number
 ): 'unanswered' | 'answered' => {
-	if (answers[questionId]) return 'answered';
-	return 'unanswered';
+    if (answers[questionId]) return 'answered';
+    return 'unanswered';
 };

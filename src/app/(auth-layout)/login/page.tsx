@@ -1,47 +1,38 @@
-"use client";
+'use client';
 
-import React, { useState, Suspense } from 'react'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import {
-    Mail,
-    Lock,
-    Eye,
-    EyeOff,
-    ArrowRight,
-    Loader2
-} from 'lucide-react'
-import { useAuthContext } from '@/contexts/AuthContext'
+import React, { useState, Suspense } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { Mail, Lock, Eye, EyeOff, ArrowRight, Loader2 } from 'lucide-react';
+import { useAuthContext } from '@/contexts/AuthContext';
 
 const LoginForm = () => {
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [showPassword, setShowPassword] = useState(false)
-    const [rememberMe, setRememberMe] = useState(false)
-    const [isLoading, setIsLoading] = useState(false)
-    const [error, setError] = useState('')
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+    const [rememberMe, setRememberMe] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState('');
 
-    const { login } = useAuthContext()
+    const { login } = useAuthContext();
     const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault()
-        setIsLoading(true)
-        setError('')
+        e.preventDefault();
+        setIsLoading(true);
+        setError('');
         try {
-
-            const { error } = await login(email, password)
+            const { error } = await login(email, password);
             if (error) {
-                setError(error.message)
+                setError(error.message);
             }
             router.push('/platform');
-
         } catch (err) {
-            setError(err instanceof Error ? err.message : 'Възникна грешка при влизане')
+            setError(err instanceof Error ? err.message : 'Възникна грешка при влизане');
         } finally {
             setIsLoading(false);
         }
-    }
+    };
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -54,9 +45,7 @@ const LoginForm = () => {
 
                 {/* Error Message */}
                 {error && (
-                    <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
-                        {error}
-                    </div>
+                    <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">{error}</div>
                 )}
 
                 {/* Login Form */}
@@ -97,7 +86,7 @@ const LoginForm = () => {
                                 <input
                                     id="password"
                                     name="password"
-                                    type={showPassword ? "text" : "password"}
+                                    type={showPassword ? 'text' : 'password'}
                                     autoComplete="current-password"
                                     required
                                     value={password}
@@ -129,7 +118,10 @@ const LoginForm = () => {
                                         onChange={(e) => setRememberMe(e.target.checked)}
                                         className="h-4 w-4 text-[#6F58C9] focus:ring-[#6F58C9] border-gray-300 rounded cursor-pointer transition-colors hover:border-[#6F58C9]"
                                     />
-                                    <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700 cursor-pointer select-none hover:text-[#6F58C9] transition-colors">
+                                    <label
+                                        htmlFor="remember-me"
+                                        className="ml-2 block text-sm text-gray-700 cursor-pointer select-none hover:text-[#6F58C9] transition-colors"
+                                    >
                                         Запомни ме
                                     </label>
                                 </div>
@@ -169,15 +161,15 @@ const LoginForm = () => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
 const Page = () => {
     return (
         <Suspense fallback={<div>Loading...</div>}>
             <LoginForm />
         </Suspense>
-    )
-}
+    );
+};
 
-export default Page
+export default Page;

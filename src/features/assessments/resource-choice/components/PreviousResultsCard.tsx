@@ -17,8 +17,6 @@ interface PreviousResultsCardProps {
 }
 
 const PreviousResultsCard = ({ previousResults, color }: PreviousResultsCardProps) => {
-
-
     return (
         <div className="xl:col-span-1">
             <Card className="h-full shadow-sm border border-gray-200 bg-white">
@@ -36,8 +34,7 @@ const PreviousResultsCard = ({ previousResults, color }: PreviousResultsCardProp
                                 ))}
                             </div>
 
-                            {/* View All Results Button */
-                            }
+                            {/* View All Results Button */}
                             <div className="mt-6 pt-4 border-t border-gray-100">
                                 <Link href="/platform/results">
                                     <Button
@@ -60,7 +57,9 @@ const PreviousResultsCard = ({ previousResults, color }: PreviousResultsCardProp
                                 <div className="inline-flex p-2 sm:p-3 rounded-full bg-amber-50 mb-2 sm:mb-3">
                                     <Sparkles className="w-6 h-6 sm:w-8 sm:h-8 text-amber-500" />
                                 </div>
-                                <h3 className="text-lg sm:text-xl font-medium text-gray-900 mb-1 sm:mb-2">Първият ти изпит</h3>
+                                <h3 className="text-lg sm:text-xl font-medium text-gray-900 mb-1 sm:mb-2">
+                                    Първият ти изпит
+                                </h3>
                                 <p className="text-gray-600 text-sm sm:text-base mb-3 sm:mb-4">
                                     Направи първия си пробен изпит и започни да следваш прогреса си
                                 </p>
@@ -70,7 +69,9 @@ const PreviousResultsCard = ({ previousResults, color }: PreviousResultsCardProp
                                 <div className="bg-gray-50 rounded-lg p-2 sm:p-3 border border-gray-100">
                                     <div className="flex items-center gap-2 mb-1">
                                         <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 text-amber-500" />
-                                        <span className="text-sm sm:text-base font-medium text-gray-700">Следвай прогреса</span>
+                                        <span className="text-sm sm:text-base font-medium text-gray-700">
+                                            Следвай прогреса
+                                        </span>
                                     </div>
                                     <p className="text-xs sm:text-sm text-gray-500">
                                         Виждай как се подобряваш с всеки изпит
@@ -80,7 +81,9 @@ const PreviousResultsCard = ({ previousResults, color }: PreviousResultsCardProp
                                 <div className="bg-gray-50 rounded-lg p-2 sm:p-3 border border-gray-100">
                                     <div className="flex items-center gap-2 mb-1">
                                         <Trophy className="w-3 h-3 sm:w-4 sm:h-4 text-amber-500" />
-                                        <span className="text-sm sm:text-base font-medium text-gray-700">Постигай цели</span>
+                                        <span className="text-sm sm:text-base font-medium text-gray-700">
+                                            Постигай цели
+                                        </span>
                                     </div>
                                     <p className="text-xs sm:text-sm text-gray-500">
                                         Стигай до 100% и стани майстор на математиката
@@ -92,7 +95,7 @@ const PreviousResultsCard = ({ previousResults, color }: PreviousResultsCardProp
                 </CardContent>
             </Card>
         </div>
-    )
-}
+    );
+};
 
 export default PreviousResultsCard;

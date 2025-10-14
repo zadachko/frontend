@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 type ExamRuleProps = {
     rule: {
@@ -6,7 +6,7 @@ type ExamRuleProps = {
         text: string;
     };
     index: number;
-}
+};
 const ExamRule = ({ rule, index }: ExamRuleProps) => {
     return (
         <div key={index} className="flex items-start gap-2 sm:gap-3 p-1.5 sm:p-2 rounded transition-colors">
@@ -15,7 +15,7 @@ const ExamRule = ({ rule, index }: ExamRuleProps) => {
             </div>
             <span className="text-gray-700 text-sm sm:text-base leading-relaxed">{rule.text}</span>
         </div>
-    )
-}
+    );
+};
 
 export default ExamRule;

@@ -1,27 +1,27 @@
-"use client"
+'use client';
 
-import { Logo } from "./Logo";
-import { CategoriesDropdown } from "./CategoriesDropdown";
-import { MobileCategories } from "./MobileCategories";
-import { StreakDropdown } from "./StreakDropdown";
-import { MobileStreak } from "./MobileStreak";
-import { NotificationsDropdown } from "./NotificationsDropdown";
-import { MobileNotifications } from "./MobileNotifications";
-import { AccountDropdown } from "./AccountDropdown";
-import { MobileAccount } from "./MobileAccount";
-import type { MobileMenuType } from "./navbar-types";
-import { useState } from "react";
-import { usePathname } from "next/navigation";
+import { Logo } from './Logo';
+import { CategoriesDropdown } from './CategoriesDropdown';
+import { MobileCategories } from './MobileCategories';
+import { StreakDropdown } from './StreakDropdown';
+import { MobileStreak } from './MobileStreak';
+import { NotificationsDropdown } from './NotificationsDropdown';
+import { MobileNotifications } from './MobileNotifications';
+import { AccountDropdown } from './AccountDropdown';
+import { MobileAccount } from './MobileAccount';
+import type { MobileMenuType } from './navbar-types';
+import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 
 export function PlatformNavbar() {
-    const [notificationCount] = useState(3) // Mock notification count
-    const [openMobileMenu, setOpenMobileMenu] = useState<MobileMenuType>(null)
-    const pathname = usePathname()
+    const [notificationCount] = useState(3); // Mock notification count
+    const [openMobileMenu, setOpenMobileMenu] = useState<MobileMenuType>(null);
+    const pathname = usePathname();
 
     const isAssessmentLivePage = pathname.includes('live') || pathname.includes('overview');
 
     if (isAssessmentLivePage) {
-        return null
+        return null;
     }
 
     return (
@@ -51,7 +51,7 @@ export function PlatformNavbar() {
                 </div>
             </div>
         </nav>
-    )
+    );
 }
 
-export default PlatformNavbar
+export default PlatformNavbar;

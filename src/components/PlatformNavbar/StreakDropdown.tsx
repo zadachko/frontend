@@ -1,6 +1,6 @@
-import { Flame, Calendar, Trophy, Target } from "lucide-react"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { streakData, weekDays } from "./mock-data"
+import { Flame, Calendar, Trophy, Target } from 'lucide-react';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { streakData, weekDays } from './mock-data';
 
 export function StreakDropdown() {
     return (
@@ -33,8 +33,11 @@ export function StreakDropdown() {
                         {weekDays.map((day, index) => (
                             <div key={index} className="flex flex-col items-center gap-1">
                                 <div
-                                    className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium ${streakData.thisWeek[index] ? "bg-[#755bc5] text-white shadow-md" : "bg-gray-100 text-gray-400"
-                                        }`}
+                                    className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium ${
+                                        streakData.thisWeek[index]
+                                            ? 'bg-[#755bc5] text-white shadow-md'
+                                            : 'bg-gray-100 text-gray-400'
+                                    }`}
                                 >
                                     {day}
                                 </div>
@@ -72,11 +75,11 @@ export function StreakDropdown() {
 
                 <div className="p-4 bg-gradient-to-r from-[#f0eeff] to-white border-t border-gray-100">
                     <p className="text-sm text-center text-gray-600">
-                        <span className="font-medium text-[#755bc5]">Съвет:</span> Решавай поне една задача всеки ден за да запазиш
-                        серията си!
+                        <span className="font-medium text-[#755bc5]">Съвет:</span> Решавай поне една задача всеки ден за
+                        да запазиш серията си!
                     </p>
                 </div>
             </DropdownMenuContent>
         </DropdownMenu>
-    )
+    );
 }

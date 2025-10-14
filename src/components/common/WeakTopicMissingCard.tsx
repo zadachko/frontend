@@ -12,7 +12,8 @@ const WeakTopicMissingCard = () => {
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">Отлична работа!</h3>
                 <p className="text-gray-600 mb-6 max-w-md mx-auto">
-                    Нямате слаби теми в момента. Продължавайте в същия дух! Може да направите още няколко теста, за да помогнете на системата да открие нови възможности за подобрение.
+                    Нямате слаби теми в момента. Продължавайте в същия дух! Може да направите още няколко теста, за да
+                    помогнете на системата да открие нови възможности за подобрение.
                 </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -29,7 +30,7 @@ const WeakTopicMissingCard = () => {
                 </Button>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default WeakTopicMissingCard
+export default WeakTopicMissingCard;

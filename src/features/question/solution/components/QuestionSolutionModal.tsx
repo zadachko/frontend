@@ -1,44 +1,43 @@
-"use client"
+'use client';
 
-import { useCallback, useEffect, useMemo, useState } from "react"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import Controls from "./StepControls"
-import "katex/dist/katex.min.css"
-import { applyStepActions, type DiagramData, type StepAction } from "geometry-diagram-renderer"
-import { RenderWithMath } from "@/components/common/RenderWithMath"
-import QuestionStatement from "./QuestionStatement"
-import Header from "./Header"
-import StepsList from "./StepsList"
-import QuestionSolution from "./QuestionSolution"
-import QuestionAnwers from "./QuestionAnwers"
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import Controls from './StepControls';
+import 'katex/dist/katex.min.css';
+import { applyStepActions, type DiagramData, type StepAction } from 'geometry-diagram-renderer';
+import { RenderWithMath } from '@/components/common/RenderWithMath';
+import QuestionStatement from './QuestionStatement';
+import Header from './Header';
+import StepsList from './StepsList';
+import QuestionSolution from './QuestionSolution';
+import QuestionAnwers from './QuestionAnwers';
 
 export type SolutionStep = {
-    id: string | number
-    title?: string
-    exerciseText: string // plain text containing $...$ or $$...$$ for math
-    solutionText: string // plain text containing $...$ or $$...$$ for math
-}
+    id: string | number;
+    title?: string;
+    exerciseText: string; // plain text containing $...$ or $$...$$ for math
+    solutionText: string; // plain text containing $...$ or $$...$$ for math
+};
 
 export type QuestionSolutionModalProps = {
-    isOpen: boolean
-    onClose: () => void
-    statement: string // supports $...$ and $$...$$
-    position: number
-    steps?: SolutionStep[]
-    initialStepIndex?: number
+    isOpen: boolean;
+    onClose: () => void;
+    statement: string; // supports $...$ and $$...$$
+    position: number;
+    steps?: SolutionStep[];
+    initialStepIndex?: number;
 
     // Answer review props
-    questionType: "text" | "multiple"
-    userAnswer?: string
-    correctAnswer?: string
-    options?: string[] // for multiple choice
-    diagramData?: DiagramData
-    diagramSteps?: StepAction[][]
-}
-
+    questionType: 'text' | 'multiple';
+    userAnswer?: string;
+    correctAnswer?: string;
+    options?: string[]; // for multiple choice
+    diagramData?: DiagramData;
+    diagramSteps?: StepAction[][];
+};
 
 // Bulgarian letters for choices
-const optionLetters = ["а", "б", "в", "г", "д", "е"]
+const optionLetters = ['а', 'б', 'в', 'г', 'д', 'е'];
 
 /* ------------------------------ Main Component ---------------------------- */
 
@@ -56,55 +55,51 @@ export default function QuestionSolutionModal({
     diagramData,
     diagramSteps,
 }: QuestionSolutionModalProps) {
-    const stepsArray = useMemo(() => (Array.isArray(steps) ? steps : []), [steps])
+    const stepsArray = useMemo(() => (Array.isArray(steps) ? steps : []), [steps]);
 
     const [currentStepIndex, setCurrentStepIndex] = useState(() =>
-        Math.min(Math.max(0, initialStepIndex), Math.max(0, stepsArray.length - 1)),
-    )
+        Math.min(Math.max(0, initialStepIndex), Math.max(0, stepsArray.length - 1))
+    );
 
     // Reset current when opened or step count changes
     useEffect(() => {
         if (isOpen) {
-            setCurrentStepIndex(Math.min(Math.max(0, initialStepIndex), Math.max(0, stepsArray.length - 1)))
+            setCurrentStepIndex(Math.min(Math.max(0, initialStepIndex), Math.max(0, stepsArray.length - 1)));
         }
-    }, [isOpen, initialStepIndex, stepsArray.length])
+    }, [isOpen, initialStepIndex, stepsArray.length]);
 
     const mergedDiagram =
         diagramData && diagramSteps
             ? diagramSteps.slice(0, currentStepIndex).reduce((acc, step) => applyStepActions(acc, step), diagramData)
-            : undefined
-
-
+            : undefined;
 
     //* Handle keyboard navigation
 
-    const next = useCallback(() => setCurrentStepIndex((c) => Math.min(c + 1, Math.max(0, stepsArray.length - 1))), [stepsArray.length])
-    const prev = useCallback(() => setCurrentStepIndex((c) => Math.max(c - 1, 0)), [])
+    const next = useCallback(
+        () => setCurrentStepIndex((c) => Math.min(c + 1, Math.max(0, stepsArray.length - 1))),
+        [stepsArray.length]
+    );
+    const prev = useCallback(() => setCurrentStepIndex((c) => Math.max(c - 1, 0)), []);
 
-    const atStart = currentStepIndex === 0
-    const atEnd = currentStepIndex === Math.max(0, stepsArray.length - 1)
+    const atStart = currentStepIndex === 0;
+    const atEnd = currentStepIndex === Math.max(0, stepsArray.length - 1);
 
     useEffect(() => {
         const onKey = (e: KeyboardEvent) => {
-            if (e.key === "Escape") onClose()
-            if (e.key === "ArrowRight" || e.key === "ArrowDown") next()
-            if (e.key === "ArrowLeft" || e.key === "ArrowUp") prev()
-        }
-        if (isOpen) window.addEventListener("keydown", onKey)
-        return () => window.removeEventListener("keydown", onKey)
-    }, [isOpen, onClose, next, prev])
+            if (e.key === 'Escape') onClose();
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next();
+            if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') prev();
+        };
+        if (isOpen) window.addEventListener('keydown', onKey);
+        return () => window.removeEventListener('keydown', onKey);
+    }, [isOpen, onClose, next, prev]);
 
-
-
-
-
-    const stepCountLabel = `${stepsArray.length ? currentStepIndex + 1 : 0} / ${Math.max(stepsArray.length, 1)}`
-    const currentStep = stepsArray[currentStepIndex]
+    const stepCountLabel = `${stepsArray.length ? currentStepIndex + 1 : 0} / ${Math.max(stepsArray.length, 1)}`;
+    const currentStep = stepsArray[currentStepIndex];
     const visibleSteps: SolutionStep[] = useMemo(
         () => stepsArray.slice(0, Math.min(currentStepIndex + 1, stepsArray.length)),
-        [stepsArray, currentStepIndex],
-    )
-
+        [stepsArray, currentStepIndex]
+    );
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
@@ -125,7 +120,6 @@ export default function QuestionSolutionModal({
                             <QuestionStatement statement={statement} />
 
                             <QuestionSolution mergedDiagram={mergedDiagram} visibleSteps={visibleSteps} />
-
                         </div>
                     </div>
 
@@ -136,7 +130,13 @@ export default function QuestionSolutionModal({
 
                         {/* Answer review */}
                         <div className="px-4 md:px-8 pt-3 md:pt-4 flex-shrink-0">
-                            <QuestionAnwers questionType={questionType} userAnswer={userAnswer || ""} correctAnswer={correctAnswer || ""} options={options} optionLetters={optionLetters} />
+                            <QuestionAnwers
+                                questionType={questionType}
+                                userAnswer={userAnswer || ''}
+                                correctAnswer={correctAnswer || ''}
+                                options={options}
+                                optionLetters={optionLetters}
+                            />
                         </div>
 
                         {/* Current Step Display - Mobile and Desktop */}
@@ -153,6 +153,6 @@ export default function QuestionSolutionModal({
                     </div>
                 </div>
             </DialogContent>
-        </Dialog >
-    )
+        </Dialog>
+    );
 }

@@ -1,26 +1,40 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { BookOpen, TestTube, GraduationCap, Clock, ChevronRight, Play, Target, BarChart3, Calculator, Ruler, Hash, FileText, Sigma } from "lucide-react"
-import WeakTopicCard from "../../../components/common/WeakTopicCard"
-import ProblemsCategory from "../../../components/common/ProblemsCategory"
-import WeakTopicMissingCard from "../../../components/common/WeakTopicMissingCard"
-import RecentResourceMissingCard from "../../../components/common/RecentResourceMissingCard"
-import Link from "next/link"
-import Sidebar from "@/components/Sidebar/Sidebar"
-import { ResultRow } from "../../../features/results/ResultRow"
-import type { Category, TestResult } from "@/types"
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import {
+    BookOpen,
+    TestTube,
+    GraduationCap,
+    Clock,
+    ChevronRight,
+    Play,
+    Target,
+    BarChart3,
+    Calculator,
+    Ruler,
+    Hash,
+    FileText,
+    Sigma,
+} from 'lucide-react';
+import WeakTopicCard from '../../../components/common/WeakTopicCard';
+import ProblemsCategory from '../../../components/common/ProblemsCategory';
+import WeakTopicMissingCard from '../../../components/common/WeakTopicMissingCard';
+import RecentResourceMissingCard from '../../../components/common/RecentResourceMissingCard';
+import Link from 'next/link';
+import Sidebar from '@/components/Sidebar/Sidebar';
+import { ResultRow } from '../../../features/results/ResultRow';
+import type { Category, TestResult } from '@/types';
 // import { useQuery } from "@apollo/client"
-import { useGetMyLastThreeAssessmentsQuery } from "@/services/gql/operations"
+import { useGetMyLastThreeAssessmentsQuery } from '@/services/gql/operations';
 
 /**
  * Formats a Date to a Bulgarian locale date string.
  * Returns an empty string for invalid or missing dates.
  */
 function formatBgDate(date: Date | undefined): string {
-    if (!date || isNaN(date.getTime())) return ""
-    return date.toLocaleDateString("bg-BG")
+    if (!date || isNaN(date.getTime())) return '';
+    return date.toLocaleDateString('bg-BG');
 }
 
 /**
@@ -28,11 +42,11 @@ function formatBgDate(date: Date | undefined): string {
  * The first number is correct answers, the second is total questions.
  */
 function deriveScoreFields(scoreText: string): { percentage: number; correctAnswers: number; totalQuestions: number } {
-    const match = /^\s*(\d+)\s*\/\s*(\d+)\s*$/.exec(scoreText)
-    const correctAnswers = match ? parseInt(match[1], 10) : 0
-    const totalQuestions = match ? parseInt(match[2], 10) || 0 : 0
-    const percentage = totalQuestions > 0 ? Math.round((correctAnswers / totalQuestions) * 100) : 0
-    return { percentage, correctAnswers, totalQuestions }
+    const match = /^\s*(\d+)\s*\/\s*(\d+)\s*$/.exec(scoreText);
+    const correctAnswers = match ? parseInt(match[1], 10) : 0;
+    const totalQuestions = match ? parseInt(match[2], 10) || 0 : 0;
+    const percentage = totalQuestions > 0 ? Math.round((correctAnswers / totalQuestions) * 100) : 0;
+    return { percentage, correctAnswers, totalQuestions };
 }
 
 /**
@@ -40,19 +54,18 @@ function deriveScoreFields(scoreText: string): { percentage: number; correctAnsw
  * Accepts Date, ISO string, or millisecond timestamp.
  */
 function toDate(value: unknown): Date | undefined {
-    if (!value) return undefined
-    if (value instanceof Date) return isNaN(value.getTime()) ? undefined : value
-    if (typeof value === "string" || typeof value === "number") {
-        const date = new Date(value)
-        return isNaN(date.getTime()) ? undefined : date
+    if (!value) return undefined;
+    if (value instanceof Date) return isNaN(value.getTime()) ? undefined : value;
+    if (typeof value === 'string' || typeof value === 'number') {
+        const date = new Date(value);
+        return isNaN(date.getTime()) ? undefined : date;
     }
-    return undefined
+    return undefined;
 }
 
 const Page = () => {
-
     // Client-side fetch: last three assessment submissions for the current user
-    const { data, loading, error } = useGetMyLastThreeAssessmentsQuery()
+    const { data, loading, error } = useGetMyLastThreeAssessmentsQuery();
 
     // Show loading state while authenticating or fetching data
     if (loading) {
@@ -67,7 +80,7 @@ const Page = () => {
                     </div>
                 </div>
             </div>
-        )
+        );
     }
 
     // Show error state if query failed
@@ -86,26 +99,26 @@ const Page = () => {
                     </div>
                 </div>
             </div>
-        )
+        );
     }
 
     // Transform API submissions into the UI-friendly TestResult[] structure
-    const submissions = data?.getMyLastThreeAssessments ?? []
+    const submissions = data?.getMyLastThreeAssessments ?? [];
     const recentActivities: TestResult[] = submissions.slice(0, 3).map((submission) => {
-        const started = toDate(submission.startedAt)
-        const finished = toDate(submission.finishedAt)
-        const dateToShow = finished ?? started
+        const started = toDate(submission.startedAt);
+        const finished = toDate(submission.finishedAt);
+        const dateToShow = finished ?? started;
 
         // Compute duration in minutes (Bulgarian label) when both dates are present
-        let duration: string | undefined
+        let duration: string | undefined;
         if (started && finished) {
-            const ms = finished.getTime() - started.getTime()
+            const ms = finished.getTime() - started.getTime();
             if (!Number.isNaN(ms) && ms > 0) {
-                duration = `${Math.round(ms / 60000)} мин`
+                duration = `${Math.round(ms / 60000)} мин`;
             }
         }
 
-        const { percentage, correctAnswers, totalQuestions } = deriveScoreFields(submission.score)
+        const { percentage, correctAnswers, totalQuestions } = deriveScoreFields(submission.score);
 
         return {
             id: submission.assessment.id,
@@ -116,77 +129,77 @@ const Page = () => {
             correctAnswers,
             totalQuestions,
             percentage,
-        }
-    })
+        };
+    });
 
     const weakTopics = [
         {
-            name: "Квадратни уравнения",
+            name: 'Квадратни уравнения',
             score: 40,
-            lastAttempt: "Преди 5 дни",
+            lastAttempt: 'Преди 5 дни',
             icon: Calculator,
         },
         {
-            name: "Теория на вероятностите",
+            name: 'Теория на вероятностите',
             score: 55,
-            lastAttempt: "Преди 1 седмица",
+            lastAttempt: 'Преди 1 седмица',
             icon: Sigma,
         },
         {
-            name: "Геометрични доказателства",
+            name: 'Геометрични доказателства',
             score: 35,
-            lastAttempt: "Преди 3 дни",
+            lastAttempt: 'Преди 3 дни',
             icon: Ruler,
         },
-    ]
+    ];
     const problemCategories = [
         {
-            name: "Алгебра",
+            name: 'Алгебра',
             icon: Calculator,
             problems: 324,
             completed: 89,
-            bgColor: "bg-purple-100",
-            iconColor: "text-purple-600",
+            bgColor: 'bg-purple-100',
+            iconColor: 'text-purple-600',
         },
         {
-            name: "Геометрия",
+            name: 'Геометрия',
             icon: Ruler,
             problems: 267,
             completed: 156,
-            bgColor: "bg-blue-100",
-            iconColor: "text-blue-600",
+            bgColor: 'bg-blue-100',
+            iconColor: 'text-blue-600',
         },
         {
-            name: "Дроби",
+            name: 'Дроби',
             icon: Hash,
             problems: 198,
             completed: 87,
-            bgColor: "bg-green-100",
-            iconColor: "text-green-600",
+            bgColor: 'bg-green-100',
+            iconColor: 'text-green-600',
         },
         {
-            name: "Статистика",
+            name: 'Статистика',
             icon: BarChart3,
             problems: 145,
             completed: 34,
-            bgColor: "bg-orange-100",
-            iconColor: "text-orange-600",
+            bgColor: 'bg-orange-100',
+            iconColor: 'text-orange-600',
         },
         {
-            name: "Текстови задачи",
+            name: 'Текстови задачи',
             icon: FileText,
             problems: 289,
             completed: 112,
-            bgColor: "bg-pink-100",
-            iconColor: "text-pink-600",
+            bgColor: 'bg-pink-100',
+            iconColor: 'text-pink-600',
         },
         {
-            name: "Пре-алгебра",
+            name: 'Пре-алгебра',
             icon: Sigma,
             problems: 176,
             completed: 98,
-            bgColor: "bg-teal-100",
-            iconColor: "text-teal-600",
+            bgColor: 'bg-teal-100',
+            iconColor: 'text-teal-600',
         },
     ];
     return (
@@ -293,12 +306,17 @@ const Page = () => {
                             <Target className="w-6 h-6 text-[#6F58C9]" />
                             Практика по слаби теми
                         </h2>
-                        <p className="text-gray-600 text-base mb-2">Фокусирайте се върху темите, които имат най-голям потенциал за подобрение. Всеки напредък е победа!</p>
+                        <p className="text-gray-600 text-base mb-2">
+                            Фокусирайте се върху темите, които имат най-голям потенциал за подобрение. Всеки напредък е
+                            победа!
+                        </p>
                         <Card className="bg-white border-0 shadow-md rounded-2xl">
                             <CardContent className="p-6">
                                 <div className="space-y-4">
                                     {weakTopics.length > 0 ? (
-                                        weakTopics.map((topic, index) => <WeakTopicCard key={index} topic={topic} index={index} icon={topic.icon} />)
+                                        weakTopics.map((topic, index) => (
+                                            <WeakTopicCard key={index} topic={topic} index={index} icon={topic.icon} />
+                                        ))
                                     ) : (
                                         <WeakTopicMissingCard />
                                     )}
@@ -315,14 +333,18 @@ const Page = () => {
                         </h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                             {problemCategories.map((category, index) => (
-                                <ProblemsCategory key={index} category={category as unknown as Category} index={index} />
+                                <ProblemsCategory
+                                    key={index}
+                                    category={category as unknown as Category}
+                                    index={index}
+                                />
                             ))}
                         </div>
                     </section>
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default Page
+export default Page;

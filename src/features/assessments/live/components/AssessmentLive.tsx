@@ -1,13 +1,13 @@
 'use client';
-import { useState, useRef } from "react";
-import Question from "@/features/question/components/Question";
-import { useIsMobile, useIsSmallMobile } from "@/hooks/isMobile";
-import AssessmentSubmitDialog from "./AssessmentSubmitDialog";
-import { AssessmentMobileHeader } from "./AssessmentMobileHeader";
-import AssessmentSidebar from "./AssessmentSidebar";
-import type { Question as QuestionType } from "@/types";
-import handleSidebarScroll from "../../shared/utils/handleSidebarScroll";
-import { getQuestionStatus } from "@/features/assessments/live/utils/getQuestionStatus";
+import { useState, useRef } from 'react';
+import Question from '@/features/question/components/Question';
+import { useIsMobile, useIsSmallMobile } from '@/hooks/isMobile';
+import AssessmentSubmitDialog from './AssessmentSubmitDialog';
+import { AssessmentMobileHeader } from './AssessmentMobileHeader';
+import AssessmentSidebar from './AssessmentSidebar';
+import type { Question as QuestionType } from '@/types';
+import handleSidebarScroll from '../../shared/utils/handleSidebarScroll';
+import { getQuestionStatus } from '@/features/assessments/live/utils/getQuestionStatus';
 
 export interface AssessmentLiveProps {
     questions: QuestionType[];
@@ -62,7 +62,7 @@ const AssessmentLive = ({
     loading = false,
     error = null,
     LoadingComponent,
-    ErrorComponent
+    ErrorComponent,
 }: AssessmentLiveProps) => {
     const [answers, setAnswers] = useState<{ [key: number]: string }>({});
     const [currentQuestion, setCurrentQuestion] = useState(1);
@@ -116,7 +116,9 @@ const AssessmentLive = ({
                 />
             )}
 
-            <div className={`${isMobile ? 'flex flex-col' : 'flex'} ${isMobile ? 'h-[calc(100vh-64px)] -mt-[7px]' : 'h-screen'}`}>
+            <div
+                className={`${isMobile ? 'flex flex-col' : 'flex'} ${isMobile ? 'h-[calc(100vh-64px)] -mt-[7px]' : 'h-screen'}`}
+            >
                 {/* Left Column - Questions */}
                 <div
                     ref={mainContentRef}
@@ -173,7 +175,7 @@ const AssessmentLive = ({
                 overviewRedirectUrl={overviewRedirectUrl}
                 colors={{
                     primary: colors.submitDialog.primary,
-                    primaryHover: colors.submitDialog.primaryHover
+                    primaryHover: colors.submitDialog.primaryHover,
                 }}
                 isMobile={isMobile}
                 isSmallMobile={isSmallMobile}

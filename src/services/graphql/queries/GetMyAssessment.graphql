@@ -1,16 +1,14 @@
 query GetMyAssessment($assessmentId: String!) {
-  getMyAssessment(assessmentId: $assessmentId) {
-    title
-    questions {
-      position
-      question {
-        statement
-        type
-        points
-        options
-      }
+    getMyAssessment(assessmentId: $assessmentId) {
+        title
+        questions {
+            position
+            question {
+                statement
+                type
+                points
+                options
+            }
+        }
     }
-  }
 }
-
-

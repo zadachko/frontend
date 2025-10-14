@@ -1,9 +1,8 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { QuestionsNavigatorGrid } from "../../shared/components/QuestionsNavigatorGrid";
-import { colors } from "../../../../app/(platform-layout)/platform/exam/colors.config";
-import { Clock } from "./Clocks";
-
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { QuestionsNavigatorGrid } from '../../shared/components/QuestionsNavigatorGrid';
+import { colors } from '../../../../app/(platform-layout)/platform/exam/colors.config';
+import { Clock } from './Clocks';
 
 interface AssessmentSidebarProps {
     // layout/behavior
@@ -22,7 +21,6 @@ interface AssessmentSidebarProps {
     totalQuestions: number;
     getQuestionStatus: (questionNum: number) => string;
     currentQuestion: number;
-
 
     // actions
     setShowSubmitDialog: (show: boolean) => void;
@@ -48,26 +46,29 @@ export default function AssessmentSidebar({
     setCurrentQuestion,
     colors,
 }: AssessmentSidebarProps) {
-
     const handleSubmitExam = () => {
-        setShowSubmitDialog(true)
-    }
-
+        setShowSubmitDialog(true);
+    };
 
     return (
         <div
-            className={`${isMobile
-                ? `w-full fixed -mt-[7px] top-16 right-0 z-40 ${isSmallMobile ? "w-full" : "w-80"
-                } bg-white border-l border-gray-200 transform transition-transform duration-300 ease-in-out ${showMobileNav ? "translate-x-0" : "translate-x-full"
-                } flex flex-col h-[calc(100vh-64px)]`
-                : "w-80 bg-white border-l border-gray-200 flex flex-col h-100vh"
-                }`}
+            className={`${
+                isMobile
+                    ? `w-full fixed -mt-[7px] top-16 right-0 z-40 ${
+                          isSmallMobile ? 'w-full' : 'w-80'
+                      } bg-white border-l border-gray-200 transform transition-transform duration-300 ease-in-out ${
+                          showMobileNav ? 'translate-x-0' : 'translate-x-full'
+                      } flex flex-col h-[calc(100vh-64px)]`
+                    : 'w-80 bg-white border-l border-gray-200 flex flex-col h-100vh'
+            }`}
             onWheel={handleSidebarScroll}
         >
             {/* Timer - Desktop only */}
             {!isMobile && (
                 <div className="p-6 border-b border-gray-200">
-                    <Card className={`bg-gradient-to-r ${colors.timer.gradientFrom} ${colors.timer.gradientTo} border-0 shadow-md`}>
+                    <Card
+                        className={`bg-gradient-to-r ${colors.timer.gradientFrom} ${colors.timer.gradientTo} border-0 shadow-md`}
+                    >
                         <CardContent className="p-0 text-center">
                             <div className="flex items-center justify-center gap-2 text-white">
                                 <Clock mobile={isMobile} />
@@ -79,7 +80,7 @@ export default function AssessmentSidebar({
             )}
 
             {/* Question Navigator */}
-            <div className={`${isMobile ? "flex-1 overflow-y-auto" : "flex-1"}`}>
+            <div className={`${isMobile ? 'flex-1 overflow-y-auto' : 'flex-1'}`}>
                 <QuestionsNavigatorGrid
                     answers={answers}
                     totalQuestions={totalQuestions}

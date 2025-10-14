@@ -1,11 +1,22 @@
-"use client"
+'use client';
 
-import type React from "react"
+import type React from 'react';
 
-import { useState } from "react"
-import { AnimatePresence, motion } from "framer-motion"
-import { CheckCircle, AlertCircle, Mail, Clock, ChevronDown, HelpCircle, Facebook, Instagram, Twitter, Phone } from "lucide-react"
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import { useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import {
+    CheckCircle,
+    AlertCircle,
+    Mail,
+    Clock,
+    ChevronDown,
+    HelpCircle,
+    Facebook,
+    Instagram,
+    Twitter,
+    Phone,
+} from 'lucide-react';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 // Animation variants
 const fadeIn = {
@@ -15,7 +26,7 @@ const fadeIn = {
         y: 0,
         transition: { duration: 0.6 },
     },
-}
+};
 
 const staggerContainer = {
     hidden: { opacity: 0 },
@@ -25,113 +36,111 @@ const staggerContainer = {
             staggerChildren: 0.1,
         },
     },
-}
+};
 
 const faqItems = [
     {
-        question: "Как мога да отменя абонамента си?",
-        answer:
-            "Можеш да отмениш абонамента си по всяко време от настройките на профила си или като се свържеш с нашия екип за поддръжка.",
+        question: 'Как мога да отменя абонамента си?',
+        answer: 'Можеш да отмениш абонамента си по всяко време от настройките на профила си или като се свържеш с нашия екип за поддръжка.',
     },
     {
-        question: "Предлагате ли отстъпки за училища?",
-        answer:
-            "Да, имаме специални планове и отстъпки за училища и учители. Свържи се с нас за повече информация за групови планове.",
+        question: 'Предлагате ли отстъпки за училища?',
+        answer: 'Да, имаме специални планове и отстъпки за училища и учители. Свържи се с нас за повече информация за групови планове.',
     },
     {
-        question: "Как да възстановя паролата си?",
-        answer: "Отиди на страницата за вход и натисни линка „Забравена парола?“. Ще получиш имейл с инструкции за нулиране.",
+        question: 'Как да възстановя паролата си?',
+        answer: 'Отиди на страницата за вход и натисни линка „Забравена парола?“. Ще получиш имейл с инструкции за нулиране.',
     },
     {
-        question: "Мога ли да тествам платформата без регистрация?",
-        answer: "За момента не предлагаме демо режим без регистрация, но имаме напълно безплатен план, с който можеш да пробваш всичко основно.",
+        question: 'Мога ли да тествам платформата без регистрация?',
+        answer: 'За момента не предлагаме демо режим без регистрация, но имаме напълно безплатен план, с който можеш да пробваш всичко основно.',
     },
     {
-        question: "Как да се свържа с екипа ако не получа отговор?",
-        answer: "Ако не получиш отговор до 24 часа, можеш да ни пишеш директно на support@zadachko.bg или да използваш формата отново.",
+        question: 'Как да се свържа с екипа ако не получа отговор?',
+        answer: 'Ако не получиш отговор до 24 часа, можеш да ни пишеш директно на support@zadachko.bg или да използваш формата отново.',
     },
-]
+];
 
 export default function ContactPage() {
     const [formData, setFormData] = useState({
-        name: "",
-        email: "",
-        subject: "",
-        message: "",
-    })
+        name: '',
+        email: '',
+        subject: '',
+        message: '',
+    });
 
-    const [formState, setFormState] = useState<"idle" | "submitting" | "success" | "error">("idle")
-    const [errors, setErrors] = useState<Record<string, string>>({})
+    const [formState, setFormState] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+    const [errors, setErrors] = useState<Record<string, string>>({});
 
     const validateForm = () => {
-        const newErrors: Record<string, string> = {}
+        const newErrors: Record<string, string> = {};
 
         if (!formData.name.trim()) {
-            newErrors.name = "Името е задължително"
+            newErrors.name = 'Името е задължително';
         }
 
         if (!formData.email.trim()) {
-            newErrors.email = "Имейлът е задължителен"
+            newErrors.email = 'Имейлът е задължителен';
         } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
-            newErrors.email = "Невалиден имейл адрес"
+            newErrors.email = 'Невалиден имейл адрес';
         }
 
         if (!formData.subject) {
-            newErrors.subject = "Моля, изберете тема"
+            newErrors.subject = 'Моля, изберете тема';
         }
 
         if (!formData.message.trim()) {
-            newErrors.message = "Съобщението е задължително"
+            newErrors.message = 'Съобщението е задължително';
         }
 
-        setErrors(newErrors)
-        return Object.keys(newErrors).length === 0
-    }
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-        const { name, value } = e.target
-        setFormData((prev) => ({ ...prev, [name]: value }))
+        const { name, value } = e.target;
+        setFormData((prev) => ({ ...prev, [name]: value }));
 
         // Clear error when field is edited
         if (errors[name]) {
             setErrors((prev) => {
-                const newErrors = { ...prev }
-                delete newErrors[name]
-                return newErrors
-            })
+                const newErrors = { ...prev };
+                delete newErrors[name];
+                return newErrors;
+            });
         }
-    }
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault()
+        e.preventDefault();
 
-        if (!validateForm()) return
+        if (!validateForm()) return;
 
-        setFormState("submitting")
+        setFormState('submitting');
 
         try {
             // Simulate API call
-            await new Promise((resolve) => setTimeout(resolve, 1500))
+            await new Promise((resolve) => setTimeout(resolve, 1500));
 
             // Reset form on success
             setFormData({
-                name: "",
-                email: "",
-                subject: "",
-                message: "",
-            })
+                name: '',
+                email: '',
+                subject: '',
+                message: '',
+            });
 
-            setFormState("success")
+            setFormState('success');
 
             // Reset success message after 5 seconds
             setTimeout(() => {
-                setFormState("idle")
-            }, 5000)
+                setFormState('idle');
+            }, 5000);
         } catch (error) {
-            console.error(error)
-            setFormState("error")
+            console.error(error);
+            setFormState('error');
         }
-    }
+    };
 
     return (
         <div className="min-h-screen bg-[#f0eeff]">
@@ -144,8 +153,8 @@ export default function ContactPage() {
             >
                 <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center text-[#3a2f7d]">Контакти</h1>
                 <p className="mt-4 text-center text-lg max-w-3xl mx-auto text-[#6b6b6b]">
-                    Свържи се с екипа на Задачко – ще се радваме да чуем мнението ти, да ти помогнем или просто да си поговорим за
-                    математика!
+                    Свържи се с екипа на Задачко – ще се радваме да чуем мнението ти, да ти помогнем или просто да си
+                    поговорим за математика!
                 </p>
             </motion.div>
 
@@ -162,13 +171,13 @@ export default function ContactPage() {
                         <h2 className="text-2xl font-bold mb-6 text-[#3a2f7d]">Изпрати съобщение</h2>
 
                         <AnimatePresence mode="wait">
-                            {formState === "success" && (
+                            {formState === 'success' && (
                                 <motion.div
                                     key="success"
                                     initial={{ opacity: 0, y: -10 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: -10 }}
-                                    transition={{ duration: 0.4, ease: "easeInOut" }}
+                                    transition={{ duration: 0.4, ease: 'easeInOut' }}
                                     layout
                                     className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center text-green-700"
                                 >
@@ -177,13 +186,13 @@ export default function ContactPage() {
                                 </motion.div>
                             )}
 
-                            {formState === "error" && (
+                            {formState === 'error' && (
                                 <motion.div
                                     key="error"
                                     initial={{ opacity: 0, y: -10 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: -10 }}
-                                    transition={{ duration: 0.4, ease: "easeInOut" }}
+                                    transition={{ duration: 0.4, ease: 'easeInOut' }}
                                     layout
                                     className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center text-red-700"
                                 >
@@ -194,7 +203,12 @@ export default function ContactPage() {
                         </AnimatePresence>
 
                         <form onSubmit={handleSubmit}>
-                            <motion.div className="space-y-4" variants={staggerContainer} initial="hidden" animate="visible">
+                            <motion.div
+                                className="space-y-4"
+                                variants={staggerContainer}
+                                initial="hidden"
+                                animate="visible"
+                            >
                                 <motion.div variants={fadeIn}>
                                     <label htmlFor="name" className="block text-sm font-medium mb-1">
                                         Име
@@ -205,8 +219,9 @@ export default function ContactPage() {
                                         name="name"
                                         value={formData.name}
                                         onChange={handleChange}
-                                        className={`w-full px-4 py-2 rounded-lg border ${errors.name ? "border-red-300 bg-red-50" : "border-gray-300"
-                                            } focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary`}
+                                        className={`w-full px-4 py-2 rounded-lg border ${
+                                            errors.name ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                                        } focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary`}
                                         placeholder="Вашето име"
                                     />
                                     {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
@@ -222,8 +237,9 @@ export default function ContactPage() {
                                         name="email"
                                         value={formData.email}
                                         onChange={handleChange}
-                                        className={`w-full px-4 py-2 rounded-lg border ${errors.email ? "border-red-300 bg-red-50" : "border-gray-300"
-                                            } focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary`}
+                                        className={`w-full px-4 py-2 rounded-lg border ${
+                                            errors.email ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                                        } focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary`}
                                         placeholder="example@email.com"
                                     />
                                     {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
@@ -239,8 +255,9 @@ export default function ContactPage() {
                                             name="subject"
                                             value={formData.subject}
                                             onChange={handleChange}
-                                            className={`w-full px-4 py-2 rounded-lg border appearance-none ${errors.subject ? "border-red-300 bg-red-50" : "border-gray-300"
-                                                } focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary`}
+                                            className={`w-full px-4 py-2 rounded-lg border appearance-none ${
+                                                errors.subject ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                                            } focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary`}
                                         >
                                             <option value="" disabled>
                                                 Изберете тема
@@ -265,8 +282,9 @@ export default function ContactPage() {
                                         value={formData.message}
                                         onChange={handleChange}
                                         rows={5}
-                                        className={`w-full px-4 py-2 rounded-lg border ${errors.message ? "border-red-300 bg-red-50" : "border-gray-300"
-                                            } focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary`}
+                                        className={`w-full px-4 py-2 rounded-lg border ${
+                                            errors.message ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                                        } focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary`}
                                         placeholder="Вашето съобщение..."
                                     />
                                     {errors.message && <p className="mt-1 text-sm text-red-600">{errors.message}</p>}
@@ -275,10 +293,10 @@ export default function ContactPage() {
                                 <motion.div variants={fadeIn}>
                                     <button
                                         type="submit"
-                                        disabled={formState === "submitting"}
+                                        disabled={formState === 'submitting'}
                                         className="w-full md:w-auto px-6 py-3 bg-primary text-white font-medium rounded-lg transition-all hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/50 disabled:opacity-70 disabled:cursor-not-allowed"
                                     >
-                                        {formState === "submitting" ? (
+                                        {formState === 'submitting' ? (
                                             <span className="flex items-center justify-center">
                                                 <svg
                                                     className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
@@ -303,7 +321,7 @@ export default function ContactPage() {
                                                 Изпращане...
                                             </span>
                                         ) : (
-                                            "Изпрати"
+                                            'Изпрати'
                                         )}
                                     </button>
                                 </motion.div>
@@ -422,5 +440,5 @@ export default function ContactPage() {
                 </motion.div>
             </div>
         </div>
-    )
+    );
 }

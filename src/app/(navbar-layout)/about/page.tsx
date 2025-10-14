@@ -1,98 +1,96 @@
-"use client"
+'use client';
 
-import { useRef } from "react"
-import Image from "next/image"
-import { motion, useInView } from "framer-motion"
-import { BookOpen, Brain, GraduationCap, Heart, Lightbulb, Users } from "lucide-react"
+import { useRef } from 'react';
+import Image from 'next/image';
+import { motion, useInView } from 'framer-motion';
+import { BookOpen, Brain, GraduationCap, Heart, Lightbulb, Users } from 'lucide-react';
 
-import { Card, CardContent } from "@/components/ui/card"
+import { Card, CardContent } from '@/components/ui/card';
 
 // Team members data
 const teamMembers = [
     {
-        name: "Кристиян Пенев",
-        role: "Основател & Главен изпълнителен директор",
-        bio: "Бивш учител по математика с над 15 години опит и страст към образователните технологии.",
-        image: "/placeholder.svg?height=300&width=300",
+        name: 'Кристиян Пенев',
+        role: 'Основател & Главен изпълнителен директор',
+        bio: 'Бивш учител по математика с над 15 години опит и страст към образователните технологии.',
+        image: '/placeholder.svg?height=300&width=300',
     },
     {
-        name: "Антон Янков",
-        role: "Технически директор",
-        bio: "Софтуерен инженер с опит в изграждането на образователни платформи и адаптивни системи за обучение.",
-        image: "/placeholder.svg?height=300&width=300",
+        name: 'Антон Янков',
+        role: 'Технически директор',
+        bio: 'Софтуерен инженер с опит в изграждането на образователни платформи и адаптивни системи за обучение.',
+        image: '/placeholder.svg?height=300&width=300',
     },
-]
+];
 
 // Values data
 const values = [
     {
         icon: <Lightbulb className="h-8 w-8 text-primary-500" />,
-        title: "Иновация",
-        description: "Постоянно търсим нови начини да направим ученето по-ефективно и ангажиращо.",
+        title: 'Иновация',
+        description: 'Постоянно търсим нови начини да направим ученето по-ефективно и ангажиращо.',
     },
     {
         icon: <Heart className="h-8 w-8 text-primary-500" />,
-        title: "Страст",
-        description: "Вярваме, че страстта към ученето е ключът към успеха в образованието.",
+        title: 'Страст',
+        description: 'Вярваме, че страстта към ученето е ключът към успеха в образованието.',
     },
     {
         icon: <Users className="h-8 w-8 text-primary-500" />,
-        title: "Достъпност",
-        description: "Стремим се да направим качественото образование достъпно за всички ученици.",
+        title: 'Достъпност',
+        description: 'Стремим се да направим качественото образование достъпно за всички ученици.',
     },
     {
         icon: <Brain className="h-8 w-8 text-primary-500" />,
-        title: "Адаптивност",
-        description: "Нашата платформа се адаптира към индивидуалните нужди и стил на учене на всеки ученик.",
+        title: 'Адаптивност',
+        description: 'Нашата платформа се адаптира към индивидуалните нужди и стил на учене на всеки ученик.',
     },
-]
+];
 
 // Timeline data
 const timeline = [
     {
-        year: "2020",
-        title: "Основаване",
+        year: '2020',
+        title: 'Основаване',
         description:
-            "Задачко е основан от екип от учители и технологични експерти с мисията да трансформира подготовката за НВО.",
+            'Задачко е основан от екип от учители и технологични експерти с мисията да трансформира подготовката за НВО.',
     },
     {
-        year: "2021",
-        title: "Първа версия",
-        description: "Пускаме първата версия на платформата с основни функции за решаване на задачи и тестове.",
+        year: '2021',
+        title: 'Първа версия',
+        description: 'Пускаме първата версия на платформата с основни функции за решаване на задачи и тестове.',
     },
     {
-        year: "2022",
-        title: "Разширяване",
+        year: '2022',
+        title: 'Разширяване',
         description:
-            "Добавяме адаптивно обучение и персонализирани пътеки за учене, базирани на представянето на учениците.",
+            'Добавяме адаптивно обучение и персонализирани пътеки за учене, базирани на представянето на учениците.',
     },
     {
-        year: "2023",
-        title: "Игрификация",
-        description: "Въвеждаме елементи на игрификация, включително значки, постижения и образователни игри.",
+        year: '2023',
+        title: 'Игрификация',
+        description: 'Въвеждаме елементи на игрификация, включително значки, постижения и образователни игри.',
     },
     {
-        year: "2024",
-        title: "Днес",
-        description: "Над 10,000 ученици използват Задачко за подготовка за НВО с 98% успеваемост.",
+        year: '2024',
+        title: 'Днес',
+        description: 'Над 10,000 ученици използват Задачко за подготовка за НВО с 98% успеваемост.',
     },
-]
+];
 
 export default function AboutPage() {
-    const missionRef = useRef(null)
-    const teamRef = useRef(null)
-    const valuesRef = useRef(null)
-    const storyRef = useRef(null)
+    const missionRef = useRef(null);
+    const teamRef = useRef(null);
+    const valuesRef = useRef(null);
+    const storyRef = useRef(null);
 
-    const isMissionInView = useInView(missionRef, { once: true, amount: 0.3 })
-    const isTeamInView = useInView(teamRef, { once: true, amount: 0.3 })
-    const isValuesInView = useInView(valuesRef, { once: true, amount: 0.3 })
-    const isStoryInView = useInView(storyRef, { once: true, amount: 0.3 })
-
+    const isMissionInView = useInView(missionRef, { once: true, amount: 0.3 });
+    const isTeamInView = useInView(teamRef, { once: true, amount: 0.3 });
+    const isValuesInView = useInView(valuesRef, { once: true, amount: 0.3 });
+    const isStoryInView = useInView(storyRef, { once: true, amount: 0.3 });
 
     return (
         <div className="flex min-h-screen flex-col">
-
             <main className="flex-1">
                 {/* Hero Section */}
                 <section className="relative bg-gradient-to-b from-primary-50 to-white py-16 md:py-24 overflow-hidden">
@@ -115,8 +113,8 @@ export default function AboutPage() {
                                     transition={{
                                         duration: Math.random() * 10 + 10,
                                         repeat: Number.POSITIVE_INFINITY,
-                                        repeatType: "reverse",
-                                        ease: "easeInOut",
+                                        repeatType: 'reverse',
+                                        ease: 'easeInOut',
                                         delay: Math.random() * 5,
                                     }}
                                 />
@@ -140,15 +138,15 @@ export default function AboutPage() {
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.5, delay: 0.1 }}
                             >
-                                Ние сме екип от страстни учители и технологични експерти, обединени от мисията да направим подготовката
-                                за НВО по математика ефективна, достъпна и забавна за всички ученици.
+                                Ние сме екип от страстни учители и технологични експерти, обединени от мисията да
+                                направим подготовката за НВО по математика ефективна, достъпна и забавна за всички
+                                ученици.
                             </motion.p>
                             <motion.div
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.5, delay: 0.2 }}
-                            >
-                            </motion.div>
+                            ></motion.div>
                         </div>
                     </div>
                 </section>
@@ -164,9 +162,10 @@ export default function AboutPage() {
                             >
                                 <h2 className="text-2xl md:text-3xl font-bold text-primary-700 mb-4">Нашата мисия</h2>
                                 <p className="text-gray-700 mb-6">
-                                    В Задачко вярваме, че всеки ученик заслужава достъп до качествено образование и подготовка. Нашата
-                                    мисия е да трансформираме начина, по който учениците се подготвят за НВО по математика, като
-                                    предоставяме персонализирана, адаптивна и ангажираща платформа за обучение.
+                                    В Задачко вярваме, че всеки ученик заслужава достъп до качествено образование и
+                                    подготовка. Нашата мисия е да трансформираме начина, по който учениците се подготвят
+                                    за НВО по математика, като предоставяме персонализирана, адаптивна и ангажираща
+                                    платформа за обучение.
                                 </p>
                                 <p className="text-gray-700 mb-6">Стремим се да:</p>
                                 <ul className="space-y-3">
@@ -223,8 +222,8 @@ export default function AboutPage() {
                         >
                             <h2 className="text-2xl md:text-3xl font-bold text-primary-700">Нашият екип</h2>
                             <p className="text-gray-700 mt-4 max-w-2xl mx-auto">
-                                Запознайте се с хората, които стоят зад Задачко - екип от страстни професионалисти, посветени на
-                                трансформирането на образованието.
+                                Запознайте се с хората, които стоят зад Задачко - екип от страстни професионалисти,
+                                посветени на трансформирането на образованието.
                             </p>
                         </motion.div>
 
@@ -242,7 +241,7 @@ export default function AboutPage() {
                                             <div className="relative">
                                                 <div className="aspect-square overflow-hidden bg-primary-100">
                                                     <Image
-                                                        src={member.image || "/placeholder.svg"}
+                                                        src={member.image || '/placeholder.svg'}
                                                         alt={member.name}
                                                         width={300}
                                                         height={300}
@@ -278,8 +277,8 @@ export default function AboutPage() {
                         >
                             <h2 className="text-2xl md:text-3xl font-bold text-primary-700">Нашите ценности</h2>
                             <p className="text-gray-700 mt-4 max-w-2xl mx-auto">
-                                Ценностите, които ръководят всичко, което правим в Задачко и ни помагат да създадем най-добрата
-                                образователна платформа.
+                                Ценностите, които ръководят всичко, което правим в Задачко и ни помагат да създадем
+                                най-добрата образователна платформа.
                             </p>
                         </motion.div>
 
@@ -292,7 +291,8 @@ export default function AboutPage() {
                                     transition={{ duration: 0.5, delay: index * 0.1 + 0.2 }}
                                     whileHover={{
                                         y: -10,
-                                        boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+                                        boxShadow:
+                                            '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
                                         transition: { duration: 0.2 },
                                     }}
                                     className="bg-primary-50 rounded-xl p-6 border border-primary-100"
@@ -334,12 +334,18 @@ export default function AboutPage() {
                                         initial={{ opacity: 0, y: 30 }}
                                         animate={isStoryInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
                                         transition={{ duration: 0.5, delay: index * 0.1 + 0.2 }}
-                                        className={`flex flex-col ${index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"} items-center`}
+                                        className={`flex flex-col ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} items-center`}
                                     >
-                                        <div className={`md:w-1/2 ${index % 2 === 0 ? "md:pr-12 md:text-right" : "md:pl-12"}`}>
+                                        <div
+                                            className={`md:w-1/2 ${index % 2 === 0 ? 'md:pr-12 md:text-right' : 'md:pl-12'}`}
+                                        >
                                             <div className="bg-white rounded-xl p-6 shadow-md border border-primary-100 h-full">
-                                                <div className="text-primary-500 font-bold text-xl mb-2">{item.year}</div>
-                                                <h3 className="text-lg font-bold text-primary-700 mb-2">{item.title}</h3>
+                                                <div className="text-primary-500 font-bold text-xl mb-2">
+                                                    {item.year}
+                                                </div>
+                                                <h3 className="text-lg font-bold text-primary-700 mb-2">
+                                                    {item.title}
+                                                </h3>
                                                 <p className="text-gray-700">{item.description}</p>
                                             </div>
                                         </div>
@@ -353,9 +359,7 @@ export default function AboutPage() {
                         </div>
                     </div>
                 </section>
-
-
             </main>
         </div>
-    )
+    );
 }

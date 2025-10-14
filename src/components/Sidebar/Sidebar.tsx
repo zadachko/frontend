@@ -1,36 +1,36 @@
-"use client"
-import { Star, Check, Target, BarChart3 } from "lucide-react"
-import Image from "next/image"
+'use client';
+import { Star, Check, Target, BarChart3 } from 'lucide-react';
+import Image from 'next/image';
 
 const Sidebar = () => {
     // Mock user data
     const userData = {
-        name: "Антон Янков",
+        name: 'Антон Янков',
         level: 111,
         currentXP: 46214,
         xpToNextLevel: 8795,
-        avatar: "/avatar.png",
-    }
+        avatar: '/avatar.png',
+    };
 
     // Mock daily missions
     const dailyMissions = [
         {
             id: 1,
-            title: "Реши 5 задачи по математика",
+            title: 'Реши 5 задачи по математика',
             completed: true,
             progress: 5,
             total: 5,
         },
         {
             id: 2,
-            title: "Постигни 80% точност",
+            title: 'Постигни 80% точност',
             completed: false,
             progress: 65,
             total: 80,
         },
-    ]
+    ];
 
-    const xpProgress = (userData.currentXP / (userData.currentXP + userData.xpToNextLevel)) * 100
+    const xpProgress = (userData.currentXP / (userData.currentXP + userData.xpToNextLevel)) * 100;
 
     return (
         <div className="hidden md:flex flex-col h-screen w-64 lg:w-72 xl:w-80 bg-gradient-to-b from-[#f0eeff] to-white border-r border-[#755bc5]/20 shadow-lg">
@@ -41,7 +41,7 @@ const Sidebar = () => {
                     <div className="relative">
                         <div className="w-24 md:w-28 lg:w-32 h-24 md:h-28 lg:h-32 rounded-full border-4 border-white overflow-hidden bg-gray-100 shadow-lg">
                             <Image
-                                src={userData.avatar || "/placeholder.svg?height=128&width=128"}
+                                src={userData.avatar || '/placeholder.svg?height=128&width=128'}
                                 alt={userData.name}
                                 className="w-full h-full object-cover"
                                 width={128}
@@ -50,10 +50,15 @@ const Sidebar = () => {
                         </div>
                         {/* Level Badge */}
                         <div className="absolute -top-2 md:-top-3 -right-2 md:-right-3 w-10 md:w-12 h-10 md:h-12 bg-[#755bc5] rounded-full flex items-center justify-center border-3 border-white shadow-lg">
-                            <span className="text-sm md:text-base lg:text-lg font-bold text-white">{userData.level}</span>
+                            <span className="text-sm md:text-base lg:text-lg font-bold text-white">
+                                {userData.level}
+                            </span>
                         </div>
                         {/* Progress Ring */}
-                        <svg className="absolute inset-0 w-24 md:w-28 lg:w-32 h-24 md:h-28 lg:h-32 -rotate-90" viewBox="0 0 36 36">
+                        <svg
+                            className="absolute inset-0 w-24 md:w-28 lg:w-32 h-24 md:h-28 lg:h-32 -rotate-90"
+                            viewBox="0 0 36 36"
+                        >
                             <path
                                 d="M18 2.0845
                                 a 15.9155 15.9155 0 0 1 0 31.831
@@ -86,20 +91,24 @@ const Sidebar = () => {
                     <div className="flex items-center justify-between mb-3">
                         <div className="flex items-center gap-1 xl:gap-2">
                             <BarChart3 className="w-5 h-5 text-[#755bc5]" />
-                            <span className="text-sm md:text-sm lg:text-base font-semibold text-gray-700">Ниво {userData.level}</span>
+                            <span className="text-sm md:text-sm lg:text-base font-semibold text-gray-700">
+                                Ниво {userData.level}
+                            </span>
                         </div>
                         <div className="flex items-center gap-1 xl:gap-2">
                             <Star className="w-5 h-5 text-yellow-500" />
                             <span className="text-sm md:text-sm lg:text-base font-semibold text-gray-700">
-                                {userData.currentXP.toLocaleString("en-US")} XP
+                                {userData.currentXP.toLocaleString('en-US')} XP
                             </span>
                         </div>
                     </div>
 
                     <div className="text-center">
                         <p className="text-sm text-gray-600 bg-gray-50 rounded-lg py-2 px-3">
-                            До ниво {userData.level + 1}:{" "}
-                            <span className="font-semibold text-[#755bc5]">{userData.xpToNextLevel.toLocaleString("en-US")} XP</span>
+                            До ниво {userData.level + 1}:{' '}
+                            <span className="font-semibold text-[#755bc5]">
+                                {userData.xpToNextLevel.toLocaleString('en-US')} XP
+                            </span>
                         </p>
                     </div>
                 </div>
@@ -114,15 +123,17 @@ const Sidebar = () => {
                         {dailyMissions.map((mission) => (
                             <div
                                 key={mission.id}
-                                className={`rounded-lg p-4 border-2 transition-all duration-200 ${mission.completed
-                                    ? "bg-gradient-to-r from-gray-50 to-gray-100 border-gray-300 shadow-sm"
-                                    : "bg-gray-50 border-gray-200 hover:border-[#755bc5]/30 hover:shadow-sm"
-                                    }`}
+                                className={`rounded-lg p-4 border-2 transition-all duration-200 ${
+                                    mission.completed
+                                        ? 'bg-gradient-to-r from-gray-50 to-gray-100 border-gray-300 shadow-sm'
+                                        : 'bg-gray-50 border-gray-200 hover:border-[#755bc5]/30 hover:shadow-sm'
+                                }`}
                             >
                                 <div className="flex items-center gap-3">
                                     <div
-                                        className={`w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200 ${mission.completed ? "bg-gray-500 shadow-md" : "bg-[#755bc5] shadow-md"
-                                            }`}
+                                        className={`w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200 ${
+                                            mission.completed ? 'bg-gray-500 shadow-md' : 'bg-[#755bc5] shadow-md'
+                                        }`}
                                     >
                                         {mission.completed ? (
                                             <Check className="w-5 h-5 text-white" />
@@ -132,10 +143,9 @@ const Sidebar = () => {
                                     </div>
                                     <div className="flex-1">
                                         <p
-                                            className={`text-sm font-medium mb-1 ${mission.completed
-                                                    ? "text-gray-400 line-through"
-                                                    : "text-gray-800"
-                                                }`}
+                                            className={`text-sm font-medium mb-1 ${
+                                                mission.completed ? 'text-gray-400 line-through' : 'text-gray-800'
+                                            }`}
                                         >
                                             {mission.title}
                                         </p>
@@ -150,7 +160,9 @@ const Sidebar = () => {
                                                 <div className="w-full bg-gray-200 rounded-full h-2">
                                                     <div
                                                         className="bg-gradient-to-r from-[#755bc5] to-[#8b6fd1] h-2 rounded-full transition-all duration-300"
-                                                        style={{ width: `${(mission.progress / mission.total) * 100}%` }}
+                                                        style={{
+                                                            width: `${(mission.progress / mission.total) * 100}%`,
+                                                        }}
                                                     ></div>
                                                 </div>
                                             </div>
@@ -163,7 +175,7 @@ const Sidebar = () => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default Sidebar
+export default Sidebar;

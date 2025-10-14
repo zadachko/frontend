@@ -1,8 +1,8 @@
-import React from 'react'
+import React from 'react';
 
 type HeaderProps = {
-    stepCountLabel: string
-}
+    stepCountLabel: string;
+};
 
 const Header = ({ stepCountLabel }: HeaderProps) => {
     return (
@@ -12,7 +12,7 @@ const Header = ({ stepCountLabel }: HeaderProps) => {
                 <span className="text-xs md:text-sm text-gray-500">Стъпка {stepCountLabel}</span>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default Header;

@@ -1,12 +1,12 @@
-import { Button } from '@/components/ui/button'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { Button } from '@/components/ui/button';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 type ControlsProps = {
-    atStart: boolean
-    atEnd: boolean
-    prev: () => void
-    next: () => void
-}
+    atStart: boolean;
+    atEnd: boolean;
+    prev: () => void;
+    next: () => void;
+};
 
 const Controls = ({ atStart, atEnd, prev, next }: ControlsProps) => {
     return (
@@ -39,7 +39,7 @@ const Controls = ({ atStart, atEnd, prev, next }: ControlsProps) => {
                 </Button>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default Controls;

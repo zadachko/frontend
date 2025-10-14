@@ -1,8 +1,7 @@
-
-import { ChevronRight, Home } from 'lucide-react'
-import Link from "next/link"
-import { categoriesData } from "@/lib/categories-data"
-import { notFound } from "next/navigation"
+import { ChevronRight, Home } from 'lucide-react';
+import Link from 'next/link';
+import { categoriesData } from '@/lib/categories-data';
+import { notFound } from 'next/navigation';
 
 interface Problem {
     id: string;
@@ -17,27 +16,27 @@ interface Problem {
 
 interface ExercisesPageProps {
     params: Promise<{
-        subcategory: string
-    }>
+        subcategory: string;
+    }>;
 }
 
 export default async function ExercisesPage({ params }: ExercisesPageProps) {
-    const { subcategory: subcategoryParam } = await params
+    const { subcategory: subcategoryParam } = await params;
     // Find the subcategory across all categories
-    let subcategory = null
-    let parentCategory = null
+    let subcategory = null;
+    let parentCategory = null;
 
     for (const category of categoriesData) {
-        const found = category.subcategories.find(sub => sub.id === subcategoryParam)
+        const found = category.subcategories.find((sub) => sub.id === subcategoryParam);
         if (found) {
-            subcategory = found
-            parentCategory = category
-            break
+            subcategory = found;
+            parentCategory = category;
+            break;
         }
     }
 
     if (!subcategory || !parentCategory) {
-        notFound()
+        notFound();
     }
 
     // Mock problems data - in a real app this would come from an API or database
@@ -50,7 +49,7 @@ export default async function ExercisesPage({ params }: ExercisesPageProps) {
             difficulty: 'easy',
             status: 'completed',
             points: 10,
-            timeEstimate: '5 мин'
+            timeEstimate: '5 мин',
         },
         {
             id: '2',
@@ -60,7 +59,7 @@ export default async function ExercisesPage({ params }: ExercisesPageProps) {
             difficulty: 'easy',
             status: 'completed',
             points: 15,
-            timeEstimate: '8 мин'
+            timeEstimate: '8 мин',
         },
         {
             id: '3',
@@ -70,7 +69,7 @@ export default async function ExercisesPage({ params }: ExercisesPageProps) {
             difficulty: 'medium',
             status: 'in-progress',
             points: 25,
-            timeEstimate: '15 мин'
+            timeEstimate: '15 мин',
         },
         {
             id: '4',
@@ -80,7 +79,7 @@ export default async function ExercisesPage({ params }: ExercisesPageProps) {
             difficulty: 'medium',
             status: 'not-started',
             points: 20,
-            timeEstimate: '12 мин'
+            timeEstimate: '12 мин',
         },
         {
             id: '5',
@@ -90,7 +89,7 @@ export default async function ExercisesPage({ params }: ExercisesPageProps) {
             difficulty: 'hard',
             status: 'not-started',
             points: 30,
-            timeEstimate: '20 мин'
+            timeEstimate: '20 мин',
         },
         {
             id: '6',
@@ -100,7 +99,7 @@ export default async function ExercisesPage({ params }: ExercisesPageProps) {
             difficulty: 'hard',
             status: 'not-started',
             points: 35,
-            timeEstimate: '25 мин'
+            timeEstimate: '25 мин',
         },
         {
             id: '1d',
@@ -110,7 +109,7 @@ export default async function ExercisesPage({ params }: ExercisesPageProps) {
             difficulty: 'easy',
             status: 'completed',
             points: 10,
-            timeEstimate: '5 мин'
+            timeEstimate: '5 мин',
         },
         {
             id: '2aaa',
@@ -120,7 +119,7 @@ export default async function ExercisesPage({ params }: ExercisesPageProps) {
             difficulty: 'easy',
             status: 'completed',
             points: 15,
-            timeEstimate: '8 мин'
+            timeEstimate: '8 мин',
         },
         {
             id: '3assaa',
@@ -130,7 +129,7 @@ export default async function ExercisesPage({ params }: ExercisesPageProps) {
             difficulty: 'medium',
             status: 'in-progress',
             points: 25,
-            timeEstimate: '15 мин'
+            timeEstimate: '15 мин',
         },
         {
             id: 'sadsads',
@@ -140,7 +139,7 @@ export default async function ExercisesPage({ params }: ExercisesPageProps) {
             difficulty: 'medium',
             status: 'not-started',
             points: 20,
-            timeEstimate: '12 мин'
+            timeEstimate: '12 мин',
         },
         {
             id: 'sadsds',
@@ -150,7 +149,7 @@ export default async function ExercisesPage({ params }: ExercisesPageProps) {
             difficulty: 'hard',
             status: 'not-started',
             points: 30,
-            timeEstimate: '20 мин'
+            timeEstimate: '20 мин',
         },
         {
             id: 'sadsadsas',
@@ -160,21 +159,27 @@ export default async function ExercisesPage({ params }: ExercisesPageProps) {
             difficulty: 'hard',
             status: 'not-started',
             points: 35,
-            timeEstimate: '25 мин'
-        }
-    ]
+            timeEstimate: '25 мин',
+        },
+    ];
 
     return (
         <div className="flex-1 overflow-y-auto bg-white p-6 md:p-8 lg:p-12">
             <div className="max-w-4xl mx-auto space-y-6">
                 {/* Breadcrumbs */}
                 <nav className="flex items-center space-x-2 text-sm text-gray-500 border-b border-gray-200 pb-4">
-                    <Link href="/platform/categories" className="hover:text-gray-700 transition-colors flex items-center">
+                    <Link
+                        href="/platform/categories"
+                        className="hover:text-gray-700 transition-colors flex items-center"
+                    >
                         <Home className="w-4 h-4 mr-1" />
                         Категории
                     </Link>
                     <ChevronRight className="w-4 h-4" />
-                    <Link href={`/platform/categories/${parentCategory.id}`} className="hover:text-gray-700 transition-colors">
+                    <Link
+                        href={`/platform/categories/${parentCategory.id}`}
+                        className="hover:text-gray-700 transition-colors"
+                    >
                         {parentCategory.name}
                     </Link>
                     <ChevronRight className="w-4 h-4" />
@@ -184,12 +189,15 @@ export default async function ExercisesPage({ params }: ExercisesPageProps) {
                 {/* Problems List */}
                 <div className="flex flex-wrap gap-4">
                     {problems.map((problem) => (
-                        <div key={problem.id} className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 text-gray-700 font-semibold text-sm border border-gray-200">
+                        <div
+                            key={problem.id}
+                            className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 text-gray-700 font-semibold text-sm border border-gray-200"
+                        >
                             {problem.number}
                         </div>
                     ))}
                 </div>
             </div>
         </div>
-    )
+    );
 }

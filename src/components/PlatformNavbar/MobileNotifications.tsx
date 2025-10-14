@@ -1,15 +1,15 @@
-"use client"
+'use client';
 
-import Link from "next/link"
-import { Bell } from "lucide-react"
-import { Badge } from "@/components/ui/badge"
-import { mockNotifications } from "./mock-data"
-import type { MobileMenuType } from "./navbar-types"
+import Link from 'next/link';
+import { Bell } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { mockNotifications } from './mock-data';
+import type { MobileMenuType } from './navbar-types';
 
 interface MobileNotificationsProps {
-    notificationCount: number
-    openMobileMenu: MobileMenuType
-    setOpenMobileMenu: (menu: MobileMenuType) => void
+    notificationCount: number;
+    openMobileMenu: MobileMenuType;
+    setOpenMobileMenu: (menu: MobileMenuType) => void;
 }
 
 export function MobileNotifications({
@@ -20,7 +20,7 @@ export function MobileNotifications({
     return (
         <div className="relative md:hidden">
             <button
-                onClick={() => setOpenMobileMenu(openMobileMenu === "notifications" ? null : "notifications")}
+                onClick={() => setOpenMobileMenu(openMobileMenu === 'notifications' ? null : 'notifications')}
                 className="relative p-1.5 text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-colors backdrop-blur-sm"
             >
                 <Bell className="w-5 h-5" />
@@ -31,7 +31,7 @@ export function MobileNotifications({
                 )}
             </button>
 
-            {openMobileMenu === "notifications" && (
+            {openMobileMenu === 'notifications' && (
                 <>
                     <div className="pointer-events-none absolute -bottom-4 sm:-bottom-3 left-1/2 -translate-x-1/2 z-50 w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-b-[8px] border-b-white"></div>
 
@@ -43,7 +43,9 @@ export function MobileNotifications({
                                     className="p-6 hover:bg-[#f0eeff]/30 border-b border-gray-100 transition-colors"
                                 >
                                     <div className="flex items-start gap-4">
-                                        <div className={`w-3 h-3 ${notification.color} rounded-full mt-2 flex-shrink-0`}></div>
+                                        <div
+                                            className={`w-3 h-3 ${notification.color} rounded-full mt-2 flex-shrink-0`}
+                                        ></div>
                                         <div>
                                             <p className="text-lg font-medium text-gray-900">{notification.title}</p>
                                             <p className="text-sm text-gray-500 mt-2">{notification.description}</p>
@@ -66,5 +68,5 @@ export function MobileNotifications({
                 </>
             )}
         </div>
-    )
+    );
 }

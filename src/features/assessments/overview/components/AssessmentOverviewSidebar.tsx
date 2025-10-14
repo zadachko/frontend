@@ -1,7 +1,7 @@
 // components/ResultsCard.tsx
-import { Card, CardContent } from "@/components/ui/card";
-import { Calendar, Clock, CheckCircle } from "lucide-react";
-import { ReactNode } from "react";
+import { Card, CardContent } from '@/components/ui/card';
+import { Calendar, Clock, CheckCircle } from 'lucide-react';
+import { ReactNode } from 'react';
 
 interface AssessmentOverviewSidebarProps {
     title: string; // "Резултати от теста" / "Резултати от изпита"
@@ -79,10 +79,10 @@ export default function AssessmentOverviewSidebar({
                                 fill="none"
                                 stroke={
                                     results.score >= 80
-                                        ? "#10b981" // green
+                                        ? '#10b981' // green
                                         : results.score >= 60
-                                            ? "#f59e0b" // amber
-                                            : "#ef4444" // red
+                                          ? '#f59e0b' // amber
+                                          : '#ef4444' // red
                                 }
                                 strokeWidth="2"
                                 strokeDasharray={`${results.score}, 100`}

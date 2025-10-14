@@ -1,39 +1,39 @@
-"use client";
+'use client';
 
-import { Card, CardContent } from "@/components/ui/card";
-import { Clock, FileText, AlertCircle, CheckCircle, Play, Target } from "lucide-react";
-import ExamRule from "@/components/common/ExamRule";
-import { useState } from "react";
-import PreviousResultsCard from "@/features/assessments/resource-choice/components/PreviousResultsCard";
-import AssessmentStartFlow from "@/features/assessments/resource-choice/components/AssessmentStartFlow";
+import { Card, CardContent } from '@/components/ui/card';
+import { Clock, FileText, AlertCircle, CheckCircle, Play, Target } from 'lucide-react';
+import ExamRule from '@/components/common/ExamRule';
+import { useState } from 'react';
+import PreviousResultsCard from '@/features/assessments/resource-choice/components/PreviousResultsCard';
+import AssessmentStartFlow from '@/features/assessments/resource-choice/components/AssessmentStartFlow';
 
 const Page = () => {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     // Green color scheme for exam page
     const greenColors = {
-        buttonGradient: "from-emerald-500 to-teal-600",
-        buttonHoverGradient: "hover:from-emerald-600 hover:to-teal-700",
-        iconBg: "bg-amber-50",
-        iconColor: "text-amber-600"
+        buttonGradient: 'from-emerald-500 to-teal-600',
+        buttonHoverGradient: 'hover:from-emerald-600 hover:to-teal-700',
+        iconBg: 'bg-amber-50',
+        iconColor: 'text-amber-600',
     };
 
     const examRules = [
         {
             icon: Clock,
-            text: "90 минути време с видим таймер",
+            text: '90 минути време с видим таймер',
         },
         {
             icon: FileText,
-            text: "25 въпроса с избираем отговор покриващи всички теми",
+            text: '25 въпроса с избираем отговор покриващи всички теми',
         },
         {
             icon: AlertCircle,
-            text: "Няма връщане назад - отговорите са финални след подаване",
+            text: 'Няма връщане назад - отговорите са финални след подаване',
         },
         {
             icon: CheckCircle,
-            text: "Автоматично подаване при изтичане на времето",
+            text: 'Автоматично подаване при изтичане на времето',
         },
     ];
 
@@ -41,28 +41,28 @@ const Page = () => {
     const previousResults = [
         {
             id: 1,
-            date: "15.12.2024",
+            date: '15.12.2024',
             score: 85,
             totalQuestions: 25,
             correctQuestions: 21,
-            timeSpent: "75 мин",
+            timeSpent: '75 мин',
         },
         {
             id: 2,
-            date: "08.12.2024",
+            date: '08.12.2024',
             score: 72,
             totalQuestions: 25,
             correctQuestions: 18,
-            timeSpent: "82 мин",
+            timeSpent: '82 мин',
         },
         {
             id: 3,
-            date: "01.12.2024",
+            date: '01.12.2024',
             score: 68,
             totalQuestions: 25,
             correctQuestions: 17,
-            timeSpent: "88 мин",
-        }
+            timeSpent: '88 мин',
+        },
     ];
 
     const handleStartExam = () => {
@@ -72,7 +72,7 @@ const Page = () => {
     const handleConfirmExam = () => {
         setIsDialogOpen(false);
         // Navigate to the exam page
-        window.location.href = "/platform/exam/live";
+        window.location.href = '/platform/exam/live';
     };
 
     return (
@@ -87,8 +87,12 @@ const Page = () => {
                                     <div className="inline-flex p-2 sm:p-3 rounded-full bg-emerald-50 mb-3 sm:mb-4 group-hover:scale-105 transition-transform duration-300">
                                         <Play className="w-6 h-6 sm:w-8 sm:h-8 text-emerald-600" />
                                     </div>
-                                    <h1 className="text-2xl sm:text-3xl font-semibold text-gray-900 mb-2 sm:mb-3">Пробен Изпит</h1>
-                                    <p className="text-gray-600 text-base sm:text-lg mb-4 sm:mb-6">Тествай знанията си по математика за 7-ми клас</p>
+                                    <h1 className="text-2xl sm:text-3xl font-semibold text-gray-900 mb-2 sm:mb-3">
+                                        Пробен Изпит
+                                    </h1>
+                                    <p className="text-gray-600 text-base sm:text-lg mb-4 sm:mb-6">
+                                        Тествай знанията си по математика за 7-ми клас
+                                    </p>
                                 </div>
 
                                 {/* Rules */}
@@ -116,14 +120,11 @@ const Page = () => {
                     </div>
 
                     {/* Previous Results Sidebar */}
-                    <PreviousResultsCard
-                        previousResults={previousResults}
-                        color="#10B981"
-                    />
+                    <PreviousResultsCard previousResults={previousResults} color="#10B981" />
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default Page;

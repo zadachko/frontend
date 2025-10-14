@@ -1,9 +1,9 @@
-import { Card, CardContent } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Progress } from "@/components/ui/progress"
-import { BookOpen, ChevronRight } from 'lucide-react'
-import Link from "next/link"
-import { categoriesData } from "@/lib/categories-data"
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
+import { BookOpen, ChevronRight } from 'lucide-react';
+import Link from 'next/link';
+import { categoriesData } from '@/lib/categories-data';
 
 export default function CategoriesPage() {
     return (
@@ -17,16 +17,16 @@ export default function CategoriesPage() {
                         </div>
                         <h1 className="text-4xl font-bold text-gray-900">Категории</h1>
                         <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                            Избери категория и започни своето математическо приключение!
-                            Всяка категория съдържа интересни уроци и задачи, които ще те направят по-добър в математиката.
+                            Избери категория и започни своето математическо приключение! Всяка категория съдържа
+                            интересни уроци и задачи, които ще те направят по-добър в математиката.
                         </p>
                     </section>
 
                     {/* Categories Grid */}
                     <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {categoriesData.map((category) => {
-                            const IconComponent = category.icon
-                            const progressPercentage = (category.progress.completed / category.progress.total) * 100
+                            const IconComponent = category.icon;
+                            const progressPercentage = (category.progress.completed / category.progress.total) * 100;
 
                             return (
                                 <Link key={category.id} href={`/platform/categories/${category.id}`}>
@@ -36,7 +36,9 @@ export default function CategoriesPage() {
                                                 <div className="inline-flex p-4 rounded-full bg-white/80 mb-4 group-hover:scale-110 transition-transform duration-300">
                                                     <IconComponent className={`w-8 h-8 ${category.iconColor}`} />
                                                 </div>
-                                                <h3 className="text-2xl font-bold text-gray-900 mb-2">{category.name}</h3>
+                                                <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                                                    {category.name}
+                                                </h3>
                                             </div>
                                             <div className="p-6 bg-white">
                                                 <p className="text-gray-600 mb-4 leading-relaxed">
@@ -46,7 +48,9 @@ export default function CategoriesPage() {
                                                 {/* Progress Section */}
                                                 <div className="mb-6">
                                                     <div className="flex justify-between items-center mb-2">
-                                                        <span className="text-sm font-medium text-gray-700">Прогрес</span>
+                                                        <span className="text-sm font-medium text-gray-700">
+                                                            Прогрес
+                                                        </span>
                                                         <span className="text-sm text-gray-500">
                                                             {category.progress.completed}/{category.progress.total}
                                                         </span>
@@ -57,9 +61,7 @@ export default function CategoriesPage() {
                                                     </p>
                                                 </div>
 
-                                                <Button
-                                                    className="w-full bg-[#6F58C9] hover:bg-[#5A4BA3] text-white font-semibold py-3 h-12 group-hover:bg-[#5A4BA3] transition-colors"
-                                                >
+                                                <Button className="w-full bg-[#6F58C9] hover:bg-[#5A4BA3] text-white font-semibold py-3 h-12 group-hover:bg-[#5A4BA3] transition-colors">
                                                     Започни обучението
                                                     <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                                                 </Button>
@@ -67,11 +69,11 @@ export default function CategoriesPage() {
                                         </CardContent>
                                     </Card>
                                 </Link>
-                            )
+                            );
                         })}
                     </section>
                 </div>
             </div>
         </div>
-    )
+    );
 }

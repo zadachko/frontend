@@ -28,7 +28,7 @@ const AssessmentStartFlow = ({
     setIsDialogOpen,
     handleStartExam,
     handleConfirmExam,
-    colors
+    colors,
 }: AssessmentStartFlowProps) => {
     return (
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -81,7 +81,7 @@ const AssessmentStartFlow = ({
                 </DialogFooter>
             </DialogContent>
         </Dialog>
-    )
-}
+    );
+};
 
-export default AssessmentStartFlow
+export default AssessmentStartFlow;

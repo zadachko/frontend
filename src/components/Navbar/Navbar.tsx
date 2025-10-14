@@ -1,21 +1,21 @@
-"use client"
+'use client';
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import NavbarMobileMenuLink from "./NavbarMobileMenuLink";
-import { cn } from "@/utils/utils";
-import { Button } from "@/components/ui/button";
-import { useState } from "react";
-import { useIsMobile } from "@/hooks/isMobile";
-import { Menu } from "lucide-react";
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import NavbarMobileMenuLink from './NavbarMobileMenuLink';
+import { cn } from '@/utils/utils';
+import { Button } from '@/components/ui/button';
+import { useState } from 'react';
+import { useIsMobile } from '@/hooks/isMobile';
+import { Menu } from 'lucide-react';
 
 const navItems = [
-    { name: "Начало", href: "/" },
-    { name: "За нас", href: "/about" },
-    { name: "Функции", href: "/features" },
-    { name: "Цени", href: "/pricing" },
-    { name: "Контакти", href: "/contact" },
-]
+    { name: 'Начало', href: '/' },
+    { name: 'За нас', href: '/about' },
+    { name: 'Функции', href: '/features' },
+    { name: 'Цени', href: '/pricing' },
+    { name: 'Контакти', href: '/contact' },
+];
 
 const Navbar = () => {
     const pathname = usePathname();
@@ -24,7 +24,7 @@ const Navbar = () => {
 
     const handleHamburgerClick = () => {
         setIsNavbarOpen((prev) => !prev);
-    }
+    };
 
     return (
         <header className="sticky top-0 z-50 w-full border-b bg-white">
@@ -43,8 +43,8 @@ const Navbar = () => {
                                 key={item.name}
                                 href={item.href}
                                 className={cn(
-                                    "text-base font-medium transition-colors hover:text-primary",
-                                    pathname === item.href ? "text-primary" : "text-gray-700",
+                                    'text-base font-medium transition-colors hover:text-primary',
+                                    pathname === item.href ? 'text-primary' : 'text-gray-700'
                                 )}
                             >
                                 {item.name}
@@ -63,10 +63,7 @@ const Navbar = () => {
                     {/* Mobile Menu Button - Always rendered but only visible on mobile */}
                     <div
                         onClick={handleHamburgerClick}
-                        className={cn(
-                            "md:hidden cursor-pointer",
-                            !isMobile && "opacity-0 pointer-events-none"
-                        )}
+                        className={cn('md:hidden cursor-pointer', !isMobile && 'opacity-0 pointer-events-none')}
                     >
                         <Menu />
                     </div>
@@ -74,11 +71,13 @@ const Navbar = () => {
             </div>
 
             {/* Mobile Menu - Always rendered but only visible on mobile */}
-            <div className={cn(
-                "md:hidden fixed w-screen bg-white overflow-hidden duration-300 px-5",
-                isMobile && isNavbarOpen ? 'max-h-[800px]' : 'max-h-0',
-                !isMobile && 'hidden'
-            )}>
+            <div
+                className={cn(
+                    'md:hidden fixed w-screen bg-white overflow-hidden duration-300 px-5',
+                    isMobile && isNavbarOpen ? 'max-h-[800px]' : 'max-h-0',
+                    !isMobile && 'hidden'
+                )}
+            >
                 <div className="flex flex-col">
                     {navItems.map((e, index) => (
                         <NavbarMobileMenuLink key={index} href={e.href} name={e.name} />
@@ -86,7 +85,7 @@ const Navbar = () => {
                 </div>
             </div>
         </header>
-    )
-}
+    );
+};
 
-export default Navbar
+export default Navbar;

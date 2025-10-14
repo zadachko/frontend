@@ -1,8 +1,8 @@
-import React from 'react'
-import HeroSection from '@/components/LandpageSections/Hero'
-import FeaturesSection from '@/components/LandpageSections/Features'
-import TestimonialsSection from '@/components/LandpageSections/Testimonials'
-import TaskPreview from '@/components/LandpageSections/TaskPreview'
+import React from 'react';
+import HeroSection from '@/components/LandpageSections/Hero';
+import FeaturesSection from '@/components/LandpageSections/Features';
+import TestimonialsSection from '@/components/LandpageSections/Testimonials';
+import TaskPreview from '@/components/LandpageSections/TaskPreview';
 const page = () => {
     return (
         <div>
@@ -11,7 +11,7 @@ const page = () => {
             <TestimonialsSection />
             <TaskPreview />
         </div>
-    )
-}
+    );
+};
 
 export default page;

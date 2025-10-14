@@ -1,53 +1,50 @@
-"use client"
+'use client';
 
-import { Card, CardContent } from "@/components/ui/card"
-import { TestTube2, GraduationCap, Clock, CheckCircle2, CalendarDays, Dot } from "lucide-react"
-import type { TestResult } from "@/types"
-import { useRouter } from "next/navigation"
+import { Card, CardContent } from '@/components/ui/card';
+import { TestTube2, GraduationCap, Clock, CheckCircle2, CalendarDays, Dot } from 'lucide-react';
+import type { TestResult } from '@/types';
+import { useRouter } from 'next/navigation';
 
 interface ResultRowProps {
-    result: TestResult
-    onClick?: () => void
-    hideIcon?: boolean
+    result: TestResult;
+    onClick?: () => void;
+    hideIcon?: boolean;
 }
 
 export const ResultRow = ({ result, onClick }: ResultRowProps) => {
-    const router = useRouter()
-    const isExam = result.type.toLowerCase() === "exam"
+    const router = useRouter();
+    const isExam = result.type.toLowerCase() === 'exam';
 
     const getProgressColor = (score: number) => {
-        if (score >= 80) return "#10b981"
-        if (score >= 60) return "#f59e0b"
-        return "#ef4444"
-    }
+        if (score >= 80) return '#10b981';
+        if (score >= 60) return '#f59e0b';
+        return '#ef4444';
+    };
 
     const getGrade = (percentage: number): string => {
-        const grade = (2 + (percentage / 100) * 4).toFixed(2)
-        return grade
-    }
+        const grade = (2 + (percentage / 100) * 4).toFixed(2);
+        return grade;
+    };
 
     // tiny reusable chip (replaces the big square icon + loud badge)
     const TypeChip = () => (
         <span
-            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${isExam ? "bg-emerald-100 text-emerald-800" : "bg-violet-100 text-violet-800"
-                }`}
+            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${
+                isExam ? 'bg-emerald-100 text-emerald-800' : 'bg-violet-100 text-violet-800'
+            }`}
         >
-            {isExam ? (
-                <GraduationCap className="h-3.5 w-3.5" />
-            ) : (
-                <TestTube2 className="h-3.5 w-3.5" />
-            )}
-            {isExam ? "Матура" : "Тест"}
+            {isExam ? <GraduationCap className="h-3.5 w-3.5" /> : <TestTube2 className="h-3.5 w-3.5" />}
+            {isExam ? 'Матура' : 'Тест'}
         </span>
-    )
+    );
 
     const handleClick = () => {
         if (onClick) {
-            onClick()
-            return
+            onClick();
+            return;
         }
-        router.push(`/platform/exam/overview?assessmentId=${result.id}`)
-    }
+        router.push(`/platform/exam/overview?assessmentId=${result.id}`);
+    };
 
     return (
         <Card
@@ -88,15 +85,30 @@ export const ResultRow = ({ result, onClick }: ResultRowProps) => {
 
                     <div className="relative w-14 h-14 sm:w-16 sm:h-16 shrink-0">
                         <svg className="w-full h-full" viewBox="0 0 36 36">
-                            <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#e5e7eb" strokeWidth="2" />
-                            <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke={getProgressColor(result.percentage)} strokeWidth="2" strokeDasharray={`${result.percentage}, 100`} strokeLinecap="round" className="transition-all duration-500 origin-center" />
+                            <path
+                                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                fill="none"
+                                stroke="#e5e7eb"
+                                strokeWidth="2"
+                            />
+                            <path
+                                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                fill="none"
+                                stroke={getProgressColor(result.percentage)}
+                                strokeWidth="2"
+                                strokeDasharray={`${result.percentage}, 100`}
+                                strokeLinecap="round"
+                                className="transition-all duration-500 origin-center"
+                            />
                         </svg>
                         <div className="absolute inset-0 grid place-items-center">
-                            <span className="text-xs sm:text-[15px] font-semibold text-gray-900">{getGrade(result.percentage)}</span>
+                            <span className="text-xs sm:text-[15px] font-semibold text-gray-900">
+                                {getGrade(result.percentage)}
+                            </span>
                         </div>
                     </div>
                 </div>
             </CardContent>
         </Card>
-    )
-}
+    );
+};

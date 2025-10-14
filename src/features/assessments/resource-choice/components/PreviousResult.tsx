@@ -1,5 +1,5 @@
-import { Calendar } from 'lucide-react'
-import React from 'react'
+import { Calendar } from 'lucide-react';
+import React from 'react';
 
 type PreviousResultProps = {
     result: {
@@ -10,16 +10,19 @@ type PreviousResultProps = {
         timeSpent: string;
         score: number;
     };
-}
+};
 const PreviousResult = ({ result }: PreviousResultProps) => {
     const getProgressColor = (score: number) => {
-        if (score >= 80) return "#10b981";
-        if (score >= 60) return "#f59e0b";
-        return "#ef4444";
+        if (score >= 80) return '#10b981';
+        if (score >= 60) return '#f59e0b';
+        return '#ef4444';
     };
 
     return (
-        <div key={result.id} className="p-2 sm:p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors border border-gray-100">
+        <div
+            key={result.id}
+            className="p-2 sm:p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors border border-gray-100"
+        >
             <div className="flex items-center justify-between mb-1 sm:mb-2">
                 <div className="flex items-center gap-1 sm:gap-2">
                     <Calendar className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-gray-500" />
@@ -32,9 +35,7 @@ const PreviousResult = ({ result }: PreviousResultProps) => {
                     <div className="text-sm sm:text-base text-gray-700 mb-0.5 sm:mb-1">
                         {result.correctQuestions}/{result.totalQuestions} правилни
                     </div>
-                    <div className="text-xs sm:text-sm text-gray-500">
-                        {result.timeSpent}
-                    </div>
+                    <div className="text-xs sm:text-sm text-gray-500">{result.timeSpent}</div>
                 </div>
 
                 {/* Circular Progress */}
@@ -70,7 +71,7 @@ const PreviousResult = ({ result }: PreviousResultProps) => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default PreviousResult;

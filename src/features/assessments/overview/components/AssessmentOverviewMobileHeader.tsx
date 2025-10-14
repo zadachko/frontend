@@ -1,7 +1,7 @@
 // components/ResultsMobileHeader.tsx
-import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
-import { LucideIcon } from "lucide-react";
+import { Button } from '@/components/ui/button';
+import { Menu, X } from 'lucide-react';
+import { LucideIcon } from 'lucide-react';
 
 interface AssessmentOverviewMobileHeaderProps {
     showMobileNav: boolean;
@@ -23,21 +23,14 @@ export default function AssessmentOverviewMobileHeader({
     correctAnswers,
     totalQuestions,
 }: AssessmentOverviewMobileHeaderProps) {
-
-
     const toggleMobileNav = () => {
-        setShowMobileNav(!showMobileNav)
-    }
+        setShowMobileNav(!showMobileNav);
+    };
 
     return (
         <div className="sticky top-0 w-screen z-50 bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between shadow-sm">
             <div className="flex items-center gap-3">
-                <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={toggleMobileNav}
-                    className="p-2"
-                >
+                <Button variant="ghost" size="sm" onClick={toggleMobileNav} className="p-2">
                     {showMobileNav ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
                 </Button>
                 <div className="flex items-center gap-2">

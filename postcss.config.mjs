@@ -1,7 +1,7 @@
 // postcss.config.cjs
 const config = {
     plugins: {
-        "@tailwindcss/postcss": {},
+        '@tailwindcss/postcss': {},
     },
 };
 

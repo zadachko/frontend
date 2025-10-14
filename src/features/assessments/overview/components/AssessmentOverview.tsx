@@ -1,15 +1,15 @@
 'use client';
-import { useState, useRef } from "react";
-import { LucideIcon } from "lucide-react";
-import Question from "@/features/question/components/Question";
-import { QuestionsNavigatorGrid } from "@/features/assessments/shared/components/QuestionsNavigatorGrid";
-import { useIsMobile, useIsSmallMobile } from "@/hooks/isMobile";
-import AssessmentOverviewSidebar from "./AssessmentOverviewSidebar";
-import AssessmentOverviewMobileHeader from "./AssessmentOverviewMobileHeader";
-import type { Question as QuestionType } from "@/types";
-import handleSidebarScroll from "../../shared/utils/handleSidebarScroll";
+import { useState, useRef } from 'react';
+import { LucideIcon } from 'lucide-react';
+import Question from '@/features/question/components/Question';
+import { QuestionsNavigatorGrid } from '@/features/assessments/shared/components/QuestionsNavigatorGrid';
+import { useIsMobile, useIsSmallMobile } from '@/hooks/isMobile';
+import AssessmentOverviewSidebar from './AssessmentOverviewSidebar';
+import AssessmentOverviewMobileHeader from './AssessmentOverviewMobileHeader';
+import type { Question as QuestionType } from '@/types';
+import handleSidebarScroll from '../../shared/utils/handleSidebarScroll';
 // import { getQuestionStatusOverview } from "./utils/getQuestionStatus";
-import { getQuestionStatus } from "@/features/assessments/overview/utils/getQuestionStatus";
+import { getQuestionStatus } from '@/features/assessments/overview/utils/getQuestionStatus';
 
 export interface AssessmentResults {
     totalQuestions: number;
@@ -69,7 +69,7 @@ const AssessmentOverview = ({
     const mainContentRef = useRef<HTMLDivElement>(null!);
 
     // Convert questions to the format expected by the Question component
-    const questionsForDisplay = questions.map(q => ({
+    const questionsForDisplay = questions.map((q) => ({
         position: q.position,
         statement: q.statement,
         type: q.type,
@@ -79,12 +79,15 @@ const AssessmentOverview = ({
     }));
 
     // Create answers object for the Question component
-    const answers = questions.reduce((acc, q) => {
-        if (q.userAnswer) {
-            acc[q.position] = q.userAnswer;
-        }
-        return acc;
-    }, {} as { [key: number]: string });
+    const answers = questions.reduce(
+        (acc, q) => {
+            if (q.userAnswer) {
+                acc[q.position] = q.userAnswer;
+            }
+            return acc;
+        },
+        {} as { [key: number]: string }
+    );
 
     // Handle empty questions
     if (!questions.length) {
@@ -99,8 +102,7 @@ const AssessmentOverview = ({
 
     return (
         <div className="min-h-screen bg-gray-50 mx-auto">
-
-            {isMobile &&
+            {isMobile && (
                 <AssessmentOverviewMobileHeader
                     showMobileNav={showMobileNav}
                     setShowMobileNav={setShowMobileNav}
@@ -109,9 +111,11 @@ const AssessmentOverview = ({
                     correctAnswers={results.correctAnswers}
                     totalQuestions={results.totalQuestions}
                 />
-            }
+            )}
 
-            <div className={`${isMobile ? 'flex flex-col' : 'flex'} ${isMobile ? 'h-[calc(100vh-64px)] -mt-[7px]' : 'h-screen'}`}>
+            <div
+                className={`${isMobile ? 'flex flex-col' : 'flex'} ${isMobile ? 'h-[calc(100vh-64px)] -mt-[7px]' : 'h-screen'}`}
+            >
                 {/* Left Column - Questions */}
                 <div
                     ref={mainContentRef}
@@ -131,7 +135,7 @@ const AssessmentOverview = ({
                             {questions.map((question) => (
                                 <div key={question.position} id={`question-${question.position}`}>
                                     <Question
-                                        question={questionsForDisplay.find(q => q.position === question.position)!}
+                                        question={questionsForDisplay.find((q) => q.position === question.position)!}
                                         answers={answers}
                                         isReviewMode={true}
                                         correctAnswer={question.correctAnswer}
@@ -146,10 +150,11 @@ const AssessmentOverview = ({
 
                 {/* Right Sidebar - Navigation */}
                 <div
-                    className={`${isMobile
-                        ? `w-full fixed -mt-[7px] top-16 right-0 z-40 ${isSmallMobile ? 'w-full' : 'w-80'} bg-white border-l border-gray-200 transform transition-transform duration-300 ease-in-out ${showMobileNav ? 'translate-x-0' : 'translate-x-full'} flex flex-col h-[calc(100vh-64px)]`
-                        : 'w-80 bg-white border-l border-gray-200 flex flex-col h-100vh'
-                        }`}
+                    className={`${
+                        isMobile
+                            ? `w-full fixed -mt-[7px] top-16 right-0 z-40 ${isSmallMobile ? 'w-full' : 'w-80'} bg-white border-l border-gray-200 transform transition-transform duration-300 ease-in-out ${showMobileNav ? 'translate-x-0' : 'translate-x-full'} flex flex-col h-[calc(100vh-64px)]`
+                            : 'w-80 bg-white border-l border-gray-200 flex flex-col h-100vh'
+                    }`}
                     onWheel={(event) => handleSidebarScroll(event, mainContentRef)}
                 >
                     {/* Overview Data */}
@@ -168,7 +173,9 @@ const AssessmentOverview = ({
                     />
 
                     {/* Questions Navigator Grid - Centered */}
-                    <div className={`${isMobile ? 'flex-1 overflow-y-auto' : 'flex-1'} flex items-start justify-center`}>
+                    <div
+                        className={`${isMobile ? 'flex-1 overflow-y-auto' : 'flex-1'} flex items-start justify-center`}
+                    >
                         <QuestionsNavigatorGrid
                             answers={answers}
                             totalQuestions={questions.length}

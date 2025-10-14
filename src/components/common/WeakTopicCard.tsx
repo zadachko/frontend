@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import React from 'react';
-import type { WeakTopic } from "@/types"
+import type { WeakTopic } from '@/types';
 
 type WeakTopicCardProps = {
     topic: WeakTopic;
@@ -31,12 +31,15 @@ const WeakTopicCard = ({ topic, index, icon: Icon }: WeakTopicCardProps) => {
                 </div>
             </div>
             <div className="flex flex-col gap-2 w-full md:w-40">
-                <Button size="lg" className="bg-[#6F58C9] hover:bg-[#5A4BA3] text-white font-semibold w-full transition-all animate-bounce-once">
+                <Button
+                    size="lg"
+                    className="bg-[#6F58C9] hover:bg-[#5A4BA3] text-white font-semibold w-full transition-all animate-bounce-once"
+                >
                     Упражнявай
                 </Button>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default WeakTopicCard;

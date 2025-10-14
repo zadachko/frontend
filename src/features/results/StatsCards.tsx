@@ -1,47 +1,47 @@
-import { Card, CardContent } from "@/components/ui/card"
-import { Trophy, Target, TestTube, GraduationCap } from "lucide-react"
-import type { TestResult } from "@/types"
+import { Card, CardContent } from '@/components/ui/card';
+import { Trophy, Target, TestTube, GraduationCap } from 'lucide-react';
+import type { TestResult } from '@/types';
 
 interface StatsCardsProps {
-    results: TestResult[]
+    results: TestResult[];
 }
 
 export const StatsCards = ({ results }: StatsCardsProps) => {
-    const avgScore = Math.round(results.reduce((sum, r) => sum + r.percentage, 0) / results.length)
-    const bestScore = Math.max(...results.map((r) => r.percentage))
-    const totalTests = results.filter((r) => r.type === "test").length
-    const totalExams = results.filter((r) => r.type === "exam").length
+    const avgScore = Math.round(results.reduce((sum, r) => sum + r.percentage, 0) / results.length);
+    const bestScore = Math.max(...results.map((r) => r.percentage));
+    const totalTests = results.filter((r) => r.type === 'test').length;
+    const totalExams = results.filter((r) => r.type === 'exam').length;
 
     const cardData = [
         {
-            label: "Най-добър резултат",
+            label: 'Най-добър резултат',
             value: `${bestScore}%`,
             icon: Trophy,
-            color: "bg-blue-100",
-            iconColor: "text-blue-600",
+            color: 'bg-blue-100',
+            iconColor: 'text-blue-600',
         },
         {
-            label: "Среден резултат",
+            label: 'Среден резултат',
             value: `${avgScore}%`,
             icon: Target,
-            color: "bg-amber-100",
-            iconColor: "text-amber-600",
+            color: 'bg-amber-100',
+            iconColor: 'text-amber-600',
         },
         {
-            label: "Решени тестове",
+            label: 'Решени тестове',
             value: totalTests,
             icon: TestTube,
-            color: "bg-purple-100",
-            iconColor: "text-purple-600",
+            color: 'bg-purple-100',
+            iconColor: 'text-purple-600',
         },
         {
-            label: "Решени матури",
+            label: 'Решени матури',
             value: totalExams,
             icon: GraduationCap,
-            color: "bg-emerald-100",
-            iconColor: "text-emerald-600",
+            color: 'bg-emerald-100',
+            iconColor: 'text-emerald-600',
         },
-    ]
+    ];
 
     return (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-4 sm:mb-6">
@@ -60,5 +60,5 @@ export const StatsCards = ({ results }: StatsCardsProps) => {
                 </Card>
             ))}
         </div>
-    )
-}
+    );
+};

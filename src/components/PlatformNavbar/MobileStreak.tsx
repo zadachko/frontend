@@ -1,26 +1,26 @@
-"use client"
+'use client';
 
-import { Flame, Calendar, Trophy, Target } from "lucide-react"
-import { streakData, weekDays } from "./mock-data"
-import type { MobileMenuType } from "./navbar-types"
+import { Flame, Calendar, Trophy, Target } from 'lucide-react';
+import { streakData, weekDays } from './mock-data';
+import type { MobileMenuType } from './navbar-types';
 
 interface MobileStreakProps {
-    openMobileMenu: MobileMenuType
-    setOpenMobileMenu: (menu: MobileMenuType) => void
+    openMobileMenu: MobileMenuType;
+    setOpenMobileMenu: (menu: MobileMenuType) => void;
 }
 
 export function MobileStreak({ openMobileMenu, setOpenMobileMenu }: MobileStreakProps) {
     return (
         <div className="relative md:hidden">
             <button
-                onClick={() => setOpenMobileMenu(openMobileMenu === "streak" ? null : "streak")}
+                onClick={() => setOpenMobileMenu(openMobileMenu === 'streak' ? null : 'streak')}
                 className="flex items-center gap-1 px-2 py-1 text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-colors backdrop-blur-sm"
             >
                 <Flame className="w-4 h-4 text-orange-300" />
                 <span className="font-medium text-sm">{streakData.current}</span>
             </button>
 
-            {openMobileMenu === "streak" && (
+            {openMobileMenu === 'streak' && (
                 <>
                     <div className="pointer-events-none absolute -bottom-4.5 sm:-bottom-3.5 left-1/2 -translate-x-1/2 z-50 w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-b-[8px] border-b-white"></div>
 
@@ -47,8 +47,11 @@ export function MobileStreak({ openMobileMenu, setOpenMobileMenu }: MobileStreak
                                     {weekDays.map((day, index) => (
                                         <div key={index} className="flex flex-col items-center gap-2">
                                             <div
-                                                className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium ${streakData.thisWeek[index] ? "bg-[#755bc5] text-white shadow-lg" : "bg-gray-100 text-gray-400"
-                                                    }`}
+                                                className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium ${
+                                                    streakData.thisWeek[index]
+                                                        ? 'bg-[#755bc5] text-white shadow-lg'
+                                                        : 'bg-gray-100 text-gray-400'
+                                                }`}
                                             >
                                                 {day}
                                             </div>
@@ -76,11 +79,10 @@ export function MobileStreak({ openMobileMenu, setOpenMobileMenu }: MobileStreak
                                 />
                             </div>
 
-
                             <div className="mt-8 p-6 bg-gradient-to-r from-[#f0eeff] to-white border border-[#755bc5]/20 rounded-xl">
                                 <p className="text-lg text-center text-gray-600">
-                                    <span className="font-bold text-[#755bc5]">Съвет:</span> Решавай поне една задача всеки ден за да
-                                    запазиш серията си!
+                                    <span className="font-bold text-[#755bc5]">Съвет:</span> Решавай поне една задача
+                                    всеки ден за да запазиш серията си!
                                 </p>
                             </div>
                         </div>
@@ -88,7 +90,7 @@ export function MobileStreak({ openMobileMenu, setOpenMobileMenu }: MobileStreak
                 </>
             )}
         </div>
-    )
+    );
 }
 
 type StatCardProps = {

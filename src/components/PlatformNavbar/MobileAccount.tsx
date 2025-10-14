@@ -1,23 +1,23 @@
-"use client"
+'use client';
 
-import Link from "next/link"
-import { User, BarChart3, Star, Settings, CreditCard, LogOut } from "lucide-react"
-import { userData } from "./mock-data"
-import type { MobileMenuType } from "./navbar-types"
-import Image from "next/image"
+import Link from 'next/link';
+import { User, BarChart3, Star, Settings, CreditCard, LogOut } from 'lucide-react';
+import { userData } from './mock-data';
+import type { MobileMenuType } from './navbar-types';
+import Image from 'next/image';
 
 interface MobileAccountProps {
-    openMobileMenu: MobileMenuType
-    setOpenMobileMenu: (menu: MobileMenuType) => void
+    openMobileMenu: MobileMenuType;
+    setOpenMobileMenu: (menu: MobileMenuType) => void;
 }
 
 export function MobileAccount({ openMobileMenu, setOpenMobileMenu }: MobileAccountProps) {
-    const xpProgress = (userData.currentXP / (userData.currentXP + userData.xpToNextLevel)) * 100
+    const xpProgress = (userData.currentXP / (userData.currentXP + userData.xpToNextLevel)) * 100;
 
     return (
         <div className="relative md:hidden">
             <button
-                onClick={() => setOpenMobileMenu(openMobileMenu === "account" ? null : "account")}
+                onClick={() => setOpenMobileMenu(openMobileMenu === 'account' ? null : 'account')}
                 className="flex items-center gap-1 p-1.5 text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-colors backdrop-blur-sm"
             >
                 <div className="w-7 h-7 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/30">
@@ -25,7 +25,7 @@ export function MobileAccount({ openMobileMenu, setOpenMobileMenu }: MobileAccou
                 </div>
             </button>
 
-            {openMobileMenu === "account" && (
+            {openMobileMenu === 'account' && (
                 <>
                     <div className="pointer-events-none absolute -bottom-3 sm:-bottom-2 left-1/2 -translate-x-1/2 z-50 w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-b-[8px] border-b-white"></div>
 
@@ -37,7 +37,7 @@ export function MobileAccount({ openMobileMenu, setOpenMobileMenu }: MobileAccou
                                     <div className="relative">
                                         <div className="w-20 h-20 rounded-full border-4 border-white overflow-hidden bg-gray-100 shadow-lg">
                                             <Image
-                                                src={userData.avatar || "/placeholder.svg?height=80&width=80"}
+                                                src={userData.avatar || '/placeholder.svg?height=80&width=80'}
                                                 alt={userData.name}
                                                 className="w-full h-full object-cover"
                                                 width={80}
@@ -54,7 +54,9 @@ export function MobileAccount({ openMobileMenu, setOpenMobileMenu }: MobileAccou
                                         <div className="flex items-center gap-6 mt-3">
                                             <div className="flex items-center gap-2">
                                                 <BarChart3 className="w-5 h-5 text-[#755bc5]" />
-                                                <span className="text-base font-medium text-gray-600">Ниво {userData.level}</span>
+                                                <span className="text-base font-medium text-gray-600">
+                                                    Ниво {userData.level}
+                                                </span>
                                             </div>
                                             <div className="flex items-center gap-2">
                                                 <Star className="w-5 h-5 text-yellow-500" />
@@ -114,5 +116,5 @@ export function MobileAccount({ openMobileMenu, setOpenMobileMenu }: MobileAccou
                 </>
             )}
         </div>
-    )
+    );
 }
