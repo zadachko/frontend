@@ -4,7 +4,6 @@ import { Menu, X } from "lucide-react";
 import { LucideIcon } from "lucide-react";
 
 interface AssessmentOverviewMobileHeaderProps {
-    isMobile: boolean;
     showMobileNav: boolean;
     setShowMobileNav: (show: boolean) => void;
 
@@ -17,7 +16,6 @@ interface AssessmentOverviewMobileHeaderProps {
 }
 
 export default function AssessmentOverviewMobileHeader({
-    isMobile,
     showMobileNav,
     setShowMobileNav,
     Icon,
@@ -25,7 +23,6 @@ export default function AssessmentOverviewMobileHeader({
     correctAnswers,
     totalQuestions,
 }: AssessmentOverviewMobileHeaderProps) {
-    if (!isMobile) return null;
 
 
     const toggleMobileNav = () => {
@@ -33,7 +30,7 @@ export default function AssessmentOverviewMobileHeader({
     }
 
     return (
-        <div className="sticky top-0 z-50 bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between shadow-sm">
+        <div className="sticky top-0 w-screen z-50 bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between shadow-sm">
             <div className="flex items-center gap-3">
                 <Button
                     variant="ghost"

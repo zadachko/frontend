@@ -1,9 +1,8 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Clock } from "lucide-react";
 import { QuestionsNavigatorGrid } from "../../shared/components/QuestionsNavigatorGrid";
 import { colors } from "../../../../app/(platform-layout)/platform/exam/colors.config";
-import { useEffect, useState } from "react";
+import { Clock } from "./Clocks";
 
 
 interface AssessmentSidebarProps {
@@ -54,29 +53,6 @@ export default function AssessmentSidebar({
         setShowSubmitDialog(true)
     }
 
-    const [timeLeft, setTimeLeft] = useState(90 * 60) // 90 minutes in seconds
-
-
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setTimeLeft((prev) => {
-                if (prev <= 1) {
-                    clearInterval(timer)
-                    return 0
-                }
-                return prev - 1
-            })
-        }, 1000)
-
-        return () => clearInterval(timer)
-    }, [])
-
-    // Format time display
-    const formatTime = (seconds: number) => {
-        const minutes = Math.floor(seconds / 60)
-        const secs = seconds % 60
-        return `${minutes.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`
-    }
 
     return (
         <div
@@ -94,10 +70,7 @@ export default function AssessmentSidebar({
                     <Card className={`bg-gradient-to-r ${colors.timer.gradientFrom} ${colors.timer.gradientTo} border-0 shadow-md`}>
                         <CardContent className="p-0 text-center">
                             <div className="flex items-center justify-center gap-2 text-white">
-                                <Clock className="w-5 h-5" />
-                                <span className="font-mono text-2xl font-bold">
-                                    {formatTime(timeLeft)}
-                                </span>
+                                <Clock mobile={isMobile} />
                             </div>
                             <p className={`${colors.timer.subTextClass} text-sm mt-1`}>Оставащо време</p>
                         </CardContent>

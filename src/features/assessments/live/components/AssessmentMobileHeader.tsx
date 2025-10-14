@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { Menu, X, Clock } from "lucide-react";
-import { useEffect, useState } from "react";
-
+import { Menu, X } from "lucide-react";
+import { Clock } from "./Clocks";
 interface AssessmentMobileHeaderProps {
     showMobileNav: boolean;
     setShowMobileNav: (show: boolean) => void;
@@ -33,29 +32,8 @@ export function AssessmentMobileHeader({
         setShowSubmitDialog(true)
     }
 
-    const [timeLeft, setTimeLeft] = useState(90 * 60) // 90 minutes in seconds
 
 
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setTimeLeft((prev) => {
-                if (prev <= 1) {
-                    clearInterval(timer)
-                    return 0
-                }
-                return prev - 1
-            })
-        }, 1000)
-
-        return () => clearInterval(timer)
-    }, [])
-
-    // Format time display
-    const formatTime = (seconds: number) => {
-        const minutes = Math.floor(seconds / 60)
-        const secs = seconds % 60
-        return `${minutes.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`
-    }
 
     return (
         <div className="sticky top-0 z-50 bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between shadow-sm">
@@ -73,10 +51,7 @@ export function AssessmentMobileHeader({
                     )}
                 </Button>
                 <div className="flex items-center gap-2">
-                    <Clock className={`w-4 h-4 ${clockColor}`} />
-                    <span className={`font-mono text-lg font-bold ${clockColor}`}>
-                        {formatTime(timeLeft)}
-                    </span>
+                    <Clock clockColor={clockColor} mobile={true} />
                 </div>
             </div>
             <Button

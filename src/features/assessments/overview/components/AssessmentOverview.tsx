@@ -99,16 +99,17 @@ const AssessmentOverview = ({
 
     return (
         <div className="min-h-screen bg-gray-50 mx-auto">
-            {/* Mobile Header - Outside scrollable container */}
-            <AssessmentOverviewMobileHeader
-                isMobile={isMobile}
-                showMobileNav={showMobileNav}
-                setShowMobileNav={setShowMobileNav}
-                Icon={Icon}
-                iconColor={iconColor}
-                correctAnswers={results.correctAnswers}
-                totalQuestions={results.totalQuestions}
-            />
+
+            {isMobile &&
+                <AssessmentOverviewMobileHeader
+                    showMobileNav={showMobileNav}
+                    setShowMobileNav={setShowMobileNav}
+                    Icon={Icon}
+                    iconColor={iconColor}
+                    correctAnswers={results.correctAnswers}
+                    totalQuestions={results.totalQuestions}
+                />
+            }
 
             <div className={`${isMobile ? 'flex flex-col' : 'flex'} ${isMobile ? 'h-[calc(100vh-64px)] -mt-[7px]' : 'h-screen'}`}>
                 {/* Left Column - Questions */}
