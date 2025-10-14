@@ -4,11 +4,10 @@ import { LucideIcon } from 'lucide-react';
 import Question from '@/features/question/components/Question';
 import { QuestionsNavigatorGrid } from '@/features/assessments/shared/components/QuestionsNavigatorGrid';
 import { useIsMobile, useIsSmallMobile } from '@/hooks/isMobile';
-import AssessmentOverviewSidebar from './AssessmentOverviewSidebar';
+import AssessmentSidebar from '../../shared/components/AssessmentSidebar';
 import AssessmentMobileHeader from '../../shared/components/AssessmentMobileHeader';
 import type { Question as QuestionType } from '@/types';
 import handleSidebarScroll from '../../shared/utils/handleSidebarScroll';
-// import { getQuestionStatusOverview } from "./utils/getQuestionStatus";
 import { getQuestionStatus } from '@/features/assessments/overview/utils/getQuestionStatus';
 
 export interface AssessmentResults {
@@ -158,7 +157,13 @@ const AssessmentOverview = ({
                     onWheel={(event) => handleSidebarScroll(event, mainContentRef)}
                 >
                     {/* Overview Data */}
-                    <AssessmentOverviewSidebar
+                    <AssessmentSidebar
+                        assessmentModeType="overview"
+                        isMobile={isMobile}
+                        isSmallMobile={isSmallMobile}
+                        showMobileNav={showMobileNav}
+                        setShowMobileNav={setShowMobileNav}
+                        handleSidebarScroll={(event) => handleSidebarScroll(event, mainContentRef)}
                         title={title}
                         badge={badge}
                         results={{
@@ -171,6 +176,7 @@ const AssessmentOverview = ({
                         timeColor={timeColor}
                         timeTextColor={timeTextColor}
                     />
+
 
                     {/* Questions Navigator Grid - Centered */}
                     <div

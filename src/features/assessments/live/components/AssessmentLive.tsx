@@ -4,7 +4,7 @@ import Question from '@/features/question/components/Question';
 import { useIsMobile, useIsSmallMobile } from '@/hooks/isMobile';
 import AssessmentSubmitDialog from './AssessmentSubmitDialog';
 import AssessmentMobileHeader from '../../shared/components/AssessmentMobileHeader';
-import AssessmentSidebar from './AssessmentSidebar';
+import AssessmentSidebar from '../../shared/components/AssessmentSidebar';
 import type { Question as QuestionType } from '@/types';
 import handleSidebarScroll from '../../shared/utils/handleSidebarScroll';
 import { getQuestionStatus } from '@/features/assessments/live/utils/getQuestionStatus';
@@ -151,19 +151,21 @@ const AssessmentLive = ({
 
                 {/* Right Sidebar - Navigation */}
                 <AssessmentSidebar
+                    assessmentModeType="live"
                     isMobile={isMobile}
                     isSmallMobile={isSmallMobile}
                     showMobileNav={showMobileNav}
+                    setShowMobileNav={setShowMobileNav}
                     handleSidebarScroll={(event) => handleSidebarScroll(event, mainContentRef)}
                     answers={answers}
                     totalQuestions={totalQuestions}
                     getQuestionStatus={(questionId) => getQuestionStatus(answers, questionId)}
                     currentQuestion={currentQuestion}
-                    setShowMobileNav={setShowMobileNav}
                     setShowSubmitDialog={setShowSubmitDialog}
                     colors={colors}
                     setCurrentQuestion={setCurrentQuestion}
                 />
+
             </div>
 
             {/* Submit Confirmation Dialog */}
