@@ -68,14 +68,9 @@ export type LoginInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  createAssessment: Assessment;
   login: AuthResponse;
   refreshToken: AuthResponse;
-};
-
-
-export type MutationCreateAssessmentArgs = {
-  input: CreateAssessmentInput;
+  startAssessmentSession: Assessment;
 };
 
 
@@ -86,6 +81,11 @@ export type MutationLoginArgs = {
 
 export type MutationRefreshTokenArgs = {
   refreshToken: Scalars['String']['input'];
+};
+
+
+export type MutationStartAssessmentSessionArgs = {
+  input: CreateAssessmentInput;
 };
 
 export type Point = {
@@ -203,12 +203,12 @@ export type RefreshTokenMutationVariables = Exact<{
 
 export type RefreshTokenMutation = { __typename?: 'Mutation', refreshToken: { __typename?: 'AuthResponse', accessToken: string, refreshToken: string, user: { __typename?: 'User', id: string, email: string, firstName: string, lastName: string, createdAt: Date, lastLoginAt: Date, updatedAt: Date, role: { __typename?: 'Role', name: string } } } };
 
-export type CreateAssessmentMutationVariables = Exact<{
+export type StartAssessmentSessionMutationVariables = Exact<{
   input: CreateAssessmentInput;
 }>;
 
 
-export type CreateAssessmentMutation = { __typename?: 'Mutation', createAssessment: { __typename?: 'Assessment', id: string, questions: Array<{ __typename?: 'AssessmentQuestion', position: number, question: { __typename?: 'Question', statement: string } }> } };
+export type StartAssessmentSessionMutation = { __typename?: 'Mutation', startAssessmentSession: { __typename?: 'Assessment', id: string, questions: Array<{ __typename?: 'AssessmentQuestion', position: number, question: { __typename?: 'Question', statement: string } }> } };
 
 export type GetCurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -320,9 +320,9 @@ export function useRefreshTokenMutation(baseOptions?: Apollo.MutationHookOptions
 export type RefreshTokenMutationHookResult = ReturnType<typeof useRefreshTokenMutation>;
 export type RefreshTokenMutationResult = Apollo.MutationResult<RefreshTokenMutation>;
 export type RefreshTokenMutationOptions = Apollo.BaseMutationOptions<RefreshTokenMutation, RefreshTokenMutationVariables>;
-export const CreateAssessmentDocument = gql`
-    mutation CreateAssessment($input: CreateAssessmentInput!) {
-  createAssessment(input: $input) {
+export const StartAssessmentSessionDocument = gql`
+    mutation StartAssessmentSession($input: CreateAssessmentInput!) {
+  startAssessmentSession(input: $input) {
     id
     questions {
       position
@@ -333,32 +333,32 @@ export const CreateAssessmentDocument = gql`
   }
 }
     `;
-export type CreateAssessmentMutationFn = Apollo.MutationFunction<CreateAssessmentMutation, CreateAssessmentMutationVariables>;
+export type StartAssessmentSessionMutationFn = Apollo.MutationFunction<StartAssessmentSessionMutation, StartAssessmentSessionMutationVariables>;
 
 /**
- * __useCreateAssessmentMutation__
+ * __useStartAssessmentSessionMutation__
  *
- * To run a mutation, you first call `useCreateAssessmentMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateAssessmentMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useStartAssessmentSessionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useStartAssessmentSessionMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [createAssessmentMutation, { data, loading, error }] = useCreateAssessmentMutation({
+ * const [startAssessmentSessionMutation, { data, loading, error }] = useStartAssessmentSessionMutation({
  *   variables: {
  *      input: // value for 'input'
  *   },
  * });
  */
-export function useCreateAssessmentMutation(baseOptions?: Apollo.MutationHookOptions<CreateAssessmentMutation, CreateAssessmentMutationVariables>) {
+export function useStartAssessmentSessionMutation(baseOptions?: Apollo.MutationHookOptions<StartAssessmentSessionMutation, StartAssessmentSessionMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateAssessmentMutation, CreateAssessmentMutationVariables>(CreateAssessmentDocument, options);
+        return Apollo.useMutation<StartAssessmentSessionMutation, StartAssessmentSessionMutationVariables>(StartAssessmentSessionDocument, options);
       }
-export type CreateAssessmentMutationHookResult = ReturnType<typeof useCreateAssessmentMutation>;
-export type CreateAssessmentMutationResult = Apollo.MutationResult<CreateAssessmentMutation>;
-export type CreateAssessmentMutationOptions = Apollo.BaseMutationOptions<CreateAssessmentMutation, CreateAssessmentMutationVariables>;
+export type StartAssessmentSessionMutationHookResult = ReturnType<typeof useStartAssessmentSessionMutation>;
+export type StartAssessmentSessionMutationResult = Apollo.MutationResult<StartAssessmentSessionMutation>;
+export type StartAssessmentSessionMutationOptions = Apollo.BaseMutationOptions<StartAssessmentSessionMutation, StartAssessmentSessionMutationVariables>;
 export const GetCurrentUserDocument = gql`
     query GetCurrentUser {
   me {

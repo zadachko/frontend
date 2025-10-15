@@ -70,7 +70,7 @@ const AssessmentStartFlow = ({
                     <Button
                         variant="outline"
                         onClick={() => setIsDialogOpen(false)}
-                        className="border-gray-300 text-gray-700 hover:bg-gray-50 w-full sm:w-auto"
+                        className="border-gray-300 text-gray-700 hover:bg-gray-50 w-full sm:w-auto cursor-pointer"
                     >
                         Отказ
                     </Button>
@@ -78,8 +78,32 @@ const AssessmentStartFlow = ({
                         onClick={handleConfirmExam}
                         className={`bg-gradient-to-r ${colors.buttonGradient} ${colors.buttonHoverGradient} text-white w-full sm:w-auto`}
                     >
-                        <Play className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
-                        {loading ? 'Зареждане на изпита...' : 'Започни Изпита'}
+
+                        {/* {loading ? 'Зареждане на изпита...' : 'Започни Изпита'} */}
+                        {loading ? (
+                            <span className="flex items-center justify-center">
+                                <div className="w-6 h-6 flex items-center justify-center">
+                                    <svg viewBox="22 22 44 44" className="animate-spin">
+                                        <circle
+                                            cx="44"
+                                            cy="44"
+                                            r="20.2"
+                                            fill="none"
+                                            strokeWidth="3.6"
+                                            strokeDasharray="80px, 200px"
+                                            strokeDashoffset="0"
+                                            className="stroke-white"
+                                        ></circle>
+                                    </svg>
+                                </div>
+                            </span>
+                        ) : (
+
+                            <>
+                                <Play className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+                                Започни Изпита
+                            </>
+                        )}
                     </Button>
                 </DialogFooter>
             </DialogContent>
