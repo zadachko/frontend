@@ -10,7 +10,7 @@ import { useCreateAssessmentMutation } from '@/services/gql/operations';
 
 const Page = () => {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
-    const [createAssessment, { data: createAssessmentData, loading: createAssessmentLoading, error: createAssessmentError }] = useCreateAssessmentMutation();
+    const [createAssessment, { loading: createAssessmentLoading }] = useCreateAssessmentMutation();
 
     // Green color scheme for exam page
     const greenColors = {
@@ -72,29 +72,31 @@ const Page = () => {
     };
 
     const HandleConfirmExam = async () => {
-
-
-        await createAssessment({
-            variables: {
-                input: {
-                    title: 'Пробен Изпит',
-                    type: 'TESTING',
+        try {
+            const result = await createAssessment({
+                variables: {
+                    input: {
+                        title: 'Пробен Изпит',
+                        type: 'TONI',
+                    },
                 },
-            },
-        });
+            });
 
-        if (createAssessmentError) {
-            throw new Error('Create assessment error: ' + createAssessmentError.message);
+            if (result.errors) {
+                throw new Error('Create assessment error: ' + result.errors[0].message);
+            }
 
+            if (!result.data) {
+                throw new Error('The server did not return a valid assessment response');
+            }
+
+            console.log('Create assessment data:', result.data);
+            setIsDialogOpen(false);
+            window.location.href = '/platform/exam/live?assessmentId=' + result.data.createAssessment.id;
+        } catch (error) {
+            console.error('Error creating assessment:', error);
+            // Handle error appropriately - maybe show a toast or error message
         }
-        if (!createAssessmentData) {
-            throw new Error('The server did not return a valid assessment response');
-        }
-
-
-        console.log('Create assessment data: ' + createAssessmentData.createAssessment.id);
-        setIsDialogOpen(false);
-        window.location.href = '/platform/exam/live?assessmentId=' + createAssessmentData.createAssessment.id;
 
     };
 
