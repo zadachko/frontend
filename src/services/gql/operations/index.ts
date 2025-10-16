@@ -224,7 +224,7 @@ export type StartAssessmentSessionMutationVariables = Exact<{
 }>;
 
 
-export type StartAssessmentSessionMutation = { __typename?: 'Mutation', startAssessmentSession: { __typename?: 'AssessmentSession', id: string, assessment: { __typename?: 'Assessment', questions: Array<{ __typename?: 'AssessmentQuestion', position: number, question: { __typename?: 'Question', statement: string } }> } } };
+export type StartAssessmentSessionMutation = { __typename?: 'Mutation', startAssessmentSession: { __typename?: 'AssessmentSession', id: string, assessment: { __typename?: 'Assessment', id: string, questions: Array<{ __typename?: 'AssessmentQuestion', position: number, question: { __typename?: 'Question', statement: string } }> } } };
 
 export type GetCurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -341,6 +341,7 @@ export const StartAssessmentSessionDocument = gql`
   startAssessmentSession(input: $input) {
     id
     assessment {
+      id
       questions {
         position
         question {

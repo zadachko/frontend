@@ -2,6 +2,7 @@ mutation StartAssessmentSession($input: StartAssessmentSessionInput!) {
     startAssessmentSession(input: $input) {
         id
         assessment {
+            id
             questions {
                 position
                 question {

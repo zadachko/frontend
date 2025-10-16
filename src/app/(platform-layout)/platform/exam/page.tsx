@@ -91,7 +91,7 @@ const Page = () => {
 
             console.log('Create assessment data:', result.data);
             setIsDialogOpen(false);
-            window.location.href = '/platform/exam/live?assessmentId=' + result.data.startAssessmentSession.id;
+            window.location.href = '/platform/exam/live?assessmentId=' + result.data.startAssessmentSession.assessment.id;
         } catch (error) {
 
             toast.error('Настъпи грешка при стартиране на изпита. Моля, опитайте отново.');

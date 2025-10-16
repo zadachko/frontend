@@ -2,8 +2,9 @@
 import React from 'react';
 import { useSearchParams } from 'next/navigation';
 import AssessmentLoading from '@/components/common/AssessmentLoading';
-import { useGetMyAssessmentQuery } from '@/services/gql/operations';
+import noAssessment from '@/components/common/noAssessment';
 import { GraduationCap } from 'lucide-react';
+import { useGetMyAssessmentQuery } from '@/services/gql/operations';
 import { Question as QuestionType } from '@/types';
 import { AssessmentResults } from '@/features/assessments/overview/components/AssessmentOverview';
 import AssessmentOverview from '@/features/assessments/overview/components/AssessmentOverview';
@@ -14,26 +15,6 @@ type AssessmentColors = typeof ExamColors.colors | typeof TestColors.colors;
 
 const isAssessmentIdProvided = (assessmentId: string | null): assessmentId is string => {
     return typeof assessmentId === 'string' && assessmentId !== '';
-};
-const noAssessmentView = () => {
-    return (
-        <div className="min-h-screen bg-gray-50 flex items-center justify-center w-screen">
-            <div className="text-center">
-                <GraduationCap className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-                <h1 className="text-2xl font-semibold text-gray-900 mb-2">Изпит не е намерен</h1>
-                <p className="text-gray-600 mb-6">
-                    Не можем да намерим изпита, който търсите. Моля, проверете връзката или се върнете към списъка с
-                    изпити.
-                </p>
-                <button
-                    onClick={() => window.history.back()}
-                    className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-                >
-                    Назад
-                </button>
-            </div>
-        </div>
-    );
 };
 
 const ResultsLoader = ({ colors }: { colors: AssessmentColors }) => {
@@ -47,15 +28,15 @@ const ResultsLoader = ({ colors }: { colors: AssessmentColors }) => {
         skip: !validAssessmentId,
     });
 
-    if (!validAssessmentId) return noAssessmentView();
+    if (!validAssessmentId) return noAssessment();
 
     if (loading) {
         return <AssessmentLoading text="Зареждане на резултатите..." />;
     }
 
     // Handle error state
-    if (error) {
-        return noAssessmentView();
+    if (error || !data) {
+        return noAssessment();
     }
 
     const questions: QuestionType[] =
@@ -80,8 +61,8 @@ const ResultsLoader = ({ colors }: { colors: AssessmentColors }) => {
         score:
             questions.length > 0
                 ? Math.round(
-                      (questions.filter((q) => q.userAnswer === q.correctAnswer).length / questions.length) * 100
-                  )
+                    (questions.filter((q) => q.userAnswer === q.correctAnswer).length / questions.length) * 100
+                )
                 : 0,
         timeSpent: '85 минути', // This would come from the backend
         examDate: '15 декември 2024', // This would come from the backend
