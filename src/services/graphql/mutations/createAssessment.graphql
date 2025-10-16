@@ -1,10 +1,12 @@
-mutation StartAssessmentSession($input: CreateAssessmentInput!) {
+mutation StartAssessmentSession($input: StartAssessmentSessionInput!) {
     startAssessmentSession(input: $input) {
         id
-        questions {
-            position
-            question {
-                statement
+        assessment {
+            questions {
+                position
+                question {
+                    statement
+                }
             }
         }
     }

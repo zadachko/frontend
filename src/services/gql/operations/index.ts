@@ -16,6 +16,7 @@ export type Scalars = {
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
   Date: { input: Date; output: Date; }
+  JSON: { input: any; output: any; }
 };
 
 export type Angle = {
@@ -41,16 +42,26 @@ export type AssessmentQuestion = {
   question: Question;
 };
 
+export type AssessmentSession = {
+  __typename?: 'AssessmentSession';
+  assessment: Assessment;
+  assessmentId: Scalars['String']['output'];
+  createdAt: Scalars['Date']['output'];
+  expiresAt?: Maybe<Scalars['Date']['output']>;
+  id: Scalars['ID']['output'];
+  lastActivityAt?: Maybe<Scalars['Date']['output']>;
+  sessionData?: Maybe<Scalars['JSON']['output']>;
+  startedAt: Scalars['Date']['output'];
+  status: Scalars['String']['output'];
+  updatedAt: Scalars['Date']['output'];
+  userId: Scalars['String']['output'];
+};
+
 export type AuthResponse = {
   __typename?: 'AuthResponse';
   accessToken: Scalars['String']['output'];
   refreshToken: Scalars['String']['output'];
   user: User;
-};
-
-export type CreateAssessmentInput = {
-  title: Scalars['String']['input'];
-  type: Scalars['String']['input'];
 };
 
 export type Edge = {
@@ -70,7 +81,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   login: AuthResponse;
   refreshToken: AuthResponse;
-  startAssessmentSession: Assessment;
+  startAssessmentSession: AssessmentSession;
 };
 
 
@@ -85,7 +96,7 @@ export type MutationRefreshTokenArgs = {
 
 
 export type MutationStartAssessmentSessionArgs = {
-  input: CreateAssessmentInput;
+  input: StartAssessmentSessionInput;
 };
 
 export type Point = {
@@ -156,6 +167,11 @@ export type SolutionStep = {
   subSteps?: Maybe<Array<Scalars['String']['output']>>;
 };
 
+export type StartAssessmentSessionInput = {
+  title: Scalars['String']['input'];
+  type: Scalars['String']['input'];
+};
+
 export type StepAction = {
   __typename?: 'StepAction';
   angleData?: Maybe<Angle>;
@@ -204,11 +220,11 @@ export type RefreshTokenMutationVariables = Exact<{
 export type RefreshTokenMutation = { __typename?: 'Mutation', refreshToken: { __typename?: 'AuthResponse', accessToken: string, refreshToken: string, user: { __typename?: 'User', id: string, email: string, firstName: string, lastName: string, createdAt: Date, lastLoginAt: Date, updatedAt: Date, role: { __typename?: 'Role', name: string } } } };
 
 export type StartAssessmentSessionMutationVariables = Exact<{
-  input: CreateAssessmentInput;
+  input: StartAssessmentSessionInput;
 }>;
 
 
-export type StartAssessmentSessionMutation = { __typename?: 'Mutation', startAssessmentSession: { __typename?: 'Assessment', id: string, questions: Array<{ __typename?: 'AssessmentQuestion', position: number, question: { __typename?: 'Question', statement: string } }> } };
+export type StartAssessmentSessionMutation = { __typename?: 'Mutation', startAssessmentSession: { __typename?: 'AssessmentSession', id: string, assessment: { __typename?: 'Assessment', questions: Array<{ __typename?: 'AssessmentQuestion', position: number, question: { __typename?: 'Question', statement: string } }> } } };
 
 export type GetCurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -321,13 +337,15 @@ export type RefreshTokenMutationHookResult = ReturnType<typeof useRefreshTokenMu
 export type RefreshTokenMutationResult = Apollo.MutationResult<RefreshTokenMutation>;
 export type RefreshTokenMutationOptions = Apollo.BaseMutationOptions<RefreshTokenMutation, RefreshTokenMutationVariables>;
 export const StartAssessmentSessionDocument = gql`
-    mutation StartAssessmentSession($input: CreateAssessmentInput!) {
+    mutation StartAssessmentSession($input: StartAssessmentSessionInput!) {
   startAssessmentSession(input: $input) {
     id
-    questions {
-      position
-      question {
-        statement
+    assessment {
+      questions {
+        position
+        question {
+          statement
+        }
       }
     }
   }
