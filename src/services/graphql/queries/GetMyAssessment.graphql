@@ -8,6 +8,7 @@ query GetMyAssessment($assessmentId: String!) {
                 type
                 points
                 options
+                correctAnswer
             }
         }
     }

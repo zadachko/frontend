@@ -236,7 +236,7 @@ export type GetMyAssessmentQueryVariables = Exact<{
 }>;
 
 
-export type GetMyAssessmentQuery = { __typename?: 'Query', getMyAssessment: { __typename?: 'Assessment', title: string, questions: Array<{ __typename?: 'AssessmentQuestion', position: number, question: { __typename?: 'Question', statement: string, type: QuestionType, points: number, options?: Array<string> | null } }> } };
+export type GetMyAssessmentQuery = { __typename?: 'Query', getMyAssessment: { __typename?: 'Assessment', title: string, questions: Array<{ __typename?: 'AssessmentQuestion', position: number, question: { __typename?: 'Question', statement: string, type: QuestionType, points: number, options?: Array<string> | null, correctAnswer: string } }> } };
 
 export type GetMyLastThreeAssessmentsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -437,6 +437,7 @@ export const GetMyAssessmentDocument = gql`
         type
         points
         options
+        correctAnswer
       }
     }
   }

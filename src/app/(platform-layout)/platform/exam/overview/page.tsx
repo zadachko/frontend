@@ -1,8 +1,9 @@
 'use client';
 
-import ResultsLoader from '@/features/assessments/overview/components/ResultsLoader';
 import { colors } from '../colors.config';
+import ResultsLoader from '@/features/assessments/overview/components/ResultsLoader';
 import { Suspense } from 'react';
+
 const ExamOverviewPage = () => {
     return (
         <Suspense fallback={<div className="p-6">Зареждане...</div>}>

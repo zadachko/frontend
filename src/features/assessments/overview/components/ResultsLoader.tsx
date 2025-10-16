@@ -45,7 +45,7 @@ const ResultsLoader = ({ colors }: { colors: AssessmentColors }) => {
             statement: assessmentQuestion.question.statement,
             type: assessmentQuestion.question.type === 'MULTIPLE' ? 'multiple' : 'text',
             options: assessmentQuestion.question.options || [],
-            correctAnswer: '12', // This would come from the backend
+            correctAnswer: assessmentQuestion.question.correctAnswer,
             userAnswer: '11', // This would come from user's submission
             points: assessmentQuestion.question.points || 1,
             solutionSteps: [], // This would come from the backend
