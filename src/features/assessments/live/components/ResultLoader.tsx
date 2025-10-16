@@ -5,14 +5,15 @@ import { GetMyAssessmentDocument } from '@/services/gql/graphql';
 import AssessmentLoading from '@/components/common/AssessmentLoading';
 import NoAssessment from '@/components/common/noAssessment';
 import AssessmentLive from './AssessmentLive';
-import { colors } from '@/app/(platform-layout)/platform/exam/colors.config';
+// import { colors } from '@/app/(platform-layout)/platform/exam/colors.config';
+import type * as ExamColors from '@/app/(platform-layout)/platform/exam/colors.config';
 
 const isAssessmentIdProvided = (assessmentId: string | null): assessmentId is string => {
     return typeof assessmentId === 'string' && assessmentId !== '';
 };
 
 
-const ResultLoader = async ({ searchParams }: { searchParams: { assessmentId: string } }) => {
+const ResultLoader = async ({ searchParams, colors }: { searchParams: { assessmentId: string }, colors: typeof ExamColors.colors }) => {
     const { assessmentId } = await searchParams;
 
     const validAssessmentId = isAssessmentIdProvided(assessmentId);
